@@ -1,3 +1,5 @@
+<!-- Auto-generated from CLAUDE.md by scripts/sync-agents-md.sh — do not edit directly -->
+
 # Shared Resources
 
 Shared data and business rules consumed by all prototype projects (web, mobile, iOS).
@@ -50,9 +52,13 @@ shared-resources/
 - **Balances are auto-computed from transactions.** Every currency's `balance` field uses `computeCurrencyBalance(code, txList)` from `transactions.tsx`. Never hardcode a balance number — change transactions and the balance updates automatically. The first transaction for each currency should be an "Add" (consumer) or "Receive" (business) that establishes the starting balance. If a balance goes negative after editing transactions, adjust the first transaction's amount.
 - **"Taxes" is a group name, not an account type.** Code uses `groupCurrencies` / `isGroup` / `onNavigateGroupAccount`. Translation keys keep `'home.taxes'` etc. for the display name.
 
-## Adding or editing accounts
+## Adding a new account, jar, or group
 
-For the full guide on what updates when balances change, and the step-by-step checklist for adding a new jar, group, or currency, read `account-logic/balances-and-accounts.md`.
+1. **Define transactions first** — the transaction array must exist before the currency definition so `computeCurrencyBalance()` can reference it.
+2. **First transaction establishes the starting balance** — for consumer accounts use an "Add" transaction (`icon: <Plus />`), for business accounts use a "Receive" transaction (`icon: <Receive />`).
+3. **Use `computeCurrencyBalance(code, txList)`** for the currency's `balance` field — never hardcode.
+4. **Follow realism rules for transactions** — vary merchants (max 2× per currency), vary amount endings (not all .00/.99/.50), mix transaction types (card spend, sends, receives, conversions).
+5. **Add the jar/group ID to `GROUP_IDS`** in `jar-data.tsx` if applicable.
 
 ## What stays per-project
 

@@ -12,8 +12,8 @@ Interactive prototypes you can open in Figma — no local setup needed.
 
 | | Latest | Download |
 |--|--------|----------|
-| **Web** | V1.0 | [Web V1.0.make](base-surfaces-web/makes/Web%20V1.0.make) |
-| **Mobile** | V1.01 | [Mobile V1.01.make](base-surfaces-mobile/makes/Mobile%20V1.01.make) |
+| **Web** | V1.01 | [Web V1.01.make](base-surfaces-web/makes/Web%20V1.01.make) |
+| **Mobile** | V1.02 | [Mobile V1.02.make](base-surfaces-mobile/makes/Mobile%20V1.02.make) |
 
 **Figma project:** [Base Surfaces — Make Builds](https://www.figma.com/files/826948582432925732/project/579451617?fuid=1009076293124464990)
 
@@ -227,7 +227,7 @@ You can convert your prototype into a Figma Make file that anyone can open and i
 **First-time setup:** The converter is a private repo. DM Connor for access, then paste into Claude:
 
 ```
-Clone the make-converter repo from https://github.com/connnberry/make-converter.git to /tmp/make-converter, install its dependencies, then copy the skill and skill-fix folders into ~/.claude/skills/make and ~/.claude/skills/make-fix
+Clone the make-converter repo from https://github.com/transferwise/make-converter.git to ~/.claude/make-converter, install its dependencies, then copy the skill and skill-fix folders into ~/.claude/skills/make and ~/.claude/skills/make-fix
 ```
 
 **Building a .make file:** In Claude Code, type:

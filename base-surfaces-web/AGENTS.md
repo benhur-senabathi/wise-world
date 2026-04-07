@@ -1,3 +1,5 @@
+<!-- Auto-generated from CLAUDE.md by scripts/sync-agents-md.sh — do not edit directly -->
+
 # Base Surfaces Prototype
 
 React + TypeScript + Vite prototype of the Wise app. Covers Home, Cards, Transactions, Payments, Recipients, Team, Insights, Account, CurrentAccount, CurrencyPage for consumer and business account types.
