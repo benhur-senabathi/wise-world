@@ -11,6 +11,7 @@ export function TopBar({
   showBack,
   onBack,
   hideAccountSwitcher,
+  hideActions,
 }: {
   name: string;
   initials: string;
@@ -20,6 +21,7 @@ export function TopBar({
   showBack?: boolean;
   onBack?: () => void;
   hideAccountSwitcher?: boolean;
+  hideActions?: boolean;
 }) {
   const { t } = useLanguage();
 
@@ -39,7 +41,9 @@ export function TopBar({
       )}
       <div className="top-bar__actions">
         <Button v2 size="sm" priority="primary">{t('topBar.earn')}</Button>
-        <Button v2 size="sm" priority="secondary" addonEnd={{ type: 'icon', value: <Plus size={16} /> }}>{t('topBar.open')}</Button>
+        {!hideActions && (
+          <Button v2 size="sm" priority="secondary" addonEnd={{ type: 'icon', value: <Plus size={16} /> }}>{t('topBar.open')}</Button>
+        )}
         {!hideAccountSwitcher && (
           <a href="/your-account" className="account-switcher" onClick={(e) => { e.preventDefault(); onAccountClick?.(); }}>
             {avatarUrl ? (

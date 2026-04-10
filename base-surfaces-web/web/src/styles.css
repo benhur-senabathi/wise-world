@@ -19,6 +19,10 @@
 
 /* ===== Body Background (dark mode support) ===== */
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   background: var(--color-background-screen);
 }

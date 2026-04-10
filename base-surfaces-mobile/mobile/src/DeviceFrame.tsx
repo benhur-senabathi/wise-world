@@ -230,6 +230,7 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
   const [expandedFlows, setExpandedFlows] = useState<Set<string>>(new Set());
   const [accountType, setAccountType] = useState<AccountType>('personal');
   const [activeFlowType, setActiveFlowType] = useState<string | null>(null);
+  const [controlsHidden, setControlsHidden] = useState(false);
 
   const pickerRef = useRef<HTMLDivElement>(null);
   const screenRef = useRef<HTMLIFrameElement>(null);
@@ -342,6 +343,18 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [pickerOpen]);
 
+  // Ctrl+H / Cmd+H to toggle control bar visibility
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'h' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        setControlsHidden(prev => !prev);
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, []);
+
   // Lock outer page scroll when device frame is active
   useEffect(() => {
     if (!isDevice) return;
@@ -362,7 +375,9 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
   const appSrc = `${pagePath}?mode=app${acctParam}`;
   const GALLERY_SCALE = 0.55;
   const SINGLE_SCALE = 0.80;
-  const galleryScale = showAllScreens ? GALLERY_SCALE : SINGLE_SCALE;
+  const FOCUSED_SCALE = 0.88;
+  const singleScale = controlsHidden ? FOCUSED_SCALE : SINGLE_SCALE;
+  const galleryScale = showAllScreens ? GALLERY_SCALE : singleScale;
 
   const allScreens = getScreens(accountType);
 
@@ -433,8 +448,8 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div ref={scrollRootRef} className={`df-wrap${dark ? ' df-wrap--dark' : ''}${showAllScreens ? ' df-wrap--gallery' : ''}`}>
-      <div className="df-top-bar">
+    <div ref={scrollRootRef} className={`df-wrap${dark ? ' df-wrap--dark' : ''}${showAllScreens ? ' df-wrap--gallery' : ''}${controlsHidden ? ' df-wrap--controls-hidden' : ''}`}>
+      <div className={`df-top-bar${controlsHidden ? ' df-top-bar--hidden' : ''}`}>
         <div className="df-top-bar__picker" ref={pickerRef}>
           <Button
             v2
@@ -652,6 +667,22 @@ html:has(.df-wrap), html:has(.df-wrap) body {
 .df-top-bar__settings {
   position: absolute;
   right: 24px;
+}
+
+/* Hide controls via Ctrl+H */
+.df-top-bar--hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+}
+
+.df-top-bar:not(.df-top-bar--hidden) {
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+}
+
+.df-wrap--controls-hidden .df-gallery-scroll {
+  padding-top: 0;
 }
 
 /* ===== Gallery scroll container ===== */
