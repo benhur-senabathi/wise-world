@@ -25,6 +25,7 @@ const en = {
   'common.request': 'Request',
   'common.add': 'Add',
   'common.convert': 'Convert',
+  'common.convertOrMove': 'Convert or move',
   'common.repeat': 'Repeat',
   'common.edit': 'Edit',
   'common.copy': 'Copy',
@@ -50,6 +51,7 @@ const en = {
   'topBar.openMenu': 'Open menu',
   'topBar.goBack': 'Go back',
   'topBar.earn': 'Earn £75',
+  'topBar.open': 'Open',
 
   // Action Button Row
   'actions.sharePaymentLink': 'Share payment link',
@@ -57,6 +59,7 @@ const en = {
   'actions.requestPayment': 'Request a payment',
   'actions.splitBill': 'Split a bill',
   'actions.payInvoice': 'Pay invoice',
+  'actions.upload': 'Upload',
 
   // Prototype Settings
   'settings.title': 'Prototype settings',

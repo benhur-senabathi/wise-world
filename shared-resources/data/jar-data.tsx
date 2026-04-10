@@ -21,11 +21,14 @@ export type JarDefinition = {
 };
 
 const savingsTransactions: Transaction[] = [
-  { name: 'From GBP', subtitle: 'Moved by you', amount: '+ 100.00 GBP', isPositive: true, icon: <Plus size={24} />, date: '22 March', currency: 'GBP' },
-  { name: 'From GBP', subtitle: 'Moved by you', amount: '+ 150.00 GBP', isPositive: true, icon: <Plus size={24} />, date: '8 March', currency: 'GBP' },
+  { name: 'From GBP', subtitle: 'Moved by you', amount: '+ 75.00 GBP', isPositive: true, icon: <Plus size={24} />, date: '6 April', currency: 'GBP' },
+  { name: 'From GBP', subtitle: 'Moved by you', amount: '+ 100.00 GBP', isPositive: true, icon: <Plus size={24} />, date: '23 March', currency: 'GBP' },
+  { name: 'From GBP', subtitle: 'Moved by you', amount: '+ 150.00 GBP', isPositive: true, icon: <Plus size={24} />, date: '9 March', currency: 'GBP' },
 ];
 
-const suppliesTransactions: Transaction[] = [];
+const suppliesTransactions: Transaction[] = [
+  { name: 'From GBP', subtitle: 'Moved by you', amount: '+ 200.00 GBP', isPositive: true, icon: <Plus size={24} />, date: '1 April', currency: 'GBP' },
+];
 
 export const savingsJar: JarDefinition = {
   id: GROUP_IDS.savings,

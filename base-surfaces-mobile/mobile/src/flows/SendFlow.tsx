@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from 'react';
 import { Button, ExpressiveMoneyInput, Chips, ListItem } from '@transferwise/components';
-import { InfoCircle, ChevronDown, ChevronRight, Search, Plus, CameraSparkle, Savings, Suitcase } from '@transferwise/icons';
+import { InfoCircle, ChevronDown, ChevronRight, Search, Plus, ScanSparkle, Savings, Suitcase } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { FlowHeader, GlassPill, GlassCircle } from '../components/FlowHeader';
 import { ButtonCue } from '../components/ButtonCue';
@@ -495,7 +495,7 @@ export function SendFlow({ defaultCurrency, accountLabel, jar, accountStyle, onC
               <span className="ios-glass-btn__label">{t('common.add')}</span>
             </GlassPill>
             <GlassCircle ariaLabel="Scan">
-              <span className="ios-glass-btn__icon"><CameraSparkle size={24} /></span>
+              <span className="ios-glass-btn__icon"><ScanSparkle size={24} /></span>
             </GlassCircle>
           </>
         ) : step === 'amount' && isCrossCurrency ? (

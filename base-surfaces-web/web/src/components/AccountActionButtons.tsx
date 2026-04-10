@@ -19,7 +19,7 @@ export function AccountActionButtons({ accountType = 'personal', hideGetPaid = f
   return (
     <div className="account-action-buttons">
       <CircularButton icon={<Plus size={24} />} priority="primary" onClick={onAdd}>{t('common.add')}</CircularButton>
-      <CircularButton icon={<Convert size={24} />} priority="primary" onClick={onConvert}>{t('common.convert')}</CircularButton>
+      <CircularButton icon={<Convert size={24} />} priority="primary" onClick={onConvert}>{t('common.convertOrMove')}</CircularButton>
       <CircularButton icon={<Send size={24} />} priority={sendSecondary ? 'secondary' : 'primary'} onClick={sendSecondary ? undefined : onSend}>{t('common.send')}</CircularButton>
       {!hideGetPaid && (
         <CircularButton icon={<Receive size={24} />} priority="primary" onClick={isBusiness ? onPaymentLink : onRequest}>{isBusiness ? t('common.getPaid') : t('common.request')}</CircularButton>

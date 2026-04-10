@@ -39,7 +39,7 @@ export function TotalBalanceHeader({ amount, currency, onInsightsClick, variant 
             priority="tertiary"
             aria-label={t('balance.balanceBreakdown')}
             onClick={onInsightsClick}
-            style={{ background: 'transparent', border: '1px solid var(--color-border-neutral)' }}
+            style={{ background: 'var(--color-background-neutral)', border: 'none' }}
           >
             <BarChart size={16} />
           </IconButton>

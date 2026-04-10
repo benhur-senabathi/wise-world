@@ -104,6 +104,9 @@ export function ActionButtonRow({ accountType = 'personal', onAddMoney, onSend, 
             </div>
           )}
         </div>
+        {!isBusiness && (
+          <Button v2 size="md" priority="secondary">{t('actions.upload')}</Button>
+        )}
         {isBusiness && (
           <Button v2 size="md" priority="secondary">{t('actions.payInvoice')}</Button>
         )}

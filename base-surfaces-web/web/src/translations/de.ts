@@ -27,6 +27,7 @@ const de: Translations = {
   'common.request': 'Anfordern',
   'common.add': 'Hinzufügen',
   'common.convert': 'Umrechnen',
+  'common.convertOrMove': 'Umrechnen oder verschieben',
   'common.repeat': 'Wiederholen',
   'common.edit': 'Bearbeiten',
   'common.copy': 'Kopieren',
@@ -52,6 +53,7 @@ const de: Translations = {
   'topBar.openMenu': 'Menü öffnen',
   'topBar.goBack': 'Zurück',
   'topBar.earn': '75 £ verdienen',
+  'topBar.open': 'Öffnen',
 
   // Action Button Row
   'actions.sharePaymentLink': 'Zahlungslink teilen',
@@ -59,6 +61,7 @@ const de: Translations = {
   'actions.requestPayment': 'Zahlung anfordern',
   'actions.splitBill': 'Rechnung teilen',
   'actions.payInvoice': 'Rechnung bezahlen',
+  'actions.upload': 'Hochladen',
 
   // Prototype Settings
   'settings.title': 'Prototyp-Einstellungen',

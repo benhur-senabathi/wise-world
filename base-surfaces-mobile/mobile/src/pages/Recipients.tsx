@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
-import { Chips, ListItem, Button } from '@transferwise/components';
-import { Search, Plus, CameraSparkle } from '@transferwise/icons';
+import { Chips, ListItem, Button, IconButton } from '@transferwise/components';
+import { Search, Plus, ScanSparkle } from '@transferwise/icons';
 import type { AccountType } from '../App';
 import { RecentContactCard } from '../components/RecentContactCard';
 
@@ -51,7 +51,7 @@ export function Recipients({ accountType = 'personal', onSelectRecipient }: { ac
         <h1 className="np-text-title-screen" style={{ margin: 0 }}>{t('recipients.title')}</h1>
         <div style={{ display: 'flex', gap: 8 }}>
             <Button v2 size="md" priority="primary" addonStart={{ type: 'icon', value: <Plus size={16} /> }} onClick={() => {}}>{t('common.add')}</Button>
-            <Button v2 size="md" priority="secondary" addonStart={{ type: 'icon', value: <CameraSparkle size={16} /> }} onClick={() => {}}>{t('recipients.upload')}</Button>
+            <IconButton size={40} priority="secondary" aria-label={t('recipients.upload')} onClick={() => {}}><ScanSparkle size={24} /></IconButton>
           </div>
       </div>
 

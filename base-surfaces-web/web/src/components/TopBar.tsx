@@ -1,5 +1,5 @@
 import { Button, AvatarView, IconButton } from '@transferwise/components';
-import { ArrowLeft, ChevronRight, Menu } from '@transferwise/icons';
+import { ArrowLeft, ChevronRight, Menu, Plus } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
 
 export function TopBar({
@@ -39,6 +39,7 @@ export function TopBar({
       )}
       <div className="top-bar__actions">
         <Button v2 size="sm" priority="primary">{t('topBar.earn')}</Button>
+        <Button v2 size="sm" priority="secondary" addonEnd={{ type: 'icon', value: <Plus size={16} /> }}>{t('topBar.open')}</Button>
         {!hideAccountSwitcher && (
           <a href="/your-account" className="account-switcher" onClick={(e) => { e.preventDefault(); onAccountClick?.(); }}>
             {avatarUrl ? (

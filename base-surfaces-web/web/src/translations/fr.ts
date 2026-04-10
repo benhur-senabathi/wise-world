@@ -27,6 +27,7 @@ const fr: Translations = {
   'common.request': 'Demander',
   'common.add': 'Ajouter',
   'common.convert': 'Convertir',
+  'common.convertOrMove': 'Convertir ou déplacer',
   'common.repeat': 'Répéter',
   'common.edit': 'Modifier',
   'common.copy': 'Copier',
@@ -52,6 +53,7 @@ const fr: Translations = {
   'topBar.openMenu': 'Ouvrir le menu',
   'topBar.goBack': 'Retour',
   'topBar.earn': 'Gagnez 75 £',
+  'topBar.open': 'Ouvrir',
 
   // Action Button Row
   'actions.sharePaymentLink': 'Partager un lien de paiement',
@@ -59,6 +61,7 @@ const fr: Translations = {
   'actions.requestPayment': 'Demander un paiement',
   'actions.splitBill': 'Partager une facture',
   'actions.payInvoice': 'Payer une facture',
+  'actions.upload': 'Télécharger',
 
   // Prototype Settings
   'settings.title': 'Paramètres du prototype',

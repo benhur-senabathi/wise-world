@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from 'react';
 import { FlowNavigation, Logo, Button, AvatarView, ExpressiveMoneyInput, Chips, ListItem, InputGroup, Input, Size } from '@transferwise/components';
-import { InfoCircle, ChevronDown, ChevronRight, Search, CrossCircleFill, Plus, CameraSparkle, Check, Savings, Suitcase } from '@transferwise/icons';
+import { InfoCircle, ChevronDown, ChevronRight, Search, CrossCircleFill, Plus, ScanSparkle, Check, Savings, Suitcase } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { ButtonCue } from '../components/ButtonCue';
 import { RecentContactCard } from '../components/RecentContactCard';
@@ -591,7 +591,7 @@ export function SendFlow({ defaultCurrency, accountLabel, jar, accountStyle, onC
             {/* Add and Upload buttons */}
             <div className="send-flow__add-recipient">
               <Button v2 size="md" priority="primary" addonStart={{ type: 'icon', value: <Plus size={16} /> }}>{t('common.add')}</Button>
-              <Button v2 size="md" priority="secondary" addonStart={{ type: 'icon', value: <CameraSparkle size={16} /> }}>{t('recipients.upload')}</Button>
+              <Button v2 size="md" priority="secondary" addonStart={{ type: 'icon', value: <ScanSparkle size={16} /> }}>{t('recipients.upload')}</Button>
             </div>
 
             {/* Recents */}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Button, ListItem } from '@transferwise/components';
+import { Button, ListItem, IconButton } from '@transferwise/components';
+import { ScanSparkle } from '@transferwise/icons';
 import type { AccountType } from '../App';
 import { useLanguage } from '../context/Language';
 import { useShimmer } from '../context/Shimmer';
@@ -30,9 +31,7 @@ export function ActionButtonRow({ accountType = 'personal', onAddMoney, onSend, 
           <Button v2 size="md" priority="secondary" onClick={() => setShowRequestSheet(true)}>
             {isBusiness ? t('common.getPaid') : t('common.request')}
           </Button>
-          {isBusiness && (
-            <Button v2 size="md" priority="secondary">{t('actions.payInvoice')}</Button>
-          )}
+          <IconButton size={40} priority="secondary" aria-label="Scan"><ScanSparkle size={24} /></IconButton>
         </div>
       </div>
       <BottomSheet
