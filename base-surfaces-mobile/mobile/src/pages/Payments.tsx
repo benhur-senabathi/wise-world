@@ -134,21 +134,19 @@ export function Payments({ accountType = 'personal', onSend, onRequest, onPaymen
           {t('payments.paymentTools')}
         </h3>
         <div className="payments-page__tools-grid">
-          {!isBusiness && (
-            <ListItem
-              title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t('payments.yourWisetag')}</span>}
-              subtitle={t('payments.wisetagSub')}
-              spotlight="inactive"
-              media={
-                <ListItem.AvatarView
-                  size={48}
-                  imgSrc="https://www.tapback.co/api/avatar/connor-berry.webp"
-                  badge={{ icon: <FastFlag size={16} />, type: 'action' as const }}
-                />
-              }
-              control={<ListItem.Navigation onClick={() => {}} />}
-            />
-          )}
+          <ListItem
+            title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t('payments.yourWisetag')}</span>}
+            subtitle={t('payments.wisetagSub')}
+            spotlight="inactive"
+            media={
+              <ListItem.AvatarView
+                size={48}
+                imgSrc={isBusiness ? '/berry-design-logo.png' : 'https://www.tapback.co/api/avatar/connor-berry.webp'}
+                badge={{ icon: <FastFlag size={16} />, type: 'action' as const }}
+              />
+            }
+            control={<ListItem.Navigation onClick={() => {}} />}
+          />
           {!isBusiness && (
             <ListItem
               title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t('payments.sendViaLink')}</span>}

@@ -17,7 +17,7 @@ const de: Translations = {
   'nav.batch': 'Stapel',
   'nav.invoices': 'Rechnungen',
   'nav.paymentLinks': 'Zahlungslinks',
-  'nav.quickPay': 'Quick Pay',
+  'nav.quickPay': 'QR-Codes',
 
   // Common
   'common.send': 'Senden',
@@ -287,8 +287,8 @@ const de: Translations = {
   'payments.invoicesSub': 'Sende Rechnungen, um Zahlungen anzufordern.',
   'payments.paymentLinks': 'Zahlungslinks',
   'payments.paymentLinksSub': 'Fordere Zahlungen von jedem, überall an.',
-  'payments.quickPay': 'Quick Pay',
-  'payments.quickPaySub': 'Erstelle deinen einzigartigen Link und QR-Code, um schnell bezahlt zu werden.',
+  'payments.quickPay': 'QR-Codes',
+  'payments.quickPaySub': 'Lass deine Kunden scannen und bezahlen.',
   'payments.ecommerce': 'E-Commerce',
   'payments.ecommerceSub': 'Registriere dein Interesse an günstigen E-Commerce-Kartenzahlungen.',
   'payments.paymentTools': 'Zahlungstools',

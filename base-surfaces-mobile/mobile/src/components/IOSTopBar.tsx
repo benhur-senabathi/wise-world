@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AvatarView } from '@transferwise/components';
-import { ArrowLeft, Suitcase, GiftBox, BarChart, Graph, More } from '@transferwise/icons';
+import { ArrowLeft, Suitcase, GiftBox, BarChart, Graph, More, Plus } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import { useLiquidGlass } from '../hooks/useLiquidGlass';
@@ -78,6 +78,7 @@ export function IOSTopBar({
   accountType,
   onInsightsClick,
   onMore,
+  cardsTab,
 }: {
   name: string;
   initials: string;
@@ -91,6 +92,7 @@ export function IOSTopBar({
   subPageCode?: string;
   scrollTitle?: string | null;
   accountType?: 'personal' | 'business';
+  cardsTab?: 'your' | 'team';
   onInsightsClick?: () => void;
   onMore?: () => void;
 }) {
@@ -146,10 +148,13 @@ export function IOSTopBar({
             <span className="ios-glass-btn__label">{t('topBar.earn')}</span>
           </GlassPill>
           {isBusiness ? (
-            <GlassPill className="ios-glass-btn--capsule" onClick={onInsightsClick}>
-              <span className="ios-glass-btn__icon"><BarChart size={24} /></span>
-              <span className="ios-glass-btn__icon" onClick={(e) => { e.stopPropagation(); setEyeOpen(!eyeOpen); }}>
-                {eyeOpen ? <EyeOpenIcon /> : <EyeShutIcon />}
+            <GlassPill className="ios-glass-btn--capsule">
+              <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span className="ios-glass-btn__label">Open</span>
+                <span className="ios-glass-btn__icon"><Plus size={24} /></span>
+              </span>
+              <span className="ios-glass-btn__icon" onClick={(e) => { e.stopPropagation(); onInsightsClick?.(); }}>
+                <BarChart size={24} />
               </span>
             </GlassPill>
           ) : (
@@ -160,8 +165,8 @@ export function IOSTopBar({
         </div>
       );
     }
-    // Cards: Order a card
-    if (isCards) {
+    // Cards: Order a card (hide on business team tab)
+    if (isCards && !(accountType === 'business' && cardsTab === 'team')) {
       return (
         <GlassPill className="ios-glass-btn--accent">
           <span className="ios-glass-btn__label">Order a card</span>

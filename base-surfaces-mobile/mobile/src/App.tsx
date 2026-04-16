@@ -210,6 +210,7 @@ function AppInner() {
   const [activeFlow, setActiveFlow] = useState<ActiveFlow>(null);
   const [transitionDirection, setTransitionDirection] = useState<'push' | 'pop' | null>(null);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const [cardsTab, setCardsTab] = useState<'your' | 'team'>('your');
   const [switching, setSwitching] = useState(false);
 
   // Auto-open a flow when loaded with ?flow= query param (for gallery preview)
@@ -637,7 +638,7 @@ function AppInner() {
 
     switch (activeNavItem) {
       case 'Account': return <Account onBack={handleAccountBack} accountType={accountType} onSwitchAccount={handleSwitchAccount} />;
-      case 'Cards': return <Cards accountType={accountType} />;
+      case 'Cards': return <Cards accountType={accountType} cardsTab={cardsTab} onCardsTabChange={setCardsTab} />;
       case 'Transactions': return <Transactions accountType={accountType} />;
       case 'Payments': return <Payments accountType={accountType} onSend={() => handleOpenSend(accountType === 'business' ? businessHomeCurrency : consumerHomeCurrency)} onRequest={() => handleOpenRequest(accountType === 'business' ? businessHomeCurrency : consumerHomeCurrency)} onPaymentLink={() => handleOpenPaymentLink(accountType === 'business' ? businessHomeCurrency : consumerHomeCurrency)} onAccountDetails={(code: string) => handleNavigateAccountDetails(code, 'payments')} onAccountDetailsList={() => handleNavigateAccountDetailsList('payments')} />;
       case 'Recipients': return <Recipients accountType={accountType} />;
@@ -760,7 +761,7 @@ function AppInner() {
     <div className="page-layout">
       {import.meta.env.DEV && <Agentation />}
       <div className="column-layout-main">
-        <IOSTopBar name={activeName} initials={activeInitials} avatarUrl={avatarUrl} onAccountClick={handleAccountClick} showBack={showBack} onBack={handleBack} hideAccountSwitcher={activeNavItem === 'Account'} activeNavItem={activeNavItem} subPageType={subPage?.type ?? null} subPageCode={subPage?.type === 'account-details' ? subPage.code : undefined} scrollTitle={scrollTitle} accountType={accountType} onInsightsClick={() => { setShowMoreMenu(false); setTransitionDirection('push'); setPreviousNavItem(activeNavItem); setActiveNavItem('Insights'); setSubPage(null); }} onMore={() => { triggerHaptic(); setShowMoreMenu(true); }} />
+        <IOSTopBar name={activeName} initials={activeInitials} avatarUrl={avatarUrl} onAccountClick={handleAccountClick} showBack={showBack} onBack={handleBack} hideAccountSwitcher={activeNavItem === 'Account'} activeNavItem={activeNavItem} subPageType={subPage?.type ?? null} subPageCode={subPage?.type === 'account-details' ? subPage.code : undefined} scrollTitle={scrollTitle} accountType={accountType} cardsTab={cardsTab} onInsightsClick={() => { setShowMoreMenu(false); setTransitionDirection('push'); setPreviousNavItem(activeNavItem); setActiveNavItem('Insights'); setSubPage(null); }} onMore={() => { triggerHaptic(); setShowMoreMenu(true); }} />
         <main className="container-content" id="main" ref={mainRef}>
           <PageTransition direction={transitionDirection} onComplete={() => setTransitionDirection(null)}>
             {renderContent()}

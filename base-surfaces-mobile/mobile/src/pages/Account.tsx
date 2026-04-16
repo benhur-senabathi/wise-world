@@ -134,11 +134,9 @@ export function Account({ onBack, accountType = 'personal', onSwitchAccount }: {
             <p className="np-text-title-group" style={{ margin: '4px 0 0', color: 'var(--color-content-secondary)' }}>
               {accountType === 'business' ? t('account.yourBusinessAccount') : t('account.yourPersonalAccount')}
             </p>
-            {isPersonal && (
-              <div style={{ marginTop: 12 }}>
-                <Button v2 size="sm" priority="secondary-neutral" addonStart={{ type: 'icon', value: <Link size={16} /> }} onClick={() => {}}>{t('request.getWisetag')}</Button>
-              </div>
-            )}
+            <div style={{ marginTop: 12 }}>
+              <Button v2 size="sm" priority="secondary-neutral" addonStart={{ type: 'icon', value: <Link size={16} /> }} onClick={() => {}}>{t('request.getWisetag')}</Button>
+            </div>
           </div>
 
           {/* Mobile-only: Other accounts row — switch directly */}

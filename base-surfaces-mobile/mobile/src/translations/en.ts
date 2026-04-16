@@ -15,7 +15,7 @@ const en = {
   'nav.batch': 'Batch',
   'nav.invoices': 'Invoices',
   'nav.paymentLinks': 'Payment links',
-  'nav.quickPay': 'Quick Pay',
+  'nav.quickPay': 'QR codes',
 
   // Common
   'common.send': 'Send',
@@ -142,6 +142,9 @@ const en = {
   'promo.explore.title': 'Boost your balance',
   'promo.explore.subtitle': 'Earn a 3.26% variable rate on GBP',
   'promo.explore.disclaimer': 'Capital at risk. Growth not guaranteed. Rate is based on 7-day performance as of Wed, 11 Feb. See the 5-year past performance of funds on our website.',
+  'promo.fifa.section': 'Explore',
+  'promo.fifa.title': 'Win a trip to the FIFA World Cup 26\u2122',
+  'promo.fifa.subtitle': 'Win the ultimate FIFA World Cup 26\u2122 experience, thanks to Visa',
 
   // Transfer Calculator
   'calculator.includesFees': 'Includes fees',
@@ -221,7 +224,7 @@ const en = {
   'cards.spendingLimitsSub': 'See how much you can spend and withdraw overall, and on each card.',
   'cards.teamSpendingLimits': 'Team spending limits',
   'cards.teamSpendingLimitsSub': 'See how much each team member can spend and withdraw overall, and on each card.',
-  'cards.teamCardCount': '1 team card',
+  'cards.teamCardCount': '1 card',
   'cards.searchPlaceholder': 'Team member, status',
   'cards.cardholder': 'Cardholder',
   'cards.card': 'Card',
@@ -285,8 +288,8 @@ const en = {
   'payments.invoicesSub': 'Send invoices to request payments.',
   'payments.paymentLinks': 'Payment links',
   'payments.paymentLinksSub': 'Request payments from anyone, anywhere.',
-  'payments.quickPay': 'Quick Pay',
-  'payments.quickPaySub': 'Create your unique link and QR code to get paid fast.',
+  'payments.quickPay': 'QR codes',
+  'payments.quickPaySub': 'Let your customers scan and pay.',
   'payments.ecommerce': 'Ecommerce',
   'payments.ecommerceSub': 'Register interest in low-fee ecommerce card payments.',
   'payments.paymentTools': 'Payment tools',

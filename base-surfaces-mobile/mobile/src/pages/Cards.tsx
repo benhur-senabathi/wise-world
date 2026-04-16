@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { ListItem, CircularButton } from '@transferwise/components';
+import { ListItem, CircularButton, SegmentedControl } from '@transferwise/components';
 import { Dial, CardWise, Freeze, List, Cog, PadlockUnlocked, Edit, Limit, Bin, QrCode, Plus, Camera } from '@transferwise/icons';
 import type { AccountType } from '../App';
 import { useLanguage } from '../context/Language';
@@ -251,37 +251,85 @@ function ManageCardSection({ card }: { card: CardInfo }) {
   );
 }
 
-export function Cards({ accountType = 'personal' }: { accountType?: AccountType } = {}) {
+function TeamCardsView() {
   const { t } = useLanguage();
-  const cards = accountType === 'business' ? businessCards : personalCards;
+  return (
+    <>
+      <h2 className="np-text-title-subsection" style={{ margin: '24px 0 8px' }}>{t('cards.teamCardCount')}</h2>
+      <h3 className="np-text-title-group np-header np-header--group" style={{ margin: 0, padding: '8px 0 8px' }}>
+        Team members with cards
+      </h3>
+      <ul className="wds-list list-unstyled m-y-0">
+        <ListItem
+          title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Jamie Reynolds</span>}
+          subtitle="1 card"
+          media={
+            <ListItem.AvatarView
+              size={48}
+              imgSrc="https://www.tapback.co/api/avatar/jamie-reynolds.webp"
+            />
+          }
+          control={<ListItem.Navigation onClick={() => {}} />}
+        />
+      </ul>
+    </>
+  );
+}
+
+export function Cards({ accountType = 'personal', cardsTab = 'your', onCardsTabChange }: { accountType?: AccountType; cardsTab?: 'your' | 'team'; onCardsTabChange?: (tab: 'your' | 'team') => void } = {}) {
+  const { t } = useLanguage();
+  const isBusiness = accountType === 'business';
+  const cards = isBusiness ? businessCards : personalCards;
   const [selectedIndex, setSelectedIndex] = useState(1); // Start on first real card (after QR)
   useHapticOnChange(selectedIndex);
 
   const isQr = selectedIndex === 0;
   const currentCard = !isQr ? cards[selectedIndex - 1] : null;
+  const showTeam = isBusiness && cardsTab === 'team';
 
   return (
     <div className="cards-page cards-page--mobile">
-      <h1 className="np-text-title-screen" style={{ margin: '0 0 16px' }}>{isQr ? t('cards.payWithQr') : t('cards.title')}</h1>
-      <CardCarousel cards={cards} selectedIndex={selectedIndex} onSelect={setSelectedIndex} hasQr />
+      <h1 className="np-text-title-screen" style={{ margin: '0 0 16px' }}>{isQr && !showTeam ? t('cards.payWithQr') : t('cards.title')}</h1>
+      {isBusiness && (
+        <div style={{ marginBottom: 16 }}>
+          <SegmentedControl
+            name="cards-tabs"
+            mode="input"
+            segments={[
+              { id: 'tab-your', value: 'your', label: t('cards.yourCards') },
+              { id: 'tab-team', value: 'team', label: t('cards.teamCards') },
+            ]}
+            value={cardsTab}
+            onChange={(val: string) => onCardsTabChange?.(val as 'your' | 'team')}
+          />
+        </div>
+      )}
 
-      {isQr ? (
-        <QrPageContent />
-      ) : currentCard ? (
+      {showTeam ? (
+        <TeamCardsView />
+      ) : (
         <>
-          <div className="cards-page__card-label">
-            <span className="np-text-body-large" style={{ fontWeight: 600 }}>
-              {currentCard.type === 'physical' ? t('cards.physical') : t('cards.digitalCard')}
-            </span>
-            <span className="np-text-body-large" style={{ color: 'var(--color-content-primary)' }}>
-              {' \u2022\u2022\u2022\u2022 '}{currentCard.lastFour}
-            </span>
-          </div>
+          <CardCarousel cards={cards} selectedIndex={selectedIndex} onSelect={setSelectedIndex} hasQr />
 
-          <CardActions />
-          <ManageCardSection card={currentCard} />
+          {isQr ? (
+            <QrPageContent />
+          ) : currentCard ? (
+            <>
+              <div className="cards-page__card-label">
+                <span className="np-text-body-large" style={{ fontWeight: 600 }}>
+                  {currentCard.type === 'physical' ? t('cards.physical') : t('cards.digitalCard')}
+                </span>
+                <span className="np-text-body-large" style={{ color: 'var(--color-content-primary)' }}>
+                  {' \u2022\u2022\u2022\u2022 '}{currentCard.lastFour}
+                </span>
+              </div>
+
+              <CardActions />
+              <ManageCardSection card={currentCard} />
+            </>
+          ) : null}
         </>
-      ) : null}
+      )}
     </div>
   );
 }

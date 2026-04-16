@@ -71,10 +71,18 @@ const allPromotionVariants: PromoVariant[] = [
     ctaLabelKey: 'common.learnMore',
     disclaimerKey: 'promo.explore.disclaimer',
   },
+  {
+    sectionTitleKey: 'promo.fifa.section',
+    titleKey: 'promo.fifa.title',
+    subtitleKey: 'promo.fifa.subtitle',
+    backgroundImage: '/promo-fifa-bg.png',
+    backgroundColor: '#1a3a2a',
+    illustrationName: null,
+  },
 ];
 
 // Business: exclude Young Explorer
-const businessPromotionVariants = allPromotionVariants.filter((p) => p.sectionTitleKey !== 'promo.youngExplorer.section');
+const businessPromotionVariants = allPromotionVariants.filter((p) => p.sectionTitleKey !== 'promo.youngExplorer.section' && p.sectionTitleKey !== 'promo.fifa.section');
 
 
 

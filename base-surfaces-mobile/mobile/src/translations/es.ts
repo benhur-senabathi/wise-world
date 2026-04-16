@@ -17,7 +17,7 @@ const es: Translations = {
   'nav.batch': 'Lotes',
   'nav.invoices': 'Facturas',
   'nav.paymentLinks': 'Enlaces de pago',
-  'nav.quickPay': 'Quick Pay',
+  'nav.quickPay': 'C\u00F3digos QR',
 
   // Common
   'common.send': 'Enviar',
@@ -144,6 +144,9 @@ const es: Translations = {
   'promo.explore.title': 'Aumenta tu saldo',
   'promo.explore.subtitle': 'Gana una tasa variable del 3,26% en GBP',
   'promo.explore.disclaimer': 'Capital en riesgo. Crecimiento no garantizado. La tasa se basa en el rendimiento de 7 d\u00EDas a fecha del mi\u00E9., 11 feb. Consulta el rendimiento de 5 a\u00F1os de los fondos en nuestro sitio web.',
+  'promo.fifa.section': 'Explora',
+  'promo.fifa.title': 'Gana un viaje a la Copa Mundial de la FIFA 26\u2122',
+  'promo.fifa.subtitle': 'Vive la experiencia definitiva de la Copa Mundial de la FIFA 26\u2122, gracias a Visa',
 
   // Transfer Calculator
   'calculator.includesFees': 'Incluye comisiones',
@@ -287,8 +290,8 @@ const es: Translations = {
   'payments.invoicesSub': 'Env\u00EDa facturas para solicitar pagos.',
   'payments.paymentLinks': 'Enlaces de pago',
   'payments.paymentLinksSub': 'Solicita pagos de cualquier persona, en cualquier lugar.',
-  'payments.quickPay': 'Quick Pay',
-  'payments.quickPaySub': 'Crea tu enlace \u00FAnico y c\u00F3digo QR para cobrar r\u00E1pido.',
+  'payments.quickPay': 'C\u00F3digos QR',
+  'payments.quickPaySub': 'Deja que tus clientes escaneen y paguen.',
   'payments.ecommerce': 'Ecommerce',
   'payments.ecommerceSub': 'Registra tu inter\u00E9s en pagos de ecommerce con tarjeta de baja comisi\u00F3n.',
   'payments.paymentTools': 'Herramientas de pago',
