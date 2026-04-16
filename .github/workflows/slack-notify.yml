@@ -10,8 +10,9 @@ jobs:
     steps:
       - name: Parse commit message
         id: parse
+        env:
+          FULL_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
-          FULL_MESSAGE="${{ github.event.head_commit.message }}"
           TITLE=$(echo "$FULL_MESSAGE" | head -n 1)
           BODY=$(echo "$FULL_MESSAGE" | tail -n +3)
           echo "title=$TITLE" >> "$GITHUB_OUTPUT"
@@ -21,11 +22,17 @@ jobs:
           echo "$EOF" >> "$GITHUB_OUTPUT"
 
       - name: Send Slack notification
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          COMMIT_TITLE: ${{ steps.parse.outputs.title }}
+          CHANGES_SUMMARY: ${{ steps.parse.outputs.body }}
+          COMPARE_URL: ${{ github.event.compare }}
         run: |
-          curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
-            -H "Content-Type: application/json" \
-            -d "$(jq -n \
-              --arg commit_title "${{ steps.parse.outputs.title }}" \
-              --arg changes_summary "${{ steps.parse.outputs.body }}" \
-              --arg compare_url "${{ github.event.compare }}" \
-              '{commit_title: $commit_title, changes_summary: $changes_summary, compare_url: $compare_url}')"
+          jq -n \
+            --arg commit_title "$COMMIT_TITLE" \
+            --arg changes_summary "$CHANGES_SUMMARY" \
+            --arg compare_url "$COMPARE_URL" \
+            '{commit_title: $commit_title, changes_summary: $changes_summary, compare_url: $compare_url}' \
+          | curl -X POST "$SLACK_WEBHOOK_URL" \
+              -H "Content-Type: application/json" \
+              -d @-
