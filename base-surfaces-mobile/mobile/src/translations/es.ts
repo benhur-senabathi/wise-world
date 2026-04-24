@@ -54,6 +54,7 @@ const es: Translations = {
   'topBar.openMenu': 'Abrir men\u00FA',
   'topBar.goBack': 'Volver',
   'topBar.earn': 'Gana \u00A375',
+  'topBar.open': 'Abrir',
 
   // Action Button Row
   'actions.sharePaymentLink': 'Compartir enlace de pago',
@@ -96,6 +97,8 @@ const es: Translations = {
   'balance.totalBalance': 'Saldo total',
   'balance.balanceInfo': 'Info del saldo',
   'balance.balanceBreakdown': 'Desglose del saldo',
+  'balance.showBalance': 'Mostrar saldo',
+  'balance.hideBalance': 'Ocultar saldo',
   'balance.modalBody1': 'Este es la suma de todo el dinero en tu cuenta. Se muestra en la moneda del pa\u00EDs donde tu cuenta est\u00E1 registrada.',
   'balance.modalBody2': 'Si tienes m\u00E1s de una moneda en tu cuenta, tu saldo total variar\u00E1 debido a cambios en los tipos de cambio.',
   'balance.insightsModalBody1': 'Este es la suma de todo el dinero en tu cuenta.',
@@ -227,6 +230,8 @@ const es: Translations = {
   'cards.teamSpendingLimits': 'L\u00EDmites de gasto del equipo',
   'cards.teamSpendingLimitsSub': 'Consulta cu\u00E1nto puede gastar y retirar cada miembro del equipo en total y en cada tarjeta.',
   'cards.teamCardCount': '1 tarjeta del equipo',
+  'cards.teamMembersWithCards': 'Miembros del equipo con tarjetas',
+  'cards.teamMemberName': 'Jamie Reynolds',
   'cards.searchPlaceholder': 'Miembro del equipo, estado',
   'cards.cardholder': 'Titular',
   'cards.card': 'Tarjeta',

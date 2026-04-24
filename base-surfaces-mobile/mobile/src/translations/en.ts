@@ -52,6 +52,7 @@ const en = {
   'topBar.openMenu': 'Open menu',
   'topBar.goBack': 'Go back',
   'topBar.earn': 'Earn £75',
+  'topBar.open': 'Open',
 
   // Action Button Row
   'actions.sharePaymentLink': 'Share payment link',
@@ -94,6 +95,8 @@ const en = {
   'balance.totalBalance': 'Total balance',
   'balance.balanceInfo': 'Balance info',
   'balance.balanceBreakdown': 'Balance breakdown',
+  'balance.showBalance': 'Show balance',
+  'balance.hideBalance': 'Hide balance',
   'balance.modalBody1': 'This is the sum of all the money in your account. It\'s shown in the currency of the country where your account is registered.',
   'balance.modalBody2': 'If you have more than one currency in your account, your total balance will vary because of changes in the exchange rates.',
   'balance.insightsModalBody1': 'This is the sum of all the money in your account.',
@@ -225,6 +228,8 @@ const en = {
   'cards.teamSpendingLimits': 'Team spending limits',
   'cards.teamSpendingLimitsSub': 'See how much each team member can spend and withdraw overall, and on each card.',
   'cards.teamCardCount': '1 card',
+  'cards.teamMembersWithCards': 'Team members with cards',
+  'cards.teamMemberName': 'Jamie Reynolds',
   'cards.searchPlaceholder': 'Team member, status',
   'cards.cardholder': 'Cardholder',
   'cards.card': 'Card',

@@ -10,9 +10,18 @@ Figma Make builds of the Base Surfaces Mobile prototype. Open `.make` files in [
 
 | Version | Date | Download |
 |---------|------|----------|
+| V1.03 | 2026-04-21 | [Mobile V1.03.make](Mobile%20V1.03.make) |
 | V1.02 | 2026-04-01 | [Mobile V1.02.make](Mobile%20V1.02.make) |
 | V1.01 | 2026-03-31 | [Mobile V1.01.make](Mobile%20V1.01.make) |
 | V1.0 | 2026-03-30 | [Mobile V1.0.make](Mobile%20V1.0.make) |
+
+<details>
+<summary><strong>V1.03</strong> — Remove carousel dots, fresh exchange rates</summary>
+
+• Removed pagination dots from account carousel — card peek affordance is sufficient
+• Fresh exchange rates from Wise API
+
+</details>
 
 <details>
 <summary><strong>V1.02</strong> — Gallery lazy loading and performance optimisations</summary>

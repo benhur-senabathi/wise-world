@@ -621,25 +621,6 @@ html[class*="dark"] .wise-bottom-sheet__backdrop--visible {
   width: 338px;
 }
 
-.acct-carousel__dots {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  padding-top: 12px;
-}
-
-.acct-carousel__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-interactive-primary);
-  opacity: 0.3;
-  transition: opacity 0.2s ease;
-}
-
-.acct-carousel__dot--active {
-  opacity: 1;
-}
 
 /* ===== Multi-Currency Account Card ===== */
 

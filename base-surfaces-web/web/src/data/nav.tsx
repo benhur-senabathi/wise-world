@@ -53,7 +53,7 @@ export const businessNav: NavItem[] = [
       { label: 'Batch', translationKey: 'nav.batch', icon: <Batch size={16} />, href: '/batch' },
       { label: 'Invoices', translationKey: 'nav.invoices', icon: <Document size={16} />, href: '/payments/invoices' },
       { label: 'Payment links', translationKey: 'nav.paymentLinks', icon: <LinkIcon size={16} />, href: '/payments/payment-links' },
-      { label: 'QR codes', translationKey: 'nav.quickPay', icon: <QrCode size={16} />, href: '/payments/qr-codes' },
+      { label: 'QR codes', translationKey: 'nav.quickPay', icon: <QrCode size={16} />, href: '/payments' },
     ],
   },
   { label: 'Team', translationKey: 'nav.team', icon: <Team size={24} />, href: '/team' },

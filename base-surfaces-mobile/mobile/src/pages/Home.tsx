@@ -90,7 +90,7 @@ const GROUP_BALANCE = groupTotalBalance;
 
 type SendAgainRecipient = { name: string; subtitle: string; avatarUrl?: string; hasFastFlag: boolean; badgeFlagCode?: string };
 
-export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavigateGroupAccount, onNavigateGroupCurrency, onNavigateJarAccount, onNavigateJarCurrency, accountType = 'personal', onAddMoney, onSend, onSendWithCurrency, onSendAgain, onRequest, onPaymentLink, onAccountDetails }: { onNavigate?: (page: string, push?: boolean) => void; onNavigateAccount?: () => void; onNavigateCurrency?: (code: string) => void; onNavigateGroupAccount?: () => void; onNavigateGroupCurrency?: (code: string) => void; onNavigateJarAccount?: (jarId: string) => void; onNavigateJarCurrency?: (jarId: string, code: string) => void; accountType?: AccountType; onAddMoney?: () => void; onSend?: () => void; onSendWithCurrency?: (sourceCurrency: string, targetCurrency: string, sourceAmount?: string, targetAmount?: string) => void; onSendAgain?: (recipient: SendAgainRecipient, amount?: string) => void; onRequest?: () => void; onPaymentLink?: () => void; onAccountDetails?: () => void }) {
+export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavigateGroupAccount, onNavigateGroupCurrency, onNavigateJarAccount, onNavigateJarCurrency, accountType = 'personal', balanceHidden, onToggleBalance, onAddMoney, onSend, onSendWithCurrency, onSendAgain, onRequest, onPaymentLink, onAccountDetails }: { onNavigate?: (page: string, push?: boolean) => void; onNavigateAccount?: () => void; onNavigateCurrency?: (code: string) => void; onNavigateGroupAccount?: () => void; onNavigateGroupCurrency?: (code: string) => void; onNavigateJarAccount?: (jarId: string) => void; onNavigateJarCurrency?: (jarId: string, code: string) => void; accountType?: AccountType; balanceHidden?: boolean; onToggleBalance?: () => void; onAddMoney?: () => void; onSend?: () => void; onSendWithCurrency?: (sourceCurrency: string, targetCurrency: string, sourceAmount?: string, targetAmount?: string) => void; onSendAgain?: (recipient: SendAgainRecipient, amount?: string) => void; onRequest?: () => void; onPaymentLink?: () => void; onAccountDetails?: () => void }) {
   const { consumerName, businessName, consumerHomeCurrency, businessHomeCurrency } = usePrototypeNames();
   const { t } = useLanguage();
   const txLabels = useTxLabels();
@@ -137,7 +137,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
     <div className="home">
       {/* Total Balance + Actions — no padding */}
       <section className="section">
-        <TotalBalanceHeader amount={totalBalanceFormatted} currency={homeCurrency} onInsightsClick={onNavigate ? () => onNavigate('Insights', true) : undefined} variant={accountType === 'business' ? 'business' : 'personal'} />
+        <TotalBalanceHeader amount={totalBalanceFormatted} currency={homeCurrency} onInsightsClick={onNavigate ? () => onNavigate('Insights', true) : undefined} variant={accountType === 'business' ? 'business' : 'personal'} balanceHidden={balanceHidden} onToggleBalance={onToggleBalance} />
       </section>
 
       {/* Action Buttons */}
@@ -161,6 +161,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
             currencyData={activeCurrencies}
             businessCardStyle={accountType === 'business'}
             onAccountDetails={onAccountDetails}
+            balanceHidden={balanceHidden}
           />
           {accountType === 'business' && (
             <MultiCurrencyAccountCard
@@ -178,6 +179,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
               hideAccountDetails
               cardInfoLight
               currencyData={[]}
+              balanceHidden={balanceHidden}
             />
           )}
           {(() => {
@@ -195,6 +197,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
                 balances={jarBalances}
                 onNavigateAccount={() => onNavigateJarAccount?.(jar.id)}
                 onNavigateCurrency={(code) => onNavigateJarCurrency?.(jar.id, code)}
+                balanceHidden={balanceHidden}
               />
             );
           })()}

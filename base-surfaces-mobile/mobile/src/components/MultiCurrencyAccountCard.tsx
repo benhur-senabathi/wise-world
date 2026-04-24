@@ -39,6 +39,7 @@ type Props = {
   cardInfoLight?: boolean;
   businessCardStyle?: boolean;
   onAccountDetails?: () => void;
+  balanceHidden?: boolean;
 };
 
 export function MultiCurrencyAccountCard({
@@ -58,6 +59,7 @@ export function MultiCurrencyAccountCard({
   cardInfoLight = false,
   businessCardStyle = false,
   onAccountDetails,
+  balanceHidden,
 }: Props) {
   const { t } = useLanguage();
   const { shimmerMode } = useShimmer();
@@ -147,7 +149,7 @@ export function MultiCurrencyAccountCard({
             title={<h3 className="np-text-title-subsection" style={{ margin: 0 }}>{title}</h3>}
             subtitle={currencyCount >= 2 ? (
               <div className="np-text-body-large">
-                {totalAmount}&nbsp;· {currencyCount} {t('accountCard.currency', { count: currencyCount })}
+                {balanceHidden ? '****' : totalAmount}&nbsp;· {currencyCount} {t('accountCard.currency', { count: currencyCount })}
               </div>
             ) : undefined}
             control={<ListItem.Navigation onClick={() => onNavigateAccount?.()} />}
@@ -176,7 +178,7 @@ export function MultiCurrencyAccountCard({
             return (
               <ListItem
                 key={code}
-                title={<span className="np-text-body-large" style={{ minWidth: Math.ceil(maxAmountWidth) }}>{amount}</span>}
+                title={<span className="np-text-body-large" style={{ minWidth: Math.ceil(maxAmountWidth) }}>{balanceHidden ? '****' : amount}</span>}
                 media={media}
                 control={<ListItem.Navigation onClick={() => onNavigateCurrency?.(code)} />}
               />

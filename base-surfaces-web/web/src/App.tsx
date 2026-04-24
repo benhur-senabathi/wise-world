@@ -680,7 +680,7 @@ function AppInner() {
         </div>
 
         <div className={`column-layout-main${showBackClass}${mobileBackClass}`}>
-          <TopBar name={activeName} initials={activeInitials} avatarUrl={avatarUrl} onMenuToggle={() => setIsMobileMenuOpen(true)} onAccountClick={handleAccountClick} showBack={showBack} onBack={handleBack} hideAccountSwitcher={activeNavItem === 'Account'} hideActions={activeNavItem !== 'Home' || subPage !== null} />
+          <TopBar name={activeName} initials={activeInitials} avatarUrl={avatarUrl} onMenuToggle={() => setIsMobileMenuOpen(true)} onAccountClick={handleAccountClick} showBack={showBack} onBack={handleBack} hideAccountSwitcher={activeNavItem === 'Account'} hideOpenButton={activeNavItem !== 'Home' || subPage !== null} />
           <main className="container-content" id="main">
             {renderContent()}
           </main>

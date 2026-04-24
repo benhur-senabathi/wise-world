@@ -145,6 +145,9 @@ const fr: Translations = {
   'promo.explore.title': 'Boostez votre solde',
   'promo.explore.subtitle': 'Gagnez un taux variable de 3,26 % sur GBP',
   'promo.explore.disclaimer': 'Capital à risque. Croissance non garantie. Le taux est basé sur la performance sur 7 jours au mer. 11 fév. Consultez la performance sur 5 ans des fonds sur notre site web.',
+  'promo.fifa.section': 'Explorer',
+  'promo.fifa.title': 'Gagnez un voyage à la Coupe du Monde FIFA 26™',
+  'promo.fifa.subtitle': 'Vivez l\'expérience ultime de la Coupe du Monde FIFA 26™, grâce à Visa',
 
   // Transfer Calculator
   'calculator.includesFees': 'Frais inclus',

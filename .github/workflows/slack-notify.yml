@@ -15,7 +15,10 @@ jobs:
         run: |
           TITLE=$(echo "$FULL_MESSAGE" | head -n 1)
           BODY=$(echo "$FULL_MESSAGE" | tail -n +3)
-          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "title<<$EOF" >> "$GITHUB_OUTPUT"
+          echo "$TITLE" >> "$GITHUB_OUTPUT"
+          echo "$EOF" >> "$GITHUB_OUTPUT"
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           echo "body<<$EOF" >> "$GITHUB_OUTPUT"
           echo "$BODY" >> "$GITHUB_OUTPUT"

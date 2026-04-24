@@ -10,8 +10,16 @@ Figma Make builds of the Base Surfaces Web prototype. Open `.make` files in [Fig
 
 | Version | Date | Download |
 |---------|------|----------|
+| V1.02 | 2026-04-21 | [Web V1.02.make](Web%20V1.02.make) |
 | V1.01 | 2026-04-01 | [Web V1.01.make](Web%20V1.01.make) |
 | V1.0 | 2026-03-30 | [Web V1.0.make](Web%20V1.0.make) |
+
+<details>
+<summary><strong>V1.02</strong> — Fresh exchange rates</summary>
+
+• Fresh exchange rates from Wise API
+
+</details>
 
 <details>
 <summary><strong>V1.01</strong> — Gallery lazy loading and performance optimisations</summary>

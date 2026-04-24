@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { IconButton } from '@transferwise/components';
 import { BarChart } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
@@ -17,10 +16,9 @@ const EyeOpenIcon = () => (
   </svg>
 );
 
-export function TotalBalanceHeader({ amount, currency, onInsightsClick, variant = 'personal' }: { amount: string; currency: string; onInsightsClick?: () => void; variant?: 'personal' | 'business' }) {
+export function TotalBalanceHeader({ amount, currency, onInsightsClick, variant = 'personal', balanceHidden, onToggleBalance }: { amount: string; currency: string; onInsightsClick?: () => void; variant?: 'personal' | 'business'; balanceHidden?: boolean; onToggleBalance?: () => void }) {
   const { t } = useLanguage();
   const { shimmerMode } = useShimmer();
-  const [eyeClosed, setEyeClosed] = useState(false);
 
   if (shimmerMode) return (
     <div className="total-balance-header">
@@ -33,17 +31,17 @@ export function TotalBalanceHeader({ amount, currency, onInsightsClick, variant 
       <div className="np-text-body-large" style={{ marginBottom: 0 }}>{t('balance.totalBalance')}</div>
       <div className="total-balance-header__amount">
         <h2 className="np-text-title-subsection" style={{ margin: 0 }}>
-          {amount} {currency}
+          {balanceHidden ? `**** ${currency}` : `${amount} ${currency}`}
         </h2>
         {variant === 'business' ? (
           <IconButton
             size={32}
             priority="tertiary"
-            aria-label={eyeClosed ? 'Show balance' : 'Hide balance'}
-            onClick={() => setEyeClosed(!eyeClosed)}
+            aria-label={balanceHidden ? t('balance.showBalance') : t('balance.hideBalance')}
+            onClick={onToggleBalance}
             style={{ background: 'var(--color-background-neutral)', border: 'none' }}
           >
-            {eyeClosed ? <EyeShutIcon /> : <EyeOpenIcon />}
+            {balanceHidden ? <EyeShutIcon /> : <EyeOpenIcon />}
           </IconButton>
         ) : (
           <IconButton

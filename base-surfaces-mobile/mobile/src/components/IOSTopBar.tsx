@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { AvatarView } from '@transferwise/components';
 import { ArrowLeft, Suitcase, GiftBox, BarChart, Graph, More, Plus } from '@transferwise/icons';
 import { Flag } from '@wise/art';
@@ -79,6 +78,8 @@ export function IOSTopBar({
   onInsightsClick,
   onMore,
   cardsTab,
+  balanceHidden,
+  onToggleBalance,
 }: {
   name: string;
   initials: string;
@@ -93,11 +94,12 @@ export function IOSTopBar({
   scrollTitle?: string | null;
   accountType?: 'personal' | 'business';
   cardsTab?: 'your' | 'team';
+  balanceHidden?: boolean;
+  onToggleBalance?: () => void;
   onInsightsClick?: () => void;
   onMore?: () => void;
 }) {
   const { t } = useLanguage();
-  const [eyeOpen, setEyeOpen] = useState(false);
 
   const isHome = !showBack && activeNavItem === 'Home';
   const isCards = !showBack && activeNavItem === 'Cards';
@@ -150,7 +152,7 @@ export function IOSTopBar({
           {isBusiness ? (
             <GlassPill className="ios-glass-btn--capsule">
               <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span className="ios-glass-btn__label">Open</span>
+                <span className="ios-glass-btn__label">{t('topBar.open')}</span>
                 <span className="ios-glass-btn__icon"><Plus size={24} /></span>
               </span>
               <span className="ios-glass-btn__icon" onClick={(e) => { e.stopPropagation(); onInsightsClick?.(); }}>
@@ -158,8 +160,8 @@ export function IOSTopBar({
               </span>
             </GlassPill>
           ) : (
-            <GlassCircle ariaLabel="Toggle balance" onClick={() => setEyeOpen(!eyeOpen)}>
-              {eyeOpen ? <EyeOpenIcon /> : <EyeShutIcon />}
+            <GlassCircle ariaLabel={balanceHidden ? t('balance.showBalance') : t('balance.hideBalance')} onClick={onToggleBalance}>
+              {balanceHidden ? <EyeShutIcon /> : <EyeOpenIcon />}
             </GlassCircle>
           )}
         </div>

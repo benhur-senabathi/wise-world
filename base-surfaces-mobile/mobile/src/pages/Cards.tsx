@@ -257,12 +257,12 @@ function TeamCardsView() {
     <>
       <h2 className="np-text-title-subsection" style={{ margin: '24px 0 8px' }}>{t('cards.teamCardCount')}</h2>
       <h3 className="np-text-title-group np-header np-header--group" style={{ margin: 0, padding: '8px 0 8px' }}>
-        Team members with cards
+        {t('cards.teamMembersWithCards')}
       </h3>
       <ul className="wds-list list-unstyled m-y-0">
         <ListItem
-          title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Jamie Reynolds</span>}
-          subtitle="1 card"
+          title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t('cards.teamMemberName')}</span>}
+          subtitle={t('cards.teamCardCount')}
           media={
             <ListItem.AvatarView
               size={48}

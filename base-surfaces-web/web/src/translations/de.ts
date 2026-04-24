@@ -145,6 +145,9 @@ const de: Translations = {
   'promo.explore.title': 'Steigere dein Guthaben',
   'promo.explore.subtitle': 'Verdiene einen variablen Zinssatz von 3,26 % auf GBP',
   'promo.explore.disclaimer': 'Kapital gefährdet. Wachstum nicht garantiert. Der Zinssatz basiert auf der 7-Tage-Performance vom Mi., 11. Feb. Siehe die 5-Jahres-Performance der Fonds auf unserer Website.',
+  'promo.fifa.section': 'Entdecken',
+  'promo.fifa.title': 'Gewinne eine Reise zur FIFA Fussball-Weltmeisterschaft 26™',
+  'promo.fifa.subtitle': 'Erlebe das ultimative FIFA Fussball-Weltmeisterschaft 26™ Erlebnis, dank Visa',
 
   // Transfer Calculator
   'calculator.includesFees': 'Inklusive Gebühren',

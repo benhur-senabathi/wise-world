@@ -16,9 +16,10 @@ type Props = {
   balances: Balance[];
   onNavigateAccount?: () => void;
   onNavigateCurrency?: (code: string) => void;
+  balanceHidden?: boolean;
 };
 
-export function JarCard({ name, icon, color, totalAmount, balances, onNavigateAccount, onNavigateCurrency }: Props) {
+export function JarCard({ name, icon, color, totalAmount, balances, onNavigateAccount, onNavigateCurrency, balanceHidden }: Props) {
   const { t } = useLanguage();
 
   return (
@@ -34,7 +35,7 @@ export function JarCard({ name, icon, color, totalAmount, balances, onNavigateAc
         <ul className="wds-list list-unstyled m-y-0">
           <ListItem
             title={<h3 className="np-text-title-subsection" style={{ margin: 0 }}>{name}</h3>}
-            subtitle={balances.length >= 2 && totalAmount ? <div className="np-text-body-large">{totalAmount}</div> : undefined}
+            subtitle={balances.length >= 2 && totalAmount ? <div className="np-text-body-large">{balanceHidden ? '****' : totalAmount}</div> : undefined}
             control={<ListItem.Navigation onClick={() => onNavigateAccount?.()} />}
           />
         </ul>
@@ -43,7 +44,7 @@ export function JarCard({ name, icon, color, totalAmount, balances, onNavigateAc
           {balances.map(({ code, amount }) => (
             <ListItem
               key={code}
-              title={<span className="np-text-body-large">{amount}</span>}
+              title={<span className="np-text-body-large">{balanceHidden ? '****' : amount}</span>}
               media={<ListItem.AvatarView size={24}><Flag code={code} loading="eager" /></ListItem.AvatarView>}
               control={<ListItem.Navigation onClick={() => onNavigateCurrency?.(code)} />}
             />

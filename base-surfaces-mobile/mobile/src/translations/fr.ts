@@ -54,6 +54,7 @@ const fr: Translations = {
   'topBar.openMenu': 'Ouvrir le menu',
   'topBar.goBack': 'Retour',
   'topBar.earn': 'Gagnez 75 £',
+  'topBar.open': 'Ouvrir',
 
   // Action Button Row
   'actions.sharePaymentLink': 'Partager un lien de paiement',
@@ -96,6 +97,8 @@ const fr: Translations = {
   'balance.totalBalance': 'Solde total',
   'balance.balanceInfo': 'Info sur le solde',
   'balance.balanceBreakdown': 'Répartition du solde',
+  'balance.showBalance': 'Afficher le solde',
+  'balance.hideBalance': 'Masquer le solde',
   'balance.modalBody1': 'Ceci est la somme de tout l\'argent sur votre compte. Il est affiché dans la devise du pays où votre compte est enregistré.',
   'balance.modalBody2': 'Si vous avez plusieurs devises sur votre compte, votre solde total variera en raison des fluctuations des taux de change.',
   'balance.insightsModalBody1': 'Ceci est la somme de tout l\'argent sur votre compte.',
@@ -144,6 +147,9 @@ const fr: Translations = {
   'promo.explore.title': 'Boostez votre solde',
   'promo.explore.subtitle': 'Gagnez un taux variable de 3,26 % sur GBP',
   'promo.explore.disclaimer': 'Capital à risque. Croissance non garantie. Le taux est basé sur la performance sur 7 jours au mer. 11 fév. Consultez la performance sur 5 ans des fonds sur notre site web.',
+  'promo.fifa.section': 'Explorer',
+  'promo.fifa.title': 'Gagnez un voyage à la Coupe du Monde FIFA 26™',
+  'promo.fifa.subtitle': 'Vivez l\'expérience ultime de la Coupe du Monde FIFA 26™, grâce à Visa',
 
   // Transfer Calculator
   'calculator.includesFees': 'Frais inclus',
@@ -224,6 +230,8 @@ const fr: Translations = {
   'cards.teamSpendingLimits': 'Limites de dépenses de l\'équipe',
   'cards.teamSpendingLimitsSub': 'Consultez combien chaque membre de l\'équipe peut dépenser et retirer au total et par carte.',
   'cards.teamCardCount': '1 carte d\'équipe',
+  'cards.teamMembersWithCards': 'Membres de l\'équipe avec cartes',
+  'cards.teamMemberName': 'Jamie Reynolds',
   'cards.searchPlaceholder': 'Membre de l\'équipe, statut',
   'cards.cardholder': 'Titulaire',
   'cards.card': 'Carte',

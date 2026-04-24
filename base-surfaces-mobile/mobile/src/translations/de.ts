@@ -54,6 +54,7 @@ const de: Translations = {
   'topBar.openMenu': 'Menü öffnen',
   'topBar.goBack': 'Zurück',
   'topBar.earn': '75 £ verdienen',
+  'topBar.open': 'Öffnen',
 
   // Action Button Row
   'actions.sharePaymentLink': 'Zahlungslink teilen',
@@ -96,6 +97,8 @@ const de: Translations = {
   'balance.totalBalance': 'Gesamtguthaben',
   'balance.balanceInfo': 'Guthaben-Info',
   'balance.balanceBreakdown': 'Guthabenaufschlüsselung',
+  'balance.showBalance': 'Guthaben anzeigen',
+  'balance.hideBalance': 'Guthaben verbergen',
   'balance.modalBody1': 'Dies ist die Summe des gesamten Geldes auf deinem Konto. Es wird in der Währung des Landes angezeigt, in dem dein Konto registriert ist.',
   'balance.modalBody2': 'Wenn du mehr als eine Währung auf deinem Konto hast, variiert dein Gesamtguthaben aufgrund von Wechselkursänderungen.',
   'balance.insightsModalBody1': 'Dies ist die Summe des gesamten Geldes auf deinem Konto.',
@@ -144,6 +147,9 @@ const de: Translations = {
   'promo.explore.title': 'Steigere dein Guthaben',
   'promo.explore.subtitle': 'Verdiene einen variablen Zinssatz von 3,26 % auf GBP',
   'promo.explore.disclaimer': 'Kapital gefährdet. Wachstum nicht garantiert. Der Zinssatz basiert auf der 7-Tage-Performance vom Mi., 11. Feb. Siehe die 5-Jahres-Performance der Fonds auf unserer Website.',
+  'promo.fifa.section': 'Entdecken',
+  'promo.fifa.title': 'Gewinne eine Reise zur FIFA Fussball-Weltmeisterschaft 26™',
+  'promo.fifa.subtitle': 'Erlebe das ultimative FIFA Fussball-Weltmeisterschaft 26™ Erlebnis, dank Visa',
 
   // Transfer Calculator
   'calculator.includesFees': 'Inklusive Gebühren',
@@ -224,6 +230,8 @@ const de: Translations = {
   'cards.teamSpendingLimits': 'Team-Ausgabenlimits',
   'cards.teamSpendingLimitsSub': 'Sieh, wie viel jedes Teammitglied insgesamt und pro Karte ausgeben und abheben kann.',
   'cards.teamCardCount': '1 Team-Karte',
+  'cards.teamMembersWithCards': 'Teammitglieder mit Karten',
+  'cards.teamMemberName': 'Jamie Reynolds',
   'cards.searchPlaceholder': 'Teammitglied, Status',
   'cards.cardholder': 'Karteninhaber',
   'cards.card': 'Karte',
