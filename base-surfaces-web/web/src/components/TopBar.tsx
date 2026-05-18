@@ -8,6 +8,7 @@ export function TopBar({
   avatarUrl,
   onMenuToggle,
   onAccountClick,
+  onOpen,
   showBack,
   onBack,
   hideAccountSwitcher,
@@ -18,6 +19,7 @@ export function TopBar({
   avatarUrl?: string;
   onMenuToggle?: () => void;
   onAccountClick?: () => void;
+  onOpen?: () => void;
   showBack?: boolean;
   onBack?: () => void;
   hideAccountSwitcher?: boolean;
@@ -42,7 +44,7 @@ export function TopBar({
       <div className="top-bar__actions">
         <Button v2 size="sm" priority="primary">{t('topBar.earn')}</Button>
         {!hideOpenButton && (
-          <Button v2 size="sm" priority="secondary" addonEnd={{ type: 'icon', value: <Plus size={16} /> }}>{t('topBar.open')}</Button>
+          <Button v2 size="sm" priority="secondary" addonEnd={{ type: 'icon', value: <Plus size={16} /> }} onClick={onOpen}>{t('topBar.open')}</Button>
         )}
         {!hideAccountSwitcher && (
           <a href="/your-account" className="account-switcher" onClick={(e) => { e.preventDefault(); onAccountClick?.(); }}>

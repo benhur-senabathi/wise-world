@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ListItem, Button } from '@transferwise/components';
 import {
   DirectDebits, RequestReceive, BillSplit, Calendar, Reload, Plus, AutoConvert, FastFlag, Upload,
-  Bills, Batch, Document, Link as LinkIcon, QrCode, ShoppingBag,
+  Bills, Batch, Document, Link as LinkIcon, QrCode, Email,
 } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import type { AccountType } from '../App';
@@ -31,8 +31,7 @@ const businessOutgoingItems: SpotlightItem[] = [
 const businessIncomingItems: SpotlightItem[] = [
   { titleKey: 'payments.invoices', subtitleKey: 'payments.invoicesSub', icon: <Document size={24} /> },
   { titleKey: 'payments.paymentLinks', subtitleKey: 'payments.paymentLinksSub', icon: <LinkIcon size={24} /> },
-  { titleKey: 'payments.quickPay', subtitleKey: 'payments.quickPaySub', icon: <QrCode size={24} /> },
-  { titleKey: 'payments.ecommerce', subtitleKey: 'payments.ecommerceSub', icon: <ShoppingBag size={24} /> },
+  { titleKey: 'payments.qrCodes', subtitleKey: 'payments.qrCodesSub', icon: <QrCode size={24} /> },
 ];
 
 const personalAccountDetails = [
@@ -72,7 +71,7 @@ function SpotlightGrid({ items }: { items: SpotlightItem[] }) {
   );
 }
 
-export function Payments({ accountType = 'personal', onSend, onRequest, onPaymentLink, onAccountDetails, onAccountDetailsList }: { accountType?: AccountType; onSend?: () => void; onRequest?: () => void; onPaymentLink?: () => void; onAccountDetails?: (code: string) => void; onAccountDetailsList?: () => void }) {
+export function Payments({ accountType = 'personal', personalAvatarUrl, onSend, onRequest, onPaymentLink, onAccountDetails, onAccountDetailsList }: { accountType?: AccountType; personalAvatarUrl?: string; onSend?: () => void; onRequest?: () => void; onPaymentLink?: () => void; onAccountDetails?: (code: string) => void; onAccountDetailsList?: () => void }) {
   const { t } = useLanguage();
   const isBusiness = accountType === 'business';
   const accountDetails = isBusiness ? businessAccountDetails : personalAccountDetails;
@@ -108,7 +107,38 @@ export function Payments({ accountType = 'personal', onSend, onRequest, onPaymen
         </>
       ) : (
         <div className="payments-page__grid">
-          {personalSpotlightItems.map((item) => (
+          {personalSpotlightItems.slice(0, 2).map((item) => (
+            <ListItem
+              key={item.titleKey}
+              title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t(item.titleKey)}</span>}
+              subtitle={t(item.subtitleKey)}
+              spotlight="inactive"
+              media={
+                <ListItem.AvatarView
+                  size={48}
+                  badge={{ icon: <Plus size={16} />, type: 'action' as const }}
+                >
+                  {item.icon}
+                </ListItem.AvatarView>
+              }
+              control={<ListItem.Navigation onClick={() => {}} />}
+            />
+          ))}
+          <ListItem
+            title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t('payments.forwardInvoices' as any)}</span>}
+            subtitle={t('payments.forwardInvoicesSub' as any)}
+            spotlight="inactive"
+            media={
+              <ListItem.AvatarView
+                size={48}
+                badge={{ icon: <Plus size={16} />, type: 'action' as const }}
+              >
+                <Email size={24} />
+              </ListItem.AvatarView>
+            }
+            control={<ListItem.Navigation onClick={() => {}} />}
+          />
+          {personalSpotlightItems.slice(2).map((item) => (
             <ListItem
               key={item.titleKey}
               title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t(item.titleKey)}</span>}
@@ -141,7 +171,7 @@ export function Payments({ accountType = 'personal', onSend, onRequest, onPaymen
             media={
               <ListItem.AvatarView
                 size={48}
-                imgSrc={isBusiness ? '/berry-design-logo.png' : 'https://www.tapback.co/api/avatar/connor-berry.webp'}
+                imgSrc={isBusiness ? '/berry-design-logo.png' : (personalAvatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp')}
                 badge={{ icon: <FastFlag size={16} />, type: 'action' as const }}
               />
             }

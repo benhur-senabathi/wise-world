@@ -102,7 +102,7 @@ const en = {
 
   // Multi Currency Account Card
   'accountCard.currency': '{count, plural, one {currency} other {currencies}}',
-  'accountCard.cards': '{count} cards',
+  'accountCard.cards': '{count, plural, one {1 card} other {{count} cards}}',
 
   // Empty Account Card
   'emptyAccount.title': 'Do more with your money',
@@ -128,6 +128,7 @@ const en = {
   'home.taxes': 'Taxes',
   'home.jar': 'Jar',
   'home.savings': 'Savings',
+  'home.spareChange': 'Spare change',
   'home.supplies': 'Supplies',
   'home.transactions': 'Transactions',
   'home.sendAgain': 'Send again',
@@ -324,6 +325,7 @@ const en = {
   'currentAccount.spend': 'Spend',
   'currentAccount.cardsInGroup': '2 cards in {name}',
   'currentAccount.cardsInMain': '2 cards in {name}',
+  'currentAccount.cardsInAccount': '{count, plural, one {1 card} other {{count} cards}} in {name}',
   'currentAccount.teamInGroup': '2 team members in {name}',
   'currentAccount.autoTopup': 'Auto top up',
   'currentAccount.autoTopupSub': 'Add money automatically when it falls below a threshold',
@@ -331,6 +333,8 @@ const en = {
   'currentAccount.tab.currencies': 'Currencies',
   'currentAccount.tab.transactions': 'Transactions',
   'currentAccount.tab.options': 'Options',
+  'currentAccount.setSavingsGoal': 'Set a savings goal',
+  'currentAccount.savingsGoalSub': 'Track your progress towards a target',
 
   // Currency Page
   'currencyPage.directDebits': 'Direct Debits',
@@ -587,6 +591,47 @@ const en = {
   'accountDetails.obtNotAvailable': 'Online bill transfers (OBT) not available',
   'accountDetails.obtNotAvailableSub': 'You can\'t receive Online Bill Transfers',
   'accountDetails.sgdNoDirectDebits': 'You can receive FAST payments, but you can\'t set up direct debit collections from your Wise SGD local account',
+
+  // Open+ Page
+  'open.title': 'Do more with Wise',
+  'open.childCard': 'Get a card for your child',
+  'open.childCardSub': 'A global debit card for them, with you in control.',
+  'open.moneyAside': 'Set money aside',
+  'open.moneyAsideSub': 'For bills, goals, or anything else — with options to grow your money.',
+  'open.spendGroup': 'Spend as a group',
+  'open.spendGroupSub': 'One pot to spend from, shared by everyone you invite.',
+  'open.loungePass': 'Get a lounge pass',
+  'open.loungePassSub': 'Access 1,400 airport lounges for less than on-the-door prices.',
+  'open.addCurrencyTo': 'Add a currency to:',
+
+  // Payments - Updated incoming
+  'payments.invoicesSubBusiness': '20 unpaid',
+  'payments.paymentLinksSubBusiness': '3 active',
+  'payments.qrCodes': 'QR codes',
+  'payments.qrCodesSub': 'Let your customers scan and pay.',
+  'payments.paymentGateway': 'Payment gateway',
+  'payments.paymentGatewaySub': 'You’re on the waitlist — we’ll be in touch.',
+  'payments.lookingForQuickPay': 'Looking for Quick Pay?',
+  'payments.wisetagSubPersonal': '@connorberry',
+  'payments.forwardInvoices': 'Forward invoices to email',
+  'payments.forwardInvoicesSub': 'Save time by emailing bills and invoices to create draft payments.',
+
+  // Travel Hub
+  'travelHub.title': 'Travel hub',
+  'travelHub.prepareTrip': 'Prepare for your trip',
+  'travelHub.loungeAccess': 'Airport lounge access',
+  'travelHub.loungePrice': '29.99 GBP',
+  'travelHub.stamps': 'Start collecting stamps',
+  'travelHub.howToCollect': 'How to collect stamps',
+  'travelHub.tipsAbroad': 'Tips for spending abroad',
+  'travelHub.searchDestination': 'Search for a destination',
+  'travelHub.usingCardOverseas': 'Using your Wise card overseas',
+  'travelHub.smartConversion': 'Save time with smart conversion',
+  'travelHub.smartConversionSub': 'Your Wise card automatically picks the currency with the lowest fee, so you get the best price.',
+  'travelHub.payLocal': 'Pay in the local currency',
+  'travelHub.payLocalSub': 'Always choose the local currency when paying to avoid unfavourable exchange rates.',
+  'travelHub.withdrawCash': 'Withdraw cash when you need it',
+  'travelHub.withdrawCashSub': 'Use your Wise card to withdraw cash from ATMs worldwide, up to a monthly limit.',
 } as const;
 
 export type TranslationKey = keyof typeof en;

@@ -2,14 +2,11 @@ import { useState, useMemo } from 'react';
 import { ListItem, Button, IconButton, Modal } from '@transferwise/components';
 import { Graph, Money, Rewards, QuestionMarkCircle } from '@transferwise/icons';
 import type { AccountType } from '../App';
-import { currencies } from '../data/currencies';
-import { businessCurrencies } from '../data/business-currencies';
+import { useActiveCurrencies, useActiveTransactions, useActiveJars, useHasTaxes } from '../hooks/useDatasetData';
 import { groupTotalBalance } from '../data/taxes-data';
-import { savingsJar, suppliesJar } from '../data/jar-data';
 import { computeTotalBalance } from '../data/balances';
-import { buildTransactions } from '../data/transactions';
-import { buildBusinessTransactions } from '../data/business-transactions';
 import { usePrototypeNames } from '../context/PrototypeNames';
+import { useDataset } from '../context/Dataset';
 import { useLanguage, useTxLabels } from '../context/Language';
 import type { TranslationKey } from '../translations/en';
 import { convertToHomeCurrency, getCurrencySymbol, usdBaseRates } from '../data/currency-rates';
@@ -18,20 +15,20 @@ export function Insights({ accountType = 'personal' }: { accountType?: AccountTy
   const { consumerName, businessName, consumerHomeCurrency, businessHomeCurrency } = usePrototypeNames();
   const { t } = useLanguage();
   const txLabels = useTxLabels();
+  const { dataset } = useDataset();
   const rates = usdBaseRates;
   const isBusiness = accountType === 'business';
   const homeCurrency = isBusiness ? businessHomeCurrency : consumerHomeCurrency;
-  const activeCurrencies = isBusiness ? businessCurrencies : currencies;
-  const personalTransactions = useMemo(() => buildTransactions(consumerName, businessName, txLabels), [consumerName, businessName, txLabels]);
-  const businessTransactions = useMemo(() => buildBusinessTransactions(consumerName, txLabels), [consumerName, txLabels]);
-  const activeTransactions = isBusiness ? businessTransactions : personalTransactions;
+  const activeCurrencies = useActiveCurrencies(accountType);
+  const activeTransactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
+  const activeJars = useActiveJars(accountType);
+  const hasTaxes = useHasTaxes(accountType);
 
-  const groupBalance = isBusiness ? groupTotalBalance : 0;
-  const activeJar = isBusiness ? suppliesJar : savingsJar;
-  const jarBalance = activeJar.currencies.reduce((sum, c) => sum + convertToHomeCurrency(c.balance, c.code, homeCurrency, rates), 0);
+  const groupBalance = hasTaxes ? groupTotalBalance : 0;
+  const jarBalance = activeJars.reduce((sum, jar) => sum + jar.currencies.reduce((s, c) => s + convertToHomeCurrency(c.balance, c.code, homeCurrency, rates), 0), 0);
 
   const { totalBalance, cashBalance, interestBalance, hasStocks, stocksBalance, totalInterestReturns, totalStocksReturns, spentThisMonth, spentLastMonth, products } = useMemo(() => {
-    const total = computeTotalBalance(accountType, homeCurrency, rates);
+    const total = computeTotalBalance(accountType, homeCurrency, rates, dataset);
 
     // Separate currencies by mode: interest-only, stocks, and plain cash
     const interestOnlyCurrencies = activeCurrencies.filter((c) => c.hasInterest && !c.hasStocks);

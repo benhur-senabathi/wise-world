@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Button, SegmentedControl } from '@transferwise/components';
 import { ChevronDown, Check, Slider, Laptop, General } from '@transferwise/icons';
+import { useDataset, type DatasetType } from '../context/Dataset';
 
 type ViewMode = 'focused' | 'all';
 type AccountType = 'personal' | 'business';
@@ -55,6 +56,11 @@ function getScreens(accountType: AccountType): ScreenDef[] {
     ]),
     { label: 'Detail Selector', path: '/account-details/48291035', section: 'Sub-pages' },
     { label: 'Account Details', path: `/account-details/${currencyBalanceId}`, section: 'Sub-pages' },
+    { label: 'Travel Hub', path: '/cards/travel-hub', section: 'Sub-pages' },
+    {
+      label: 'Open Plus', path: '/home', section: 'Flows',
+      steps: [{ label: 'Open', path: '/home?gallery=1&flow=open-plus' }],
+    },
     {
       label: 'Send', path: '/home', section: 'Flows',
       steps: [
@@ -101,11 +107,22 @@ function useCompact() {
   return compact;
 }
 
+const PRESET_DATASETS: { id: DatasetType; label: string }[] = [
+  { id: 'power', label: 'Power' },
+  { id: 'common', label: 'Common' },
+];
+const REAL_DATASETS: { id: DatasetType; label: string }[] = [
+  { id: 'connor', label: 'Connor Berry' },
+];
+
 export function ScreenGallery({ accountType, activeFlowType, activeFlowStep }: { accountType: AccountType; activeFlowType?: string; activeFlowStep?: string }) {
+  const { dataset, setDataset } = useDataset();
   const [viewMode, setViewMode] = useState<ViewMode>('focused');
   const [viewport, setViewport] = useState<Viewport>('desktop');
   const [viewportPickerOpen, setViewportPickerOpen] = useState(false);
+  const [datasetPickerOpen, setDatasetPickerOpen] = useState(false);
   const viewportPickerRef = useRef<HTMLDivElement>(null);
+  const datasetPickerRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const [controlVisible, setControlVisible] = useState(false);
   const [expandedFlows, setExpandedFlows] = useState<Set<string>>(new Set());
@@ -256,15 +273,18 @@ export function ScreenGallery({ accountType, activeFlowType, activeFlowStep }: {
   }, [controlVisible, showAllScreens]);
 
   useEffect(() => {
-    if (!viewportPickerOpen) return;
+    if (!viewportPickerOpen && !datasetPickerOpen) return;
     const handleClickOutside = (e: MouseEvent) => {
-      if (viewportPickerRef.current && !viewportPickerRef.current.contains(e.target as Node)) {
+      if (viewportPickerOpen && viewportPickerRef.current && !viewportPickerRef.current.contains(e.target as Node)) {
         setViewportPickerOpen(false);
+      }
+      if (datasetPickerOpen && datasetPickerRef.current && !datasetPickerRef.current.contains(e.target as Node)) {
+        setDatasetPickerOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [viewportPickerOpen]);
+  }, [viewportPickerOpen, datasetPickerOpen]);
 
   if (!visible) return null;
 
@@ -294,40 +314,89 @@ export function ScreenGallery({ accountType, activeFlowType, activeFlowStep }: {
     <>
       {/* Top bar */}
       <div className={`sg-top-bar${showAllScreens ? ' sg-top-bar--all' : ''}${!showAllScreens && !controlVisible ? ' sg-top-bar--hidden' : ''}`}>
-        <div className="sg-top-bar__viewport" ref={viewportPickerRef}>
-          <Button
-            v2
-            size="sm"
-            priority="primary"
-            addonEnd={{ type: 'icon', value: (
-              <span className={`sg-viewport__chevron${viewportPickerOpen ? ' sg-viewport__chevron--open' : ''}`}>
-                <ChevronDown size={16} />
-              </span>
-            )}}
-            disabled={!showAllScreens}
-            onClick={() => setViewportPickerOpen(!viewportPickerOpen)}
-          >
-            {VIEWPORT_LABELS[viewport]}
-          </Button>
-          {viewportPickerOpen && (
-            <div className="sg-viewport__panel">
-              <div className="np-panel__content">
-                <ul className="sg-viewport__dropdown">
-                  {VIEWPORT_KEYS.map((key) => (
-                    <li key={key}>
-                      <button
-                        className="sg-viewport__dropdown-item"
-                        onClick={() => { setViewport(key); setViewportPickerOpen(false); }}
-                      >
-                        <span>{VIEWPORT_LABELS[key]}</span>
-                        {key === viewport && <Check size={16} />}
-                      </button>
-                    </li>
+        <div className="sg-top-bar__viewport" style={{ display: 'flex', gap: 8 }}>
+          <div ref={viewportPickerRef} style={{ position: 'relative' }}>
+            <Button
+              v2
+              size="sm"
+              priority="primary"
+              addonEnd={{ type: 'icon', value: (
+                <span className={`sg-viewport__chevron${viewportPickerOpen ? ' sg-viewport__chevron--open' : ''}`}>
+                  <ChevronDown size={16} />
+                </span>
+              )}}
+              disabled={!showAllScreens}
+              onClick={() => setViewportPickerOpen(!viewportPickerOpen)}
+            >
+              {VIEWPORT_LABELS[viewport]}
+            </Button>
+            {viewportPickerOpen && (
+              <div className="sg-viewport__panel">
+                <div className="np-panel__content">
+                  <ul className="sg-viewport__dropdown">
+                    {VIEWPORT_KEYS.map((key) => (
+                      <li key={key}>
+                        <button
+                          className="sg-viewport__dropdown-item"
+                          onClick={() => { setViewport(key); setViewportPickerOpen(false); }}
+                        >
+                          <span>{VIEWPORT_LABELS[key]}</span>
+                          {key === viewport && <Check size={16} />}
+                        </button>
+                      </li>
                   ))}
                 </ul>
               </div>
             </div>
           )}
+          </div>
+          <div ref={datasetPickerRef} style={{ position: 'relative' }}>
+            <Button
+              v2
+              size="sm"
+              priority="secondary"
+              addonEnd={{ type: 'icon', value: (
+                <span className={`sg-viewport__chevron${datasetPickerOpen ? ' sg-viewport__chevron--open' : ''}`}>
+                  <ChevronDown size={16} />
+                </span>
+              )}}
+              onClick={() => setDatasetPickerOpen(!datasetPickerOpen)}
+            >
+              {[...PRESET_DATASETS, ...REAL_DATASETS].find(d => d.id === dataset)?.label ?? dataset}
+            </Button>
+            {datasetPickerOpen && (
+              <div className="sg-viewport__panel">
+                <div className="np-panel__content">
+                  <ul className="sg-viewport__dropdown">
+                    <li className="sg-viewport__dropdown-heading">Presets</li>
+                    {PRESET_DATASETS.map((d) => (
+                      <li key={d.id}>
+                        <button
+                          className="sg-viewport__dropdown-item"
+                          onClick={() => { setDataset(d.id); setDatasetPickerOpen(false); }}
+                        >
+                          <span>{d.label}</span>
+                          {d.id === dataset && <Check size={16} />}
+                        </button>
+                      </li>
+                    ))}
+                    <li className="sg-viewport__dropdown-heading">Real users</li>
+                    {REAL_DATASETS.map((d) => (
+                      <li key={d.id}>
+                        <button
+                          className="sg-viewport__dropdown-item"
+                          onClick={() => { setDataset(d.id); setDatasetPickerOpen(false); }}
+                        >
+                          <span>{d.label}</span>
+                          {d.id === dataset && <Check size={16} />}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
         <div className="sg-top-bar__control">
           <SegmentedControl
@@ -496,7 +565,7 @@ export const GALLERY_CSS = `
   top: 0;
   left: 0;
   right: 0;
-  z-index: 9998;
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -600,6 +669,19 @@ body.sg-no-transition .page-layout {
   border-radius: 10px;
   cursor: pointer;
   text-align: left;
+}
+
+.sg-viewport__dropdown-heading {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+  padding: 12px 8px 4px;
+}
+
+.sg-viewport__dropdown-heading:first-child {
+  padding-top: 4px;
 }
 
 .sg-viewport__dropdown-item:hover {

@@ -95,7 +95,7 @@ function MenuSection({ title, items, isFirst = false, titleClass, businessName }
   );
 }
 
-export function Account({ onBack, accountType = 'personal', onSwitchAccount }: { onBack?: () => void; accountType?: AccountType; onSwitchAccount?: (type: AccountType) => void }) {
+export function Account({ onBack, accountType = 'personal', onSwitchAccount, avatarUrl }: { onBack?: () => void; accountType?: AccountType; onSwitchAccount?: (type: AccountType) => void; avatarUrl?: string }) {
   const createSnackbar = useSnackbar();
   const { consumerName, businessName } = usePrototypeNames();
   const { t } = useLanguage();
@@ -121,7 +121,7 @@ export function Account({ onBack, accountType = 'personal', onSwitchAccount }: {
                   <Camera size={16} />
                 </div>
               }>
-                <AvatarView size={72} profileName={activeName} imgSrc={accountType === 'business' ? '/berry-design-logo.png' : 'https://www.tapback.co/api/avatar/connor-berry.webp'} />
+                <AvatarView size={72} profileName={activeName} imgSrc={accountType === 'business' ? '/berry-design-logo.png' : (avatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp')} />
               </Badge>
             </div>
 
@@ -141,7 +141,7 @@ export function Account({ onBack, accountType = 'personal', onSwitchAccount }: {
                   title={<span style={{ color: 'var(--color-content-secondary)' }}>{t('account.otherAccounts')}</span>}
                   subtitle={t('account.switchOrOpen')}
                   media={
-                    <AvatarView size={40} profileName={otherName} imgSrc={accountType === 'business' ? 'https://www.tapback.co/api/avatar/connor-berry.webp' : '/berry-design-logo.png'} />
+                    <AvatarView size={40} profileName={otherName} imgSrc={accountType === 'business' ? (avatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp') : '/berry-design-logo.png'} />
                   }
                   control={<ListItem.Navigation onClick={() => setSheetOpen(true)} />}
                 />
@@ -157,7 +157,7 @@ export function Account({ onBack, accountType = 'personal', onSwitchAccount }: {
                   title={otherName}
                   subtitle={accountType === 'business' ? t('account.personalAccount') : t('account.businessAccount')}
                   media={
-                    <AvatarView size={48} profileName={otherName} imgSrc={accountType === 'business' ? 'https://www.tapback.co/api/avatar/connor-berry.webp' : '/berry-design-logo.png'} />
+                    <AvatarView size={48} profileName={otherName} imgSrc={accountType === 'business' ? (avatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp') : '/berry-design-logo.png'} />
                   }
                   control={<ListItem.Navigation onClick={() => { setSheetOpen(false); onSwitchAccount?.(accountType === 'business' ? 'personal' : 'business'); }} />}
                   spotlight="active"
@@ -188,7 +188,7 @@ export function Account({ onBack, accountType = 'personal', onSwitchAccount }: {
               title={otherName}
               subtitle={accountType === 'business' ? t('account.yourPersonalAccount') : t('account.yourBusinessAccount')}
               media={
-                <AvatarView size={48} profileName={otherName} imgSrc={accountType === 'business' ? 'https://www.tapback.co/api/avatar/connor-berry.webp' : '/berry-design-logo.png'} />
+                <AvatarView size={48} profileName={otherName} imgSrc={accountType === 'business' ? (avatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp') : '/berry-design-logo.png'} />
               }
               control={<ListItem.Navigation onClick={() => onSwitchAccount?.(accountType === 'business' ? 'personal' : 'business')} />}
               spotlight="active"

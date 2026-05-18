@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Button, ListItem, IconButton } from '@transferwise/components';
-import { ScanSparkle } from '@transferwise/icons';
+import { ScanSparkle, ChevronDown } from '@transferwise/icons';
 import type { AccountType } from '../App';
 import { useLanguage } from '../context/Language';
 import { useShimmer } from '../context/Shimmer';
 import { ShimmerActionButtonRow } from './Shimmer';
 import { BottomSheet } from './BottomSheet';
 
-export function ActionButtonRow({ accountType = 'personal', onAddMoney, onSend, onRequest, onPaymentLink }: { accountType?: AccountType; onAddMoney?: () => void; onSend?: () => void; onRequest?: () => void; onPaymentLink?: () => void } = {}) {
+export function ActionButtonRow({ accountType = 'personal', onAddMoney, onSend, onRequest, onPaymentLink, onScan }: { accountType?: AccountType; onAddMoney?: () => void; onSend?: () => void; onRequest?: () => void; onPaymentLink?: () => void; onScan?: () => void } = {}) {
   const { t } = useLanguage();
   const { shimmerMode } = useShimmer();
   const [showRequestSheet, setShowRequestSheet] = useState(false);
@@ -28,10 +28,16 @@ export function ActionButtonRow({ accountType = 'personal', onAddMoney, onSend, 
         <div className="action-button-row__scroll">
           <Button v2 size="md" priority="primary" onClick={onSend}>{t('common.send')}</Button>
           <Button v2 size="md" priority="secondary" onClick={onAddMoney}>{t('common.addMoney')}</Button>
-          <Button v2 size="md" priority="secondary" onClick={() => setShowRequestSheet(true)}>
+          <Button
+            v2
+            size="md"
+            priority="secondary"
+            onClick={() => setShowRequestSheet(true)}
+            addonEnd={!isBusiness ? { type: 'icon', value: <ChevronDown size={16} /> } : undefined}
+          >
             {isBusiness ? t('common.getPaid') : t('common.request')}
           </Button>
-          <IconButton size={40} priority="secondary" aria-label="Scan"><ScanSparkle size={24} /></IconButton>
+          <Button v2 size="md" priority="secondary" onClick={onScan} addonStart={{ type: 'icon', value: <ScanSparkle size={16} /> }}>{t('common.scan' as any)}</Button>
         </div>
       </div>
       <BottomSheet

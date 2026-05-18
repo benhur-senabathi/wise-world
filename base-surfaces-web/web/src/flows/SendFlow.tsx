@@ -131,7 +131,7 @@ export function SendFlow({ defaultCurrency, accountLabel, jar, accountStyle, onC
 
   const activeRecipients = isBusiness ? dynamicBusinessRecipients : recipients;
   const activeRecentContacts = isBusiness ? dynamicBusinessRecentContacts : recentContacts;
-  const PROFILE_AVATAR = isBusiness ? '/berry-design-logo.png' : 'https://www.tapback.co/api/avatar/connor-berry.webp';
+  const PROFILE_AVATAR = isBusiness ? '/berry-design-logo.png' : avatarUrl;
 
   const filterChips = useMemo(() => [
     { value: 'all', label: t('recipients.filterAll') },

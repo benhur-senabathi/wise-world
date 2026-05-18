@@ -8,10 +8,10 @@ import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage } from '../context/Language';
 import { recipients, businessRecipients, recentContacts, businessRecentContacts, getAvatarSrc, getBadge, type Recipient } from '../data/recipients';
 
-const PROFILE_AVATAR = 'https://www.tapback.co/api/avatar/connor-berry.webp';
 const BUSINESS_AVATAR = '/berry-design-logo.png';
 
-export function Recipients({ accountType = 'personal', onSelectRecipient }: { accountType?: AccountType; onSelectRecipient?: (r: Recipient) => void } = {}) {
+export function Recipients({ accountType = 'personal', personalAvatarUrl, onSelectRecipient }: { accountType?: AccountType; personalAvatarUrl?: string; onSelectRecipient?: (r: Recipient) => void } = {}) {
+  const PROFILE_AVATAR = personalAvatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp';
   const { consumerName } = usePrototypeNames();
   const { t } = useLanguage();
 

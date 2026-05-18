@@ -44,15 +44,26 @@ export function TotalBalanceHeader({ amount, currency, onInsightsClick, variant 
             {balanceHidden ? <EyeShutIcon /> : <EyeOpenIcon />}
           </IconButton>
         ) : (
-          <IconButton
-            size={32}
-            priority="tertiary"
-            aria-label={t('balance.balanceBreakdown')}
-            onClick={onInsightsClick}
-            style={{ background: 'var(--color-background-neutral)', border: 'none' }}
-          >
-            <BarChart size={16} />
-          </IconButton>
+          <>
+            <IconButton
+              size={32}
+              priority="tertiary"
+              aria-label={balanceHidden ? t('balance.showBalance') : t('balance.hideBalance')}
+              onClick={onToggleBalance}
+              style={{ background: 'var(--color-background-neutral)', border: 'none' }}
+            >
+              {balanceHidden ? <EyeOpenIcon /> : <EyeShutIcon />}
+            </IconButton>
+            <IconButton
+              size={32}
+              priority="tertiary"
+              aria-label={t('balance.balanceBreakdown')}
+              onClick={onInsightsClick}
+              style={{ background: 'var(--color-background-neutral)', border: 'none' }}
+            >
+              <BarChart size={16} />
+            </IconButton>
+          </>
         )}
       </div>
     </div>

@@ -43,6 +43,7 @@ const en = {
   'common.giveFeedback': 'Give us feedback',
   'common.readyToUse': 'Ready to use',
   'common.noResultsFound': 'No results found',
+  'common.scan': 'Scan',
   'common.more': 'More',
   'common.statementsAndReports': 'Statements and reports',
   'common.accountDetails': 'Account details',
@@ -104,7 +105,7 @@ const en = {
 
   // Multi Currency Account Card
   'accountCard.currency': '{count, plural, one {currency} other {currencies}}',
-  'accountCard.cards': '{count} cards',
+  'accountCard.cards': '{count, plural, one {1 card} other {{count} cards}}',
 
   // Empty Account Card
   'emptyAccount.title': 'Do more with your money',
@@ -130,6 +131,7 @@ const en = {
   'home.taxes': 'Taxes',
   'home.jar': 'Jar',
   'home.savings': 'Savings',
+  'home.spareChange': 'Spare change',
   'home.supplies': 'Supplies',
   'home.transactions': 'Transactions',
   'home.sendAgain': 'Send again',
@@ -271,6 +273,32 @@ const en = {
   'transactions.currencyRoute': 'Currency route',
   'transactions.card': 'Card',
 
+  // Open Plus
+  'open.title': 'Do more with Wise',
+  'open.childCard': 'Get a card for your child',
+  'open.childCardSub': 'A global debit card for them, with you in control.',
+  'open.moneyAside': 'Set money aside',
+  'open.moneyAsideSub': 'For bills, goals, or anything else — with options to grow your money.',
+  'open.spendGroup': 'Spend as a group',
+  'open.spendGroupSub': 'One pot to spend from, shared by everyone you invite.',
+  'open.loungePass': 'Get a lounge pass',
+  'open.loungePassSub': 'Access 1,400 airport lounges for less than on-the-door prices.',
+  'open.addCurrencyTo': 'Add a currency to:',
+
+  // Travel Hub
+  'travel.title': 'Travel hub',
+  'travel.prepareTrip': 'Prepare for your trip',
+  'travel.loungeTitle': 'Airport lounge access',
+  'travel.loungePrice': '29.99 GBP',
+  'travel.tipsTitle': 'Tips for spending abroad',
+  'travel.stampsTitle': 'Start collecting stamps',
+  'travel.stampsCta': 'How to collect stamps',
+  'travel.countrySpain': 'Spain',
+  'travel.countryUS': 'United States',
+  'travel.countryGermany': 'Germany',
+  'travel.countryBrazil': 'Brazil',
+  'travel.countryJapan': 'Japan',
+
   // Payments Page
   'payments.title': 'Payments',
   'payments.outgoing': 'Outgoing',
@@ -295,8 +323,8 @@ const en = {
   'payments.paymentLinksSub': 'Request payments from anyone, anywhere.',
   'payments.quickPay': 'QR codes',
   'payments.quickPaySub': 'Let your customers scan and pay.',
-  'payments.ecommerce': 'Ecommerce',
-  'payments.ecommerceSub': 'Register interest in low-fee ecommerce card payments.',
+  'payments.qrCodes': 'QR codes',
+  'payments.qrCodesSub': 'Let your customers scan and pay.',
   'payments.paymentTools': 'Payment tools',
   'payments.yourWisetag': 'Your Wisetag',
   'payments.wisetagSub': 'Set your Wisetag and share to get paid.',
@@ -309,8 +337,10 @@ const en = {
   'payments.britishPound': 'British Pound',
   'payments.usDollar': 'US Dollar',
   'payments.euro': 'Euro',
-  'payments.accountNumberEnding': 'Account number ending \u2022\u2022 {number}',
+  'payments.accountNumberEnding': 'Account number ending \u00b7\u00b7 {number}',
   'payments.changesFooter': 'We\'ve made some changes to this area of the app.',
+  'payments.forwardInvoices': 'Forward invoices to email',
+  'payments.forwardInvoicesSub': 'Save time by emailing bills and invoices to create draft payments.',
 
   // Recipients Page
   'recipients.title': 'Recipients',
@@ -362,6 +392,7 @@ const en = {
   'currentAccount.spend': 'Spend',
   'currentAccount.cardsInGroup': '2 cards in {name}',
   'currentAccount.cardsInMain': '2 cards in {name}',
+  'currentAccount.cardsInAccount': '{count, plural, one {1 card} other {{count} cards}} in {name}',
   'currentAccount.teamInGroup': '2 team members in {name}',
   'currentAccount.autoTopup': 'Auto top up',
   'currentAccount.autoTopupSub': 'Add money automatically when it falls below a threshold',
@@ -369,6 +400,8 @@ const en = {
   'currentAccount.tab.currencies': 'Currencies',
   'currentAccount.tab.transactions': 'Transactions',
   'currentAccount.tab.options': 'Options',
+  'currentAccount.setSavingsGoal': 'Set a savings goal',
+  'currentAccount.savingsGoalSub': 'Track your progress towards a target',
 
   // Currency Page
   'currencyPage.directDebits': 'Direct Debits',

@@ -10,9 +10,24 @@ Figma Make builds of the Base Surfaces Web prototype. Open `.make` files in [Fig
 
 | Version | Date | Download |
 |---------|------|----------|
+| V1.03 | 2026-05-18 | [Web V1.03.make](Web%20V1.03.make) |
 | V1.02 | 2026-04-21 | [Web V1.02.make](Web%20V1.02.make) |
 | V1.01 | 2026-04-01 | [Web V1.01.make](Web%20V1.01.make) |
 | V1.0 | 2026-03-30 | [Web V1.0.make](Web%20V1.0.make) |
+
+<details>
+<summary><strong>V1.03</strong> — Dataset switching, travel hub, savings goals</summary>
+
+• Dataset switching: Power (full), Common (minimal), Connor Berry (real data)
+• Travel Hub page with lounge access and stamps passport
+• Open Wise Plus upgrade flow with step animations
+• Savings goal feature on consumer jar account pages
+• Card audit: MCA visuals match Cards tab, dataset-aware counts and plurals
+• Balance hide toggle with eye icon
+• Connor Berry avatar across all pages when on real-data preset
+• Framer-motion dependency for flow animations
+
+</details>
 
 <details>
 <summary><strong>V1.02</strong> — Fresh exchange rates</summary>

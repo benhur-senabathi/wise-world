@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Receipt, Plus } from '@transferwise/icons';
 import { Button, SearchInput, Size, AvatarView, Table, Tooltip, Chips } from '@transferwise/components';
 import type { AccountType } from '../App';
 import { ActivitySummary } from '../components/ActivitySummary';
-import { buildTransactions, groupByDate, type Transaction } from '@shared/data/transactions';
-import { buildBusinessTransactions } from '@shared/data/business-transactions';
+import { useActiveTransactions } from '../hooks/useDatasetData';
+import { groupByDate, type Transaction } from '@shared/data/transactions';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
 
@@ -108,10 +108,7 @@ export function Transactions({ accountType = 'personal' }: { accountType?: Accou
   const { consumerName, businessName } = usePrototypeNames();
   const { t } = useLanguage();
   const txLabels = useTxLabels();
-  const isBusiness = accountType === 'business';
-  const personalTransactions = useMemo(() => buildTransactions(consumerName, businessName, txLabels), [consumerName, businessName, txLabels]);
-  const businessTransactions = useMemo(() => buildBusinessTransactions(consumerName, txLabels), [consumerName, txLabels]);
-  const transactions = isBusiness ? businessTransactions : personalTransactions;
+  const transactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
   const [search, setSearch] = useState('');
   const [selectedChips, setSelectedChips] = useState<string[]>([]);
   const [backToTopVisible, setBackToTopVisible] = useState(false);

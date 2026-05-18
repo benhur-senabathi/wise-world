@@ -8,10 +8,10 @@ import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage } from '../context/Language';
 import { recipients, businessRecipients, recentContacts, businessRecentContacts, getAvatarSrc, getBadge, type Recipient } from '@shared/data/recipients';
 
-const PROFILE_AVATAR = 'https://www.tapback.co/api/avatar/connor-berry.webp';
 const BUSINESS_AVATAR = '/berry-design-logo.png';
 
-export function Recipients({ accountType = 'personal', onSelectRecipient }: { accountType?: AccountType; onSelectRecipient?: (r: Recipient) => void } = {}) {
+export function Recipients({ accountType = 'personal', personalAvatarUrl, onSelectRecipient }: { accountType?: AccountType; personalAvatarUrl?: string; onSelectRecipient?: (r: Recipient) => void } = {}) {
+  const PROFILE_AVATAR = personalAvatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp';
   const { consumerName } = usePrototypeNames();
   const { t } = useLanguage();
 
@@ -49,10 +49,6 @@ export function Recipients({ accountType = 'personal', onSelectRecipient }: { ac
       {/* Header */}
       <div className="recipients-page__header">
         <h1 className="np-text-title-screen" style={{ margin: 0 }}>{t('recipients.title')}</h1>
-        <div style={{ display: 'flex', gap: 8 }}>
-            <Button v2 size="md" priority="primary" addonStart={{ type: 'icon', value: <Plus size={16} /> }} onClick={() => {}}>{t('common.add')}</Button>
-            <IconButton size={40} priority="secondary" aria-label={t('recipients.upload')} onClick={() => {}}><ScanSparkle size={24} /></IconButton>
-          </div>
       </div>
 
       {/* Recent Contacts */}

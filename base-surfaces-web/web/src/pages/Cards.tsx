@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ListItem, AvatarView, Tabs, Button, Table, SearchInput, Size } from '@transferwise/components';
 import { Plus, Limit, Suitcase, Team, Alert } from '@transferwise/icons';
 import type { AccountType } from '../App';
+import { useCardCount, useHasTaxes } from '../hooks/useDatasetData';
 import { useLanguage } from '../context/Language';
 
 function CardThumbnail({ variant }: { variant: 'physical' | 'digital' }) {
@@ -32,6 +33,8 @@ function BusinessCardThumbnail({ variant }: { variant: 'biz-physical' | 'biz-aqu
 
 function CardsList({ accountType }: { accountType: AccountType }) {
   const { t } = useLanguage();
+  const cardCount = useCardCount(accountType);
+  const hasTaxes = useHasTaxes(accountType);
   const isBusiness = accountType === 'business';
   return (
     <>
@@ -67,24 +70,30 @@ function CardsList({ accountType }: { accountType: AccountType }) {
               media={<BusinessCardThumbnail variant="biz-physical" />}
               control={<ListItem.Navigation onClick={() => {}} />}
             />
-            <ListItem
-              title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Digital card •••• 9034</span>}
-              subtitle={t('common.readyToUse')}
-              media={<BusinessCardThumbnail variant="biz-aqua" />}
-              control={<ListItem.Navigation onClick={() => {}} />}
-            />
-            <ListItem
-              title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Digital card •••• 4219</span>}
-              subtitle={t('cards.taxesReadyToUse')}
-              media={<BusinessCardThumbnail variant="biz-green" />}
-              control={<ListItem.Navigation onClick={() => {}} />}
-            />
-            <ListItem
-              title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Digital card •••• 7803</span>}
-              subtitle={t('cards.taxesReadyToUse')}
-              media={<BusinessCardThumbnail variant="biz-orange" />}
-              control={<ListItem.Navigation onClick={() => {}} />}
-            />
+            {cardCount >= 2 && (
+              <ListItem
+                title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Digital card •••• 9034</span>}
+                subtitle={t('common.readyToUse')}
+                media={<BusinessCardThumbnail variant="biz-aqua" />}
+                control={<ListItem.Navigation onClick={() => {}} />}
+              />
+            )}
+            {hasTaxes && (
+              <>
+                <ListItem
+                  title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Digital card •••• 4219</span>}
+                  subtitle={t('cards.taxesReadyToUse')}
+                  media={<BusinessCardThumbnail variant="biz-green" />}
+                  control={<ListItem.Navigation onClick={() => {}} />}
+                />
+                <ListItem
+                  title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Digital card •••• 7803</span>}
+                  subtitle={t('cards.taxesReadyToUse')}
+                  media={<BusinessCardThumbnail variant="biz-orange" />}
+                  control={<ListItem.Navigation onClick={() => {}} />}
+                />
+              </>
+            )}
           </>
         ) : (
           <>
@@ -94,12 +103,14 @@ function CardsList({ accountType }: { accountType: AccountType }) {
               media={<CardThumbnail variant="physical" />}
               control={<ListItem.Navigation onClick={() => {}} />}
             />
-            <ListItem
-              title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Digital card •••• 6663</span>}
-              subtitle={t('common.readyToUse')}
-              media={<CardThumbnail variant="digital" />}
-              control={<ListItem.Navigation onClick={() => {}} />}
-            />
+            {cardCount >= 2 && (
+              <ListItem
+                title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Digital card •••• 6663</span>}
+                subtitle={t('common.readyToUse')}
+                media={<CardThumbnail variant="digital" />}
+                control={<ListItem.Navigation onClick={() => {}} />}
+              />
+            )}
           </>
         )}
       </ul>
@@ -211,15 +222,16 @@ function TeamCardsList() {
   );
 }
 
-export function Cards({ accountType = 'personal' }: { accountType?: AccountType } = {}) {
+export function Cards({ accountType = 'personal', onTravelHub }: { accountType?: AccountType; onTravelHub?: () => void } = {}) {
   const { t } = useLanguage();
+  const hasTaxes = useHasTaxes(accountType);
   const [selectedTab, setSelectedTab] = useState(0);
 
   return (
     <div className="cards-page">
       <div className="cards-page__header">
         <h1 className="np-text-title-screen" style={{ margin: 0 }}>{t('cards.title')}</h1>
-        <button className="cards-travel-hub-btn" type="button">
+        <button className="cards-travel-hub-btn" type="button" onClick={onTravelHub}>
           <AvatarView size={32} style={{ backgroundColor: 'var(--color-background-neutral)', border: 'none' }}>
             <Suitcase size={16} />
           </AvatarView>
@@ -227,7 +239,7 @@ export function Cards({ accountType = 'personal' }: { accountType?: AccountType 
         </button>
       </div>
 
-      {accountType === 'business' ? (
+      {accountType === 'business' && hasTaxes ? (
         <Tabs
           name="cards-tabs"
           selected={selectedTab}

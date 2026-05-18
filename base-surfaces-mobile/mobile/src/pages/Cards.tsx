@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { ListItem, CircularButton, SegmentedControl } from '@transferwise/components';
 import { Dial, CardWise, Freeze, List, Cog, PadlockUnlocked, Edit, Limit, Bin, QrCode, Plus, Camera } from '@transferwise/icons';
 import type { AccountType } from '../App';
+import { useCardCount, useHasTaxes } from '../hooks/useDatasetData';
 import { useLanguage } from '../context/Language';
 import { useHapticOnChange, triggerHaptic } from '../hooks/useHaptics';
 
@@ -278,8 +279,11 @@ function TeamCardsView() {
 
 export function Cards({ accountType = 'personal', cardsTab = 'your', onCardsTabChange }: { accountType?: AccountType; cardsTab?: 'your' | 'team'; onCardsTabChange?: (tab: 'your' | 'team') => void } = {}) {
   const { t } = useLanguage();
+  const cardCount = useCardCount(accountType);
+  const hasTaxes = useHasTaxes(accountType);
   const isBusiness = accountType === 'business';
-  const cards = isBusiness ? businessCards : personalCards;
+  const totalCards = isBusiness ? cardCount + (hasTaxes ? 2 : 0) : cardCount;
+  const cards = (isBusiness ? businessCards : personalCards).slice(0, totalCards);
   const [selectedIndex, setSelectedIndex] = useState(1); // Start on first real card (after QR)
   useHapticOnChange(selectedIndex);
 
@@ -290,7 +294,7 @@ export function Cards({ accountType = 'personal', cardsTab = 'your', onCardsTabC
   return (
     <div className="cards-page cards-page--mobile">
       <h1 className="np-text-title-screen" style={{ margin: '0 0 16px' }}>{isQr && !showTeam ? t('cards.payWithQr') : t('cards.title')}</h1>
-      {isBusiness && (
+      {isBusiness && hasTaxes && (
         <div style={{ marginBottom: 16 }}>
           <SegmentedControl
             name="cards-tabs"

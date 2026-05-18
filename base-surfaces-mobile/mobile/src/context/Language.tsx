@@ -9,9 +9,9 @@ export type Language = 'en' | 'es' | 'de' | 'fr';
 const dictionaries: Record<Language, Translations> = { en, es, de, fr };
 
 function resolvePlural(template: string, count: number): string {
-  // Match {count, plural, one {x} other {y}}
+  // Match {count, plural, one {...} other {...}} — supports nested {var} inside forms
   return template.replace(
-    /\{(\w+),\s*plural,\s*one\s*\{([^}]*)\}\s*other\s*\{([^}]*)\}\}/g,
+    /\{(\w+),\s*plural,\s*one\s*\{([^{}]*(?:\{[^}]*\}[^{}]*)*)\}\s*other\s*\{([^{}]*(?:\{[^}]*\}[^{}]*)*)\}\}/g,
     (_match, varName, oneForm, otherForm) => {
       const value = varName === 'count' ? count : 0;
       return value === 1 ? oneForm : otherForm;

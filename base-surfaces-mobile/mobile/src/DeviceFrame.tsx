@@ -110,7 +110,16 @@ function getScreens(accountType: AccountType): ScreenDef[] {
     ]),
     { label: 'Detail Selector', path: '/account-details/48291035', section: 'Sub-pages' },
     { label: 'Account Details', path: `/account-details/${currencyBalanceId}`, section: 'Sub-pages' },
+    { label: 'Travel Hub', path: '/travel', section: 'Sub-pages' },
     // Flows
+    {
+      label: 'Open Plus', path: '/home', iframePath: '/home?mode=app&flow=open-plus', section: 'Flows',
+      steps: [{ label: 'Open', iframePath: '/home?mode=app&flow=open-plus' }],
+    },
+    {
+      label: 'Scan', path: '/home', iframePath: '/home?mode=app&flow=scan', section: 'Flows',
+      steps: [{ label: 'Camera', iframePath: '/home?mode=app&flow=scan' }],
+    },
     {
       label: 'Send', path: '/home', iframePath: '/home?mode=app&flow=send', section: 'Flows',
       steps: [
@@ -179,6 +188,7 @@ function StatusBar({ device }: { device: DeviceConfig }) {
   useEffect(() => {
     const handler = (e: MessageEvent) => {
       if (e.data?.type === 'theme-change') setDark(e.data.dark);
+      if (e.data?.type === 'status-bar-style') setDark(e.data.light);
     };
     window.addEventListener('message', handler);
     return () => window.removeEventListener('message', handler);
@@ -226,6 +236,11 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
 
   const [deviceKey, setDeviceKey] = useState(DEFAULT_DEVICE);
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [datasetPickerOpen, setDatasetPickerOpen] = useState(false);
+  const [dataset, setDataset] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('dataset') || 'power';
+  });
   const [viewMode, setViewModeRaw] = useState<ViewMode>('single');
   const [expandedFlows, setExpandedFlows] = useState<Set<string>>(new Set());
   const [accountType, setAccountType] = useState<AccountType>('personal');
@@ -233,6 +248,7 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
   const [controlsHidden, setControlsHidden] = useState(false);
 
   const pickerRef = useRef<HTMLDivElement>(null);
+  const datasetPickerRef = useRef<HTMLDivElement>(null);
   const screenRef = useRef<HTMLIFrameElement>(null);
   const galleryLoadedRef = useRef(false);
   const scrollRootRef = useRef<HTMLDivElement>(null);
@@ -257,12 +273,13 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
     });
   };
 
-  // Listen for account type and flow changes from main iframe only
+  // Listen for account type, flow, and dataset changes from main iframe only
   useEffect(() => {
     const handler = (e: MessageEvent) => {
       const isMainIframe = screenRef.current && e.source === screenRef.current.contentWindow;
       if (e.data?.type === 'account-type-change' && isMainIframe) setAccountType(e.data.accountType);
       if (e.data?.type === 'flow-change' && isMainIframe) setActiveFlowType(e.data.flowType);
+      if (e.data?.type === 'dataset-change' && isMainIframe) setDataset(e.data.dataset);
     };
     window.addEventListener('message', handler);
     return () => window.removeEventListener('message', handler);
@@ -333,15 +350,18 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
   }, [dark]);
 
   useEffect(() => {
-    if (!pickerOpen) return;
+    if (!pickerOpen && !datasetPickerOpen) return;
     function handleClickOutside(e: MouseEvent) {
-      if (pickerRef.current && !pickerRef.current.contains(e.target as Node)) {
+      if (pickerOpen && pickerRef.current && !pickerRef.current.contains(e.target as Node)) {
         setPickerOpen(false);
+      }
+      if (datasetPickerOpen && datasetPickerRef.current && !datasetPickerRef.current.contains(e.target as Node)) {
+        setDatasetPickerOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [pickerOpen]);
+  }, [pickerOpen, datasetPickerOpen]);
 
   // Ctrl+H / Cmd+H to toggle control bar visibility
   useEffect(() => {
@@ -372,7 +392,8 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
 
   const pagePath = window.location.pathname;
   const acctParam = accountType === 'business' ? '&account=business' : '';
-  const appSrc = `${pagePath}?mode=app${acctParam}`;
+  const datasetParam = dataset !== 'power' ? `&dataset=${dataset}` : '';
+  const appSrc = `${pagePath}?mode=app${acctParam}${datasetParam}`;
   const GALLERY_SCALE = 0.55;
   const SINGLE_SCALE = 0.80;
   const FOCUSED_SCALE = 0.88;
@@ -431,6 +452,7 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
                 className="df-screen"
                 style={{ width: device.screenW, height: device.screenH, pointerEvents: opts?.interactive ? undefined : 'none' }}
                 title={title}
+                allow="camera; microphone"
               />
             ) : (
               <div className="df-screen-placeholder" style={{ width: device.screenW, height: device.screenH }} />
@@ -450,39 +472,101 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
   return (
     <div ref={scrollRootRef} className={`df-wrap${dark ? ' df-wrap--dark' : ''}${showAllScreens ? ' df-wrap--gallery' : ''}${controlsHidden ? ' df-wrap--controls-hidden' : ''}`}>
       <div className={`df-top-bar${controlsHidden ? ' df-top-bar--hidden' : ''}`}>
-        <div className="df-top-bar__picker" ref={pickerRef}>
-          <Button
-            v2
-            size="sm"
-            priority="primary"
-            addonEnd={{ type: 'icon', value: (
-              <span className={`df-picker__chevron${pickerOpen ? ' df-picker__chevron--open' : ''}`}>
-                <ChevronDown size={16} />
-              </span>
-            )}}
-            onClick={() => setPickerOpen(!pickerOpen)}
-          >
-            {device.label}
-          </Button>
-          {pickerOpen && (
-            <div className="df-picker__panel">
-              <div className="np-panel__content">
-                <ul className="df-picker__dropdown">
-                  {DEVICE_KEYS.map((key) => (
-                    <li key={key}>
-                      <button
-                        className="df-picker__dropdown-item"
-                        onClick={() => { setDeviceKey(key); setPickerOpen(false); }}
-                      >
-                        <span>{DEVICES[key].label}</span>
-                        {key === deviceKey && <Check size={16} />}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+        <div className="df-top-bar__picker" style={{ display: 'flex', gap: 8 }}>
+          <div ref={pickerRef} style={{ position: 'relative' }}>
+            <Button
+              v2
+              size="sm"
+              priority="primary"
+              addonEnd={{ type: 'icon', value: (
+                <span className={`df-picker__chevron${pickerOpen ? ' df-picker__chevron--open' : ''}`}>
+                  <ChevronDown size={16} />
+                </span>
+              )}}
+              onClick={() => setPickerOpen(!pickerOpen)}
+            >
+              {device.label}
+            </Button>
+            {pickerOpen && (
+              <div className="df-picker__panel">
+                <div className="np-panel__content">
+                  <ul className="df-picker__dropdown">
+                    {DEVICE_KEYS.map((key) => (
+                      <li key={key}>
+                        <button
+                          className="df-picker__dropdown-item"
+                          onClick={() => { setDeviceKey(key); setPickerOpen(false); }}
+                        >
+                          <span>{DEVICES[key].label}</span>
+                          {key === deviceKey && <Check size={16} />}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
+          <div ref={datasetPickerRef} style={{ position: 'relative' }}>
+            <Button
+              v2
+              size="sm"
+              priority="secondary"
+              addonEnd={{ type: 'icon', value: (
+                <span className={`df-picker__chevron${datasetPickerOpen ? ' df-picker__chevron--open' : ''}`}>
+                  <ChevronDown size={16} />
+                </span>
+              )}}
+              onClick={() => setDatasetPickerOpen(!datasetPickerOpen)}
+            >
+              {{ power: 'Power', common: 'Common', connor: 'Connor Berry' }[dataset] ?? dataset}
+            </Button>
+            {datasetPickerOpen && (
+              <div className="df-picker__panel">
+                <div className="np-panel__content">
+                  <ul className="df-picker__dropdown">
+                    <li className="df-picker__dropdown-heading">Presets</li>
+                    {([
+                      { id: 'power', label: 'Power' },
+                      { id: 'common', label: 'Common' },
+                    ] as const).map((d) => (
+                      <li key={d.id}>
+                        <button
+                          className="df-picker__dropdown-item"
+                          onClick={() => {
+                            setDataset(d.id);
+                            setDatasetPickerOpen(false);
+                            screenRef.current?.contentWindow?.postMessage({ type: 'set-dataset', dataset: d.id }, '*');
+                          }}
+                        >
+                          <span>{d.label}</span>
+                          {d.id === dataset && <Check size={16} />}
+                        </button>
+                      </li>
+                    ))}
+                    <li className="df-picker__dropdown-heading">Real users</li>
+                    {([
+                      { id: 'connor', label: 'Connor Berry' },
+                    ] as const).map((d) => (
+                      <li key={d.id}>
+                        <button
+                          className="df-picker__dropdown-item"
+                          onClick={() => {
+                            setDataset(d.id);
+                            setDatasetPickerOpen(false);
+                            screenRef.current?.contentWindow?.postMessage({ type: 'set-dataset', dataset: d.id }, '*');
+                          }}
+                        >
+                          <span>{d.label}</span>
+                          {d.id === dataset && <Check size={16} />}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
         <div className="df-top-bar__control">
           <SegmentedControl
@@ -858,6 +942,19 @@ html:has(.df-wrap), html:has(.df-wrap) body {
   border-radius: 10px;
   cursor: pointer;
   text-align: left;
+}
+
+.df-picker__dropdown-heading {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-content-secondary);
+  padding: 12px 8px 4px;
+}
+
+.df-picker__dropdown-heading:first-child {
+  padding-top: 4px;
 }
 
 .df-picker__dropdown-item:hover {

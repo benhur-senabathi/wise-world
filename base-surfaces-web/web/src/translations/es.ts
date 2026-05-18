@@ -104,7 +104,7 @@ const es: Translations = {
 
   // Multi Currency Account Card
   'accountCard.currency': '{count, plural, one {divisa} other {divisas}}',
-  'accountCard.cards': '{count} tarjetas',
+  'accountCard.cards': '{count, plural, one {1 tarjeta} other {{count} tarjetas}}',
 
   // Empty Account Card
   'emptyAccount.title': 'Haz m\u00E1s con tu dinero',
@@ -326,6 +326,7 @@ const es: Translations = {
   'currentAccount.spend': 'Gasto',
   'currentAccount.cardsInGroup': '2 tarjetas en {name}',
   'currentAccount.cardsInMain': '2 tarjetas en {name}',
+  'currentAccount.cardsInAccount': '{count, plural, one {1 tarjeta} other {{count} tarjetas}} en {name}',
   'currentAccount.teamInGroup': '2 miembros del equipo en {name}',
   'currentAccount.autoTopup': 'Recarga automática',
   'currentAccount.autoTopupSub': 'Añade dinero automáticamente cuando baje de un umbral',

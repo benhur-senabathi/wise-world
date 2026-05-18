@@ -80,29 +80,30 @@ export function MultiCurrencyAccountCard({
     <article className="mca">
       {hasCards && (
         <div
-          className="mca-cards__stack"
+          className={`mca-cards__stack${cardCount <= 1 ? ' mca-cards__stack--single' : ''}`}
           role="button"
           tabIndex={0}
           onClick={() => onNavigateCards?.()}
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigateCards?.(); } }}
           style={{ cursor: 'pointer' }}
         >
-          <div className="mca-cards__fire">
-            <img
-              src={cardTopImage || new URL('../assets/card-tapestry.jpg', import.meta.url).href}
-              alt="Wise tapestry card"
-              loading="eager"
-            />
-          </div>
-          {/* Business card gradient: custom forest-green shades on a fixed dark surface, theme-independent */}
+          {cardCount >= 2 && (
+            <div className="mca-cards__fire">
+              <img
+                src={cardTopImage || (businessCardStyle ? new URL('../assets/card-tapestry.jpg', import.meta.url).href : '/wise-card-personal-digital-turquoise.png')}
+                alt="Wise card"
+                loading="eager"
+              />
+            </div>
+          )}
           {businessCardStyle ? (
             <div
-              className="mca-cards__green"
+              className={cardCount >= 2 ? 'mca-cards__green' : 'mca-cards__fire'}
               style={{ background: 'linear-gradient(135deg, #1a3d00 0%, #163300 40%, #122b00 100%)', aspectRatio: '330/208', borderRadius: '20px 20px 0 0' }}
             />
           ) : (
             <img
-              className="mca-cards__green"
+              className={cardCount >= 2 ? 'mca-cards__green' : 'mca-cards__fire'}
               src={cardBottomImage || new URL('../assets/card-green.jpg', import.meta.url).href}
               alt="Wise green card"
               loading="eager"

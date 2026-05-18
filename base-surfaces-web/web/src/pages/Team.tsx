@@ -3,7 +3,7 @@ import { ListItem, Button, SearchInput, Size } from '@transferwise/components';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage } from '../context/Language';
 
-export function Team() {
+export function Team({ personalAvatarUrl }: { personalAvatarUrl?: string } = {}) {
   const { consumerName } = usePrototypeNames();
   const { t } = useLanguage();
   const [search, setSearch] = useState('');
@@ -12,7 +12,7 @@ export function Team() {
     {
       name: consumerName,
       email: 'connor@berrydesign.co',
-      imgSrc: 'https://www.tapback.co/api/avatar/connor-berry.webp',
+      imgSrc: personalAvatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp',
       isYou: true,
       role: t('team.accountOwner'),
     },
@@ -21,7 +21,7 @@ export function Team() {
       email: 'jamie@berrydesign.co',
       imgSrc: 'https://www.tapback.co/api/avatar/jamie-reynolds.webp',
     },
-  ], [consumerName, t]);
+  ], [consumerName, t, personalAvatarUrl]);
 
   const isSearching = search.length >= 2;
   const filtered = isSearching

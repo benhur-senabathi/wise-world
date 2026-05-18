@@ -64,8 +64,18 @@ export const suppliesJar: JarDefinition = {
   transactions: suppliesTransactions,
 };
 
+const extraJarResolvers: ((id: string) => JarDefinition | undefined)[] = [];
+
+export function registerJarResolver(resolver: (id: string) => JarDefinition | undefined) {
+  extraJarResolvers.push(resolver);
+}
+
 export function getJar(id: string): JarDefinition | undefined {
   if (id === GROUP_IDS.savings) return savingsJar;
   if (id === GROUP_IDS.supplies) return suppliesJar;
+  for (const resolve of extraJarResolvers) {
+    const found = resolve(id);
+    if (found) return found;
+  }
   return undefined;
 }

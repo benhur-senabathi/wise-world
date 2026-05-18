@@ -1,14 +1,13 @@
-import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Plus, Money, Savings, Suitcase, Upload, Edit, Document, CrossCircle } from '@transferwise/icons';
 import { Button, ListItem, SegmentedControl, AvatarLayout, AvatarView } from '@transferwise/components';
 import { Flag } from '@wise/art';
 import type { AccountType } from '../App';
 import { AccountPageHeader } from '../components/AccountPageHeader';
 import { ActivitySummary } from '../components/ActivitySummary';
-import { currencies } from '@shared/data/currencies';
-import { businessCurrencies } from '@shared/data/business-currencies';
-import { buildTransactions, groupByDate, type Transaction } from '@shared/data/transactions';
-import { buildBusinessTransactions } from '@shared/data/business-transactions';
+import { useActiveCurrencies, useActiveTransactions, useCardCount } from '../hooks/useDatasetData';
+import { groupByDate, type Transaction } from '@shared/data/transactions';
+import type { CurrencyData } from '@shared/data/currencies';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
 import { convertToHomeCurrency, usdBaseRates } from '@shared/data/currency-rates';
@@ -30,9 +29,10 @@ type Props = {
   onPaymentLink?: () => void;
   moreMenuOpen?: boolean;
   onMoreMenuClose?: () => void;
+  personalAvatarUrl?: string;
 };
 
-function CurrenciesSection({ onNavigateCurrency, activeCurrencies, isGroup }: { onNavigateCurrency?: (code: string) => void; activeCurrencies: typeof currencies; isGroup?: boolean }) {
+function CurrenciesSection({ onNavigateCurrency, activeCurrencies, isGroup }: { onNavigateCurrency?: (code: string) => void; activeCurrencies: CurrencyData[]; isGroup?: boolean }) {
   const { t } = useLanguage();
   return (
     <div className="section-card">
@@ -156,7 +156,7 @@ function CardThumbnail({ variant }: { variant: 'physical' | 'digital' | 'biz-phy
   );
 }
 
-function SpendCardMedia({ accountType = 'personal', jar }: { accountType?: AccountType; jar?: string }) {
+function SpendCardMedia({ accountType = 'personal', jar, cardCount = 2 }: { accountType?: AccountType; jar?: string; cardCount?: number }) {
   const isBusiness = accountType === 'business';
   const isGroup = jar === 'taxes';
   if (isGroup) {
@@ -164,6 +164,13 @@ function SpendCardMedia({ accountType = 'personal', jar }: { accountType?: Accou
       <div className="spend-card-media">
         <CardThumbnail variant="biz-orange" />
         <CardThumbnail variant="biz-green" />
+      </div>
+    );
+  }
+  if (cardCount <= 1) {
+    return (
+      <div className="spend-card-media">
+        <CardThumbnail variant={isBusiness ? 'biz-physical' : 'physical'} />
       </div>
     );
   }
@@ -175,20 +182,20 @@ function SpendCardMedia({ accountType = 'personal', jar }: { accountType?: Accou
   );
 }
 
-function TeamAvatarMedia() {
+function TeamAvatarMedia({ personalAvatarUrl }: { personalAvatarUrl?: string }) {
   return (
     <AvatarLayout
       size={48}
       orientation="diagonal"
       avatars={[
-        { imgSrc: 'https://www.tapback.co/api/avatar/connor-berry.webp' },
+        { imgSrc: personalAvatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp' },
         { imgSrc: 'https://www.tapback.co/api/avatar/jamie-reynolds.webp' },
       ]}
     />
   );
 }
 
-function SidebarContent({ onNavigateCards, accountType = 'personal', jar, accountLabel }: { onNavigateCards?: () => void; accountType?: AccountType; jar?: string; accountLabel?: string }) {
+function SidebarContent({ onNavigateCards, accountType = 'personal', jar, accountLabel, personalAvatarUrl, cardCount = 2 }: { onNavigateCards?: () => void; accountType?: AccountType; jar?: string; accountLabel?: string; personalAvatarUrl?: string; cardCount?: number }) {
   const { t } = useLanguage();
   const isBusiness = accountType === 'business';
   const isGroup = jar === 'taxes';
@@ -198,8 +205,8 @@ function SidebarContent({ onNavigateCards, accountType = 'personal', jar, accoun
       <ListItem
         spotlight="active"
         title={isBusiness ? t('cards.title') : t('currentAccount.spend')}
-        subtitle={isBusiness ? t('currentAccount.cardsInGroup', { name }) : t('currentAccount.cardsInMain', { name })}
-        media={<SpendCardMedia accountType={accountType} jar={jar} />}
+        subtitle={t('currentAccount.cardsInAccount', { count: cardCount, name })}
+        media={<SpendCardMedia accountType={accountType} jar={jar} cardCount={cardCount} />}
         control={<ListItem.Navigation onClick={() => onNavigateCards?.()} />}
       />
       {isGroup && (
@@ -208,7 +215,7 @@ function SidebarContent({ onNavigateCards, accountType = 'personal', jar, accoun
             spotlight="active"
             title={t('team.title')}
             subtitle={t('currentAccount.teamInGroup', { name })}
-            media={<div style={{ display: 'flex', alignItems: 'center', minHeight: 48 }}><TeamAvatarMedia /></div>}
+            media={<div style={{ display: 'flex', alignItems: 'center', minHeight: 48 }}><TeamAvatarMedia personalAvatarUrl={personalAvatarUrl} /></div>}
             control={<ListItem.Navigation onClick={() => {}} />}
           />
         </div>
@@ -238,20 +245,21 @@ function SidebarContent({ onNavigateCards, accountType = 'personal', jar, accoun
   );
 }
 
-export function CurrentAccount({ onNavigateCurrency, onNavigateCards, onAccountDetails, accountType = 'personal', jar, jarConfig, onAdd, onConvert, onSend, onRequest, onPaymentLink, moreMenuOpen, onMoreMenuClose }: Props) {
+export function CurrentAccount({ onNavigateCurrency, onNavigateCards, onAccountDetails, accountType = 'personal', jar, jarConfig, onAdd, onConvert, onSend, onRequest, onPaymentLink, moreMenuOpen, onMoreMenuClose, personalAvatarUrl }: Props) {
   const { consumerName, businessName } = usePrototypeNames();
   const { t } = useLanguage();
   const txLabels = useTxLabels();
   const [activeTab, setActiveTab] = useState('currencies');
 
-  const personalTransactions = useMemo(() => buildTransactions(consumerName, businessName, txLabels), [consumerName, businessName, txLabels]);
-  const businessTransactions = useMemo(() => buildBusinessTransactions(consumerName, txLabels), [consumerName, txLabels]);
+  const cardCount = useCardCount(accountType);
+  const datasetCurrencies = useActiveCurrencies(accountType);
+  const datasetTransactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
 
   const rates = usdBaseRates;
   const isGroup = jar === 'taxes';
   const isJar = !!jarConfig;
-  const activeCurrencies = isJar ? jarConfig.currencies : isGroup ? groupCurrencies : (accountType === 'business' ? businessCurrencies : currencies);
-  const activeTransactions = isJar ? jarConfig.transactions : isGroup ? groupTransactions : (accountType === 'business' ? businessTransactions : personalTransactions);
+  const activeCurrencies = isJar ? jarConfig.currencies : isGroup ? groupCurrencies : datasetCurrencies;
+  const activeTransactions = isJar ? jarConfig.transactions : isGroup ? groupTransactions : datasetTransactions;
   const displayCode = activeCurrencies[0]?.code ?? 'GBP';
   const activeTotal = activeCurrencies.reduce((sum, c) => sum + convertToHomeCurrency(c.balance, c.code, displayCode, rates), 0);
   const balanceFormatted = `${activeTotal.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${displayCode}`;
@@ -292,7 +300,7 @@ export function CurrentAccount({ onNavigateCurrency, onNavigateCards, onAccountD
           <SegmentedControl
             name="account-tabs"
             mode="input"
-            segments={isJar ? [
+            segments={isJar && accountType !== 'personal' ? [
               { id: 'tab-currencies', value: 'currencies', label: t('currentAccount.tab.currencies') },
               { id: 'tab-transactions', value: 'transactions', label: t('currentAccount.tab.transactions') },
             ] : [
@@ -307,7 +315,18 @@ export function CurrentAccount({ onNavigateCurrency, onNavigateCards, onAccountD
 
         {activeTab === 'currencies' && <CurrenciesSection onNavigateCurrency={onNavigateCurrency} activeCurrencies={activeCurrencies} isGroup={isGroup && !isJar} />}
         {activeTab === 'transactions' && <TransactionsSection activeTransactions={activeTransactions} />}
-        {activeTab === 'options' && !isJar && <SidebarContent onNavigateCards={onNavigateCards} accountType={accountType} jar={jar} accountLabel={accountLabel} />}
+        {activeTab === 'options' && !isJar && <SidebarContent onNavigateCards={onNavigateCards} accountType={accountType} jar={jar} accountLabel={accountLabel} personalAvatarUrl={personalAvatarUrl} cardCount={cardCount} />}
+        {activeTab === 'options' && isJar && accountType === 'personal' && (
+          <div style={{ padding: '16px 0' }}>
+            <ListItem
+              spotlight="inactive"
+              title={t('currentAccount.setSavingsGoal')}
+              subtitle={t('currentAccount.savingsGoalSub')}
+              media={<div className="savings-goal-circle" />}
+              control={<ListItem.Navigation onClick={() => {}} />}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

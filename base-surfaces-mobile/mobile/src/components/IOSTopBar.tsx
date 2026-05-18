@@ -1,5 +1,9 @@
 import { AvatarView } from '@transferwise/components';
-import { ArrowLeft, Suitcase, GiftBox, BarChart, Graph, More, Plus } from '@transferwise/icons';
+import { ArrowLeft, Suitcase, GiftBox, BarChart, Graph, More, Plus, ScanSparkle } from '@transferwise/icons';
+
+const PlusSmall = () => (
+  <span style={{ display: 'flex', transform: 'scale(0.75)' }}><Plus size={16} /></span>
+);
 import { Flag } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import { useLiquidGlass } from '../hooks/useLiquidGlass';
@@ -77,6 +81,9 @@ export function IOSTopBar({
   accountType,
   onInsightsClick,
   onMore,
+  onOpen,
+  onTravelHub,
+  onScan,
   cardsTab,
   balanceHidden,
   onToggleBalance,
@@ -98,6 +105,9 @@ export function IOSTopBar({
   onToggleBalance?: () => void;
   onInsightsClick?: () => void;
   onMore?: () => void;
+  onOpen?: () => void;
+  onTravelHub?: () => void;
+  onScan?: () => void;
 }) {
   const { t } = useLanguage();
 
@@ -131,9 +141,17 @@ export function IOSTopBar({
     }
     if (isCards) {
       return (
-        <GlassPill>
+        <GlassPill onClick={onTravelHub}>
           <span className="ios-glass-btn__icon"><Suitcase size={16} /></span>
           <span className="ios-glass-btn__label">Travel hub</span>
+        </GlassPill>
+      );
+    }
+    if (isRecipients) {
+      return (
+        <GlassPill>
+          <span className="ios-glass-btn__icon"><GiftBox size={16} /></span>
+          <span className="ios-glass-btn__label">Invite</span>
         </GlassPill>
       );
     }
@@ -150,19 +168,20 @@ export function IOSTopBar({
             <span className="ios-glass-btn__label">{t('topBar.earn')}</span>
           </GlassPill>
           {isBusiness ? (
-            <GlassPill className="ios-glass-btn--capsule">
-              <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <>
+              <GlassPill onClick={onOpen}>
                 <span className="ios-glass-btn__label">{t('topBar.open')}</span>
-                <span className="ios-glass-btn__icon"><Plus size={24} /></span>
-              </span>
-              <span className="ios-glass-btn__icon" onClick={(e) => { e.stopPropagation(); onInsightsClick?.(); }}>
-                <BarChart size={24} />
-              </span>
-            </GlassPill>
+                <PlusSmall />
+              </GlassPill>
+              <GlassCircle ariaLabel="Insights" onClick={onInsightsClick}>
+                <span className="ios-glass-btn__icon"><BarChart size={24} /></span>
+              </GlassCircle>
+            </>
           ) : (
-            <GlassCircle ariaLabel={balanceHidden ? t('balance.showBalance') : t('balance.hideBalance')} onClick={onToggleBalance}>
-              {balanceHidden ? <EyeShutIcon /> : <EyeOpenIcon />}
-            </GlassCircle>
+            <GlassPill onClick={onOpen}>
+              <span className="ios-glass-btn__label">{t('topBar.open')}</span>
+              <PlusSmall />
+            </GlassPill>
           )}
         </div>
       );
@@ -183,13 +202,18 @@ export function IOSTopBar({
         </GlassCircle>
       );
     }
-    // Recipients: Invite pill
+    // Recipients: Add + Scan (right side)
     if (isRecipients) {
       return (
-        <GlassPill>
-          <span className="ios-glass-btn__icon"><GiftBox size={16} /></span>
-          <span className="ios-glass-btn__label">Invite</span>
-        </GlassPill>
+        <div className="ios-top-bar__trailing">
+          <GlassPill className="ios-glass-btn--accent">
+            <PlusSmall />
+            <span className="ios-glass-btn__label">Add</span>
+          </GlassPill>
+          <GlassCircle ariaLabel="Scan" onClick={onScan}>
+            <span className="ios-glass-btn__icon"><ScanSparkle size={24} /></span>
+          </GlassCircle>
+        </div>
       );
     }
     // Account: Open an account pill

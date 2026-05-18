@@ -92,7 +92,7 @@ body {
   flex: 1;
   min-width: 0;
   margin: 0 92px;
-  padding: 0 44px;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
 }
@@ -641,6 +641,8 @@ html.np-theme-dark {
   border-radius: 26px;
   padding: 8px;
   width: 346px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Dark mode: Wise logo in primary green */
@@ -662,6 +664,14 @@ html.np-theme-dark .np-overlay-header .np-logo-svg path {
   padding-bottom: 24%;
   border-radius: 20px 20px 0 0;
   overflow: hidden;
+}
+
+.mca-cards__stack--single {
+  padding-bottom: 20%;
+}
+
+.mca-cards__stack--single .mca-cards__info {
+  top: 0;
 }
 
 .mca-cards__stack--empty {
@@ -702,7 +712,7 @@ html[class*="dark"] .mca-cards__empty-card {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.15);
 }
 
 .mca-cards__green {
@@ -771,6 +781,9 @@ html[class*="dark"] .mca-cards__empty-card {
   position: relative;
   z-index: 2;
   padding: 0 8px 8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .mca-front__cutout {
@@ -870,6 +883,7 @@ html[class*="dark"] .mca-cards__empty-card {
 
 .mca-footer {
   padding: 12px 0 0;
+  margin-top: auto;
 }
 
 /* ===== Empty Account Card ===== */
@@ -1941,14 +1955,14 @@ html[class*="dark"] .currency-input-group__swap-btn:hover {
 /* ===== Responsive: Small Desktop (992–1279px) ===== */
 
 @media (min-width: 992px) and (max-width: 1279px) {
-  .column-layout-main { margin: 0; padding: 0 44px; }
+  .column-layout-main { margin: 0; padding: 0 20px; }
 }
 
 /* ===== Responsive: Tablet (768–991px) ===== */
 
 @media (max-width: 991px) {
   .column-layout-left { display: none; }
-  .column-layout-main { margin: 0; padding: 0 44px; }
+  .column-layout-main { margin: 0; padding: 0 20px; }
   .top-bar {
     justify-content: space-between;
     padding: 0 8px 0 0;
@@ -3730,6 +3744,16 @@ html[class*="dark"] .more-menu__dropdown {
   display: none;
 }
 
+.savings-goal-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: transparent !important;
+  border: 4px solid var(--color-border-neutral);
+  box-sizing: border-box;
+  opacity: 0.5;
+}
+
 .section-card__header {
   display: flex;
   justify-content: space-between;
@@ -3993,11 +4017,11 @@ html[class*="dark"] .more-menu__dropdown {
   align-items: center;
 }
 
-.spend-card-media .card-thumbnail:first-child {
+.spend-card-media .card-thumbnail:first-child:not(:only-child) {
   transform: scale(0.85);
 }
 
-.spend-card-media .card-thumbnail:last-child {
+.spend-card-media .card-thumbnail:last-child:not(:only-child) {
   margin-top: -20px;
   z-index: 1;
 }
@@ -4133,7 +4157,8 @@ html[class*="dark"] .more-menu__dropdown {
 /* Center close button icon in all flows */
 .add-money-flow .np-close-button,
 .convert-flow .np-close-button,
-.send-flow .np-close-button {
+.send-flow .np-close-button,
+.open-plus-flow .np-close-button {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -5729,4 +5754,253 @@ html.np-theme-personal--dark .send-flow__filters .np-chip--selected:active {
 
 .account-details__availability-card + .account-details__availability-card {
   margin-top: 8px;
+}
+
+/* ===== Open+ Page ===== */
+
+.open-plus-flow {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--color-background-screen);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.open-plus-flow__body {
+  display: flex;
+  flex-direction: column;
+  max-width: 522px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 56px 0 64px;
+  flex: 1;
+}
+
+.open-plus-flow__items {
+  display: flex;
+  flex-direction: column;
+}
+
+.open-plus-flow__section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 32px 0 16px;
+}
+
+.open-plus-flow__divider {
+  border: none;
+  border-top: 1px solid var(--color-border-neutral);
+  margin: 0;
+}
+
+.open-plus-flow__accounts {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Payments Incoming Header ===== */
+
+.payments-page__incoming-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 12px;
+}
+
+
+.payments-page .payments-page__waitlist-item .wds-list-item-spotlight {
+  background: transparent !important;
+  border: 2px dashed var(--color-border-neutral) !important;
+}
+
+/* ===== Travel Hub Page ===== */
+
+.travel-hub-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.travel-hub-page__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: stretch;
+}
+
+.travel-hub-page__left,
+.travel-hub-page__right {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.travel-hub-page__lounge-card {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  aspect-ratio: 2 / 1;
+  cursor: pointer;
+}
+
+.travel-hub-page__lounge-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.travel-hub-page__lounge-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, transparent 60%);
+}
+
+.travel-hub-page__lounge-title {
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.travel-hub-page__lounge-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-end;
+}
+
+.travel-hub-page__lounge-cta {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 40px;
+  border: none;
+  background: rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.travel-hub-page__lounge-arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-interactive-accent, #9fe870);
+  color: var(--color-dark, #163300);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.travel-hub-page__search {
+  margin-bottom: 12px;
+}
+
+.travel-hub-page__destinations {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.travel-hub-page__destinations::-webkit-scrollbar {
+  display: none;
+}
+
+.travel-hub-page__destination-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 8px;
+  border-radius: 100px;
+  border: 1px solid var(--color-border-neutral);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.travel-hub-page__destination-chip:hover {
+  background: var(--color-background-neutral);
+}
+
+.travel-hub-page__destination-flag {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.travel-hub-page__destination-flag .wise-art-flag {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.travel-hub-page__tips {
+  display: flex;
+  flex-direction: column;
+}
+
+.travel-hub-page__stamps-card {
+  border: 1px solid var(--color-border-neutral);
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.008);
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+  background-size: 10px 10px;
+}
+
+.travel-hub-page__stamps-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 32px 16px;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.015);
+}
+
+.travel-hub-page__stamps-img {
+  width: 110%;
+  max-width: none;
+  height: auto;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
+.travel-hub-page__stamps-inner .wds-Button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+@media (max-width: 767px) {
+  .travel-hub-page__grid {
+    grid-template-columns: 1fr;
+  }
 }
