@@ -12,8 +12,8 @@ Interactive prototypes you can open in Figma — no local setup needed.
 
 | | Latest | Download |
 |--|--------|----------|
-| **Web** | V1.01 | [Web V1.01.make](base-surfaces-web/makes/Web%20V1.01.make) |
-| **Mobile** | V1.02 | [Mobile V1.02.make](base-surfaces-mobile/makes/Mobile%20V1.02.make) |
+| **Web** | V1.03 | [Web V1.03.make](base-surfaces-web/makes/Web%20V1.03.make) |
+| **Mobile** | V1.04 | [Mobile V1.04.make](base-surfaces-mobile/makes/Mobile%20V1.04.make) |
 
 **Figma project:** [Base Surfaces — Make Builds](https://www.figma.com/files/826948582432925732/project/579451617?fuid=1009076293124464990)
 
@@ -38,6 +38,37 @@ The following logic is built, to give you an easier time in building your protot
 * All types of account, including Current, Jars, Groups.
 * Language support for English, Spanish, German and French. Need a different one? Just ask Claude. Translations slowing you down? Ask Claude to stop doing them.
 * The concept of same currency and cross currency in the Send flow.
+* Dataset switching — swap between demo accounts and real customer data instantly.
+
+
+Dataset Switching
+-----------
+
+The prototype supports multiple datasets — swap the entire account (currencies, balances, transactions, jars, cards, avatar) without reloading.
+
+| Dataset | Description |
+|---------|-------------|
+| **Power** | Feature-rich demo — multiple currencies, 2 cards, jars, group accounts |
+| **Common** | Minimal — single GBP currency, 1 card, no jars |
+| **Connor** | Real customer data — Connor Berry's personal + business accounts |
+
+Switch datasets from prototype settings (Ctrl+H on web, Settings button on mobile).
+
+### Adding a new person's data
+
+Use the `/add-dataset` skill in Claude Code:
+
+```
+/add-dataset sarah
+```
+
+This walks you through providing a Snowflake CSV export, then generates all data files and wires both prototypes. You'll need:
+
+* A CSV export of the person's balances (see `shared-resources/data/USER-DATASETS.md` for the query)
+* Their display name and business name
+* A profile picture
+
+The skill handles currencies, transactions, jars, cards, routing, and verification across both web and mobile.
 
 
 How This Repo Works

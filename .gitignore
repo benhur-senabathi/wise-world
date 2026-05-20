@@ -3,6 +3,7 @@ dist
 .DS_Store
 *.local
 .agents
-.claude
+.claude/*
+!.claude/skills/
 base-surfaces-ios
 base-surfaces-onboarding-web
