@@ -2,8 +2,8 @@ import { useState, useMemo } from 'react';
 import { ListItem, Button, IconButton } from '@transferwise/components';
 import { Graph, Money, Rewards, QuestionMarkCircle } from '@transferwise/icons';
 import type { AccountType } from '../App';
-import { useActiveCurrencies, useActiveTransactions, useActiveJars, useHasTaxes } from '../hooks/useDatasetData';
-import { groupTotalBalance } from '@shared/data/taxes-data';
+import { useActiveCurrencies, useActiveTransactions, useActiveJars, useHasGroup } from '../hooks/useDatasetData';
+import { groupTotalBalance } from '@shared/data/group-data';
 import { computeTotalBalance } from '@shared/data/balances';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useDataset } from '../context/Dataset';
@@ -23,7 +23,7 @@ export function Insights({ accountType = 'personal' }: { accountType?: AccountTy
   const activeCurrencies = useActiveCurrencies(accountType);
   const activeTransactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
   const activeJars = useActiveJars(accountType);
-  const hasTaxes = useHasTaxes(accountType);
+  const hasTaxes = useHasGroup(accountType);
 
   const groupBalance = hasTaxes ? groupTotalBalance : 0;
   const jarBalance = activeJars.reduce((sum, jar) => sum + jar.currencies.reduce((s, c) => s + convertToHomeCurrency(c.balance, c.code, homeCurrency, rates), 0), 0);

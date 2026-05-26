@@ -6,7 +6,7 @@ import { computeCurrencyBalance } from './transactions';
 // 8-digit numeric group IDs (matching production URL pattern)
 export const GROUP_IDS = {
   currentAccount: '48291035',
-  taxes: '73850214',
+  group: '73850214',
   savings: '61724089',
   supplies: '39058162',
 } as const;

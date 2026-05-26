@@ -479,21 +479,6 @@ html[class*="dark"] .wise-bottom-sheet__backdrop--visible {
   display: none;
 }
 
-.action-button-row__request {
-  position: relative;
-}
-
-.action-button-row__chevron {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
-}
-
-.action-button-row__chevron--open {
-  transform: rotate(180deg);
-}
-
 /* ===== Pop-out animation ===== */
 
 @keyframes popout-enter {
@@ -993,37 +978,6 @@ html[class*="dark"] .mca-cards__empty-card {
   transition: opacity 0.15s ease-out;
 }
 
-.home--tx-transitioning .home__tx-section {
-  position: relative;
-  z-index: 10;
-  background: var(--color-background-screen);
-  transform: translateY(var(--tx-slide-offset, 0));
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Fade out section header, fade in page title */
-.home--tx-transitioning .home__tx-section-header {
-  opacity: 0;
-}
-
-.home--tx-transitioning .home__tx-page-title {
-  opacity: 1;
-  position: relative;
-  margin-bottom: 16px !important;
-}
-
-/* Content above transactions: covered by the sliding section */
-.home--tx-transitioning .home__tx-section ~ .section {
-  opacity: 0;
-  transition: opacity 0.25s ease-out;
-}
-
-
-/* Content above: fade out */
-.home--tx-transitioning > .section:not(.home__tx-section) {
-  opacity: 0;
-  transition: opacity 0.3s ease-out;
-}
 
 /* ===== Section Dismiss Animation ===== */
 
@@ -1664,139 +1618,6 @@ html[class*="dark"] .currency-input-group__swap-btn:hover {
   background: #363832;
 }
 
-/* ===== Currency Dropdown ===== */
-
-.currency-input-group__dropdown {
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 100;
-}
-
-.currency-input-group__dropdown--source {
-  top: 64px;
-}
-
-.currency-input-group__dropdown--target {
-  top: 100%;
-  margin-top: 4px;
-}
-
-.currency-dropdown {
-  width: 384px;
-  max-height: 400px;
-  overflow-y: auto;
-  background: var(--color-background-screen);
-  border: 1px solid var(--color-border-neutral);
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  padding: 16px;
-}
-
-.currency-dropdown__search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border: 2px solid var(--color-content-primary);
-  border-radius: 12px;
-  padding: 10px 12px;
-  margin-bottom: 16px;
-  color: var(--color-content-tertiary);
-}
-.currency-dropdown__search svg {
-  flex-shrink: 0;
-  display: block;
-}
-
-.currency-dropdown__search:focus-within {
-  border-color: var(--color-content-primary);
-}
-
-.currency-dropdown__search-input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  outline: none;
-  font-size: 16px;
-  color: var(--color-content-primary);
-  box-shadow: none;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.currency-dropdown__search-input:focus {
-  border: none;
-  box-shadow: none;
-  outline: none;
-}
-
-.currency-dropdown__section {
-  margin-bottom: 8px;
-}
-
-.currency-dropdown__section-header {
-  color: var(--color-content-secondary);
-  padding: 8px 0 4px;
-}
-
-.currency-dropdown__divider {
-  height: 1px;
-  background: var(--color-border-neutral);
-  margin-bottom: 8px;
-}
-
-.currency-dropdown__row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  height: 48px;
-  padding: 0 12px;
-  border: 1px solid transparent;
-  background: transparent;
-  cursor: pointer;
-  text-align: left;
-  border-radius: 12px;
-  color: var(--color-content-primary);
-  transition: border-color 0.15s ease;
-}
-
-.currency-dropdown__row:hover {
-  border-color: var(--color-border-interactive-control);
-}
-
-.currency-dropdown__flag {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: inset 0 0 0 1px var(--color-border-neutral);
-}
-
-.currency-dropdown__flag .wds-flag {
-  width: 24px;
-  height: 24px;
-}
-
-.currency-dropdown__code {
-  flex-shrink: 0;
-  color: var(--color-content-primary);
-}
-
-.currency-dropdown__name {
-  flex: 1;
-  min-width: 0;
-  color: var(--color-content-secondary);
-}
-
-.currency-dropdown__check {
-  flex-shrink: 0;
-  color: var(--color-sentiment-positive);
-}
 
 /* ===== Page Footer ===== */
 
@@ -2094,80 +1915,6 @@ html.np-theme-business--dark .mobile-nav__highlight--glass {
   flex-direction: column;
 }
 
-.cards-page__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 12px 0 24px;
-}
-
-/* Travel hub button — pill with avatar + label */
-.cards-travel-hub-btn {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  height: 40px;
-  padding: 4px 14px 4px 4px;
-  border: 1px solid var(--color-border-neutral);
-  border-radius: 32px;
-  background: transparent;
-  color: var(--color-content-primary);
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-.cards-travel-hub-btn:hover {
-  background: var(--color-background-neutral);
-}
-
-/* Dark mode: green text and icon (including avatar contents) */
-html.np-theme-personal--dark .cards-travel-hub-btn,
-html.np-theme-dark .cards-travel-hub-btn,
-html.np-theme-personal--dark .cards-travel-hub-btn .np-circle,
-html.np-theme-dark .cards-travel-hub-btn .np-circle,
-html.np-theme-personal--dark .cards-travel-hub-btn .tw-icon,
-html.np-theme-dark .cards-travel-hub-btn .tw-icon {
-  color: var(--color-interactive-primary);
-}
-
-/* Filled avatar in travel hub button — center icon, remove all borders */
-.cards-travel-hub-btn .np-circle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none !important;
-}
-
-.cards-travel-hub-btn .np-circle-border::after {
-  display: none !important;
-}
-
-.cards-travel-hub-btn .np-avatar-view-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cards-travel-hub-btn .tw-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 0;
-}
-
-/* Cards list — spacing between section header and list */
-.cards-list {
-  margin-top: 16px !important;
-}
-
-/* Card rows (Physical/Digital) — separated from action rows above */
-.cards-list--cards {
-  margin-top: 32px !important;
-}
-
 /* Card thumbnail media — matches Figma "Card M" component (64×42) */
 .card-thumbnail {
   position: relative;
@@ -2204,10 +1951,6 @@ html.np-theme-dark .cards-travel-hub-btn .tw-icon {
 
 .card-thumbnail--biz-orange {
   background: linear-gradient(135deg, #e8856e 0%, #d95a4e 40%, #c4405a 100%);
-}
-
-.card-thumbnail--biz-purple {
-  background: linear-gradient(135deg, #c4b8e8 0%, #aea1dd 40%, #9889cc 100%);
 }
 
 /* Fast flag — positioned top-right per Figma (inset 12.7% 8.33% 49.21% 66.67%) */
@@ -2250,48 +1993,6 @@ html.np-theme-dark .cards-travel-hub-btn .tw-icon {
   mix-blend-mode: overlay;
   filter: blur(9px);
   transform: rotate(-1deg);
-}
-
-/* Center-align card thumbnails with list item content */
-.cards-list .wds-list-item-media {
-  align-self: center;
-}
-
-/* 4px gap between card list items */
-.cards-list--cards .wds-list-item + .wds-list-item {
-  margin-top: 4px;
-}
-
-/* ===== Team Cards Table ===== */
-
-.team-cards__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 32px;
-  margin-bottom: 32px;
-}
-
-.team-cards__search {
-  width: 292px;
-}
-
-/* Align search icon with text */
-.team-cards__search .np-input-group .tw-icon {
-  display: flex;
-  align-items: center;
-}
-
-.team-cards__search .np-input-group__prefix {
-  padding-left: 10px;
-}
-
-.team-cards-table .np-circle-border::after {
-  display: none;
-}
-
-.team-cards-table .card-thumbnail {
-  flex-shrink: 0;
 }
 
 /* ===== Cards Page — Mobile ===== */
@@ -2523,15 +2224,6 @@ html.np-theme-dark .cards-travel-hub-btn .tw-icon {
   gap: 16px;
 }
 
-/* Footer */
-.payments-page__footer {
-  text-align: center;
-  padding: 32px 0 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
 
 .payments-page__grid {
   grid-template-columns: 1fr;
@@ -2648,49 +2340,6 @@ html.np-theme-dark .cards-travel-hub-btn .tw-icon {
   white-space: nowrap;
 }
 
-/* Search & filter section */
-.recipients-page__search-title {
-  /* Reverse (opening): slower ease-in for smooth reappear */
-  transition: opacity 0.3s ease-in 0.1s, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
-  max-height: 50px;
-  overflow: hidden;
-}
-
-.recipients-page--searching .recipients-page__search-title {
-  /* Forward (closing): fast fade then collapse */
-  transition: opacity 0.2s ease-out, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
-  opacity: 0;
-  max-height: 0;
-  margin-bottom: 0 !important;
-}
-
-.recipients-page__search {
-  margin-bottom: 16px;
-}
-
-/* Align search icon to text */
-.recipients-page__search .np-input-group .tw-icon {
-  display: flex;
-  align-items: center;
-}
-
-/* Search clear button */
-.recipients-page__search-clear {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  line-height: 0;
-  cursor: pointer;
-  padding: 0;
-  color: var(--color-content-secondary);
-  transition: color 0.15s ease;
-}
-
-.recipients-page__search-clear:hover {
-  color: var(--color-content-primary);
-}
 
 .recipients-page__filter {
   display: flex;
@@ -3119,103 +2768,6 @@ html.np-theme-dark .cards-travel-hub-btn .tw-icon {
   z-index: 1;
 }
 
-/* ===== Team Page ===== */
-
-.team-page {
-  display: flex;
-  flex-direction: column;
-}
-
-.team-page__header {
-  padding: 0 0 24px;
-}
-
-.team-page__actions-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 0 0 24px;
-}
-
-.team-page__actions {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px 16px;
-  min-width: 0;
-}
-
-.team-page__search {
-  width: 250px;
-  min-width: 250px;
-  flex-shrink: 0;
-}
-
-.team-page__members {
-  margin: 8px 0 0;
-}
-
-/* Member title with inline pills */
-.team-page__member-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.team-page__pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  border-radius: 100px;
-  font-size: 10px;
-  font-weight: 600;
-  line-height: 1.4;
-  white-space: nowrap;
-}
-
-.team-page__pill--you {
-  background: var(--color-interactive-control);
-  color: var(--color-interactive-accent);
-}
-
-.team-page__pill--role {
-  background: var(--color-background-neutral);
-  color: var(--color-content-primary);
-}
-
-.team-page__footer {
-  text-align: center;
-  margin-top: 48px;
-}
-
-.team-page__footer a {
-  display: block;
-  margin-top: 4px;
-}
-
-/* Search icon alignment */
-.team-page__search .np-input-group .tw-icon {
-  display: flex;
-  align-items: center;
-}
-
-.team-page__search .np-input-group__prefix {
-  padding-left: 10px;
-}
-
-.team-page__actions-row {
-  flex-wrap: wrap;
-  padding: 0 0 16px;
-}
-
-.team-page__search {
-  order: -1;
-  width: 250px;
-  min-width: 250px;
-  margin-right: 0;
-}
 
 /* Ensure icons are centered in all avatar/button containers */
 .np-circle .tw-icon,
@@ -3305,24 +2857,6 @@ html.np-theme-dark .cards-travel-hub-btn .tw-icon {
   transform: scale(0.75);
 }
 
-/* Account switch bottom sheet */
-.account-sheet {
-  padding: 0 16px 16px;
-}
-
-.account-sheet ul {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.account-sheet .wds-list-item {
-  width: 100%;
-}
-
-.account-sheet .np-circle-border::after {
-  display: none;
-}
 
 /* Remove border on business account avatars */
 .account-page__account-rows .np-circle-border::after {
@@ -3438,11 +2972,6 @@ html.np-theme-dark .cards-travel-hub-btn .tw-icon {
   line-height: 0;
 }
 
-/* Footer */
-.account-page__footer {
-  text-align: center;
-  padding: 24px 0 16px;
-}
 
 .account-page__content {
   margin-top: 24px;
@@ -3624,11 +3153,6 @@ html.np-theme-dark .cards-travel-hub-btn .tw-icon {
   padding-top: 24px;
 }
 
-/* More icon: base size (before mobile override) */
-.more-menu .np-icon-button .tw-icon svg {
-  width: 16px;
-  height: 16px;
-}
 
 .account-header {
   position: relative;
@@ -3692,65 +3216,6 @@ html.np-theme-dark .cards-travel-hub-btn .tw-icon {
   flex: 1;
 }
 
-.more-menu .np-icon-button {
-  width: 40px !important;
-  height: 40px !important;
-}
-
-.more-menu .np-icon-button .tw-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-/* ===== More Menu ===== */
-
-.more-menu {
-  position: relative;
-}
-
-.more-menu__dropdown {
-  position: absolute;
-  top: calc(100% + 4px);
-  right: 0;
-  z-index: 50;
-  background: var(--color-background-elevated);
-  border-radius: 10px;
-  box-shadow: 0 0 40px rgba(69, 71, 69, 0.2);
-  width: 284px;
-  padding: 8px;
-  animation: popout-enter 0.15s ease-out;
-}
-
-html[class*="dark"] .more-menu__dropdown {
-  box-shadow: none;
-}
-
-.more-menu__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.more-menu__item {
-  display: block;
-  width: 100%;
-  padding: 12px 16px;
-  background: none;
-  border: none;
-  font: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--color-content-primary);
-  text-align: left;
-  cursor: pointer;
-  border-radius: 10px;
-}
-
-.more-menu__item:hover {
-  background: var(--color-background-neutral);
-}
-
-
 /* ===== Shared: Section Card Containers ===== */
 
 .section-card {
@@ -3780,13 +3245,6 @@ html[class*="dark"] .more-menu__dropdown {
   border: 4px solid var(--color-border-neutral);
   box-sizing: border-box;
   opacity: 0.5;
-}
-
-.section-card__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
 }
 
 .section-card__title {
@@ -4203,8 +3661,7 @@ html[class*="dark"] .more-menu__dropdown {
 
 /* Hide currency selector dropdowns globally — mobile version coming later */
 .np-select-input-options-container,
-.np-popover-v2-container,
-.send-flow__currency-popover {
+.np-popover-v2-container {
   display: none !important;
 }
 
@@ -4467,7 +3924,7 @@ html[class*="dark"] .more-menu__dropdown {
   line-height: 0.85;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: var(--color-background-screen);
+  color: #fff;
 }
 
 .travel__lounge-footer {
@@ -4486,7 +3943,7 @@ html[class*="dark"] .more-menu__dropdown {
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(16px) saturate(150%);
   -webkit-backdrop-filter: blur(16px) saturate(150%);
-  color: var(--color-background-screen);
+  color: #fff;
   border-radius: 99px;
   padding: 8px 16px;
   white-space: nowrap;
@@ -4520,6 +3977,12 @@ html[class*="dark"] .more-menu__dropdown {
   font-size: 14px;
 }
 
+html.np-theme-personal--dark .travel__countries .np-circle,
+html.np-theme-dark .travel__countries .np-circle,
+html.np-theme-business--dark .travel__countries .np-circle {
+  background-color: var(--color-background-neutral);
+}
+
 .travel__country-chip:active {
   background: var(--color-background-neutral);
 }
@@ -4548,11 +4011,19 @@ html[class*="dark"] .more-menu__dropdown {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--color-background-neutral);
 }
 
 .travel__stamps-img {
   width: 100%;
   display: block;
+}
+
+html.np-theme-personal--dark .travel__stamps-img,
+html.np-theme-dark .travel__stamps-img,
+html.np-theme-business--dark .travel__stamps-img {
+  filter: invert(1);
+  opacity: 0.85;
 }
 
 .travel__stamps-cta {
@@ -4763,22 +4234,6 @@ html[class*="dark"] .more-menu__dropdown {
   background: linear-gradient(to top, var(--color-background-screen) 60%, transparent 100%);
 }
 
-/* Rate pill: fixed size, 14px text, 16px chevron */
-.convert-flow__rate-btn {
-  height: 40px !important;
-  min-width: 179px !important;
-  justify-content: center !important;
-}
-
-.convert-flow__rate-btn .wds-Button-labelText {
-  font-size: 14px !important;
-  line-height: 20px !important;
-}
-
-.convert-flow__rate-btn .tw-icon svg {
-  width: 16px;
-  height: 16px;
-}
 
 .convert-flow__btn-loading {
   mix-blend-mode: luminosity !important;
@@ -4875,28 +4330,6 @@ html[class*="dark"] .more-menu__dropdown {
   word-break: keep-all;
 }
 
-.send-flow__add-recipient {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-bottom: 32px;
-  transition: margin-bottom 0.4s ease-out;
-}
-
-.send-flow__add-recipient .wds-Button {
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
-.send-flow__add-recipient .wds-Button--primary {
-  padding-left: 34px;
-  padding-right: 34px;
-}
-
-/* When searching, add spacing below buttons so search doesn't crowd them */
-.send-flow--searching .send-flow__add-recipient {
-  margin-bottom: 40px;
-}
 
 /* Recents section — matches recipients page spacing */
 .send-flow__recents-section {
@@ -4930,18 +4363,6 @@ html[class*="dark"] .more-menu__dropdown {
   flex-direction: column;
 }
 
-.send-flow__all-label {
-  transition: opacity 0.3s ease-in 0.1s, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
-  max-height: 50px;
-  overflow: hidden;
-}
-
-.send-flow--searching .send-flow__all-label {
-  transition: opacity 0.2s ease-out, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
-  opacity: 0;
-  max-height: 0;
-  margin-bottom: 0 !important;
-}
 
 .send-flow__search {
   margin-bottom: 16px;
@@ -4983,11 +4404,6 @@ html[class*="dark"] .more-menu__dropdown {
 }
 
 /* Step 2: Amount input */
-.send-flow__divider {
-  height: 1px;
-  background: var(--color-border-neutral);
-  margin: 32px 0 8px;
-}
 
 .send-flow__you-send {
   margin: 16px -8px 0;
@@ -5008,96 +4424,6 @@ html[class*="dark"] .more-menu__dropdown {
 
 .send-flow__you-send .wds-list-item-view {
   align-items: center;
-}
-
-/* Currency popover (floating below trigger button) */
-.send-flow__currency-popover {
-  position: absolute;
-  width: 384px;
-  max-height: 480px;
-  background: var(--color-background-screen);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-/* Inline variant: positioned below the Change button list item */
-.send-flow__currency-popover--inline {
-  top: 100%;
-  right: 0;
-  margin-top: 4px;
-  left: auto;
-}
-
-.send-flow__currency-popover .currency-dropdown__search {
-  margin: 16px 16px 8px;
-}
-
-.send-flow__currency-popover-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0 16px 16px;
-}
-
-.send-flow__currency-section-label {
-  margin: 16px 0 0;
-  color: var(--color-content-secondary);
-}
-
-.send-flow__currency-section-divider {
-  height: 1px;
-  background: var(--color-border-neutral);
-  margin: 8px 0;
-}
-
-.send-flow__currency-option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  height: 48px;
-  padding: 0 12px;
-  border: 1px solid transparent;
-  background: none;
-  cursor: pointer;
-  border-radius: 12px;
-  text-align: left;
-  transition: border-color 0.15s ease;
-}
-.send-flow__currency-option:hover {
-  border-color: var(--color-border-interactive-control);
-}
-
-.send-flow__currency-option > :first-child {
-  flex-shrink: 0;
-  box-shadow: inset 0 0 0 1px var(--color-border-neutral);
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.send-flow__currency-option-code {
-  flex-shrink: 0;
-  color: var(--color-content-primary);
-}
-
-.send-flow__currency-option-name {
-  flex: 1;
-  min-width: 0;
-  color: var(--color-content-secondary);
-}
-
-.send-flow__currency-option-check {
-  flex-shrink: 0;
-  color: var(--color-sentiment-positive);
-}
-
-/* Cross-currency UI */
-.send-flow__rate-pill {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 16px;
 }
 
 .send-flow__send-input {
@@ -5460,14 +4786,6 @@ html[class*="dark"] .more-menu__dropdown {
   to { opacity: 1; }
 }
 
-/* Rate pill fades in quickly */
-.send-flow__rate-pill--fadein {
-  animation: send-rate-fadein 0.3s ease-out 0.2s both;
-}
-@keyframes send-rate-fadein {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
 
 .send-flow__cross-divider {
   height: 1px;
@@ -5596,16 +4914,6 @@ html[class*="dark"] .more-menu__dropdown {
   flex: 1;
 }
 
-.request-flow__invite {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 32px;
-  /* Reverse (opening): slower ease-in for smooth reappear */
-  transition: opacity 0.3s ease-in 0.1s, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
-  max-height: 100px;
-  overflow: hidden;
-  opacity: 1;
-}
 
 .request-flow__recents-section {
   margin-bottom: 20px;
@@ -5710,16 +5018,6 @@ html[class*="dark"] .more-menu__dropdown {
   margin-top: 8px;
 }
 
-.request-flow__all-label {
-  transition: opacity 0.3s ease-in 0.1s, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
-  max-height: 50px;
-  overflow: hidden;
-}
-
-.request-flow__search {
-  margin-bottom: 12px;
-}
-
 .request-flow__list {
   list-style: none;
   padding: 0;
@@ -5791,15 +5089,6 @@ html[class*="dark"] .more-menu__dropdown {
   stroke: var(--color-interactive-primary) !important;
 }
 
-/* Hide search during step animation */
-.request-flow__track--step-request .request-flow__panel:first-child .request-flow__search {
-  visibility: hidden;
-  transition: visibility 0s 0.05s;
-}
-.request-flow__panel:first-child .request-flow__search {
-  visibility: visible;
-  transition: visibility 0s 0.4s;
-}
 
 /* Searching state: fade out and collapse recents + someone-else only */
 .request-flow--searching .request-flow__recents-section {
@@ -5816,12 +5105,6 @@ html[class*="dark"] .more-menu__dropdown {
   margin-bottom: 0;
 }
 
-.request-flow--searching .request-flow__all-label {
-  transition: opacity 0.2s ease-out, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
-  opacity: 0;
-  max-height: 0;
-  margin-bottom: 0 !important;
-}
 
 /* ===== Payment Link Flow ===== */
 .payment-link-flow {
@@ -5896,22 +5179,6 @@ html[class*="dark"] .more-menu__dropdown {
   padding-top: 28px;
 }
 
-.account-details-page__header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 24px;
-}
-
-.account-details-page__header .np-avatar-view .np-circle {
-  background: transparent !important;
-}
-
-.account-details-page__header .flag {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-}
 
 .account-details-page__receive-header {
   display: flex;

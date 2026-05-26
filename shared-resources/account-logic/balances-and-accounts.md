@@ -68,7 +68,7 @@ The first transaction must be positive to establish the starting balance. Vary a
 ```ts
 export const GROUP_IDS = {
   currentAccount: '48291035',
-  taxes: '73850214',
+  group: '73850214',
   savings: '61724089',
   supplies: '39058162',
   myJar: '12345678',        // ← new, unique 8-digit number
@@ -146,7 +146,7 @@ Groups are like jars but with cards and participants. Follow the same shared dat
 
 ### Shared data differences
 
-- **Data file**: Create a new file like `taxes-data.tsx` (or add to it). Export `groupCurrencies`, `groupTransactions`, and `groupTotalBalance`.
+- **Data file**: Create a new file like `group-data.tsx` (or add to it). Export `groupCurrencies`, `groupTransactions`, and `groupTotalBalance`.
 - **No `JarDefinition`**: Groups use plain exports, not the `JarDefinition` type.
 - **`computeTotalBalance()`**: Add the new group's currencies to the group balance calculation. Currently only `groupCurrencies` (Taxes) is included for business accounts.
 

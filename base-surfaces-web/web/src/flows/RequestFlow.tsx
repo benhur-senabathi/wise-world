@@ -5,17 +5,10 @@ import { Flag } from '@wise/art';
 import { ButtonCue } from '../components/ButtonCue';
 import { RecentContactCard } from '../components/RecentContactCard';
 import { RecipientSearchEmpty } from '../components/RecipientSearchEmpty';
+import { WiseLogoIcon } from '../components/WiseLogoIcon';
 import { useLanguage } from '../context/Language';
-import { recipients, recentContacts, getAvatarSrc, getBadge, type Recipient } from '../data/recipients';
+import { recipients, recentContacts, getAvatarSrc, getBadge, type Recipient } from '@shared/data/recipients';
 import type { AccountType } from '../App';
-
-function WiseLogoIcon() {
-  return (
-    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M1.875 15.28 7.35 8.838h-.002L4.02 3h18.105l-7.008 19.375h-3.97L16.95 6.3H9.463l1.665 2.883-.008.08-2.56 2.979h4.188l-1.098 3.037z" />
-    </svg>
-  );
-}
 
 type ButtonState = 'disabled' | 'loading' | 'active';
 
@@ -31,7 +24,7 @@ type RecipientInfo = {
 type Props = {
   defaultCurrency: string;
   accountLabel: string;
-  jar?: 'taxes';
+  group?: string;
   onClose: () => void;
   onStepChange?: (step: string) => void;
   accountType: AccountType;
@@ -41,11 +34,11 @@ type Props = {
   recipient?: RecipientInfo;
 };
 
-export function RequestFlow({ defaultCurrency, accountLabel, jar, onClose, onStepChange, accountType, avatarUrl, initials, startStep = 'recipient', recipient: initialRecipient }: Props) {
+export function RequestFlow({ defaultCurrency, accountLabel, group, onClose, onStepChange, accountType, avatarUrl, initials, startStep = 'recipient', recipient: initialRecipient }: Props) {
   const { t } = useLanguage();
 
   const isBusiness = accountType === 'business';
-  const isGroup = jar === 'taxes';
+  const isGroup = !!group;
 
   const [step, setStep] = useState<'recipient' | 'request'>(initialRecipient ? 'request' : startStep);
   const [selectedRecipient, setSelectedRecipient] = useState<RecipientInfo | null>(initialRecipient ?? null);

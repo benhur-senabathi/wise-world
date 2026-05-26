@@ -13,7 +13,7 @@ export default defineConfig({
     include: ['three', '@react-three/fiber', '@react-three/drei'],
   },
   server: {
-    port: 3004,
+    port: 3017,
     proxy: {
       '/api/wise-rates': {
         target: 'https://wise.com',

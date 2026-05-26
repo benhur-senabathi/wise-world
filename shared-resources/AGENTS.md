@@ -2,7 +2,7 @@
 
 # Shared Resources
 
-Shared data and business rules consumed by all prototype projects (web, mobile, iOS).
+Shared data and business rules consumed by both prototype projects (web and mobile).
 
 ## Rules
 
@@ -22,12 +22,17 @@ shared-resources/
 │   ├── business-transactions.tsx
 │   ├── recipients.tsx       # Contacts and recipients
 │   ├── currency-rates.ts    # Exchange rates and currency metadata
-│   ├── taxes-data.tsx       # Group account (exports: groupCurrencies, groupTotalBalance, groupTransactions)
+│   ├── group-data.tsx        # Group account (exports: groupCurrencies, groupTotalBalance, groupTransactions)
 │   ├── jar-data.tsx         # Savings/supplies jars, GROUP_IDS
 │   └── account-details-data.ts  # Bank details per currency
 ├── account-logic/           # Platform-agnostic business rules
 │   ├── account-types.md     # Account hierarchy, feature matrix
-│   └── interest-stocks.md   # Interest/stocks flag system
+│   ├── interest-stocks.md   # Interest/stocks flag system
+│   ├── balances-and-accounts.md  # Adding/editing accounts checklist
+│   └── routing.md           # Full URL reference, ID system
+├── design-system/           # Cross-platform Neptune reference docs
+│   ├── icons.md, flags-and-art.md, components.md, tokens.md, neptune-css.md
+│   └── figma-references.md, illustration-3d.md, utilities.md, setup.md
 ├── content/                 # Writing & content guidelines (Wise tone, grammar, vocabulary)
 │   ├── writing-guidelines.md    # Master guide — start here for all content work
 │   ├── tone-of-voice.md         # Brand principles, context-specific tone, localization
@@ -52,17 +57,12 @@ shared-resources/
 - **Balances are auto-computed from transactions.** Every currency's `balance` field uses `computeCurrencyBalance(code, txList)` from `transactions.tsx`. Never hardcode a balance number — change transactions and the balance updates automatically. The first transaction for each currency should be an "Add" (consumer) or "Receive" (business) that establishes the starting balance. If a balance goes negative after editing transactions, adjust the first transaction's amount.
 - **"Taxes" is a group name, not an account type.** Code uses `groupCurrencies` / `isGroup` / `onNavigateGroupAccount`. Translation keys keep `'home.taxes'` etc. for the display name.
 
-## Adding a new account, jar, or group
+## Adding or editing accounts
 
-1. **Define transactions first** — the transaction array must exist before the currency definition so `computeCurrencyBalance()` can reference it.
-2. **First transaction establishes the starting balance** — for consumer accounts use an "Add" transaction (`icon: <Plus />`), for business accounts use a "Receive" transaction (`icon: <Receive />`).
-3. **Use `computeCurrencyBalance(code, txList)`** for the currency's `balance` field — never hardcode.
-4. **Follow realism rules for transactions** — vary merchants (max 2× per currency), vary amount endings (not all .00/.99/.50), mix transaction types (card spend, sends, receives, conversions).
-5. **Add the jar/group ID to `GROUP_IDS`** in `jar-data.tsx` if applicable.
+For the full guide on what updates when balances change, and the step-by-step checklist for adding a new jar, group, or currency, read `account-logic/balances-and-accounts.md`.
 
 ## What stays per-project
 
 - `nav.tsx` — navigation structure differs per platform
-- `routing.md` — URL schemes are implementation-specific
-- Design system docs — tokens, components, CSS are platform-specific
+- Platform-specific design system docs — custom tokens, custom components, CSS overrides
 - Translations — each project has its own i18n strings

@@ -4,7 +4,7 @@ import { Button, SearchInput, Size, AvatarView, Table, Tooltip } from '@transfer
 import type { AccountType } from '../App';
 import { ActivitySummary } from '../components/ActivitySummary';
 import { useActiveTransactions } from '../hooks/useDatasetData';
-import { groupByDate, type Transaction } from '../data/transactions';
+import { groupByDate, type Transaction } from '@shared/data/transactions';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
 
@@ -114,6 +114,7 @@ export function Transactions({ accountType = 'personal' }: { accountType?: Accou
   const pageRef = useRef<HTMLDivElement>(null);
   const [btnLeft, setBtnLeft] = useState<number | undefined>();
 
+  const isBusiness = accountType === 'business';
   const isSearching = search.length >= 3;
   const filtered = isSearching
     ? transactions.filter((tx) => tx.name.toLowerCase().includes(search.toLowerCase()))

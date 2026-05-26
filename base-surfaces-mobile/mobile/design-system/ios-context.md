@@ -1,6 +1,6 @@
 # iOS Mobile Context
 
-This prototype imitates the native Wise iOS app experience inside a mobile web viewport (393x852, iPhone 16 Pro). When the viewport is wider than 393px, a device frame wraps the app in an iPhone shell with a rendered status bar.
+This prototype imitates the native Wise iOS app experience inside a mobile web viewport (393x852, iPhone 17 Pro). When the viewport is wider than 393px, a device frame wraps the app in an iPhone shell with a rendered status bar.
 
 ## Goals
 
@@ -107,7 +107,7 @@ The key rules:
 ## Device Frame
 
 When the viewport exceeds iPhone width, `DeviceFrame` renders:
-- An iPhone 16 Pro frame image overlay
+- An iPhone 17 Pro frame image overlay
 - A `StatusBar` component showing real time, cellular, wifi, and battery icons
 - The app content in an iframe at `?mode=app`
 - Status bar adapts to dark mode (white text + inverted icons)

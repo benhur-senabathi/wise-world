@@ -6,7 +6,7 @@ import { RecentContactCard } from '../components/RecentContactCard';
 import { RecipientSearchEmpty } from '../components/RecipientSearchEmpty';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage } from '../context/Language';
-import { recipients, businessRecipients, recentContacts, businessRecentContacts, getAvatarSrc, getBadge, type Recipient } from '../data/recipients';
+import { recipients, businessRecipients, recentContacts, businessRecentContacts, getAvatarSrc, getBadge, type Recipient } from '@shared/data/recipients';
 
 const BUSINESS_AVATAR = '/berry-design-logo.png';
 

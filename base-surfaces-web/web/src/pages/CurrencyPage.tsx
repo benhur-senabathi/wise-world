@@ -4,23 +4,23 @@ import { Button, ListItem, SearchInput, Size, SegmentedControl } from '@transfer
 import type { AccountType } from '../App';
 import { AccountPageHeader } from '../components/AccountPageHeader';
 import { ActivitySummary } from '../components/ActivitySummary';
-import { currencies, type CurrencyData } from '../data/currencies';
-import { formatBalance } from '../data/balances';
-import { businessCurrencies } from '../data/business-currencies';
-import { buildTransactions, getTransactionsForCurrency, groupByDate, type Transaction } from '../data/transactions';
-import { buildBusinessTransactions } from '../data/business-transactions';
+import { currencies, type CurrencyData } from '@shared/data/currencies';
+import { formatBalance } from '@shared/data/balances';
+import { businessCurrencies } from '@shared/data/business-currencies';
+import { buildTransactions, getTransactionsForCurrency, groupByDate, type Transaction } from '@shared/data/transactions';
+import { buildBusinessTransactions } from '@shared/data/business-transactions';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
 
-import { groupCurrencies, groupTransactions } from '../data/taxes-data';
-import type { JarDefinition } from '../data/jar-data';
+import { groupCurrencies, groupTransactions } from '@shared/data/group-data';
+import type { JarDefinition } from '@shared/data/jar-data';
 
 type Props = {
   code: string;
   onNavigateAccount?: () => void;
   onAccountDetails?: () => void;
   accountType?: AccountType;
-  jar?: string;
+  group?: string;
   jarConfig?: JarDefinition;
   onAdd?: () => void;
   onConvert?: () => void;
@@ -286,14 +286,14 @@ function Sidebar({ currency, accountType = 'personal', interestReturns, isJar = 
   );
 }
 
-export function CurrencyPage({ code, onNavigateAccount, onAccountDetails, accountType = 'personal', jar, jarConfig, onAdd, onConvert, onSend, onRequest, onPaymentLink }: Props) {
+export function CurrencyPage({ code, onNavigateAccount, onAccountDetails, accountType = 'personal', group, jarConfig, onAdd, onConvert, onSend, onRequest, onPaymentLink }: Props) {
   const { t } = useLanguage();
   const txLabels = useTxLabels();
   const { consumerName, businessName } = usePrototypeNames();
   const [activeTab, setActiveTab] = useState('transactions');
   const personalTransactions = useMemo(() => buildTransactions(consumerName, businessName, txLabels), [consumerName, businessName, txLabels]);
   const businessTransactions = useMemo(() => buildBusinessTransactions(consumerName, txLabels), [consumerName, txLabels]);
-  const isGroup = jar === 'taxes';
+  const isGroup = !!group;
   const isJar = !!jarConfig;
   const activeCurrencies = isJar ? jarConfig.currencies : isGroup ? groupCurrencies : (accountType === 'business' ? businessCurrencies : currencies);
   const activeTxList = isJar ? jarConfig.transactions : isGroup ? groupTransactions : (accountType === 'business' ? businessTransactions : personalTransactions);

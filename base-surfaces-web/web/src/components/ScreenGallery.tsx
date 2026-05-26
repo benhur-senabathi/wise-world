@@ -410,7 +410,7 @@ export function ScreenGallery({ accountType, activeFlowType, activeFlowStep }: {
               { id: 'focused', label: 'Focused', value: 'focused' },
               { id: 'all', label: 'All', value: 'all' },
             ]}
-            onChange={(val: ViewMode) => handleSetViewMode(val)}
+            onChange={(val) => handleSetViewMode(val as ViewMode)}
           />
         </div>
         <div className="sg-top-bar__settings">

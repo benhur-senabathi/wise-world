@@ -62,12 +62,7 @@ export function useActiveJars(accountType: AccountType): JarDefinition[] {
   return accountType === 'business' ? [suppliesJar] : [savingsJar];
 }
 
-export function useHasJars(accountType: AccountType): boolean {
-  const jars = useActiveJars(accountType);
-  return jars.length > 0;
-}
-
-export function useHasTaxes(accountType: AccountType): boolean {
+export function useHasGroup(accountType: AccountType): boolean {
   const { dataset } = useDataset();
   if (dataset === 'connor' || dataset === 'common') return false;
   return accountType === 'business';
@@ -78,10 +73,6 @@ export function useCardCount(accountType: AccountType): number {
   if (dataset === 'common') return 1;
   if (dataset === 'connor') return accountType === 'business' ? 1 : 2;
   return 2;
-}
-
-export function isUserDataset(dataset: DatasetType): boolean {
-  return dataset === 'connor';
 }
 
 export type { DatasetType };

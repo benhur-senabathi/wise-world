@@ -11,19 +11,19 @@ The Wise app has a launchpad (Home) showing "All accounts" with a total balance.
 | Current Account | Yes | Yes | Build now |
 | Jar | Yes | Yes | Build now |
 | Group | No | Yes | Build now |
-| Shared Account | Yes | No | Build now |
-| Joint Account | Yes | No | Future |
-| Child Account | Yes | No | Future |
+| Shared Spending | Yes | No | Build now |
+| Joint Account | Yes | No | Build now |
+| Young Explorer | Yes | No | Build now |
 
-- **Group** is the business name for what consumers call **Shared Account** — same concept, different branding
+- **Group** (business) and **Shared Spending** (consumer) are the same concept with different branding
 - The existing "Taxes" account in the prototype is a Group (business) account
 
 ## Hard Rules
 
 1. **Icon + color consistency.** An account's icon and color on the Home card MUST be carried through to every subpage (account page avatar, currency page avatar, breadcrumb) AND into all flow currency selectors. Never substitute a different icon (e.g. Wise logo or Money icon) for the account's actual icon. Use `AccountStyle` to thread styling into flows — see below.
 2. **Empty transactions state.** When an account or currency has zero transactions, show "Nothing to show here yet / Your transactions will show here." — same component everywhere. Never show search/filter/download controls on an empty list.
-3. **Account details only on Current Account.** Hide the "Account details" button on all non-Current Account pages (Jar, Group/Shared). Check both the account page header AND the currency page header.
-4. **Request only on Current Account.** The Request/Get Paid button only appears on Current Account contexts. Use `hideGetPaid={true}` for Jars and (eventually) Group/Shared.
+3. **Account details only on Current Account.** Hide the "Account details" button on all non-Current Account pages (Jar, Group/Shared Spending). Check both the account page header AND the currency page header.
+4. **Request only on Current Account.** The Request/Get Paid button only appears on Current Account contexts. Use `hideGetPaid={true}` for Jars, Groups, and Shared Spending.
 
 ## AccountStyle (Flow Avatar Styling)
 
@@ -48,16 +48,21 @@ type AccountStyle = { color: string; textColor: string; iconName: string };
 
 ## Feature Matrix
 
-| Feature | Current Account | Jar | Group / Shared |
-|---------|----------------|-----|----------------|
-| Currencies | Yes | Yes | Yes |
-| Cash / Stocks / Interest per currency | Yes | Yes | Yes |
-| Account details (IBAN, routing number) | Yes | No | No |
-| Cards | Yes | No | Yes |
-| Transactions | Yes | Yes | Yes |
-| Participants (team/shared members) | No | Depends | Yes |
+| Feature | Current Account | Jar | Group (biz) | Shared Spending (consumer) | Joint (consumer) | Young Explorer (consumer) |
+|---------|----------------|-----|-------------|---------------------------|-----------------|--------------------------|
+| Currencies | Yes | Yes | Yes | Yes | Yes | Single only |
+| Cash / Stocks / Interest per currency | Yes | Yes | Yes | Yes | Yes | No |
+| Account details (IBAN, routing number) | Yes | No | No | No | Yes | No |
+| Cards | Yes | No | Yes | Yes | Yes | Yes |
+| Card design | Light green physical (personal) or dark green physical (business) + tapestry digitals | None | Tapestry | Tapestry | Bright pink physical + tapestry digitals | Tapestry |
+| Transactions | Yes | Yes | Yes | Yes | Yes | Yes |
+| Participants | No | Biz only | Yes | Yes | Yes | Yes (parent + child) |
+| Request / Get Paid | Yes | No | No | No | No | No |
+| Send | Yes | Yes | Yes | Yes | Yes | No |
+| Home card style | Wallet cutout | Solid color | Wallet cutout | Wallet cutout | Wallet cutout | Wallet cutout |
+| More menu | Account details, Manage cards | Edit jar, Statements, Close jar | Edit group, Statements, Close group | Edit shared spending, Statements, Close shared spending | Account details, Manage cards | Edit account, Statements, Close account |
 
-**Jar participants:** Jars can optionally have participants depending on context, but it's not a core feature.
+**Jar participants:** Jars can have participants on business accounts only, not personal.
 
 ## Account Type Details
 
@@ -78,7 +83,7 @@ The main account. One per profile (consumer or business). This is the primary ac
 
 **Currency page:** Full action buttons (Add, Convert, Send, Request). More menu includes account details for that currency.
 
-**Data:** `src/data/currencies.ts`, `src/data/transactions.tsx`
+**Data:** `shared-resources/data/currencies.ts`, `shared-resources/data/transactions.tsx`
 
 ### Jar
 
@@ -114,13 +119,13 @@ A lightweight savings/purpose container. No bank details, no cards. Money moves 
 - Sidebar: "Earn a return" promo (always inactive for jars), "Auto conversions"
 - NO account details button (hide when `onAccountDetailsClick` is undefined)
 
-**Data:** `src/data/jar-data.tsx` (`JarDefinition` type), individual jar exports (`savingsJar`, `suppliesJar`)
+**Data:** `shared-resources/data/jar-data.tsx` (`JarDefinition` type), individual jar exports (`savingsJar`, `suppliesJar`)
 
 **Jar colors** use Neptune expressive brand tokens (e.g. `#FFEB69` yellow, `#C3FFE8` green)
 
-### Group (Business) / Shared Account (Consumer)
+### Group (Business) / Shared Spending (Consumer)
 
-An organizational account that multiple people can access. Business calls it "Group", Consumer calls it "Shared account". Like a Current Account but with participants and without account details.
+An organizational account that multiple people can access. Business calls it "Group", Consumer calls it "Shared Spending". Like a Current Account but with participants and without account details.
 
 **Has:**
 - Multiple currencies (each can be Cash, Stocks, or Interest)
@@ -130,13 +135,14 @@ An organizational account that multiple people can access. Business calls it "Gr
 
 **Does NOT have:**
 - Account details (no IBAN, no routing numbers — uses Current Account's details)
+- Request / Get Paid button
 
 **Home card:** Should use the **wallet cutout** style (like Current Account) because it has cards connected. Not the solid color jar style.
 
-**Key difference from Current Account:** Adds participants, removes account details.
+**Key difference from Current Account:** Adds participants, removes account details and Request.
 **Key difference from Jar:** Adds cards and participants, has different management options.
 
-**Data:** The existing "Taxes" account lives in `shared-resources/data/taxes-data.tsx` (exports: `groupCurrencies`, `groupTotalBalance`, `groupTransactions`). Code uses `isGroup` / `onNavigateGroupAccount` — "Taxes" is just the display name, not an account type.
+**Data:** The existing "Taxes" account lives in `shared-resources/data/group-data.tsx` (exports: `groupCurrencies`, `groupTotalBalance`, `groupTransactions`). Code uses `isGroup` / `onNavigateGroupAccount` — "Taxes" is just the display name, not an account type.
 
 ## Home Card Subtitle Rule
 
@@ -150,7 +156,7 @@ This applies to both `MultiCurrencyAccountCard` and `JarCard`.
 
 The Home carousel card style is driven by account type:
 
-- **Current Account, Group/Shared** — Always uses the **wallet cutout** arch shape. If cards are connected, shows card stack imagery. If no cards yet, shows empty grey background with cutout (like the "Do more with your money" empty card style).
+- **Current Account, Group/Shared Spending** — Always uses the **wallet cutout** arch shape. If cards are connected, shows card stack imagery. If no cards yet, shows empty grey background with cutout (like the "Do more with your money" empty card style).
 - **Jar** — **Solid color fill** from the jar's icon color. No cutout, no card stack. Uses the `JarCard` component, not `MultiCurrencyAccountCard`.
 
 The cutout represents a wallet — it exists because the account TYPE supports cards, regardless of whether cards are currently connected. **Code rule:** The cutout SVG in `MultiCurrencyAccountCard` must NOT be gated behind `hasCards` — it always renders.
@@ -177,13 +183,14 @@ The `JarCard` header must align pixel-perfectly with the `MultiCurrencyAccountCa
 
 ## Action Button Logic
 
-| Context | Current Account | Jar | Group / Shared |
-|---------|----------------|-----|----------------|
-| Home page buttons | Send, Add money, Request | — | TBD |
-| Account page | Send, Add money, Request | Add, Convert or move, Send | TBD |
-| Currency page | Add, Convert, Send, Request | Add, Convert or move, Send | TBD |
+| Context | Current Account | Jar | Group / Shared Spending | Joint | Young Explorer |
+|---------|----------------|-----|------------------------|-------|---------------|
+| Home page buttons | Send, Add money, Request | — | Send, Add money | Send, Add money | Add money |
+| Account page | Send, Add money, Request | Add, Convert or move, Send | Add, Convert or move, Send | Add, Convert or move, Send | Add, Convert |
+| Currency page | Add, Convert, Send, Request | Add, Convert or move, Send | Add, Convert or move, Send | Add, Convert or move, Send | Add, Convert |
 
-The **Request** button is only available on Current Account contexts. Jars cannot receive requested money directly.
+- **Request** is only available on Current Account contexts.
+- **Send** is not available on Young Explorer — child can only add and convert.
 
 ## More Menu Logic
 
@@ -196,9 +203,10 @@ The **Request** button is only available on Current Account contexts. Jars canno
 
 - **Current Account currency:** Flag + "CurrencyCode" (e.g. "GBP")
 - **Jar currency:** JarIcon + Flag > "JarName > CurrencyCode" (e.g. "Savings > GBP")
-- **Group/Shared currency:** TBD (likely similar to jar breadcrumb pattern)
+- **Group/Shared Spending currency:** TBD (likely similar to jar breadcrumb pattern)
 
-## Future Account Types (not building yet)
+## Account Type Notes
 
-- **Joint Account:** Like Current Account (has account details + cards) but with participants. Consumer only.
-- **Child Account:** Limited to a single currency, no Cash/Stocks/Interest options. Has a single card. Has participants (parent + child). Consumer only.
+- **Young Explorer** is also referred to as child/kids/u18 account. Single currency, no interest/stocks, no send — parent manages the account.
+  - Default icon: `Backpack`
+  - Default colour set: "Orange" — `bright-orange` (`#FFC091`) background, `dark-purple` (`#260A2F`) text

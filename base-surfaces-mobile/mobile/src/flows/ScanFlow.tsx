@@ -55,14 +55,14 @@ export function ScanFlow({ onClose }: Props) {
           </p>
           <div className="scan-flow__actions">
             <div className="scan-flow__action">
-              <IconButton size={48} priority="secondary-neutral" aria-label="Photo">
+              <IconButton size={48} priority={"secondary-neutral" as any} aria-label="Photo">
                 <ImageIcon size={24} />
               </IconButton>
               <span className="scan-flow__action-label np-text-body-small">Photo</span>
             </div>
             <button className="scan-flow__capture" aria-label="Capture" />
             <div className="scan-flow__action">
-              <IconButton size={48} priority="secondary-neutral" aria-label="Document">
+              <IconButton size={48} priority={"secondary-neutral" as any} aria-label="Document">
                 <Document size={24} />
               </IconButton>
               <span className="scan-flow__action-label np-text-body-small">Document</span>

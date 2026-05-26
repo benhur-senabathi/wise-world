@@ -2,7 +2,7 @@ import type { CurrencyData } from './currencies';
 import { currencies } from './currencies';
 import { businessCurrencies } from './business-currencies';
 import { commonCurrencies, commonBusinessCurrencies } from './common-currencies';
-import { groupCurrencies } from './taxes-data';
+import { groupCurrencies } from './group-data';
 import { savingsJar, suppliesJar } from './jar-data';
 import { connorPersonalCurrencies } from './connor-personal-currencies';
 import { connorBusinessCurrencies } from './connor-business-currencies';

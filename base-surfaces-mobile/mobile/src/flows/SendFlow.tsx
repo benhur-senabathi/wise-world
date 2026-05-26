@@ -1,12 +1,13 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from 'react';
 import { Button, ExpressiveMoneyInput, Chips, ListItem } from '@transferwise/components';
-import { InfoCircle, ChevronDown, ChevronRight, Search, Plus, ScanSparkle, Savings, Suitcase } from '@transferwise/icons';
+import { InfoCircle, ChevronDown, ChevronRight, Search, Plus, ScanSparkle } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { FlowHeader, GlassPill, GlassCircle } from '../components/FlowHeader';
 import { ButtonCue } from '../components/ButtonCue';
 import { RecentContactCard } from '../components/RecentContactCard';
 import { RecipientSearchEmpty } from '../components/RecipientSearchEmpty';
 import { CurrencySheet } from '../components/CurrencySheet';
+import { WiseLogoIcon } from '../components/WiseLogoIcon';
 import { useLanguage } from '../context/Language';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLiveRates } from '../context/LiveRates';
@@ -15,16 +16,8 @@ import { formatBalance } from '@shared/data/balances';
 import { recipients, businessRecipients, recentContacts, businessRecentContacts, getAvatarSrc, getBadge, type Recipient } from '@shared/data/recipients';
 import { currencies } from '@shared/data/currencies';
 import { businessCurrencies } from '@shared/data/business-currencies';
-import { groupCurrencies } from '@shared/data/taxes-data';
+import { groupCurrencies } from '@shared/data/group-data';
 import type { AccountType } from '../App';
-
-function WiseLogoIcon() {
-  return (
-    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M1.875 15.28 7.35 8.838h-.002L4.02 3h18.105l-7.008 19.375h-3.97L16.95 6.3H9.463l1.665 2.883-.008.08-2.56 2.979h4.188l-1.098 3.037z" />
-    </svg>
-  );
-}
 
 type ButtonState = 'disabled' | 'loading' | 'active';
 
@@ -42,7 +35,7 @@ export type AccountStyle = { color: string; textColor: string; iconName: string 
 type Props = {
   defaultCurrency: string;
   accountLabel: string;
-  jar?: 'taxes';
+  group?: string;
   accountStyle: AccountStyle;
   onClose: () => void;
   onStepChange?: (step: string) => void;
@@ -57,13 +50,13 @@ type Props = {
   forceClose?: boolean;
 };
 
-export function SendFlow({ defaultCurrency, accountLabel, jar, accountStyle, onClose, onStepChange, accountType, avatarUrl, initials, recipient: initialRecipient, prefillAmount, prefillReceiveAmount, startStep = 'recipient', forcedReceiveCurrency, forceClose }: Props) {
+export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, onClose, onStepChange, accountType, avatarUrl, initials, recipient: initialRecipient, prefillAmount, prefillReceiveAmount, startStep = 'recipient', forcedReceiveCurrency, forceClose }: Props) {
   const { t } = useLanguage();
   const { consumerName } = usePrototypeNames();
   const rates = useLiveRates();
 
   const isBusiness = accountType === 'business';
-  const isGroup = jar === 'taxes';
+  const isGroup = !!group;
 
   const [step, setStep] = useState<'recipient' | 'amount'>(initialRecipient ? 'amount' : startStep);
   const [selectedRecipient, setSelectedRecipient] = useState<RecipientInfo | null>(initialRecipient ?? null);
@@ -82,7 +75,8 @@ export function SendFlow({ defaultCurrency, accountLabel, jar, accountStyle, onC
   const [cueVisible, setCueVisible] = useState(false);
   const [inputFocused, setInputFocused] = useState(false);
   const [sendInputFocused, setSendInputFocused] = useState(false);
-  const [searchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchActive, setSearchActive] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [isAnimating, setIsAnimating] = useState(false);
   const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -559,8 +553,22 @@ export function SendFlow({ defaultCurrency, accountLabel, jar, accountStyle, onC
                 onChange={({ selectedValue }: { isEnabled: boolean; selectedValue: string | number }) => setSelectedFilter(String(selectedValue))}
               />
               <div className="send-flow__filter-spacer" />
-              <Button v2 size="sm" priority="secondary-neutral" addonStart={{ type: 'icon', value: <Search size={16} /> }}>{t('recipients.search')}</Button>
+              <Button v2 size="sm" priority="secondary-neutral" addonStart={{ type: 'icon', value: <Search size={16} /> }} onClick={() => setSearchActive(true)}>{t('recipients.search')}</Button>
             </div>
+
+            {searchActive && (
+              <div className="send-flow__search-input" style={{ padding: '8px 0' }}>
+                <input
+                  type="search"
+                  className="np-text-body-default"
+                  placeholder={t('recipients.searchPlaceholder')}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  autoFocus
+                  style={{ width: '100%', padding: '10px 16px', borderRadius: 50, border: '1px solid var(--color-border-neutral)', outline: 'none', fontSize: 16, background: 'var(--color-background-screen)' }}
+                />
+              </div>
+            )}
 
             {/* Recipient list or empty state */}
             {filteredRecipients.length > 0 ? (

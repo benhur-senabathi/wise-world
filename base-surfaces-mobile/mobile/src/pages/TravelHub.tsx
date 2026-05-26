@@ -37,7 +37,7 @@ export function TravelHub() {
 
       <h2 className="np-text-title-subsection" style={{ margin: '24px 0 12px' }}>{t('travel.tipsTitle' as any)}</h2>
       <div className="travel__countries">
-        <IconButton size={48} priority="secondary-neutral" aria-label="Search countries">
+        <IconButton size={48} priority={"secondary-neutral" as any} aria-label="Search countries">
           <Search size={24} />
         </IconButton>
         {countries.map((c) => (

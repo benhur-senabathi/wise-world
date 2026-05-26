@@ -3,11 +3,12 @@ import { Plus, RequestReceive, Send, Savings, Suitcase } from '@transferwise/ico
 import { Button } from '@transferwise/components';
 import { Illustration } from '@wise/art';
 import type { AccountType } from '../App';
-import { useActiveCurrencies, useActiveTransactions, useActiveJars, useHasTaxes, useCardCount } from '../hooks/useDatasetData';
+import { useActiveCurrencies, useActiveTransactions, useActiveJars, useHasGroup, useCardCount } from '../hooks/useDatasetData';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
 import { convertToHomeCurrency, usdBaseRates } from '@shared/data/currency-rates';
-import { groupTotalBalance } from '@shared/data/taxes-data';
+import { groupTotalBalance } from '@shared/data/group-data';
+import type { CurrencyData } from '@shared/data/currencies';
 import type { TranslationKey } from '../translations/en';
 import { TotalBalanceHeader } from '../components/TotalBalanceHeader';
 import { ActionButtonRow } from '../components/ActionButtonRow';
@@ -25,7 +26,7 @@ import { PromotionBanner } from '../components/PromotionBanner';
 import { TransferCalculator } from '../components/TransferCalculator';
 import { PageFooter } from '../components/PageFooter';
 
-function buildBalances(currencyList: typeof currencies) {
+function buildBalances(currencyList: CurrencyData[]) {
   return currencyList.map((c) => ({
     code: c.code,
     amount: `${c.symbol}${c.balance.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
@@ -98,7 +99,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
   const activeCurrencies = useActiveCurrencies(accountType);
   const activeTransactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
   const activeJars = useActiveJars(accountType);
-  const showTaxes = useHasTaxes(accountType);
+  const showTaxes = useHasGroup(accountType);
   const cardCount = useCardCount(accountType);
   const accountBalances = buildBalances(activeCurrencies);
   // Account card total: convert all currencies to the account's first/display currency

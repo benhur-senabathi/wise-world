@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ListItem, AvatarView, Tabs, Button, Table, SearchInput, Size } from '@transferwise/components';
 import { Plus, Limit, Suitcase, Team, Alert } from '@transferwise/icons';
 import type { AccountType } from '../App';
-import { useCardCount, useHasTaxes } from '../hooks/useDatasetData';
+import { useCardCount, useHasGroup } from '../hooks/useDatasetData';
 import { useLanguage } from '../context/Language';
 
 function CardThumbnail({ variant }: { variant: 'physical' | 'digital' }) {
@@ -34,7 +34,7 @@ function BusinessCardThumbnail({ variant }: { variant: 'biz-physical' | 'biz-aqu
 function CardsList({ accountType }: { accountType: AccountType }) {
   const { t } = useLanguage();
   const cardCount = useCardCount(accountType);
-  const hasTaxes = useHasTaxes(accountType);
+  const hasTaxes = useHasGroup(accountType);
   const isBusiness = accountType === 'business';
   return (
     <>
@@ -224,7 +224,7 @@ function TeamCardsList() {
 
 export function Cards({ accountType = 'personal', onTravelHub }: { accountType?: AccountType; onTravelHub?: () => void } = {}) {
   const { t } = useLanguage();
-  const hasTaxes = useHasTaxes(accountType);
+  const hasTaxes = useHasGroup(accountType);
   const [selectedTab, setSelectedTab] = useState(0);
 
   return (

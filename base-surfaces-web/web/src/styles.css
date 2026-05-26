@@ -92,7 +92,7 @@ body {
   flex: 1;
   min-width: 0;
   margin: 0 92px;
-  padding: 0 20px;
+  padding: 0 40px;
   display: flex;
   flex-direction: column;
 }
@@ -110,7 +110,7 @@ body {
   justify-content: flex-end;
   height: 136px;
   flex-shrink: 0;
-  padding: 0 4px 0 0;
+  padding: 0 8px 0 0;
 }
 
 
@@ -2258,7 +2258,7 @@ html.np-theme-dark .cards-travel-hub-btn .tw-icon {
 
 /* All list items on payments page: min 100px height, centered content */
 .payments-page .wds-list-item {
-  min-height: 100px !important;
+  min-height: 88px !important;
   height: auto !important;
   display: flex !important;
   flex-direction: column;
@@ -2853,10 +2853,6 @@ html.np-theme-personal--dark .recipients-page__chips .np-chip--selected:active {
   margin-top: 24px;
 }
 
-.transactions-page__table-divider {
-  border-top: 1px solid var(--color-border-neutral);
-}
-
 .transactions-page__list-view {
   display: none;
 }
@@ -3256,11 +3252,6 @@ html.np-theme-personal--dark .recipients-page__chips .np-chip--selected:active {
   text-align: center;
 }
 
-/* Handle button wrapper */
-.account-page__handle-wrapper {
-  margin: 12px 0 0;
-}
-
 /* "Your account" section title — 30px */
 .account-page__content .np-text-title-section {
   font-size: 30px;
@@ -3550,27 +3541,6 @@ html.np-theme-personal--dark .recipients-page__chips .np-chip--selected:active {
   margin: 0;
   color: var(--color-content-primary);
   letter-spacing: -0.5px;
-}
-
-.account-header__available {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin: 4px 0 0;
-}
-
-.account-header__available-info {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  line-height: 0;
-  vertical-align: middle;
-  cursor: pointer;
-  color: var(--color-content-secondary);
 }
 
 .account-header__details {
@@ -3980,35 +3950,6 @@ html[class*="dark"] .more-menu__dropdown {
   border-radius: 0;
 }
 
-/* ===== Currency Options Tab (mobile) ===== */
-
-.currency-options__balance-cards {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.currency-options__balance-card {
-  flex: 1;
-  background: var(--color-background-neutral);
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.currency-options__balance-row {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--color-content-secondary);
-}
-
-.currency-options__section {
-  margin-top: 8px;
-}
-
 /* ===== Spend Card Stacked Media ===== */
 
 .spend-card-media {
@@ -4120,9 +4061,6 @@ html[class*="dark"] .more-menu__dropdown {
     padding-bottom: 32px;
   }
 
-  .currency-options__balance-cards {
-    flex-direction: column;
-  }
 }
 
 @media (min-width: 992px) and (max-width: 1279px) {
@@ -5997,6 +5935,19 @@ html.np-theme-personal--dark .send-flow__filters .np-chip--selected:active {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
+}
+
+html.np-theme-personal--dark .travel-hub-page__stamps-card,
+html.np-theme-dark .travel-hub-page__stamps-card,
+html.np-theme-business--dark .travel-hub-page__stamps-card {
+  background-color: rgba(255, 255, 255, 0.02);
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+}
+
+html.np-theme-personal--dark .travel-hub-page__stamps-inner,
+html.np-theme-dark .travel-hub-page__stamps-inner,
+html.np-theme-business--dark .travel-hub-page__stamps-inner {
+  background-color: rgba(255, 255, 255, 0.02);
 }
 
 @media (max-width: 767px) {

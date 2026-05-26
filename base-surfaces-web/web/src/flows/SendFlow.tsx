@@ -1,28 +1,21 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from 'react';
 import { FlowNavigation, Logo, Button, AvatarView, ExpressiveMoneyInput, Chips, ListItem, InputGroup, Input, Size } from '@transferwise/components';
-import { InfoCircle, ChevronDown, ChevronRight, Search, CrossCircleFill, Plus, ScanSparkle, Check, Savings, Suitcase } from '@transferwise/icons';
+import { InfoCircle, ChevronDown, ChevronRight, Search, CrossCircleFill, Plus, ScanSparkle, Check } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { ButtonCue } from '../components/ButtonCue';
 import { RecentContactCard } from '../components/RecentContactCard';
 import { RecipientSearchEmpty } from '../components/RecipientSearchEmpty';
+import { WiseLogoIcon } from '../components/WiseLogoIcon';
 import { useLanguage } from '../context/Language';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLiveRates } from '../context/LiveRates';
-import { convertToHomeCurrency, currencyMeta } from '../data/currency-rates';
-import { formatBalance } from '../data/balances';
-import { recipients, businessRecipients, recentContacts, businessRecentContacts, getAvatarSrc, getBadge, type Recipient } from '../data/recipients';
-import { currencies } from '../data/currencies';
-import { businessCurrencies } from '../data/business-currencies';
-import { groupCurrencies } from '../data/taxes-data';
+import { convertToHomeCurrency, currencyMeta } from '@shared/data/currency-rates';
+import { formatBalance } from '@shared/data/balances';
+import { recipients, businessRecipients, recentContacts, businessRecentContacts, getAvatarSrc, getBadge, type Recipient } from '@shared/data/recipients';
+import { currencies } from '@shared/data/currencies';
+import { businessCurrencies } from '@shared/data/business-currencies';
+import { groupCurrencies } from '@shared/data/group-data';
 import type { AccountType } from '../App';
-
-function WiseLogoIcon() {
-  return (
-    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M1.875 15.28 7.35 8.838h-.002L4.02 3h18.105l-7.008 19.375h-3.97L16.95 6.3H9.463l1.665 2.883-.008.08-2.56 2.979h4.188l-1.098 3.037z" />
-    </svg>
-  );
-}
 
 type ButtonState = 'disabled' | 'loading' | 'active';
 
@@ -40,7 +33,7 @@ export type AccountStyle = { color: string; textColor: string; iconName: string 
 type Props = {
   defaultCurrency: string;
   accountLabel: string;
-  jar?: 'taxes';
+  group?: string;
   accountStyle: AccountStyle;
   onClose: () => void;
   onStepChange?: (step: string) => void;
@@ -54,13 +47,13 @@ type Props = {
   forcedReceiveCurrency?: string;
 };
 
-export function SendFlow({ defaultCurrency, accountLabel, jar, accountStyle, onClose, onStepChange, accountType, avatarUrl, initials, recipient: initialRecipient, prefillAmount, prefillReceiveAmount, startStep = 'recipient', forcedReceiveCurrency }: Props) {
+export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, onClose, onStepChange, accountType, avatarUrl, initials, recipient: initialRecipient, prefillAmount, prefillReceiveAmount, startStep = 'recipient', forcedReceiveCurrency }: Props) {
   const { t } = useLanguage();
   const { consumerName } = usePrototypeNames();
   const rates = useLiveRates();
 
   const isBusiness = accountType === 'business';
-  const isGroup = jar === 'taxes';
+  const isGroup = !!group;
   const avatarStyle = isBusiness
     ? { backgroundColor: '#163300', color: '#9fe870' }
     : undefined;

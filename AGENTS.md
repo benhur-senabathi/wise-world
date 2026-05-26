@@ -11,3 +11,10 @@ When the user asks you to write, review, or come up with content — UI copy, tr
 3. For vocabulary questions, check `shared-resources/content/vocabulary.md` for Wise-specific terminology and words to avoid
 
 All content must follow Wise's tone of voice (concise, modern, energetic) and use British English spelling. See the guidelines for full rules.
+
+## Universal Rules
+
+1. **Verify Neptune components via MCP.** Before using any `@transferwise/components` component, call `list-all-documentation` then `get-documentation` from the Wise Design System MCP. Never guess props.
+2. **shared-resources is the single source of truth** for data, account logic, and cross-platform design system docs.
+3. **Import data via `@shared/data/`** (Vite alias). Only `src/data/nav.tsx` stays per-project.
+4. **There are 2 projects**: `base-surfaces-web` (port 3002) and `base-surfaces-mobile` (port 3017).

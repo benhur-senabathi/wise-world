@@ -1,6 +1,6 @@
 # Shared Resources
 
-Shared data and business rules consumed by all prototype projects (web, mobile, iOS).
+Shared data and business rules consumed by both prototype projects (web and mobile).
 
 ## Rules
 
@@ -20,12 +20,17 @@ shared-resources/
 │   ├── business-transactions.tsx
 │   ├── recipients.tsx       # Contacts and recipients
 │   ├── currency-rates.ts    # Exchange rates and currency metadata
-│   ├── taxes-data.tsx       # Group account (exports: groupCurrencies, groupTotalBalance, groupTransactions)
+│   ├── group-data.tsx        # Group account (exports: groupCurrencies, groupTotalBalance, groupTransactions)
 │   ├── jar-data.tsx         # Savings/supplies jars, GROUP_IDS
 │   └── account-details-data.ts  # Bank details per currency
 ├── account-logic/           # Platform-agnostic business rules
 │   ├── account-types.md     # Account hierarchy, feature matrix
-│   └── interest-stocks.md   # Interest/stocks flag system
+│   ├── interest-stocks.md   # Interest/stocks flag system
+│   ├── balances-and-accounts.md  # Adding/editing accounts checklist
+│   └── routing.md           # Full URL reference, ID system
+├── design-system/           # Cross-platform Neptune reference docs
+│   ├── icons.md, flags-and-art.md, components.md, tokens.md, neptune-css.md
+│   └── figma-references.md, illustration-3d.md, utilities.md, setup.md
 ├── content/                 # Writing & content guidelines (Wise tone, grammar, vocabulary)
 │   ├── writing-guidelines.md    # Master guide — start here for all content work
 │   ├── tone-of-voice.md         # Brand principles, context-specific tone, localization
@@ -57,6 +62,5 @@ For the full guide on what updates when balances change, and the step-by-step ch
 ## What stays per-project
 
 - `nav.tsx` — navigation structure differs per platform
-- `routing.md` — URL schemes are implementation-specific
-- Design system docs — tokens, components, CSS are platform-specific
+- Platform-specific design system docs — custom tokens, custom components, CSS overrides
 - Translations — each project has its own i18n strings

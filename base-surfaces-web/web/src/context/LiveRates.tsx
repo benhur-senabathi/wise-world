@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { usdBaseRates as fallbackRates } from '../data/currency-rates';
+import { usdBaseRates as fallbackRates } from '@shared/data/currency-rates';
 
 type Rates = Record<string, number>;
 

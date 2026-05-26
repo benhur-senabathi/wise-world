@@ -36,5 +36,3 @@ export const businessCurrencies: CurrencyData[] = [
     accountDetails: '2048193756',
   },
 ];
-
-export const businessTotalAccountBalance = businessCurrencies.reduce((sum, c) => sum + c.balance, 0);

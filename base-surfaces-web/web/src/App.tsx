@@ -32,19 +32,19 @@ import { SendFlow } from './flows/SendFlow';
 import { RequestFlow } from './flows/RequestFlow';
 import { PaymentLinkFlow } from './flows/PaymentLinkFlow';
 import { personalNav, businessNav } from './data/nav';
-import { useActiveCurrencies, useActiveJars, useHasTaxes } from './hooks/useDatasetData';
-import { groupCurrencies } from './data/taxes-data';
-import { getJar, GROUP_IDS } from './data/jar-data';
+import { useActiveCurrencies, useActiveJars, useHasGroup } from './hooks/useDatasetData';
+import { groupCurrencies } from '@shared/data/group-data';
+import { getJar, GROUP_IDS } from '@shared/data/jar-data';
 
 export type AccountType = 'personal' | 'business';
 
 type SubPage =
   | { type: 'account' }
-  | { type: 'taxes-account' }
+  | { type: 'group-account' }
   | { type: 'jar-account'; jarId: string }
-  | { type: 'currency'; code: string; from?: 'account' | 'home' | 'taxes-account' | 'jar-account'; jar?: 'taxes'; jarId?: string }
+  | { type: 'currency'; code: string; from?: 'account' | 'home' | 'group-account' | 'jar-account'; group?: string; jarId?: string }
   | { type: 'account-details-list'; from: 'account' | 'payments' | 'home' }
-  | { type: 'account-details'; code: string; from: 'currency' | 'account-details-list' | 'payments'; jar?: 'taxes'; listFrom?: 'account' | 'payments' }
+  | { type: 'account-details'; code: string; from: 'currency' | 'account-details-list' | 'payments'; group?: string; listFrom?: 'account' | 'payments' | 'home' }
   | { type: 'travel-hub' }
   | null;
 
@@ -65,10 +65,10 @@ type AccountStyle = { color: string; textColor: string; iconName: string };
 
 type ActiveFlow =
   | { type: 'add-money'; defaultCurrency: string; accountLabel: string; accountStyle: AccountStyle }
-  | { type: 'convert'; fromCurrency: string; toCurrency: string; accountLabel: string; toAccountLabel?: string; jar?: 'taxes'; jarId?: string; accountStyle: AccountStyle; toAccountStyle?: AccountStyle }
-  | { type: 'send'; defaultCurrency: string; accountLabel: string; jar?: 'taxes'; accountStyle: AccountStyle; recipient?: SendRecipient; prefillAmount?: number; prefillReceiveAmount?: number; startStep?: 'recipient' | 'amount'; forcedReceiveCurrency?: string; step?: string }
-  | { type: 'request'; defaultCurrency: string; accountLabel: string; jar?: 'taxes'; step?: string; startStep?: 'recipient' | 'request'; recipient?: SendRecipient }
-  | { type: 'payment-link'; defaultCurrency: string; accountLabel: string; jar?: 'taxes' }
+  | { type: 'convert'; fromCurrency: string; toCurrency: string; accountLabel: string; toAccountLabel?: string; group?: string; jarId?: string; accountStyle: AccountStyle; toAccountStyle?: AccountStyle }
+  | { type: 'send'; defaultCurrency: string; accountLabel: string; group?: string; accountStyle: AccountStyle; recipient?: SendRecipient; prefillAmount?: number; prefillReceiveAmount?: number; startStep?: 'recipient' | 'amount'; forcedReceiveCurrency?: string; step?: string }
+  | { type: 'request'; defaultCurrency: string; accountLabel: string; group?: string; step?: string; startStep?: 'recipient' | 'request'; recipient?: SendRecipient }
+  | { type: 'payment-link'; defaultCurrency: string; accountLabel: string; group?: string }
   | { type: 'open-plus' }
   | null;
 
@@ -87,21 +87,21 @@ function flowToPath(flow: ActiveFlow): string | null {
 // ── URL ↔ State routing helpers ──────────────────────────────────────────────
 
 // Map balanceId → group context for URL resolution (includes all datasets for routing)
-import { currencies } from './data/currencies';
-import { businessCurrencies } from './data/business-currencies';
+import { currencies } from '@shared/data/currencies';
+import { businessCurrencies } from '@shared/data/business-currencies';
 import { connorPersonalCurrencies } from '@shared/data/connor-personal-currencies';
 import { connorBusinessCurrencies } from '@shared/data/connor-business-currencies';
 import { commonCurrencies, commonBusinessCurrencies } from '@shared/data/common-currencies';
 import { connorPersonalJars } from '@shared/data/connor-personal-jars';
 import { connorBusinessJars } from '@shared/data/connor-business-jars';
-import { savingsJar, suppliesJar } from './data/jar-data';
+import { savingsJar, suppliesJar } from '@shared/data/jar-data';
 
-type BalanceOwner = { code: string; from: 'home' | 'taxes-account' | 'jar-account'; jar?: 'taxes'; jarId?: string };
+type BalanceOwner = { code: string; from: 'home' | 'group-account' | 'jar-account'; group?: string; jarId?: string };
 const balanceOwnerMap = new Map<string, BalanceOwner>();
 for (const c of [...currencies, ...businessCurrencies, ...connorPersonalCurrencies, ...connorBusinessCurrencies, ...commonCurrencies, ...commonBusinessCurrencies]) {
   balanceOwnerMap.set(c.balanceId, { code: c.code, from: 'home' });
 }
-for (const c of groupCurrencies) balanceOwnerMap.set(c.balanceId, { code: c.code, from: 'taxes-account', jar: 'taxes' });
+for (const c of groupCurrencies) balanceOwnerMap.set(c.balanceId, { code: c.code, from: 'group-account', group: 'group' });
 for (const jar of [savingsJar, suppliesJar, ...connorPersonalJars, ...connorBusinessJars]) {
   for (const c of jar.currencies) balanceOwnerMap.set(c.balanceId, { code: c.code, from: 'jar-account', jarId: jar.id });
 }
@@ -112,7 +112,7 @@ function parseUrl(pathname: string): { navItem: string; subPage: SubPage } {
   if (groupMatch) {
     const id = groupMatch[1];
     if (id === GROUP_IDS.currentAccount) return { navItem: 'Home', subPage: { type: 'account' } };
-    if (id === GROUP_IDS.taxes) return { navItem: 'Home', subPage: { type: 'taxes-account' } };
+    if (id === GROUP_IDS.group) return { navItem: 'Home', subPage: { type: 'group-account' } };
     return { navItem: 'Home', subPage: { type: 'jar-account', jarId: id } };
   }
 
@@ -121,7 +121,7 @@ function parseUrl(pathname: string): { navItem: string; subPage: SubPage } {
   if (balanceMatch) {
     const owner = balanceOwnerMap.get(balanceMatch[1]);
     if (owner) {
-      return { navItem: 'Home', subPage: { type: 'currency', code: owner.code, from: owner.from, jar: owner.jar, jarId: owner.jarId } };
+      return { navItem: 'Home', subPage: { type: 'currency', code: owner.code, from: owner.from, group: owner.group, jarId: owner.jarId } };
     }
   }
 
@@ -137,7 +137,7 @@ function parseUrl(pathname: string): { navItem: string; subPage: SubPage } {
     // Balance ID → individual account details page
     const owner = balanceOwnerMap.get(id);
     if (owner) {
-      return { navItem: 'Home', subPage: { type: 'account-details', code: owner.code, from: 'account-details-list', jar: owner.jar } };
+      return { navItem: 'Home', subPage: { type: 'account-details', code: owner.code, from: 'account-details-list', group: owner.group } };
     }
   }
 
@@ -160,22 +160,22 @@ function parseUrl(pathname: string): { navItem: string; subPage: SubPage } {
   }
 }
 
-function stateToPath(navItem: string, subPage: SubPage, accountType: AccountType, datasetCurrencies?: import('./data/currencies').CurrencyData[]): string {
+function stateToPath(navItem: string, subPage: SubPage, accountType: AccountType, datasetCurrencies?: import('@shared/data/currencies').CurrencyData[]): string {
   const mainCurrencies = datasetCurrencies ?? (accountType === 'business' ? businessCurrencies : currencies);
   if (subPage) {
     switch (subPage.type) {
       case 'account': return `/groups/${GROUP_IDS.currentAccount}`;
-      case 'taxes-account': return `/groups/${GROUP_IDS.taxes}`;
+      case 'group-account': return `/groups/${GROUP_IDS.group}`;
       case 'jar-account': return `/groups/${subPage.jarId}`;
       case 'currency': {
         const jarDef = subPage.jarId ? getJar(subPage.jarId) : undefined;
-        const currencyList = jarDef ? jarDef.currencies : subPage.jar === 'taxes' ? groupCurrencies : mainCurrencies;
+        const currencyList = jarDef ? jarDef.currencies : subPage.group ? groupCurrencies : mainCurrencies;
         const currencyData = currencyList.find((c) => c.code === subPage.code);
         return `/balances/${currencyData?.balanceId ?? subPage.code}`;
       }
       case 'account-details-list': return `/account-details/${GROUP_IDS.currentAccount}`;
       case 'account-details': {
-        const currencyList = subPage.jar === 'taxes' ? groupCurrencies : mainCurrencies;
+        const currencyList = subPage.group ? groupCurrencies : mainCurrencies;
         const currencyData = currencyList.find((c) => c.code === subPage.code);
         return `/account-details/${currencyData?.balanceId ?? subPage.code}`;
       }
@@ -215,8 +215,6 @@ function AppInner() {
   const [activeFlow, setActiveFlow] = useState<ActiveFlow>(null);
 
   const activeCurrencies = useActiveCurrencies(accountType);
-  const activeJars = useActiveJars(accountType);
-  const hasTaxes = useHasTaxes(accountType);
 
   // Auto-open flow when loaded with ?flow= (gallery preview)
   useEffect(() => {
@@ -242,7 +240,7 @@ function AppInner() {
         const previewRecipient = stepParam === 'request'
           ? { name: 'Christie Davis', subtitle: '@christied25', initials: 'CD', hasFastFlag: true, badgeFlagCode: 'GBP' }
           : undefined;
-        setActiveFlow({ type: 'request', defaultCurrency: homeCurrency, accountLabel: 'Current account', jar: undefined, step: stepParam ?? 'recipient', startStep: (stepParam as 'recipient' | 'request') ?? 'recipient', recipient: previewRecipient });
+        setActiveFlow({ type: 'request', defaultCurrency: homeCurrency, accountLabel: 'Current account', group: undefined, step: stepParam ?? 'recipient', startStep: (stepParam as 'recipient' | 'request') ?? 'recipient', recipient: previewRecipient });
         break;
       }
       case 'convert': setActiveFlow({ type: 'convert', fromCurrency: homeCurrency, toCurrency: 'EUR', accountLabel: 'Current account', accountStyle: style }); break;
@@ -305,7 +303,7 @@ function AppInner() {
             const previewRecipient = stepParam === 'request'
               ? { name: 'Christie Davis', subtitle: '@christied25', initials: 'CD', hasFastFlag: true, badgeFlagCode: 'GBP' }
               : undefined;
-            setActiveFlow({ type: 'request', defaultCurrency: homeCurrency, accountLabel: 'Current account', jar: undefined, step: stepParam ?? 'recipient', startStep: (stepParam as 'recipient' | 'request') ?? 'recipient', recipient: previewRecipient });
+            setActiveFlow({ type: 'request', defaultCurrency: homeCurrency, accountLabel: 'Current account', group: undefined, step: stepParam ?? 'recipient', startStep: (stepParam as 'recipient' | 'request') ?? 'recipient', recipient: previewRecipient });
             break;
           }
           case 'convert': setActiveFlow({ type: 'convert', fromCurrency: homeCurrency, toCurrency: 'EUR', accountLabel: 'Current account', accountStyle: style }); break;
@@ -333,7 +331,7 @@ function AppInner() {
   const currentAccountStyle: AccountStyle = accountType === 'business'
     ? { color: '#163300', textColor: '#9fe870', iconName: 'Wise' }
     : { color: 'var(--color-interactive-accent)', textColor: 'var(--color-interactive-control)', iconName: 'Wise' };
-  const taxesGroupStyle: AccountStyle = { color: '#FFEB69', textColor: '#3a341c', iconName: 'Money' };
+  const groupAccountStyle: AccountStyle = { color: '#FFEB69', textColor: '#3a341c', iconName: 'Money' };
   function jarStyle(jar: { color: string; iconName: string }): AccountStyle {
     return { color: jar.color, textColor: '#121511', iconName: jar.iconName };
   }
@@ -342,16 +340,16 @@ function AppInner() {
     setActiveFlow({ type: 'add-money', defaultCurrency, accountLabel: accountLabel ?? t('home.currentAccount'), accountStyle: accountStyle ?? currentAccountStyle });
   }, [t, currentAccountStyle]);
 
-  const handleOpenConvert = useCallback((fromCurrency: string, toCurrency: string, accountLabel?: string, jar?: 'taxes', toAccountLabel?: string, accountStyle?: AccountStyle, toAccountStyle?: AccountStyle, jarId?: string) => {
-    setActiveFlow({ type: 'convert', fromCurrency, toCurrency, accountLabel: accountLabel ?? t('home.currentAccount'), toAccountLabel, jar, accountStyle: accountStyle ?? currentAccountStyle, toAccountStyle, jarId });
+  const handleOpenConvert = useCallback((fromCurrency: string, toCurrency: string, accountLabel?: string, group?: string, toAccountLabel?: string, accountStyle?: AccountStyle, toAccountStyle?: AccountStyle, jarId?: string) => {
+    setActiveFlow({ type: 'convert', fromCurrency, toCurrency, accountLabel: accountLabel ?? t('home.currentAccount'), toAccountLabel, group, accountStyle: accountStyle ?? currentAccountStyle, toAccountStyle, jarId });
   }, [t, currentAccountStyle]);
 
-  const handleOpenSend = useCallback((defaultCurrency: string, accountLabel?: string, jar?: 'taxes', recipient?: SendRecipient, prefillAmount?: number, accountStyle?: AccountStyle) => {
+  const handleOpenSend = useCallback((defaultCurrency: string, accountLabel?: string, group?: string, recipient?: SendRecipient, prefillAmount?: number, accountStyle?: AccountStyle) => {
     setActiveFlow({
       type: 'send',
       defaultCurrency,
       accountLabel: accountLabel ?? t('home.currentAccount'),
-      jar,
+      group,
       accountStyle: accountStyle ?? currentAccountStyle,
       recipient,
       prefillAmount,
@@ -359,12 +357,12 @@ function AppInner() {
     });
   }, [t, currentAccountStyle]);
 
-  const handleOpenRequest = useCallback((defaultCurrency: string, accountLabel?: string, jar?: 'taxes') => {
-    setActiveFlow({ type: 'request', defaultCurrency, accountLabel: accountLabel ?? t('home.currentAccount'), jar });
+  const handleOpenRequest = useCallback((defaultCurrency: string, accountLabel?: string, group?: string) => {
+    setActiveFlow({ type: 'request', defaultCurrency, accountLabel: accountLabel ?? t('home.currentAccount'), group });
   }, [t]);
 
-  const handleOpenPaymentLink = useCallback((defaultCurrency: string, accountLabel?: string, jar?: 'taxes') => {
-    setActiveFlow({ type: 'payment-link', defaultCurrency, accountLabel: accountLabel ?? t('home.currentAccount'), jar });
+  const handleOpenPaymentLink = useCallback((defaultCurrency: string, accountLabel?: string, group?: string) => {
+    setActiveFlow({ type: 'payment-link', defaultCurrency, accountLabel: accountLabel ?? t('home.currentAccount'), group });
   }, [t]);
 
   const handleCloseFlow = useCallback(() => {
@@ -410,17 +408,17 @@ function AppInner() {
   }, []);
 
   const handleNavigateGroupAccount = useCallback(() => {
-    setSubPage({ type: 'taxes-account' });
+    setSubPage({ type: 'group-account' });
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
   const handleNavigateCurrencyFromGroup = useCallback((code: string) => {
-    setSubPage({ type: 'currency', code, from: 'taxes-account', jar: 'taxes' });
+    setSubPage({ type: 'currency', code, from: 'group-account', group: 'group' });
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
   const handleNavigateGroupCurrencyFromHome = useCallback((code: string) => {
-    setSubPage({ type: 'currency', code, from: 'home', jar: 'taxes' });
+    setSubPage({ type: 'currency', code, from: 'home', group: 'group' });
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
@@ -449,8 +447,8 @@ function AppInner() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
-  const handleNavigateAccountDetails = useCallback((code: string, from: 'currency' | 'account-details-list' | 'payments', jar?: 'taxes', listFrom?: 'account' | 'payments') => {
-    setSubPage({ type: 'account-details', code, from, jar, listFrom });
+  const handleNavigateAccountDetails = useCallback((code: string, from: 'currency' | 'account-details-list' | 'payments', group?: string, listFrom?: 'account' | 'payments' | 'home') => {
+    setSubPage({ type: 'account-details', code, from, group, listFrom });
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
@@ -458,7 +456,7 @@ function AppInner() {
     if (subPage?.type === 'account-details') {
       if (subPage.from === 'currency') {
         const currencyFrom = subPage.listFrom === 'home' ? 'home' : 'account';
-        setSubPage({ type: 'currency', code: subPage.code, from: currencyFrom as any, jar: subPage.jar });
+        setSubPage({ type: 'currency', code: subPage.code, from: currencyFrom as any, group: subPage.group });
       } else if (subPage.from === 'account-details-list') {
         setSubPage({ type: 'account-details-list', from: subPage.listFrom ?? 'account' });
       } else {
@@ -476,8 +474,8 @@ function AppInner() {
       setSubPage(null);
     } else if (subPage?.type === 'currency' && subPage.from === 'account') {
       setSubPage({ type: 'account' });
-    } else if (subPage?.type === 'currency' && subPage.from === 'taxes-account') {
-      setSubPage({ type: 'taxes-account' });
+    } else if (subPage?.type === 'currency' && subPage.from === 'group-account') {
+      setSubPage({ type: 'group-account' });
     } else if (subPage?.type === 'currency' && subPage.from === 'jar-account' && subPage.jarId) {
       setSubPage({ type: 'jar-account', jarId: subPage.jarId });
     } else {
@@ -520,14 +518,14 @@ function AppInner() {
       if (subPage.type === 'account') {
         return <CurrentAccount onNavigateCurrency={handleNavigateCurrencyFromAccount} onNavigateCards={() => handleNavigate('Cards')} onAccountDetails={() => handleNavigateAccountDetailsList('account')} accountType={accountType} personalAvatarUrl={personalAvatarUrl} onAdd={() => handleOpenAddMoney(activeCurrencies[0]?.code ?? 'GBP')} onConvert={() => handleOpenConvert(activeCurrencies[0]?.code ?? 'GBP', activeCurrencies[1]?.code ?? activeCurrencies[0]?.code ?? 'GBP')} onSend={() => handleOpenSend(activeCurrencies[0]?.code ?? 'GBP')} onRequest={() => handleOpenRequest(activeCurrencies[0]?.code ?? 'GBP')} onPaymentLink={() => handleOpenPaymentLink(activeCurrencies[0]?.code ?? 'GBP')} />;
       }
-      if (subPage.type === 'taxes-account') {
-        return <CurrentAccount onNavigateCurrency={handleNavigateCurrencyFromGroup} onNavigateCards={() => handleNavigate('Cards')} accountType={accountType} jar="taxes" personalAvatarUrl={personalAvatarUrl} onAdd={() => handleOpenAddMoney('GBP', t('home.taxes'), taxesGroupStyle)} onConvert={() => handleOpenConvert('GBP', 'EUR', t('home.taxes'), 'taxes', t('home.currentAccount'), taxesGroupStyle, currentAccountStyle)} onSend={() => handleOpenSend('GBP', t('home.taxes'), 'taxes', undefined, undefined, taxesGroupStyle)} onRequest={() => handleOpenRequest('GBP', t('home.taxes'), 'taxes')} onPaymentLink={() => handleOpenPaymentLink('GBP', t('home.taxes'), 'taxes')} />;
+      if (subPage.type === 'group-account') {
+        return <CurrentAccount onNavigateCurrency={handleNavigateCurrencyFromGroup} onNavigateCards={() => handleNavigate('Cards')} accountType={accountType} group="group" personalAvatarUrl={personalAvatarUrl} onAdd={() => handleOpenAddMoney('GBP', t('home.taxes'), groupAccountStyle)} onConvert={() => handleOpenConvert('GBP', 'EUR', t('home.taxes'), 'group', t('home.currentAccount'), groupAccountStyle, currentAccountStyle)} onSend={() => handleOpenSend('GBP', t('home.taxes'), 'group', undefined, undefined, groupAccountStyle)} onRequest={() => handleOpenRequest('GBP', t('home.taxes'), 'group')} onPaymentLink={() => handleOpenPaymentLink('GBP', t('home.taxes'), 'group')} />;
       }
       if (subPage.type === 'jar-account') {
         const jar = getJar(subPage.jarId);
         if (!jar) return <div>Jar not found.</div>;
         const jarName = t(jar.nameKey as any);
-        return <CurrentAccount onNavigateCurrency={(code) => handleNavigateCurrencyFromJar(subPage.jarId, code)} accountType={accountType} jar={subPage.jarId as any} jarConfig={jar} personalAvatarUrl={personalAvatarUrl} onAdd={() => handleOpenAddMoney(jar.currencies[0]?.code ?? 'GBP', jarName, jarStyle(jar))} onConvert={() => handleOpenConvert(jar.currencies[0]?.code ?? 'GBP', 'EUR', jarName, undefined, t('home.currentAccount'), jarStyle(jar), currentAccountStyle, jar.id)} onSend={() => handleOpenSend(jar.currencies[0]?.code ?? 'GBP', jarName, undefined, undefined, undefined, jarStyle(jar))} />;
+        return <CurrentAccount onNavigateCurrency={(code) => handleNavigateCurrencyFromJar(subPage.jarId, code)} accountType={accountType} jarConfig={jar} personalAvatarUrl={personalAvatarUrl} onAdd={() => handleOpenAddMoney(jar.currencies[0]?.code ?? 'GBP', jarName, jarStyle(jar))} onConvert={() => handleOpenConvert(jar.currencies[0]?.code ?? 'GBP', 'EUR', jarName, undefined, t('home.currentAccount'), jarStyle(jar), currentAccountStyle, jar.id)} onSend={() => handleOpenSend(jar.currencies[0]?.code ?? 'GBP', jarName, undefined, undefined, undefined, jarStyle(jar))} />;
       }
       if (subPage.type === 'account-details-list') {
         return <AccountDetailsList accountType={accountType} onSelectCurrency={(code) => handleNavigateAccountDetails(code, 'account-details-list', undefined, subPage.from)} accountCurrencyCodes={activeCurrencies.map(c => c.code)} />;
@@ -540,29 +538,29 @@ function AppInner() {
       }
       if (subPage.type === 'currency') {
         const jarDef = subPage.jarId ? getJar(subPage.jarId) : undefined;
-        const currencyList = jarDef ? jarDef.currencies : subPage.jar === 'taxes' ? groupCurrencies : activeCurrencies;
+        const currencyList = jarDef ? jarDef.currencies : subPage.group ? groupCurrencies : activeCurrencies;
         const mainCurrencies = activeCurrencies;
         const sameScopeCurrency = currencyList.find((c) => c.code !== subPage.code)?.code;
         const crossAccountCurrency = mainCurrencies.find((c) => c.code !== subPage.code)?.code;
         const secondCurrency = sameScopeCurrency ?? crossAccountCurrency ?? subPage.code;
         const isCrossAccount = !sameScopeCurrency && !!crossAccountCurrency;
-        const jarLabel = jarDef ? t(jarDef.nameKey as any) : subPage.jar === 'taxes' ? t('home.taxes') : undefined;
+        const jarLabel = jarDef ? t(jarDef.nameKey as any) : subPage.group ? t('home.taxes') : undefined;
         const isJar = !!jarDef;
         const convertToLabel = isCrossAccount ? t('home.currentAccount') : undefined;
-        const currencyAccountStyle = jarDef ? jarStyle(jarDef) : subPage.jar === 'taxes' ? taxesGroupStyle : undefined;
+        const currencyAccountStyle = jarDef ? jarStyle(jarDef) : subPage.group ? groupAccountStyle : undefined;
         return (
           <CurrencyPage
             code={subPage.code}
-            onNavigateAccount={isJar ? () => handleNavigateJarAccount(subPage.jarId!) : subPage.jar === 'taxes' ? handleNavigateGroupAccount : handleNavigateSubAccount}
-            onAccountDetails={isJar ? undefined : () => handleNavigateAccountDetails(subPage.code, 'currency', subPage.jar, subPage.from === 'home' ? 'home' : undefined)}
+            onNavigateAccount={isJar ? () => handleNavigateJarAccount(subPage.jarId!) : subPage.group ? handleNavigateGroupAccount : handleNavigateSubAccount}
+            onAccountDetails={isJar ? undefined : () => handleNavigateAccountDetails(subPage.code, 'currency', subPage.group, subPage.from === 'home' ? 'home' : undefined)}
             accountType={accountType}
-            jar={subPage.jar}
+            group={subPage.group}
             jarConfig={jarDef}
             onAdd={() => handleOpenAddMoney(subPage.code, jarLabel, currencyAccountStyle)}
-            onConvert={() => handleOpenConvert(subPage.code, secondCurrency, jarLabel, subPage.jar as 'taxes' | undefined, convertToLabel, currencyAccountStyle, isCrossAccount ? currentAccountStyle : undefined, jarDef?.id)}
+            onConvert={() => handleOpenConvert(subPage.code, secondCurrency, jarLabel, subPage.group, convertToLabel, currencyAccountStyle, isCrossAccount ? currentAccountStyle : undefined, jarDef?.id)}
             onSend={() => handleOpenSend(subPage.code, jarLabel, undefined, undefined, undefined, currencyAccountStyle)}
-            onRequest={isJar ? undefined : () => handleOpenRequest(subPage.code, jarLabel, subPage.jar as 'taxes' | undefined)}
-            onPaymentLink={isJar ? undefined : () => handleOpenPaymentLink(subPage.code, jarLabel, subPage.jar as 'taxes' | undefined)}
+            onRequest={isJar ? undefined : () => handleOpenRequest(subPage.code, jarLabel, subPage.group)}
+            onPaymentLink={isJar ? undefined : () => handleOpenPaymentLink(subPage.code, jarLabel, subPage.group)}
           />
         );
       }
@@ -610,6 +608,7 @@ function AppInner() {
           onRequest={() => handleOpenRequest(accountType === 'business' ? businessHomeCurrency : consumerHomeCurrency)}
           onPaymentLink={() => handleOpenPaymentLink(accountType === 'business' ? businessHomeCurrency : consumerHomeCurrency)}
           onAccountDetails={() => handleNavigateAccountDetailsList('home')}
+          onOpen={() => setActiveFlow({ type: 'open-plus' })}
         />
       );
     }
@@ -667,7 +666,7 @@ function AppInner() {
           <RequestFlow
             defaultCurrency={activeFlow.defaultCurrency}
             accountLabel={activeFlow.accountLabel}
-            jar={activeFlow.jar}
+            group={activeFlow.group}
             onClose={handleCloseFlow}
             onStepChange={(step) => setActiveFlow((prev) => prev?.type === 'request' ? { ...prev, step } : prev)}
             accountType={accountType}
@@ -681,7 +680,7 @@ function AppInner() {
           <PaymentLinkFlow
             defaultCurrency={activeFlow.defaultCurrency}
             accountLabel={activeFlow.accountLabel}
-            jar={activeFlow.jar}
+            group={activeFlow.group}
             onClose={handleCloseFlow}
             accountType={accountType}
             avatarUrl={avatarUrl}

@@ -2,14 +2,14 @@ import { useState, useMemo } from 'react';
 import { ListItem, Button, IconButton, Modal } from '@transferwise/components';
 import { Graph, Money, Rewards, QuestionMarkCircle } from '@transferwise/icons';
 import type { AccountType } from '../App';
-import { useActiveCurrencies, useActiveTransactions, useActiveJars, useHasTaxes } from '../hooks/useDatasetData';
-import { groupTotalBalance } from '../data/taxes-data';
-import { computeTotalBalance } from '../data/balances';
+import { useActiveCurrencies, useActiveTransactions, useActiveJars, useHasGroup } from '../hooks/useDatasetData';
+import { groupTotalBalance } from '@shared/data/group-data';
+import { computeTotalBalance } from '@shared/data/balances';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useDataset } from '../context/Dataset';
 import { useLanguage, useTxLabels } from '../context/Language';
 import type { TranslationKey } from '../translations/en';
-import { convertToHomeCurrency, getCurrencySymbol, usdBaseRates } from '../data/currency-rates';
+import { convertToHomeCurrency, getCurrencySymbol, usdBaseRates } from '@shared/data/currency-rates';
 
 export function Insights({ accountType = 'personal' }: { accountType?: AccountType }) {
   const { consumerName, businessName, consumerHomeCurrency, businessHomeCurrency } = usePrototypeNames();
@@ -22,7 +22,7 @@ export function Insights({ accountType = 'personal' }: { accountType?: AccountTy
   const activeCurrencies = useActiveCurrencies(accountType);
   const activeTransactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
   const activeJars = useActiveJars(accountType);
-  const hasTaxes = useHasTaxes(accountType);
+  const hasTaxes = useHasGroup(accountType);
 
   const groupBalance = hasTaxes ? groupTotalBalance : 0;
   const jarBalance = activeJars.reduce((sum, jar) => sum + jar.currencies.reduce((s, c) => s + convertToHomeCurrency(c.balance, c.code, homeCurrency, rates), 0), 0);

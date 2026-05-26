@@ -3,7 +3,7 @@ import { CardWise, Savings as SavingsIcon, People, Suitcase, SpendDollar, Jar } 
 import { FlowHeader } from '../components/FlowHeader';
 import { useLanguage } from '../context/Language';
 import { savingsJar, suppliesJar } from '@shared/data/jar-data';
-import { groupCurrencies } from '@shared/data/taxes-data';
+import { groupCurrencies } from '@shared/data/group-data';
 import type { AccountType } from '../App';
 
 type OpenItem = {

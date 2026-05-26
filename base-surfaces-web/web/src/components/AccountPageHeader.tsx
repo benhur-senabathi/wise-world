@@ -3,13 +3,14 @@ import { Bank, ChevronRight, Money } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { AccountActionButtons } from './AccountActionButtons';
 import { MoreMenu } from './MoreMenu';
+import { WiseLogoIcon } from './WiseLogoIcon';
 import type { AccountType } from '../App';
 import { useLanguage } from '../context/Language';
 import { useShimmer } from '../context/Shimmer';
 import { ShimmerAccountPageHeader } from './Shimmer';
 
 type Props = {
-  type: 'account' | 'currency' | 'taxes' | 'jar';
+  type: 'account' | 'currency' | 'group' | 'jar';
   currencyCode?: string;
   label: string;
   balance: string;
@@ -29,14 +30,6 @@ type Props = {
   onRequest?: () => void;
   onPaymentLink?: () => void;
 };
-
-function WiseLogoIcon() {
-  return (
-    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M1.875 15.28 7.35 8.838h-.002L4.02 3h18.105l-7.008 19.375h-3.97L16.95 6.3H9.463l1.665 2.883-.008.08-2.56 2.979h4.188l-1.098 3.037z" />
-    </svg>
-  );
-}
 
 export function AccountPageHeader({
   type,
@@ -62,7 +55,7 @@ export function AccountPageHeader({
   const { t } = useLanguage();
   const { shimmerMode } = useShimmer();
   const isBusiness = accountType === 'business';
-  const isGroup = type === 'taxes';
+  const isGroup = type === 'group';
   const isJar = type === 'jar';
   const isJarCurrency = type === 'currency' && !!jarColor;
   const hideGetPaid = hideGetPaidProp ?? false;
@@ -141,7 +134,7 @@ export function AccountPageHeader({
       <div className="account-header__bottom-row">
         <div className="account-header__balance-group">
           <h1 className="account-header__balance">{balance}</h1>
-          {type !== 'taxes' && type !== 'jar' && onAccountDetailsClick && (
+          {type !== 'group' && type !== 'jar' && onAccountDetailsClick && (
             <div className="account-header__details">
               <Button
                 v2

@@ -1,45 +1,29 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { OverlayHeader, Logo, Button, AvatarView, ExpressiveMoneyInput, ListItem } from '@transferwise/components';
-import { InfoCircle, ChevronDown, ChevronRight, SwitchVertical, AutoConvert, Money, Savings, Suitcase } from '@transferwise/icons';
+import { InfoCircle, ChevronDown, ChevronRight, SwitchVertical, AutoConvert } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { ButtonCue } from '../components/ButtonCue';
+import { WiseLogoIcon, resolveIcon } from '../components/WiseLogoIcon';
 import { useLanguage } from '../context/Language';
 import { useLiveRates } from '../context/LiveRates';
-import { convertToHomeCurrency } from '../data/currency-rates';
-import { formatBalance } from '../data/balances';
-import { currencies } from '../data/currencies';
-import { businessCurrencies } from '../data/business-currencies';
-import { groupCurrencies } from '../data/taxes-data';
-import { getJar } from '../data/jar-data';
+import { convertToHomeCurrency } from '@shared/data/currency-rates';
+import { formatBalance } from '@shared/data/balances';
+import { currencies } from '@shared/data/currencies';
+import { businessCurrencies } from '@shared/data/business-currencies';
+import { groupCurrencies } from '@shared/data/group-data';
+import { getJar } from '@shared/data/jar-data';
 import type { AccountType } from '../App';
-
-function WiseLogoIcon() {
-  return (
-    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M1.875 15.28 7.35 8.838h-.002L4.02 3h18.105l-7.008 19.375h-3.97L16.95 6.3H9.463l1.665 2.883-.008.08-2.56 2.979h4.188l-1.098 3.037z" />
-    </svg>
-  );
-}
 
 type ButtonState = 'disabled' | 'loading' | 'active';
 
 export type AccountStyle = { color: string; textColor: string; iconName: string };
-
-function resolveIcon(iconName: string) {
-  switch (iconName) {
-    case 'Savings': return <Savings size={16} />;
-    case 'Suitcase': return <Suitcase size={16} />;
-    case 'Money': return <Money size={16} />;
-    default: return <WiseLogoIcon />;
-  }
-}
 
 type Props = {
   fromCurrency: string;
   toCurrency: string;
   accountLabel: string;
   toAccountLabel?: string;
-  jar?: 'taxes';
+  group?: string;
   jarId?: string;
   accountStyle: AccountStyle;
   toAccountStyle?: AccountStyle;
@@ -49,7 +33,7 @@ type Props = {
   initials: string;
 };
 
-export function ConvertFlow({ fromCurrency: initFrom, toCurrency: initTo, accountLabel, toAccountLabel, jar, jarId, accountStyle, toAccountStyle, onClose, accountType, avatarUrl, initials }: Props) {
+export function ConvertFlow({ fromCurrency: initFrom, toCurrency: initTo, accountLabel, toAccountLabel, group, jarId, accountStyle, toAccountStyle, onClose, accountType, avatarUrl, initials }: Props) {
   const { t } = useLanguage();
   const rates = useLiveRates();
 
@@ -66,7 +50,7 @@ export function ConvertFlow({ fromCurrency: initFrom, toCurrency: initTo, accoun
   const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isBusiness = accountType === 'business';
-  const isGroup = jar === 'taxes';
+  const isGroup = !!group;
   const avatarStyle = isBusiness
     ? { backgroundColor: '#163300', color: '#9fe870' }
     : undefined;

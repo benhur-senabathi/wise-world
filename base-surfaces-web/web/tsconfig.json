@@ -16,7 +16,10 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "paths": {
+      "@shared/*": ["../../shared-resources/*"]
+    }
   },
-  "include": ["src"]
+  "include": ["src", "../../shared-resources"]
 }

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Button, ListItem, AvatarLayout } from '@transferwise/components';
 import { Bank, ChevronRight, Rewards } from '@transferwise/icons';
 import { Flag } from '@wise/art';
-import { currencies as defaultCurrencyData, type CurrencyData } from '../data/currencies';
+import { currencies as defaultCurrencyData, type CurrencyData } from '@shared/data/currencies';
 import { useLanguage } from '../context/Language';
 import { useShimmer } from '../context/Shimmer';
 import { ShimmerAccountCard } from './Shimmer';

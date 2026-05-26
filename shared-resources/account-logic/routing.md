@@ -44,7 +44,7 @@ All IDs in URLs are **8-digit numeric codes**. No human-readable slugs, no curre
 
 ### Group IDs
 
-A group ID identifies an account container — the current account, a shared group, or a jar. Defined in `src/data/jar-data.tsx` as the `GROUP_IDS` constant:
+A group ID identifies an account container — the current account, a shared group, or a jar. Defined in `shared-resources/data/jar-data.tsx` as the `GROUP_IDS` constant:
 
 | Group | ID |
 |-------|----|
@@ -79,7 +79,7 @@ A balance ID identifies a specific currency balance within a group. Defined as `
 
 | Currency | Balance ID | Source file |
 |----------|-----------|-------------|
-| GBP | `35901847` | `taxes-data.tsx` |
+| GBP | `35901847` | `group-data.tsx` |
 
 **Jars:**
 

@@ -114,6 +114,7 @@ export function Transactions({ accountType = 'personal' }: { accountType?: Accou
   const [backToTopVisible, setBackToTopVisible] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
 
+  const isBusiness = accountType === 'business';
   const isSearching = search.length >= 3;
   const filtered = isSearching
     ? transactions.filter((tx) => tx.name.toLowerCase().includes(search.toLowerCase()))

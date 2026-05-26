@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { ListItem, CircularButton, SegmentedControl } from '@transferwise/components';
 import { Dial, CardWise, Freeze, List, Cog, PadlockUnlocked, Edit, Limit, Bin, QrCode, Plus, Camera } from '@transferwise/icons';
 import type { AccountType } from '../App';
-import { useCardCount, useHasTaxes } from '../hooks/useDatasetData';
+import { useCardCount, useHasGroup } from '../hooks/useDatasetData';
 import { useLanguage } from '../context/Language';
 import { useHapticOnChange, triggerHaptic } from '../hooks/useHaptics';
 
@@ -280,7 +280,7 @@ function TeamCardsView() {
 export function Cards({ accountType = 'personal', cardsTab = 'your', onCardsTabChange }: { accountType?: AccountType; cardsTab?: 'your' | 'team'; onCardsTabChange?: (tab: 'your' | 'team') => void } = {}) {
   const { t } = useLanguage();
   const cardCount = useCardCount(accountType);
-  const hasTaxes = useHasTaxes(accountType);
+  const hasTaxes = useHasGroup(accountType);
   const isBusiness = accountType === 'business';
   const totalCards = isBusiness ? cardCount + (hasTaxes ? 2 : 0) : cardCount;
   const cards = (isBusiness ? businessCards : personalCards).slice(0, totalCards);

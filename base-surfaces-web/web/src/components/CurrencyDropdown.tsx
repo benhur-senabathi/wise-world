@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Search, Check } from '@transferwise/icons';
 import { Flag } from '@wise/art';
-import { usdBaseRates, currencyMeta } from '../data/currency-rates';
+import { usdBaseRates, currencyMeta } from '@shared/data/currency-rates';
 import { useShimmer } from '../context/Shimmer';
 import { ShimmerCurrencyDropdown } from './Shimmer';
 

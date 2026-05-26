@@ -580,7 +580,7 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
               { id: 'single', label: 'Focused', value: 'single' },
               { id: 'all', label: 'All', value: 'all' },
             ]}
-            onChange={(val: ViewMode) => setViewMode(val)}
+            onChange={(val) => setViewMode(val as ViewMode)}
           />
         </div>
         <div className="df-top-bar__settings">

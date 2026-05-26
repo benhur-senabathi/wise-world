@@ -2,8 +2,8 @@ import { OverlayHeader, Logo, AvatarView, ListItem } from '@transferwise/compone
 import { CardWise, Savings as SavingsIcon, People, Suitcase, SpendDollar, Jar } from '@transferwise/icons';
 import type { AccountType } from '../App';
 import { useLanguage } from '../context/Language';
-import { savingsJar, suppliesJar } from '../data/jar-data';
-import { groupCurrencies } from '../data/taxes-data';
+import { savingsJar, suppliesJar } from '@shared/data/jar-data';
+import { groupCurrencies } from '@shared/data/group-data';
 
 type OpenItem = {
   titleKey: string;

@@ -1,6 +1,6 @@
 # Interest / Stocks Feature System
 
-Currency objects in `src/data/currencies.ts` and `src/data/business-currencies.ts` have boolean flags that drive UI across multiple components.
+Currency objects in `shared-resources/data/currencies.ts` and `shared-resources/data/business-currencies.ts` have boolean flags that drive UI across multiple components.
 
 ## Flags
 

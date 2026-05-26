@@ -3,11 +3,12 @@ import { Plus, RequestReceive, Send, Savings, Suitcase } from '@transferwise/ico
 import { Button } from '@transferwise/components';
 import { Illustration } from '@wise/art';
 import type { AccountType } from '../App';
-import { useActiveCurrencies, useActiveTransactions, useActiveJars, useHasTaxes, useCardCount } from '../hooks/useDatasetData';
+import { useActiveCurrencies, useActiveTransactions, useActiveJars, useHasGroup, useCardCount } from '../hooks/useDatasetData';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
-import { convertToHomeCurrency, usdBaseRates } from '../data/currency-rates';
-import { groupTotalBalance } from '../data/taxes-data';
+import { convertToHomeCurrency, usdBaseRates } from '@shared/data/currency-rates';
+import { groupTotalBalance } from '@shared/data/group-data';
+import type { CurrencyData } from '@shared/data/currencies';
 import type { TranslationKey } from '../translations/en';
 import { TotalBalanceHeader } from '../components/TotalBalanceHeader';
 import { ActionButtonRow } from '../components/ActionButtonRow';
@@ -15,7 +16,7 @@ import { Carousel } from '../components/Carousel';
 import { MultiCurrencyAccountCard } from '../components/MultiCurrencyAccountCard';
 import { EmptyAccountCard } from '../components/EmptyAccountCard';
 import { JarCard } from '../components/JarCard';
-import { computeTotalBalance } from '../data/balances';
+import { computeTotalBalance } from '@shared/data/balances';
 import { useDataset } from '../context/Dataset';
 import { TaskCard } from '../components/TaskCard';
 import { TasksStack } from '../components/TasksStack';
@@ -25,7 +26,7 @@ import { PromotionBanner } from '../components/PromotionBanner';
 import { TransferCalculator } from '../components/TransferCalculator';
 import { PageFooter } from '../components/PageFooter';
 
-function buildBalances(currencyList: typeof currencies) {
+function buildBalances(currencyList: CurrencyData[]) {
   return currencyList.map((c) => ({
     code: c.code,
     amount: `${c.symbol}${c.balance.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
@@ -87,7 +88,7 @@ const GROUP_BALANCE = groupTotalBalance;
 
 type SendAgainRecipient = { name: string; subtitle: string; avatarUrl?: string; hasFastFlag: boolean; badgeFlagCode?: string };
 
-export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavigateGroupAccount, onNavigateGroupCurrency, onNavigateJarAccount, onNavigateJarCurrency, accountType = 'personal', onAddMoney, onSend, onSendWithCurrency, onSendAgain, onRequest, onPaymentLink, onAccountDetails }: { onNavigate?: (page: string) => void; onNavigateAccount?: () => void; onNavigateCurrency?: (code: string) => void; onNavigateGroupAccount?: () => void; onNavigateGroupCurrency?: (code: string) => void; onNavigateJarAccount?: (jarId: string) => void; onNavigateJarCurrency?: (jarId: string, code: string) => void; accountType?: AccountType; onAddMoney?: () => void; onSend?: () => void; onSendWithCurrency?: (sourceCurrency: string, targetCurrency: string, sourceAmount?: string, targetAmount?: string) => void; onSendAgain?: (recipient: SendAgainRecipient, amount?: string) => void; onRequest?: () => void; onPaymentLink?: () => void; onAccountDetails?: () => void }) {
+export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavigateGroupAccount, onNavigateGroupCurrency, onNavigateJarAccount, onNavigateJarCurrency, accountType = 'personal', onAddMoney, onSend, onSendWithCurrency, onSendAgain, onRequest, onPaymentLink, onAccountDetails, onOpen }: { onNavigate?: (page: string) => void; onNavigateAccount?: () => void; onNavigateCurrency?: (code: string) => void; onNavigateGroupAccount?: () => void; onNavigateGroupCurrency?: (code: string) => void; onNavigateJarAccount?: (jarId: string) => void; onNavigateJarCurrency?: (jarId: string, code: string) => void; accountType?: AccountType; onAddMoney?: () => void; onSend?: () => void; onSendWithCurrency?: (sourceCurrency: string, targetCurrency: string, sourceAmount?: string, targetAmount?: string) => void; onSendAgain?: (recipient: SendAgainRecipient, amount?: string) => void; onRequest?: () => void; onPaymentLink?: () => void; onAccountDetails?: () => void; onOpen?: () => void }) {
   const { consumerName, businessName, consumerHomeCurrency, businessHomeCurrency } = usePrototypeNames();
   const { t } = useLanguage();
   const txLabels = useTxLabels();
@@ -98,7 +99,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
   const activeCurrencies = useActiveCurrencies(accountType);
   const activeTransactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
   const activeJars = useActiveJars(accountType);
-  const showTaxes = useHasTaxes(accountType);
+  const showTaxes = useHasGroup(accountType);
   const cardCount = useCardCount(accountType);
   const accountBalances = buildBalances(activeCurrencies);
   // Account card total: convert all currencies to the account's first/display currency
@@ -215,7 +216,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
               />
             );
           })}
-          <EmptyAccountCard />
+          <EmptyAccountCard onOpen={onOpen} />
         </Carousel>
       </section>
 

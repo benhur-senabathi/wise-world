@@ -11,12 +11,12 @@ User datasets allow the prototype to display real account structures from actual
 ### DatasetType
 
 ```typescript
-type DatasetType = 'common' | 'power' | 'matias-personal' | 'matias-business' | 'mike-personal' | 'mike-business' | 'connor-personal' | 'connor-business';
+type DatasetType = 'power' | 'common' | 'connor';
 ```
 
 - `power` — the default richly-featured demo account (all features enabled)
 - `common` — a simpler demo account (fewer features)
-- `{name}-personal` / `{name}-business` — real user datasets
+- `connor` — real user dataset (Connor Berry's personal + business accounts)
 
 ### File structure per user dataset
 
@@ -30,7 +30,7 @@ Each user dataset consists of 3-4 files in `shared-resources/data/`:
 
 ### Hook layer
 
-All dataset switching is handled in `mobile/src/hooks/useDataset.ts`:
+All dataset switching is handled in `src/hooks/useDatasetData.ts` (both web and mobile):
 
 - `useActiveCurrencies(accountType)` — returns the correct `CurrencyData[]` for active dataset
 - `useActiveTransactions(accountType, ...)` — returns the correct `Transaction[]`
@@ -43,7 +43,7 @@ All dataset switching is handled in `mobile/src/hooks/useDataset.ts`:
 
 ### Context
 
-`DatasetContext` (in `mobile/src/context/Dataset.tsx`) holds the active dataset. It reads the initial value from `?dataset=` URL param and posts `dataset-change` messages to the parent frame when changed.
+`DatasetContext` (in `src/context/Dataset.tsx` in both web and mobile) holds the active dataset. It reads the initial value from `?dataset=` URL param and posts `dataset-change` messages to the parent frame when changed.
 
 ## How to add a new user dataset
 
@@ -290,12 +290,8 @@ The Transactions page must use `useActiveTransactions()` — not the hardcoded `
 
 | Dataset | Home Currency | Currencies | Jars | Cards |
 |---------|--------------|------------|------|-------|
-| connor-personal | GBP £16.84 | GBP, EUR (both with interest) | None | 2 (physical + digital) |
-| connor-business | GBP £5.01 | GBP, SGD, AUD, USD | 5 (Marketing, Supplies, Jar, Tax, Travel) — all GBP | 1 (digital) |
-| matias-personal | EUR €10.66 | EUR, GBP, USD | 1 (Savings: GBP, USD) | 2 (physical + digital) |
-| matias-business | USD $0 | USD, EUR, GBP | None | 0 (empty card state) |
-| mike-personal | GBP £12 | GBP, EUR, AUD, CHF, USD, CNY, ILS, ARS | 1 (Savings: GBP, USD, EUR) | 3 (all digital) |
-| mike-business | GBP -£13 | GBP, EUR, USD, ARS | 1 (Reserves: GBP, EUR) | 1 (digital) |
+| connor (personal) | GBP £16.84 | GBP, EUR (both with interest) | None | 2 (physical + digital) |
+| connor (business) | GBP £5.01 | GBP, SGD, AUD, USD | 5 (Marketing, Supplies, Jar, Tax, Travel) — all GBP | 1 (digital) |
 
 ## Debugging checklist
 

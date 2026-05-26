@@ -4,9 +4,9 @@ import { Documents, ChevronDown, ChevronRight, Download, CheckCircleFill, CrossC
 import { Flag } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import { usePrototypeNames } from '../context/PrototypeNames';
-import { getAccountDetails } from '../data/account-details-data';
+import { getAccountDetails } from '@shared/data/account-details-data';
 import type { AccountType } from '../App';
-import type { AccountDetailField, QuickFactFee, AvailabilityItem } from '../data/account-details-data';
+import type { AccountDetailField, QuickFactFee, AvailabilityItem } from '@shared/data/account-details-data';
 
 type Props = {
   code: string;

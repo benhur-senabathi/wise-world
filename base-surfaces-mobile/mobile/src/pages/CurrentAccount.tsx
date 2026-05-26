@@ -12,7 +12,7 @@ import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
 import { convertToHomeCurrency, usdBaseRates } from '@shared/data/currency-rates';
 
-import { groupCurrencies, groupTransactions } from '@shared/data/taxes-data';
+import { groupCurrencies, groupTransactions } from '@shared/data/group-data';
 import type { JarDefinition } from '@shared/data/jar-data';
 
 type Props = {
@@ -20,7 +20,7 @@ type Props = {
   onNavigateCards?: () => void;
   onAccountDetails?: () => void;
   accountType?: AccountType;
-  jar?: string;
+  group?: string;
   jarConfig?: JarDefinition;
   onAdd?: () => void;
   onConvert?: () => void;
@@ -156,9 +156,9 @@ function CardThumbnail({ variant }: { variant: 'physical' | 'digital' | 'biz-phy
   );
 }
 
-function SpendCardMedia({ accountType = 'personal', jar, cardCount = 2 }: { accountType?: AccountType; jar?: string; cardCount?: number }) {
+function SpendCardMedia({ accountType = 'personal', group, cardCount = 2 }: { accountType?: AccountType; group?: string; cardCount?: number }) {
   const isBusiness = accountType === 'business';
-  const isGroup = jar === 'taxes';
+  const isGroup = !!group;
   if (isGroup) {
     return (
       <div className="spend-card-media">
@@ -195,10 +195,10 @@ function TeamAvatarMedia({ personalAvatarUrl }: { personalAvatarUrl?: string }) 
   );
 }
 
-function SidebarContent({ onNavigateCards, accountType = 'personal', jar, accountLabel, personalAvatarUrl, cardCount = 2 }: { onNavigateCards?: () => void; accountType?: AccountType; jar?: string; accountLabel?: string; personalAvatarUrl?: string; cardCount?: number }) {
+function SidebarContent({ onNavigateCards, accountType = 'personal', group, accountLabel, personalAvatarUrl, cardCount = 2 }: { onNavigateCards?: () => void; accountType?: AccountType; group?: string; accountLabel?: string; personalAvatarUrl?: string; cardCount?: number }) {
   const { t } = useLanguage();
   const isBusiness = accountType === 'business';
-  const isGroup = jar === 'taxes';
+  const isGroup = !!group;
   const name = accountLabel ?? '';
   return (
     <>
@@ -206,7 +206,7 @@ function SidebarContent({ onNavigateCards, accountType = 'personal', jar, accoun
         spotlight="active"
         title={isBusiness ? t('cards.title') : t('currentAccount.spend')}
         subtitle={t('currentAccount.cardsInAccount', { count: cardCount, name })}
-        media={<SpendCardMedia accountType={accountType} jar={jar} cardCount={cardCount} />}
+        media={<SpendCardMedia accountType={accountType} group={group} cardCount={cardCount} />}
         control={<ListItem.Navigation onClick={() => onNavigateCards?.()} />}
       />
       {isGroup && (
@@ -245,7 +245,7 @@ function SidebarContent({ onNavigateCards, accountType = 'personal', jar, accoun
   );
 }
 
-export function CurrentAccount({ onNavigateCurrency, onNavigateCards, onAccountDetails, accountType = 'personal', jar, jarConfig, onAdd, onConvert, onSend, onRequest, onPaymentLink, moreMenuOpen, onMoreMenuClose, personalAvatarUrl }: Props) {
+export function CurrentAccount({ onNavigateCurrency, onNavigateCards, onAccountDetails, accountType = 'personal', group, jarConfig, onAdd, onConvert, onSend, onRequest, onPaymentLink, moreMenuOpen, onMoreMenuClose, personalAvatarUrl }: Props) {
   const { consumerName, businessName } = usePrototypeNames();
   const { t } = useLanguage();
   const txLabels = useTxLabels();
@@ -256,7 +256,7 @@ export function CurrentAccount({ onNavigateCurrency, onNavigateCards, onAccountD
   const datasetTransactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
 
   const rates = usdBaseRates;
-  const isGroup = jar === 'taxes';
+  const isGroup = !!group;
   const isJar = !!jarConfig;
   const activeCurrencies = isJar ? jarConfig.currencies : isGroup ? groupCurrencies : datasetCurrencies;
   const activeTransactions = isJar ? jarConfig.transactions : isGroup ? groupTransactions : datasetTransactions;
@@ -271,7 +271,7 @@ export function CurrentAccount({ onNavigateCurrency, onNavigateCards, onAccountD
       ? [{ label: t('currentAccount.editGroup'), icon: <Edit size={24} /> }, { label: t('common.statementsAndReports'), icon: <Document size={24} /> }, { label: t('currentAccount.closeGroup'), icon: <CrossCircle size={24} /> }]
       : [{ label: t('currentAccount.editCurrentAccount'), icon: <Edit size={24} /> }, { label: t('common.statementsAndReports'), icon: <Document size={24} /> }];
 
-  const headerType = isJar ? 'jar' as const : isGroup ? 'taxes' as const : 'account' as const;
+  const headerType = isJar ? 'jar' as const : isGroup ? 'group' as const : 'account' as const;
   const jarIcon = isJar ? (jarConfig.iconName === 'Suitcase' ? <Suitcase size={16} /> : <Savings size={16} />) : undefined;
 
   return (
@@ -315,7 +315,7 @@ export function CurrentAccount({ onNavigateCurrency, onNavigateCards, onAccountD
 
         {activeTab === 'currencies' && <CurrenciesSection onNavigateCurrency={onNavigateCurrency} activeCurrencies={activeCurrencies} isGroup={isGroup && !isJar} />}
         {activeTab === 'transactions' && <TransactionsSection activeTransactions={activeTransactions} />}
-        {activeTab === 'options' && !isJar && <SidebarContent onNavigateCards={onNavigateCards} accountType={accountType} jar={jar} accountLabel={accountLabel} personalAvatarUrl={personalAvatarUrl} cardCount={cardCount} />}
+        {activeTab === 'options' && !isJar && <SidebarContent onNavigateCards={onNavigateCards} accountType={accountType} group={group} accountLabel={accountLabel} personalAvatarUrl={personalAvatarUrl} cardCount={cardCount} />}
         {activeTab === 'options' && isJar && accountType === 'personal' && (
           <div style={{ padding: '16px 0' }}>
             <ListItem

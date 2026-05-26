@@ -2,7 +2,7 @@
 
 The canonical page structure for Wise web prototypes. Every prototype should follow this layout to match production.
 
-> **Component implementations:** See `customcomponents.md` for SideNav, TopBar, MobileNav, and SidebarOverlay TSX + CSS.
+> **Component implementations:** See `custom-components.md` for SideNav, TopBar, MobileNav, and SidebarOverlay TSX + CSS.
 
 ---
 
@@ -238,7 +238,7 @@ container-content
 
 ## App.tsx Scaffold
 
-Minimal App.tsx assembling the shell with all components. See `customcomponents.md` for the full TSX + CSS of each component.
+Minimal App.tsx assembling the shell with all components. See `custom-components.md` for the full TSX + CSS of each component.
 
 ```tsx
 import { useState } from 'react';

@@ -2,7 +2,7 @@ import { IconButton } from '@transferwise/components';
 import { Plus } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
 
-export function EmptyAccountCard() {
+export function EmptyAccountCard({ onOpen }: { onOpen?: () => void }) {
   const { t } = useLanguage();
 
   return (
@@ -34,6 +34,7 @@ export function EmptyAccountCard() {
             size={56}
             priority="primary"
             aria-label={t('emptyAccount.ariaLabel')}
+            onClick={onOpen}
           >
             <Plus size={24} />
           </IconButton>

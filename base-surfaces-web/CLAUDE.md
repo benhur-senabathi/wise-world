@@ -5,12 +5,13 @@ React + TypeScript + Vite prototype of the Wise app. Covers Home, Cards, Transac
 ## Rules
 
 1. **Read before building.** Always read existing source files before modifying or creating components. Never guess at props, APIs, or patterns.
-2. **Design system first.** Use `@transferwise/components` and `@transferwise/icons` for all UI. Check `web/design-system/components.md` before building anything custom.
-3. **Use documented tokens only.** No hardcoded hex values, magic numbers, or ad-hoc CSS variables. Check `web/design-system/tokens.md` and `web/design-system/custom-tokens.md`.
+2. **Design system first.** Use `@transferwise/components` and `@transferwise/icons` for all UI. Before using any Neptune component, verify its props via the Wise Design System MCP (`list-all-documentation` → `get-documentation`). For custom prototype components, check `web/design-system/custom-components.md`.
+3. **Use documented tokens only.** No hardcoded hex values, magic numbers, or ad-hoc CSS variables. Check `shared-resources/design-system/tokens.md` and `web/design-system/custom-tokens.md`.
 4. **Check before creating.** Before building a new component or token, check `web/design-system/custom-components.md` and `web/design-system/custom-tokens.md` — it may already exist.
 5. **Read design system docs on demand.** Detailed references live in `web/design-system/`. Read them when working on related areas — don't rely on memory.
 6. **Commit message formatting.** No co-authored-by lines. Use `• ` (bullet character) for lists in commit bodies (renders in Slack notifications). Keep each bullet short and concise — no filler, just what changed.
-7. **Shared data.** Balances, transactions, recipients, rates, jars, and account details live in `shared-resources/data/` at the repo root — edit data there, not locally. Only `src/data/nav.tsx` is platform-specific and stays local. Local `src/data/` files are thin re-exports from `@shared/data/` (Vite alias).
+7. **Shared data.** Balances, transactions, recipients, rates, jars, and account details live in `shared-resources/data/` — import via `@shared/data/` (Vite alias). Only `src/data/nav.tsx` is platform-specific.
+8. **Never guess component APIs.** Always verify `@transferwise/components` props via the Wise Design System MCP before writing JSX. If the MCP is unavailable, tell the user.
 
 ## Quick Start
 
@@ -25,7 +26,7 @@ npm run build    # production build -> dist/
 
 ### Routing
 
-State-driven navigation with History API URL sync (no router library). **Every page must have a URL.** All URLs use 8-digit numeric IDs — no slugs, currency codes, or query params. Read `web/account-logic/routing.md` for the full URL reference, ID system, and instructions for adding new routes.
+State-driven navigation with History API URL sync (no router library). **Every page must have a URL.** All URLs use 8-digit numeric IDs — no slugs, currency codes, or query params. Read `shared-resources/account-logic/routing.md` for the full URL reference, ID system, and instructions for adding new routes.
 
 Key rules:
 - `activeNavItem` (English label like `'Home'`) + `subPage` union type drive navigation state
@@ -44,19 +45,13 @@ Key rules:
 
 `AccountType = 'personal' | 'business'` — toggled via PrototypeSettings or Account page. Each type has its own nav items (`personalNav` / `businessNav`), currency data, and transaction data.
 
-### Account Type Hierarchy
+### Account Types & Balances
 
-There are 3 account types: **Current Account**, **Jar**, and **Group/Shared**. Each has different features (cards, account details, action buttons, sidebar content). Read `web/account-logic/account-types.md` for the full reference and hard rules before modifying any account.
-
-- **Current Account** — main account with cards, account details, Request button
-- **Jar** — lightweight savings container (no cards, no account details, no Request). Data in `src/data/jar-data.tsx` (`JarDefinition` type). Uses `JarCard` on Home, not `MultiCurrencyAccountCard`.
-- **Group/Shared** — multi-user account with cards + participants, no account details. The existing "Taxes" account (`shared-resources/data/taxes-data.tsx`) is a Group. Code uses `groupCurrencies` / `isGroup` — "Taxes" is just the display name.
-
-### Balance rules
-
-- **Total balance = current account + group + jar.** Use `computeTotalBalance()` from `shared-resources/data/balances.ts` — never hand-roll the sum.
-- **No `formattedBalance` field.** Use `formatBalance(currency, 'symbol')` for `£948.70` or `formatBalance(currency)` for `948.70 GBP`.
-- **All totals computed.** `groupTotalBalance`, `totalAccountBalance` use `.reduce()`. Never hardcode a balance total.
+See `shared-resources/account-logic/` for the authoritative reference. Key rules:
+- `AccountType = 'personal' | 'business'` — 3 account categories: Current Account, Jar, Group
+- Total balance = current + group + jar. Use `computeTotalBalance()` from `@shared/data/balances`
+- Balances auto-computed from transactions — never hardcode
+- "Taxes" is just the display name for the Group account — code uses `groupCurrencies` / `isGroup`
 
 ## i18n
 
@@ -112,7 +107,7 @@ Account logic docs in `shared-resources/account-logic/` — platform-agnostic bu
 | `interest-stocks.md` | Interest/stocks feature flag system (hasInterest, hasStocks, interestRate, totalReturns) |
 | `routing.md` | Full URL reference, ID system (group IDs + balance IDs), and how to add new routes |
 
-Shared design system docs in `../shared-resources/design-system/` — cross-platform Neptune reference:
+Shared design system docs in `shared-resources/design-system/` — cross-platform Neptune reference:
 
 | Doc | Contents |
 |-----|----------|
@@ -122,7 +117,7 @@ Shared design system docs in `../shared-resources/design-system/` — cross-plat
 | `tokens.md` | Neptune color, typography, spacing tokens (CSS variables) |
 | `neptune-css.md` | Neptune CSS utilities, modifiers, and patterns |
 
-Content & writing docs in `../shared-resources/content/` — read when writing or reviewing UI copy:
+Content & writing docs in `shared-resources/content/` — read when writing or reviewing UI copy:
 
 | Doc | Contents |
 |-----|----------|

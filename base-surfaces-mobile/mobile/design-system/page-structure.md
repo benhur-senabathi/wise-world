@@ -9,7 +9,7 @@ The canonical page structure for the Wise mobile prototype. Runs at 393px viewpo
 The app uses a single-column layout with fixed navigation chrome at top and bottom:
 
 ```
-DeviceFrame (iPhone 16 Pro shell, ?mode=app iframe)
+DeviceFrame (iPhone 17 Pro shell, ?mode=app iframe)
 └── column-layout-main
     ├── IOSTopBar (fixed top, z-index 200)
     │   ├── Leading: avatar (Home) or back button (drill-down)
@@ -26,7 +26,7 @@ DeviceFrame (iPhone 16 Pro shell, ?mode=app iframe)
 
 ```css
 .column-layout-main {
-  --content-pad-top: 112px;
+  --content-pad-top: 120px;
   --content-pad-bottom: 80px;
   --content-pad-x: 16px;
   flex: 1;

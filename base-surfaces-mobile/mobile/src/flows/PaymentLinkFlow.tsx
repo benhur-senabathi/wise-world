@@ -4,34 +4,27 @@ import { InfoCircle, ChevronDown, Money } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { FlowHeader } from '../components/FlowHeader';
 import { ButtonCue } from '../components/ButtonCue';
+import { WiseLogoIcon } from '../components/WiseLogoIcon';
 import { useLanguage } from '../context/Language';
 import type { AccountType } from '../App';
-
-function WiseLogoIcon() {
-  return (
-    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M1.875 15.28 7.35 8.838h-.002L4.02 3h18.105l-7.008 19.375h-3.97L16.95 6.3H9.463l1.665 2.883-.008.08-2.56 2.979h4.188l-1.098 3.037z" />
-    </svg>
-  );
-}
 
 type ButtonState = 'disabled' | 'loading' | 'active';
 
 type Props = {
   defaultCurrency: string;
   accountLabel: string;
-  jar?: 'taxes';
+  group?: string;
   onClose: () => void;
   accountType: AccountType;
   avatarUrl: string;
   initials: string;
 };
 
-export function PaymentLinkFlow({ defaultCurrency, accountLabel, jar, onClose, accountType, avatarUrl, initials }: Props) {
+export function PaymentLinkFlow({ defaultCurrency, accountLabel, group, onClose, accountType, avatarUrl, initials }: Props) {
   const { t } = useLanguage();
 
   const isBusiness = accountType === 'business';
-  const isGroup = jar === 'taxes';
+  const isGroup = !!group;
 
   const [currency] = useState(defaultCurrency);
   const [amount, setAmount] = useState<number | null>(null);

@@ -4,7 +4,7 @@ import { NotificationActive, QuestionMarkCircle } from '@transferwise/icons';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { CurrencyInputGroup } from './CurrencyInputGroup';
 import { useLanguage } from '../context/Language';
-import { usdBaseRates } from '../data/currency-rates';
+import { usdBaseRates } from '@shared/data/currency-rates';
 import { useLiveRates } from '../context/LiveRates';
 import { useShimmer } from '../context/Shimmer';
 import { ShimmerTransferCalculator } from './Shimmer';

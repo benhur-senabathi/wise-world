@@ -40,7 +40,53 @@ Fixed header bar positioned at the top of the viewport. Renders contextual leadi
 
 **CSS classes:** `.ios-glass-btn`, `.ios-glass-btn--circle`, `.ios-glass-btn--pill`, `.ios-glass-btn--capsule`, `.ios-glass-btn--accent`, `.ios-glass-btn--avatar`
 
+**Components:** `GlassCircle` and `GlassPill` (exported from `FlowHeader.tsx`, also defined locally in `IOSTopBar.tsx`)
+
 Frosted glass buttons matching Apple's iOS 26 Liquid Glass design language. All variants use `useLiquidGlass` for spring-physics interaction.
+
+### When to use Liquid Glass
+
+Liquid glass buttons are **only** used in the fixed navigation chrome — never inside scrollable page content.
+
+| Context | Use liquid glass? | Why |
+|---------|------------------|-----|
+| IOSTopBar (fixed top) | Yes | Top bar floats over content, glass matches iOS system UI |
+| FlowHeader (flow overlay top) | Yes | Same floating chrome pattern as IOSTopBar |
+| MobileNav (fixed bottom tab bar) | Yes (WebGL `useLiquidGL`) | Tab bar floats over content |
+| Page content (buttons, CTAs) | No — use Neptune `<Button>` | Content buttons are part of the layout, not floating chrome |
+| BottomSheet actions | No — use Neptune `<Button>` | Sheet is a panel, not floating chrome |
+| Account/Currency page action buttons | No — use `ActionButtonRow` | Inline action buttons in page flow |
+
+### Which variant to use
+
+| Need | Variant | Example |
+|------|---------|---------|
+| Single icon action (back, close, more, chart) | `GlassCircle` | Back arrow, More menu, BarChart |
+| Text label (with optional icon) | `GlassPill` | "Travel hub", "Open +", "Add" |
+| Primary CTA in top bar | `GlassPill` + `--accent` | "Earn", "Order a card" |
+| User avatar (account switcher) | `--avatar` class directly | Leading avatar on Home |
+
+### IOSTopBar button placement rules
+
+| Page | Leading (left) | Trailing (right) |
+|------|---------------|-----------------|
+| Home | Avatar button | Earn (accent pill) + Open pill (+ personal) or Earn + Open + BarChart circle (business) |
+| Cards | "Travel hub" pill | "Order a card" (accent pill) — hidden on business team tab |
+| Recipients | "Invite" pill | "Add" (accent pill) + Scan circle |
+| Payments | — | — |
+| Transactions (drill-down) | Back circle | BarChart circle |
+| Insights (drill-down) | Back circle | — |
+| Account (drill-down) | Back circle | "Open an account" pill |
+| CurrentAccount / Group / Jar / Currency | Back circle | More circle (opens BottomSheet) |
+| Account Details | Back circle | Flag (not a glass button) |
+
+### FlowHeader button placement rules
+
+| Position | Button | When |
+|----------|--------|------|
+| Leading (left) | Close (Cross icon) circle | Always, unless `onBack` is provided |
+| Leading (left) | Back (ArrowLeft icon) circle | When `onBack` exists and `forceClose` is false |
+| Trailing (right) | Optional — passed as `trailing` prop | Flow-specific (e.g. "Done" pill) |
 
 ### Variants
 

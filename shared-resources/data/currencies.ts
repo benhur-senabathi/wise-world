@@ -55,13 +55,3 @@ export const currencies: CurrencyData[] = [
   },
 ];
 
-export const totalAccountBalance = currencies.reduce((sum, c) => sum + c.balance, 0);
-
-/** Look up a CurrencyData by its balanceId across any set of currencies. */
-export function findByBalanceId(id: string, currencyLists: CurrencyData[][]): CurrencyData | undefined {
-  for (const list of currencyLists) {
-    const found = list.find((c) => c.balanceId === id);
-    if (found) return found;
-  }
-  return undefined;
-}
