@@ -194,6 +194,7 @@ Mobile-specific design system docs in `mobile/design-system/` — read these whe
 | `custom-components-account.md` | Account & currency page components (header, actions, calculator, etc.) |
 | `custom-components-flows.md` | Flow overlays, i18n, ButtonCue, shimmer system, success screens |
 | `ios-components.md` | iOS-specific components (IOSTopBar, MobileNav, PageTransition, BottomSheet, DeviceFrame, Liquid Glass) |
+| `liquid-glass-components.md` | Standalone liquid glass components (Button, IconButton, SegmentedControl, Switch, Container, Transform, TabBar) — when to use vs Neptune, surface recipes, dark mode |
 | `neptune-css.md` | Neptune CSS utilities (includes MAKE_OVERRIDES for portal stripping) |
 | `page-structure.md` | Mobile layout shell, navigation chrome, CSS custom properties |
 | `src/flows/structure.md` | Flow overlay architecture, ButtonCue pattern, avatar styles, button state machine |

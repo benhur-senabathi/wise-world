@@ -123,7 +123,7 @@ export function PrototypeSettings() {
           >
             <button
               ref={glass.ref}
-              className="ios-glass-btn ios-glass-btn--circle"
+              className={`ios-glass-btn ios-glass-btn--circle${glass.isPressed ? ' ios-glass-btn--pressed' : ''}`}
               onClick={closeSheet}
               onPointerDown={(e) => { e.stopPropagation(); glass.onPointerDown(e); }}
               onPointerMove={glass.onPointerMove}
@@ -131,6 +131,11 @@ export function PrototypeSettings() {
               onPointerCancel={glass.onPointerUp}
               aria-label="Close"
             >
+              <div className="ios-glass-btn__surface">
+                <div className="ios-glass-btn__surface-burn" />
+                <div className="ios-glass-btn__surface-darken" />
+              </div>
+              <div className="ios-glass-btn__flash" />
               <span className="ios-glass-btn__icon">
                 <Cross size={24} />
               </span>

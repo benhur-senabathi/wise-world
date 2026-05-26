@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { ListItem, CircularButton, SegmentedControl } from '@transferwise/components';
+import { ListItem, CircularButton } from '@transferwise/components';
+import { LiquidGlassSegmentedControl } from '../components/LiquidGlassSegmentedControl';
 import { Dial, CardWise, Freeze, List, Cog, PadlockUnlocked, Edit, Limit, Bin, QrCode, Plus, Camera } from '@transferwise/icons';
 import type { AccountType } from '../App';
 import { useCardCount, useHasGroup } from '../hooks/useDatasetData';
@@ -296,9 +297,8 @@ export function Cards({ accountType = 'personal', cardsTab = 'your', onCardsTabC
       <h1 className="np-text-title-screen" style={{ margin: '0 0 16px' }}>{isQr && !showTeam ? t('cards.payWithQr') : t('cards.title')}</h1>
       {isBusiness && hasTaxes && (
         <div style={{ marginBottom: 16 }}>
-          <SegmentedControl
+          <LiquidGlassSegmentedControl
             name="cards-tabs"
-            mode="input"
             segments={[
               { id: 'tab-your', value: 'your', label: t('cards.yourCards') },
               { id: 'tab-team', value: 'team', label: t('cards.teamCards') },

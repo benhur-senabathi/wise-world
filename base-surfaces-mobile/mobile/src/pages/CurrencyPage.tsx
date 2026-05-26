@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { UpwardGraph, Graph, AutoConvert, Link as LinkIcon, ChevronRight, QuestionMarkCircle, Savings, Suitcase, Documents, DirectDebits, Bank, Bin, Money } from '@transferwise/icons';
-import { Button, ListItem, SegmentedControl } from '@transferwise/components';
+import { Button, ListItem } from '@transferwise/components';
+import { LiquidGlassSegmentedControl } from '../components/LiquidGlassSegmentedControl';
 import type { AccountType } from '../App';
 import { AccountPageHeader } from '../components/AccountPageHeader';
 import { ActivitySummary } from '../components/ActivitySummary';
@@ -343,9 +344,8 @@ export function CurrencyPage({ code, onNavigateAccount, onAccountDetails, accoun
           </div>
         )}
         <div className="currency-page__tabs">
-          <SegmentedControl
+          <LiquidGlassSegmentedControl
             name="currency-tabs"
-            mode="input"
             segments={[
               { id: 'ctab-transactions', value: 'transactions', label: t('currencyPage.tab.transactions') },
               { id: 'ctab-options', value: 'options', label: t('currencyPage.tab.options') },

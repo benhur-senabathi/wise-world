@@ -7,7 +7,7 @@ export function GlassCircle({ children, onClick, ariaLabel }: { children: ReactN
   return (
     <button
       ref={glass.ref}
-      className="ios-glass-btn ios-glass-btn--circle"
+      className={`ios-glass-btn ios-glass-btn--circle${glass.isPressed ? ' ios-glass-btn--pressed' : ''}`}
       onClick={onClick}
       aria-label={ariaLabel}
       onPointerDown={glass.onPointerDown}
@@ -15,6 +15,11 @@ export function GlassCircle({ children, onClick, ariaLabel }: { children: ReactN
       onPointerUp={glass.onPointerUp}
       onPointerCancel={glass.onPointerUp}
     >
+      <div className="ios-glass-btn__surface">
+        <div className="ios-glass-btn__surface-burn" />
+        <div className="ios-glass-btn__surface-darken" />
+      </div>
+      <div className="ios-glass-btn__flash" />
       {children}
     </button>
   );
@@ -25,13 +30,18 @@ export function GlassPill({ children, className, onClick }: { children: ReactNod
   return (
     <button
       ref={glass.ref}
-      className={`ios-glass-btn ios-glass-btn--pill ${className || ''}`}
+      className={`ios-glass-btn ios-glass-btn--pill ${className || ''}${glass.isPressed ? ' ios-glass-btn--pressed' : ''}`}
       onClick={onClick}
       onPointerDown={glass.onPointerDown}
       onPointerMove={glass.onPointerMove}
       onPointerUp={glass.onPointerUp}
       onPointerCancel={glass.onPointerUp}
     >
+      <div className="ios-glass-btn__surface">
+        <div className="ios-glass-btn__surface-burn" />
+        <div className="ios-glass-btn__surface-darken" />
+      </div>
+      <div className="ios-glass-btn__flash" />
       {children}
     </button>
   );

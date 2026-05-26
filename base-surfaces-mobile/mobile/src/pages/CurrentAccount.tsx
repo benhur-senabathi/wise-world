@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Plus, Money, Savings, Suitcase, Upload, Edit, Document, CrossCircle } from '@transferwise/icons';
-import { Button, ListItem, SegmentedControl, AvatarLayout, AvatarView } from '@transferwise/components';
+import { Button, ListItem, AvatarLayout, AvatarView } from '@transferwise/components';
+import { LiquidGlassSegmentedControl } from '../components/LiquidGlassSegmentedControl';
 import { Flag } from '@wise/art';
 import type { AccountType } from '../App';
 import { AccountPageHeader } from '../components/AccountPageHeader';
@@ -297,9 +298,8 @@ export function CurrentAccount({ onNavigateCurrency, onNavigateCards, onAccountD
 
       <div>
         <div className="current-account__tabs">
-          <SegmentedControl
+          <LiquidGlassSegmentedControl
             name="account-tabs"
-            mode="input"
             segments={isJar && accountType !== 'personal' ? [
               { id: 'tab-currencies', value: 'currencies', label: t('currentAccount.tab.currencies') },
               { id: 'tab-transactions', value: 'transactions', label: t('currentAccount.tab.transactions') },
