@@ -267,4 +267,4 @@ export function buildBusinessTransactions(consumerName: string, labels: TxTransl
   ];
 }
 
-export const businessTransactions: Transaction[] = buildBusinessTransactions('Connor Berry');
+export const businessTransactions: Transaction[] = buildBusinessTransactions('Benhur Senabathi');

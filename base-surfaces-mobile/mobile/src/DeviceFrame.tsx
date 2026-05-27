@@ -519,7 +519,7 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
               )}}
               onClick={() => setDatasetPickerOpen(!datasetPickerOpen)}
             >
-              {{ power: 'Power', common: 'Common', connor: 'Connor Berry' }[dataset] ?? dataset}
+              {{ power: 'Power', common: 'Common', connor: 'Benhur Senabathi' }[dataset] ?? dataset}
             </Button>
             {datasetPickerOpen && (
               <div className="df-picker__panel">
@@ -546,7 +546,7 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
                     ))}
                     <li className="df-picker__dropdown-heading">Real users</li>
                     {([
-                      { id: 'connor', label: 'Connor Berry' },
+                      { id: 'connor', label: 'Benhur Senabathi' },
                     ] as const).map((d) => (
                       <li key={d.id}>
                         <button

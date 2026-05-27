@@ -53,6 +53,14 @@ export const currencies: CurrencyData[] = [
     balance: computeCurrencyBalance('CAD', transactions),
     accountDetails: '200110083474',
   },
+  {
+    code: 'HUF',
+    balanceId: '74291508',
+    name: 'Hungarian forint',
+    symbol: 'Ft',
+    balance: computeCurrencyBalance('HUF', transactions),
+    accountDetails: '11773016-01011480',
+  },
 ];
 
 export const totalAccountBalance = currencies.reduce((sum, c) => sum + c.balance, 0);

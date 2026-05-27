@@ -55,7 +55,7 @@ export const businessRecipients: Recipient[] = [
   { id: 120, name: 'BNP Paribas', subtitle: 'BNP Paribas SA ending ·· 3847', avatarType: 'logo', initials: 'B', hasFastFlag: false, isMyAccount: true, badgeFlagCode: 'EUR' },
   { id: 103, name: 'Bright Ideas Agency', subtitle: 'NatWest ending ·· 3901', avatarType: 'initials', initials: 'BI', hasFastFlag: false, badgeFlagCode: 'GBP' },
   { id: 121, name: 'Chase', subtitle: 'JPMorgan Chase Bank ending ·· 8365', avatarType: 'logo', initials: 'C', hasFastFlag: false, isMyAccount: true, badgeFlagCode: 'USD' },
-  { id: 104, name: 'Connor Berry', subtitle: 'Wise account', avatarType: 'photo', avatarSlug: 'connor-berry', hasFastFlag: true },
+  { id: 104, name: 'Benhur Senabathi', subtitle: 'Wise account', avatarType: 'initials', initials: 'BS', hasFastFlag: true },
   { id: 122, name: 'DBS', subtitle: 'DBS Bank Ltd ending ·· 3756', avatarType: 'logo', initials: 'D', hasFastFlag: false, isMyAccount: true, badgeFlagCode: 'SGD' },
   { id: 105, name: 'Figma', subtitle: 'Figma Inc.', avatarType: 'logo', initials: 'F', hasFastFlag: false, badgeFlagCode: 'USD' },
   { id: 106, name: 'HMRC', subtitle: 'Coutts & Co ending ·· 0842', avatarType: 'initials', initials: 'HM', hasFastFlag: false, badgeFlagCode: 'GBP' },
@@ -75,7 +75,7 @@ export const businessRecentContacts = [
   { name: 'HMRC', subtitle: 'Coutts & Co', initials: 'HM', badge: { flagCode: 'GBP' } },
   { name: 'Meridian Studios', subtitle: 'Lloyds Bank', initials: 'MS', badge: { flagCode: 'GBP' } },
   { name: 'Marco Rossi', subtitle: 'Deutsche Bank', initials: 'MR', badge: { flagCode: 'EUR' } },
-  { name: 'Connor Berry', subtitle: 'Wise account', imgSrc: 'https://www.tapback.co/api/avatar/connor-berry.webp', badge: { icon: <FastFlag size={16} />, type: 'action' as const } },
+  { name: 'Benhur Senabathi', subtitle: 'Wise account', initials: 'BS', badge: { icon: <FastFlag size={16} />, type: 'action' as const } },
 ];
 
 export function getAvatarSrc(r: Recipient): string | undefined {

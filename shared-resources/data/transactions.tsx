@@ -351,10 +351,17 @@ export function buildTransactions(consumerName: string, businessName: string, la
 
     // 4 Feb — GBP: +500.00
     { name: consumerName, subtitle: labels.added, amount: '+ 500.00 GBP', isPositive: true, icon: <Plus size={24} />, date: '4 February', currency: 'GBP' },
+
+    // HUF transactions
+    { name: consumerName, subtitle: labels.added, amount: '+ 250000 HUF', isPositive: true, icon: <Plus size={24} />, date: '15 March', currency: 'HUF' },
+    { name: 'Spar', amount: '4890 HUF', isPositive: false, imgSrc: logoUrl('spar.hu'), date: '18 March', currency: 'HUF' },
+    { name: 'BKK', amount: '1490 HUF', isPositive: false, imgSrc: logoUrl('bkk.hu'), date: '20 March', currency: 'HUF' },
+    { name: 'Bolt', amount: '3200 HUF', isPositive: false, imgSrc: logoUrl('bolt.eu'), date: '22 March', currency: 'HUF' },
+    { name: 'Lidl', amount: '8750 HUF', isPositive: false, imgSrc: logoUrl('lidl.hu'), date: '25 March', currency: 'HUF' },
   ];
 }
 
-export const transactions: Transaction[] = buildTransactions('Connor Berry', 'Berry Design');
+export const transactions: Transaction[] = buildTransactions('Benhur Senabathi', 'Senabathi Design');
 
 /**
  * Compute a currency's balance by summing all transaction credits and debits.

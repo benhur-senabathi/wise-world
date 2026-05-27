@@ -109,7 +109,7 @@ export function SendFlow({ defaultCurrency, accountLabel, jar, accountStyle, onC
     [consumerName],
   );
   const dynamicBusinessRecentContacts = useMemo(() =>
-    businessRecentContacts.map((c) => c.name === 'Connor Berry' ? { ...c, name: consumerName } : c),
+    businessRecentContacts.map((c) => c.name === 'Benhur Senabathi' ? { ...c, name: consumerName } : c),
     [consumerName],
   );
 

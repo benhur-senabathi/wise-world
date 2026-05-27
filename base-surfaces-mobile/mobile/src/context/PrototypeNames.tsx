@@ -12,9 +12,9 @@ interface PrototypeNamesContextValue {
 }
 
 const PrototypeNamesContext = createContext<PrototypeNamesContextValue>({
-  consumerName: 'Connor Berry',
+  consumerName: 'Benhur Senabathi',
   setConsumerName: () => {},
-  businessName: 'Berry Design',
+  businessName: 'Senabathi Design',
   setBusinessName: () => {},
   consumerHomeCurrency: 'GBP',
   setConsumerHomeCurrency: () => {},
@@ -23,8 +23,8 @@ const PrototypeNamesContext = createContext<PrototypeNamesContextValue>({
 });
 
 export function PrototypeNamesProvider({ children }: { children: ReactNode }) {
-  const [consumerName, setConsumerName] = useState('Connor Berry');
-  const [businessName, setBusinessName] = useState('Berry Design');
+  const [consumerName, setConsumerName] = useState('Benhur Senabathi');
+  const [businessName, setBusinessName] = useState('Senabathi Design');
   const [consumerHomeCurrency, setConsumerHomeCurrency] = useState('GBP');
   const [businessHomeCurrency, setBusinessHomeCurrency] = useState('GBP');
 
