@@ -1,20 +1,19 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
-import { UpwardGraph, Graph, AutoConvert, Link as LinkIcon, ChevronRight, QuestionMarkCircle, Savings, Suitcase, Documents, DirectDebits, Bank, Bin, Money } from '@transferwise/icons';
+import { UpwardGraph, AutoConvert, Link as LinkIcon, ChevronRight, QuestionMarkCircle, Savings, Suitcase, Documents, DirectDebits, Bank, Bin, Money, People, Heart, Backpack } from '@transferwise/icons';
 import { Button, ListItem } from '@transferwise/components';
 import { LiquidGlassSegmentedControl } from '../components/LiquidGlassSegmentedControl';
 import type { AccountType } from '../App';
 import { AccountPageHeader } from '../components/AccountPageHeader';
 import { ActivitySummary } from '../components/ActivitySummary';
-import { currencies, type CurrencyData } from '@shared/data/currencies';
+import { type CurrencyData } from '@shared/data/currencies';
 import { formatBalance } from '@shared/data/balances';
-import { businessCurrencies } from '@shared/data/business-currencies';
-import { buildTransactions, getTransactionsForCurrency, groupByDate, type Transaction } from '@shared/data/transactions';
-import { buildBusinessTransactions } from '@shared/data/business-transactions';
+import { getTransactionsForCurrency, groupByDate, type Transaction } from '@shared/data/transactions';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
+import { useActiveCurrencies, useActiveTransactions } from '../hooks/useDatasetData';
 
-import { groupCurrencies, groupTransactions } from '@shared/data/group-data';
 import type { JarDefinition } from '@shared/data/jar-data';
+import { getAccountBySubPageType } from '@shared/data/account-registry';
 
 type Props = {
   code: string;
@@ -22,6 +21,8 @@ type Props = {
   onAccountDetails?: () => void;
   accountType?: AccountType;
   group?: string;
+  joint?: boolean;
+  youngExplorer?: boolean;
   jarConfig?: JarDefinition;
   onAdd?: () => void;
   onConvert?: () => void;
@@ -30,6 +31,13 @@ type Props = {
   onPaymentLink?: () => void;
   moreMenuOpen?: boolean;
   onMoreMenuClose?: () => void;
+};
+
+const ICON_MAP: Record<string, React.ReactNode> = {
+  Money: <Money size={16} />,
+  People: <People size={16} />,
+  Heart: <Heart size={16} />,
+  Backpack: <Backpack size={16} />,
 };
 
 function TransactionsSection({ currency, txList }: { currency: CurrencyData; txList?: Transaction[] }) {
@@ -101,7 +109,7 @@ function TransactionsSection({ currency, txList }: { currency: CurrencyData; txL
 function InterestListItem({ currency, accountType = 'personal', isJar = false }: { currency: CurrencyData; accountType?: AccountType; isJar?: boolean }) {
   const { t } = useLanguage();
   const isStocks = currency.hasStocks;
-  const isActive = !isJar && (isStocks || (currency.code === 'GBP' && accountType === 'personal') || currency.hasInterest);
+  const isActive = !isJar && (isStocks || currency.hasInterest);
   return (
     <ListItem
       spotlight={isActive ? 'active' : 'inactive'}
@@ -109,10 +117,10 @@ function InterestListItem({ currency, accountType = 'personal', isJar = false }:
       subtitle={isStocks ? t('currencyPage.stocksIndex') : isActive ? t('currencyPage.variableRate') : t('currencyPage.exploreGrow')}
       media={
         <ListItem.AvatarView size={48} style={isActive
-          ? { backgroundColor: '#9fe870', border: 'none', color: '#163300' }
+          ? { backgroundColor: 'var(--color-interactive-accent)', border: 'none', color: 'var(--color-forest-green)' }
           : { backgroundColor: 'var(--color-background-neutral)', border: 'none' }
         }>
-          {isStocks ? <Graph size={24} /> : <UpwardGraph size={24} />}
+          <UpwardGraph size={24} />
         </ListItem.AvatarView>
       }
       control={<ListItem.Navigation onClick={() => {}} />}
@@ -194,6 +202,14 @@ function OptionsContent({ currency, accountType = 'personal', interestReturns, i
         </div>
       )}
       <div className="currency-page__options-list">
+        <InterestListItem currency={currency} accountType={accountType} isJar={isJar} />
+      </div>
+      {!showRateCard && (
+        <p className="np-text-body-small currency-page__disclaimer" style={{ margin: '12px 0 8px', color: 'var(--color-content-secondary)', textAlign: 'center' }}>
+          {t('currencyPage.disclaimer')}
+        </p>
+      )}
+      <div className="currency-page__options-list" style={{ marginTop: 16 }}>
         <ListItem
           spotlight="inactive"
           title={t('currencyPage.autoConversions')}
@@ -205,14 +221,7 @@ function OptionsContent({ currency, accountType = 'personal', interestReturns, i
           }
           control={<ListItem.Navigation onClick={() => {}} />}
         />
-
-        <InterestListItem currency={currency} accountType={accountType} isJar={isJar} />
       </div>
-      {!showRateCard && (
-        <p className="np-text-body-small currency-page__disclaimer" style={{ margin: '12px 0 8px', color: 'var(--color-content-secondary)', textAlign: 'center' }}>
-          {t('currencyPage.disclaimer')}
-        </p>
-      )}
     </>
   );
 }
@@ -271,17 +280,24 @@ function Sidebar({ currency, accountType = 'personal', interestReturns, isJar = 
   );
 }
 
-export function CurrencyPage({ code, onNavigateAccount, onAccountDetails, accountType = 'personal', group, jarConfig, onAdd, onConvert, onSend, onRequest, onPaymentLink, moreMenuOpen, onMoreMenuClose }: Props) {
+export function CurrencyPage({ code, onNavigateAccount, onAccountDetails, accountType = 'personal', group, joint, youngExplorer, jarConfig, onAdd, onConvert, onSend, onRequest, onPaymentLink, moreMenuOpen, onMoreMenuClose }: Props) {
   const { t } = useLanguage();
   const txLabels = useTxLabels();
   const { consumerName, businessName } = usePrototypeNames();
   const [activeTab, setActiveTab] = useState('transactions');
-  const personalTransactions = useMemo(() => buildTransactions(consumerName, businessName, txLabels), [consumerName, businessName, txLabels]);
-  const businessTransactions = useMemo(() => buildBusinessTransactions(consumerName, txLabels), [consumerName, txLabels]);
+  const datasetCurrencies = useActiveCurrencies(accountType);
+  const datasetTransactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
   const isGroup = !!group;
   const isJar = !!jarConfig;
-  const activeCurrencies = isJar ? jarConfig.currencies : isGroup ? groupCurrencies : (accountType === 'business' ? businessCurrencies : currencies);
-  const activeTxList = isJar ? jarConfig.transactions : isGroup ? groupTransactions : (accountType === 'business' ? businessTransactions : personalTransactions);
+  const isJoint = !!joint;
+  const isYoungExplorer = !!youngExplorer;
+
+  const subPageType = isJar ? null : group === 'shared-spending' ? 'shared-spending-account' : isGroup ? 'group-account' : isJoint ? 'joint-account' : isYoungExplorer ? 'young-explorer-account' : 'account';
+  const accountDef = subPageType && subPageType !== 'account' ? getAccountBySubPageType(subPageType) : undefined;
+  const features = accountDef?.features;
+
+  const activeCurrencies = isJar ? jarConfig.currencies : accountDef ? accountDef.getCurrencies() : datasetCurrencies;
+  const activeTxList = isJar ? jarConfig.transactions : accountDef ? accountDef.getTransactions() : datasetTransactions;
   const currency = activeCurrencies.find((c) => c.code === code);
 
   const interestReturns = useMemo(() => {
@@ -315,23 +331,25 @@ export function CurrencyPage({ code, onNavigateAccount, onAccountDetails, accoun
         currencyCode={currency.code}
         label={currency.code}
         balance={formatBalance(currency)}
-        accountDetails={(isJar || isGroup) ? undefined : currency.accountDetails}
+        accountDetails={isJar ? undefined : features?.hasAccountDetails === false ? undefined : currency.accountDetails}
         menuItems={menuItems}
         moreMenuOpen={moreMenuOpen}
         onMoreMenuClose={onMoreMenuClose}
-        onAccountDetailsClick={(isJar || isGroup) ? undefined : onAccountDetails}
+        onAccountDetailsClick={isJar ? undefined : features?.hasAccountDetails === false ? undefined : onAccountDetails}
         onBreadcrumbClick={onNavigateAccount}
         accountType={accountType}
-        jarColor={isJar ? jarConfig.color : isGroup ? '#FFEB69' : undefined}
-        jarName={isJar ? t(jarConfig.nameKey) : isGroup ? t('home.taxes') : undefined}
-        jarIcon={jarIcon ? jarIcon : isGroup ? <Money size={16} /> : undefined}
-        hideGetPaid={isJar}
+        jarColor={isJar ? jarConfig.color : accountDef && accountDef.subPageType !== 'account' ? accountDef.style.color : undefined}
+        jarTextColor={accountDef && accountDef.subPageType !== 'account' ? accountDef.style.textColor : undefined}
+        jarName={isJar ? t(jarConfig.nameKey) : accountDef && accountDef.subPageType !== 'account' ? t(accountDef.nameKey) : undefined}
+        jarIcon={jarIcon ? jarIcon : accountDef && accountDef.subPageType !== 'account' ? ICON_MAP[accountDef.style.iconName] || null : undefined}
+        hideGetPaid={isJar || (features ? !features.hasRequest : false)}
         sendSecondary={currency.balance === 0}
+        moveOnly={features?.moveOnly}
         onAdd={onAdd}
-        onConvert={onConvert}
-        onSend={onSend}
-        onRequest={isJar ? undefined : onRequest}
-        onPaymentLink={isJar ? undefined : onPaymentLink}
+        onConvert={features?.hasConvert === false ? undefined : onConvert}
+        onSend={features?.hasSend === false ? undefined : onSend}
+        onRequest={isJar || features?.hasRequest === false ? undefined : onRequest}
+        onPaymentLink={isJar || features?.hasPaymentLink === false ? undefined : onPaymentLink}
       />
 
       <div>

@@ -3,11 +3,11 @@ import { Plus, RequestReceive, Send, Savings, Suitcase } from '@transferwise/ico
 import { Button } from '@transferwise/components';
 import { Illustration } from '@wise/art';
 import type { AccountType } from '../App';
-import { useActiveCurrencies, useActiveTransactions, useActiveJars, useHasGroup, useCardCount } from '../hooks/useDatasetData';
+import { useActiveCurrencies, useActiveTransactions, useActiveJars } from '../hooks/useDatasetData';
+import { useVisibleAccounts, useAllCards } from '../hooks/useAccountRegistry';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
 import { convertToHomeCurrency, usdBaseRates } from '@shared/data/currency-rates';
-import { groupTotalBalance } from '@shared/data/group-data';
 import type { CurrencyData } from '@shared/data/currencies';
 import type { TranslationKey } from '../translations/en';
 import { TotalBalanceHeader } from '../components/TotalBalanceHeader';
@@ -25,6 +25,14 @@ import { SendAgainCard } from '../components/SendAgainCard';
 import { PromotionBanner } from '../components/PromotionBanner';
 import { TransferCalculator } from '../components/TransferCalculator';
 import { PageFooter } from '../components/PageFooter';
+
+const assetMap: Record<string, string> = {
+  '/card-tapestry-orange.jpg': new URL('../assets/card-tapestry-orange.jpg', import.meta.url).href,
+  '/card-tapestry-green.jpg': new URL('../assets/card-tapestry-green.jpg', import.meta.url).href,
+};
+function resolveAsset(path?: string): string | undefined {
+  return path ? assetMap[path] ?? path : undefined;
+}
 
 function buildBalances(currencyList: CurrencyData[]) {
   return currencyList.map((c) => ({
@@ -57,14 +65,14 @@ const allPromotionVariants: PromoVariant[] = [
   {
     sectionTitleKey: 'promo.largeTransfers.section',
     titleKey: 'promo.largeTransfers.title',
-    backgroundColor: '#163300',
+    backgroundColor: 'var(--color-forest-green)',
     illustrationName: 'multi-currency',
   },
   {
     sectionTitleKey: 'promo.explore.section',
     titleKey: 'promo.explore.title',
     subtitleKey: 'promo.explore.subtitle',
-    backgroundColor: '#163300',
+    backgroundColor: 'var(--color-forest-green)',
     illustrationName: 'interest',
     ctaLabelKey: 'common.learnMore',
     disclaimerKey: 'promo.explore.disclaimer',
@@ -79,16 +87,11 @@ const allPromotionVariants: PromoVariant[] = [
   },
 ];
 
-// Business: exclude Young Explorer
 const businessPromotionVariants = allPromotionVariants.filter((p) => p.sectionTitleKey !== 'promo.youngExplorer.section' && p.sectionTitleKey !== 'promo.fifa.section');
-
-
-
-const GROUP_BALANCE = groupTotalBalance;
 
 type SendAgainRecipient = { name: string; subtitle: string; avatarUrl?: string; hasFastFlag: boolean; badgeFlagCode?: string };
 
-export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavigateGroupAccount, onNavigateGroupCurrency, onNavigateJarAccount, onNavigateJarCurrency, accountType = 'personal', balanceHidden, onToggleBalance, onAddMoney, onSend, onSendWithCurrency, onSendAgain, onRequest, onPaymentLink, onScan, onAccountDetails }: { onNavigate?: (page: string, push?: boolean) => void; onNavigateAccount?: () => void; onNavigateCurrency?: (code: string) => void; onNavigateGroupAccount?: () => void; onNavigateGroupCurrency?: (code: string) => void; onNavigateJarAccount?: (jarId: string) => void; onNavigateJarCurrency?: (jarId: string, code: string) => void; accountType?: AccountType; balanceHidden?: boolean; onToggleBalance?: () => void; onAddMoney?: () => void; onSend?: () => void; onSendWithCurrency?: (sourceCurrency: string, targetCurrency: string, sourceAmount?: string, targetAmount?: string) => void; onSendAgain?: (recipient: SendAgainRecipient, amount?: string) => void; onRequest?: () => void; onPaymentLink?: () => void; onScan?: () => void; onAccountDetails?: () => void }) {
+export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavigateSubAccount, onNavigateSubAccountCurrency, onNavigateJarAccount, onNavigateJarCurrency, accountType = 'personal', balanceHidden, onToggleBalance, onAddMoney, onSend, onSendWithCurrency, onSendAgain, onRequest, onPaymentLink, onScan, onAccountDetails }: { onNavigate?: (page: string, push?: boolean) => void; onNavigateAccount?: () => void; onNavigateCurrency?: (code: string) => void; onNavigateSubAccount?: (subPageType: string) => void; onNavigateSubAccountCurrency?: (subPageType: string, code: string) => void; onNavigateJarAccount?: (jarId: string) => void; onNavigateJarCurrency?: (jarId: string, code: string) => void; accountType?: AccountType; balanceHidden?: boolean; onToggleBalance?: () => void; onAddMoney?: () => void; onSend?: () => void; onSendWithCurrency?: (sourceCurrency: string, targetCurrency: string, sourceAmount?: string, targetAmount?: string) => void; onSendAgain?: (recipient: SendAgainRecipient, amount?: string) => void; onRequest?: () => void; onPaymentLink?: () => void; onScan?: () => void; onAccountDetails?: (subPageType?: string) => void }) {
   const { consumerName, businessName, consumerHomeCurrency, businessHomeCurrency } = usePrototypeNames();
   const { t } = useLanguage();
   const txLabels = useTxLabels();
@@ -99,8 +102,9 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
   const activeCurrencies = useActiveCurrencies(accountType);
   const activeTransactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
   const activeJars = useActiveJars(accountType);
-  const showTaxes = useHasGroup(accountType);
-  const cardCount = useCardCount(accountType);
+  const visibleAccounts = useVisibleAccounts(accountType);
+  const allCards = useAllCards(accountType);
+  const cardCount = allCards.filter((c) => c.accountNameKey === 'home.currentAccount').length;
   const accountBalances = buildBalances(activeCurrencies);
   // Account card total: convert all currencies to the account's first/display currency
   const accountDisplayCode = activeCurrencies[0]?.code ?? 'GBP';
@@ -119,7 +123,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
   const [sendAgainDismissing, setSendAgainDismissing] = useState(false);
   const [showPromotion, setShowPromotion] = useState(true);
   const [promotionDismissing, setPromotionDismissing] = useState(false);
-  const promotionVariants = accountType === 'business' ? businessPromotionVariants : allPromotionVariants;
+  const promotionVariants = isBusiness ? businessPromotionVariants : allPromotionVariants;
   const [promoIndex] = useState(() => Math.floor(Math.random() * promotionVariants.length));
   const promo = promotionVariants[promoIndex];
 
@@ -137,7 +141,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
     <div className="home">
       {/* Total Balance + Actions — no padding */}
       <section className="section">
-        <TotalBalanceHeader amount={totalBalanceFormatted} currency={homeCurrency} onInsightsClick={onNavigate ? () => onNavigate('Insights', true) : undefined} variant={accountType === 'business' ? 'business' : 'personal'} balanceHidden={balanceHidden} onToggleBalance={onToggleBalance} />
+        <TotalBalanceHeader amount={totalBalanceFormatted} currency={homeCurrency} onInsightsClick={onNavigate ? () => onNavigate('Insights', true) : undefined} variant={isBusiness ? 'business' : 'personal'} balanceHidden={balanceHidden} onToggleBalance={onToggleBalance} />
       </section>
 
       {/* Action Buttons */}
@@ -159,29 +163,53 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
             onNavigateAccount={onNavigateAccount}
             onNavigateCurrency={onNavigateCurrency}
             currencyData={activeCurrencies}
-            businessCardStyle={accountType === 'business'}
+            businessCardStyle={isBusiness}
             onAccountDetails={onAccountDetails}
             balanceHidden={balanceHidden}
           />
-          {showTaxes && (
-            <MultiCurrencyAccountCard
-              title={t('home.taxes')}
-              totalAmount={`£${GROUP_BALANCE.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-              currencyCount={1}
-              balances={[{ code: 'GBP', amount: `£${GROUP_BALANCE.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` }]}
-              hasCards={true}
-              cardCount={2}
-              onNavigateCards={onNavigate ? () => onNavigate('Cards') : undefined}
-              onNavigateAccount={onNavigateGroupAccount}
-              onNavigateCurrency={onNavigateGroupCurrency}
-              cardTopImage={new URL('../assets/card-tapestry-orange.jpg', import.meta.url).href}
-              cardBottomImage={new URL('../assets/card-tapestry-green.jpg', import.meta.url).href}
-              hideAccountDetails
-              cardInfoLight
-              currencyData={[]}
-              balanceHidden={balanceHidden}
-            />
-          )}
+          {visibleAccounts
+            .filter((a) => a.subPageType !== 'account')
+            .map((account) => {
+              const currencies = account.getCurrencies();
+              const totalInGBP = currencies.reduce((sum, c) => sum + convertToHomeCurrency(c.balance, c.code, 'GBP', rates), 0);
+              const onAccount = () => onNavigateSubAccount?.(account.subPageType);
+              const onCurrency = (code: string) => onNavigateSubAccountCurrency?.(account.subPageType, code);
+              // MCA visual card stack: show if account has real cards OR homeCard images
+              const accountCards = account.getCards(accountType);
+              const hasVisualCards = account.features.hasCards || !!account.homeCard?.cardTopImage;
+              const visualCardCount = account.features.hasCards
+                ? accountCards.length
+                : (account.homeCard?.cardBottomImage ? 2 : (account.homeCard?.cardTopImage ? 1 : 0));
+              // Derive card images: prefer homeCard overrides, fall back to registry card images
+              const derivedTopImage = account.homeCard?.cardTopImage
+                ? resolveAsset(account.homeCard.cardTopImage)
+                : accountCards.length >= 2 ? accountCards[1].image : undefined;
+              const derivedBottomImage = account.homeCard?.cardBottomImage
+                ? resolveAsset(account.homeCard.cardBottomImage)
+                : accountCards.length >= 1 ? accountCards[0].image : undefined;
+
+              return (
+                <MultiCurrencyAccountCard
+                  key={account.id}
+                  title={t(account.nameKey as any)}
+                  totalAmount={`£${totalInGBP.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+                  currencyCount={currencies.length}
+                  balances={buildBalances(currencies)}
+                  hasCards={hasVisualCards}
+                  cardCount={visualCardCount}
+                  onNavigateCards={onNavigate ? () => onNavigate('Cards') : undefined}
+                  onNavigateAccount={onAccount}
+                  onNavigateCurrency={onCurrency}
+                  cardTopImage={derivedTopImage}
+                  cardBottomImage={derivedBottomImage}
+                  hideAccountDetails={!account.features.hasAccountDetails}
+                  cardInfoLight={account.homeCard?.cardInfoLight ?? false}
+                  onAccountDetails={account.features.hasAccountDetails ? () => onAccountDetails?.(account.subPageType) : undefined}
+                  currencyData={account.features.hasAccountDetails ? currencies : []}
+                  balanceHidden={balanceHidden}
+                />
+              );
+            })}
           {activeJars.map((jar) => {
             const jarBalances = jar.currencies.map((c) => ({ code: c.code, amount: `${c.symbol}${c.balance.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` }));
             const jarTotal = jar.currencies.length >= 2
@@ -213,16 +241,16 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
               key="paused"
               icon={<Plus size={24} />}
               sentiment="warning"
-              title={accountType === 'business' ? t('tasks.pausedBusiness') : t('tasks.pausedPersonal')}
+              title={isBusiness ? t('tasks.pausedBusiness') : t('tasks.pausedPersonal')}
               description={t('tasks.pausedDescription')}
               actionLabel={t('common.review')}
             />,
             <TaskCard
               key="requests"
-              icon={accountType === 'business' ? <Send size={24} /> : <RequestReceive size={24} />}
+              icon={isBusiness ? <Send size={24} /> : <RequestReceive size={24} />}
               sentiment="warning"
-              title={accountType === 'business' ? t('tasks.requestsBusiness') : t('tasks.requestsPersonal')}
-              description={accountType === 'business' ? t('tasks.requestsDescBusiness') : t('tasks.requestsDescPersonal')}
+              title={isBusiness ? t('tasks.requestsBusiness') : t('tasks.requestsPersonal')}
+              description={isBusiness ? t('tasks.requestsDescBusiness') : t('tasks.requestsDescPersonal')}
               actionLabel={t('common.review')}
             />,
           ]}
@@ -244,7 +272,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
               imgSrc={tx.imgSrc}
               name={tx.name}
               subtitle={tx.subtitle}
-              amount={tx.amount}
+              amount={balanceHidden ? '****' : tx.amount}
               isPositive={tx.isPositive}
             />
           ))}
@@ -257,7 +285,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
           <div className="section-header">
             <h3 className="np-text-title-subsection" style={{ margin: 0 }}>{t('home.sendAgain')}</h3>
           </div>
-          {accountType === 'business' ? (
+          {isBusiness ? (
             <SendAgainCard
               name="Sarah Chen"
               handle="Wise account"
@@ -284,7 +312,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
       )}
 
       {/* Promotion Banner — before calculator for personal */}
-      {accountType !== 'business' && showPromotion && (
+      {!isBusiness && showPromotion && (
         <section className={`section section--dismissible${promotionDismissing ? ' section--dismissing' : ''}`}>
           <div className="section-header">
             <h3 className="np-text-title-subsection" style={{ margin: 0 }}>{t(promo.sectionTitleKey)}</h3>
@@ -311,7 +339,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
       </section>
 
       {/* Promotion Banner — after calculator for business */}
-      {accountType === 'business' && showPromotion && (
+      {isBusiness && showPromotion && (
         <section className={`section section--dismissible${promotionDismissing ? ' section--dismissing' : ''}`}>
           <div className="section-header">
             <h3 className="np-text-title-subsection" style={{ margin: 0 }}>{t(promo.sectionTitleKey)}</h3>

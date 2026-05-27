@@ -11,6 +11,7 @@ import type { AccountDetailField, QuickFactFee, AvailabilityItem } from '@shared
 type Props = {
   code: string;
   accountType?: AccountType;
+  subPageType?: string;
 };
 
 function DetailRow({ field, onCopy }: { field: AccountDetailField; onCopy: (value: string, snackbarKey: string) => void }) {
@@ -18,13 +19,13 @@ function DetailRow({ field, onCopy }: { field: AccountDetailField; onCopy: (valu
   return (
     <div className="account-details__row">
       <div className="account-details__row-content">
-        <span className="np-text-body-default account-details__row-label">{t(field.labelKey)}</span>
+        <span className="np-text-body-default account-details__row-label">{t(field.labelKey as any)}</span>
         <span className="np-text-body-large account-details__row-value">{field.value}</span>
         {field.helperKey && (
           <span className="np-text-caption account-details__row-helper">
-            {t(field.helperKey)}
+            {t(field.helperKey as any)}
             {field.helperLinkKey && (
-              <>{' '}<a href="#" className="np-text-link-caption" onClick={(e) => e.preventDefault()}>{t(field.helperLinkKey)}</a></>
+              <>{' '}<a href="#" className="np-text-link-caption" onClick={(e) => e.preventDefault()}>{t(field.helperLinkKey as any)}</a></>
             )}
           </span>
         )}
@@ -47,10 +48,10 @@ function FactCard({ rows, showChevron = true }: { rows: QuickFactFee[]; showChev
     <div className={`account-details__fee-card${showChevron ? ' account-details__fee-card--clickable' : ''}`}>
       {rows.map((row, i) => (
         <div key={i} className="account-details__fee-row">
-          <span className="np-text-body-default" style={{ color: 'var(--color-content-secondary)' }}>{t(row.labelKey)}</span>
-          <span className="np-text-body-default account-details__fee-value">{t(row.valueKey)}</span>
+          <span className="np-text-body-default" style={{ color: 'var(--color-content-secondary)' }}>{t(row.labelKey as any)}</span>
+          <span className="np-text-body-default account-details__fee-value">{t(row.valueKey as any)}</span>
           {row.helperKey && (
-            <span className="np-text-caption" style={{ color: 'var(--color-content-tertiary)' }}>{t(row.helperKey)}</span>
+            <span className="np-text-caption" style={{ color: 'var(--color-content-tertiary)' }}>{t(row.helperKey as any)}</span>
           )}
         </div>
       ))}
@@ -127,8 +128,8 @@ function QuickFacts({ code, accountType = 'personal' }: { code: string; accountT
                 {item.type === 'positive' ? <CheckCircleFill size={16} /> : <CrossCircleFill size={16} />}
               </span>
               <div>
-                <span className="np-text-body-default" style={{ fontWeight: 600, display: 'block', color: 'var(--color-content-primary)' }}>{t(item.titleKey)}</span>
-                {item.subtitleKey && <span className="np-text-caption" style={{ color: 'var(--color-content-secondary)' }}>{t(item.subtitleKey)}</span>}
+                <span className="np-text-body-default" style={{ fontWeight: 600, display: 'block', color: 'var(--color-content-primary)' }}>{t(item.titleKey as any)}</span>
+                {item.subtitleKey && <span className="np-text-caption" style={{ color: 'var(--color-content-secondary)' }}>{t(item.subtitleKey as any)}</span>}
               </div>
             </div>
           ))}
@@ -196,7 +197,7 @@ function ShareDropdown({ shareOpen, setShareOpen, shareRef, onCopyAll, onGetProo
   );
 }
 
-export function AccountDetailsPage({ code, accountType = 'personal' }: Props) {
+export function AccountDetailsPage({ code, accountType = 'personal', subPageType }: Props) {
   const { t } = useLanguage();
   const { consumerName, businessName } = usePrototypeNames();
   const createSnackbar = useSnackbar();
@@ -204,7 +205,7 @@ export function AccountDetailsPage({ code, accountType = 'personal' }: Props) {
   const shareRef = useRef<HTMLDivElement>(null!);
 
   const activeName = accountType === 'business' ? businessName : consumerName;
-  const details = getAccountDetails(code, accountType);
+  const details = getAccountDetails(code, accountType, subPageType);
 
   useEffect(() => {
     if (!shareOpen) return;
@@ -225,7 +226,7 @@ export function AccountDetailsPage({ code, accountType = 'personal' }: Props) {
   const handleCopyAll = () => {
     if (!details) return;
     const allFields = details.fields(activeName);
-    const allText = allFields.map((f) => `${t(f.labelKey)}: ${f.value}`).join('\n');
+    const allText = allFields.map((f) => `${t(f.labelKey as any)}: ${f.value}`).join('\n');
     navigator.clipboard.writeText(allText).catch(() => {});
     createSnackbar({ text: t('accountDetails.allDetailsCopied') } as any);
     setShareOpen(false);
@@ -242,8 +243,8 @@ export function AccountDetailsPage({ code, accountType = 'personal' }: Props) {
       <div style={{ flex: 1 }}>
         <h2 className="np-text-title-subsection" style={{ margin: 0 }}>{t('accountDetails.receive', { code })}</h2>
         <p className="np-text-body-default" style={{ margin: 0, color: 'var(--color-content-secondary)' }}>
-          {t(details.receiveSubtitleKey)}{' '}
-          <a href="#" className="np-text-link-default" onClick={(e) => e.preventDefault()}>{t(details.countriesLinkKey)}</a>
+          {t(details.receiveSubtitleKey as any)}{' '}
+          <a href="#" className="np-text-link-default" onClick={(e) => e.preventDefault()}>{t(details.countriesLinkKey as any)}</a>
         </p>
       </div>
       <ShareDropdown

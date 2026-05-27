@@ -8,6 +8,7 @@ import { connorPersonalCurrencies } from './connor-personal-currencies';
 import { connorBusinessCurrencies } from './connor-business-currencies';
 import { connorPersonalJars } from './connor-personal-jars';
 import { connorBusinessJars } from './connor-business-jars';
+import { accountRegistry } from './account-registry';
 import { convertToHomeCurrency, usdBaseRates } from './currency-rates';
 
 type AccountType = 'personal' | 'business';
@@ -31,6 +32,15 @@ export function computeTotalBalance(accountType: AccountType, homeCurrency: stri
       : 0;
     const jar = accountType === 'business' ? suppliesJar : savingsJar;
     jarBalance = jar.currencies.reduce((sum, c) => sum + convertToHomeCurrency(c.balance, c.code, homeCurrency, rates), 0);
+    // Sub-accounts from registry (excludes Current Account, Group, and Jars which are handled above)
+    const subAccounts = accountRegistry.filter((a) =>
+      a.visibleFor.includes(accountType) &&
+      a.subPageType !== 'account' &&
+      a.subPageType !== 'group-account'
+    );
+    for (const account of subAccounts) {
+      jarBalance += account.getCurrencies().reduce((sum, c) => sum + convertToHomeCurrency(c.balance, c.code, homeCurrency, rates), 0);
+    }
   }
 
   const currenciesBalance = activeCurrencies.reduce((sum, c) => sum + convertToHomeCurrency(c.balance, c.code, homeCurrency, rates), 0);

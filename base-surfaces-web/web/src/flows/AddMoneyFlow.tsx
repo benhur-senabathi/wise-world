@@ -31,10 +31,6 @@ export function AddMoneyFlow({ defaultCurrency, accountLabel, accountStyle, onCl
   const [buttonState, setButtonState] = useState<ButtonState>('disabled');
   const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const isBusiness = accountType === 'business';
-  const avatarStyle = isBusiness
-    ? { backgroundColor: '#163300', color: '#9fe870' }
-    : undefined;
   const accountAvatarStyle = { backgroundColor: accountStyle.color, color: accountStyle.textColor };
   const accountAvatarIcon = resolveIcon(accountStyle.iconName);
 
@@ -47,7 +43,7 @@ export function AddMoneyFlow({ defaultCurrency, accountLabel, accountStyle, onCl
   const avatar = avatarUrl ? (
     <AvatarView size={48} imgSrc={avatarUrl} />
   ) : (
-    <AvatarView size={48} style={avatarStyle}>
+    <AvatarView size={48}>
       {initials}
     </AvatarView>
   );
@@ -129,7 +125,7 @@ export function AddMoneyFlow({ defaultCurrency, accountLabel, accountStyle, onCl
               </div>
             ),
           }}
-          showChevron={!inputFocused}
+          showChevron={!inputFocused && !amount}
           onFocusChange={setInputFocused}
         />
 

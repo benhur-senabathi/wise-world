@@ -9,6 +9,9 @@ export const GROUP_IDS = {
   group: '73850214',
   savings: '61724089',
   supplies: '39058162',
+  sharedSpending: '83267401',
+  joint: '27461830',
+  youngExplorer: '15824097',
 } as const;
 
 export type JarDefinition = {

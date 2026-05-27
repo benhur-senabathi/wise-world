@@ -2,40 +2,38 @@ import { useState } from 'react';
 import { ListItem, AvatarView, Tabs, Button, Table, SearchInput, Size } from '@transferwise/components';
 import { Plus, Limit, Suitcase, Team, Alert } from '@transferwise/icons';
 import type { AccountType } from '../App';
-import { useCardCount, useHasGroup } from '../hooks/useDatasetData';
+import { useAllCards, useVisibleAccounts } from '../hooks/useAccountRegistry';
 import { useLanguage } from '../context/Language';
 
-function CardThumbnail({ variant }: { variant: 'physical' | 'digital' }) {
-  const flagColor = variant === 'digital' ? '#fff' : '#0e0f0c';
-  return (
-    <div className={`card-thumbnail card-thumbnail--${variant}`}>
-      <svg className="card-thumbnail__flag" width="14" height="13" viewBox="0 0 24 24" fill={flagColor} aria-hidden="true">
-        <path d="M1.875 15.28 7.35 8.838h-.002L4.02 3h18.105l-7.008 19.375h-3.97L16.95 6.3H9.463l1.665 2.883-.008.08-2.56 2.979h4.188l-1.098 3.037z" />
-      </svg>
-      <div className="card-thumbnail__light" />
-      <div className="card-thumbnail__shadow" />
-    </div>
-  );
-}
+const mediumCardMap: Record<string, string> = {
+  '/wise-card-physical.png': '/wise-card-medium-physical.png',
+  '/wise-card-personal-digital-turquoise.png': '/wise-card-medium-turquoise.png',
+  '/wise-card-personal-digital-green.png': '/wise-card-medium-green.png',
+  '/wise-card-personal-digital-blue.png': '/wise-card-medium-blue.png',
+  '/wise-card-personal-digital-fire.png': '/wise-card-medium-fire.png',
+  '/wise-card-personal-digital-pink-blue.png': '/wise-card-medium-pink-blue.png',
+  '/wise-card-biz-physical.png': '/wise-card-medium-biz-green.png',
+  '/wise-card-biz-digital-aqua.png': '/wise-card-medium-biz-aqua.png',
+  '/wise-card-biz-digital-yellow.png': '/wise-card-medium-biz-yellow.png',
+  '/wise-card-biz-digital-green.png': '/wise-card-medium-biz-green.png',
+  '/wise-card-biz-digital-orange.png': '/wise-card-medium-orange.png',
+};
 
-function BusinessCardThumbnail({ variant }: { variant: 'biz-physical' | 'biz-aqua' | 'biz-green' | 'biz-orange' | 'biz-purple' }) {
-  const flagColor = variant === 'biz-physical' ? '#9fe870' : '#fff';
+function CardThumbnail({ image }: { image: string }) {
+  const src = mediumCardMap[image] || image;
   return (
-    <div className={`card-thumbnail card-thumbnail--${variant}`}>
-      <svg className="card-thumbnail__flag" width="14" height="13" viewBox="0 0 24 24" fill={flagColor} aria-hidden="true">
-        <path d="M1.875 15.28 7.35 8.838h-.002L4.02 3h18.105l-7.008 19.375h-3.97L16.95 6.3H9.463l1.665 2.883-.008.08-2.56 2.979h4.188l-1.098 3.037z" />
-      </svg>
-      <div className="card-thumbnail__light" />
-      <div className="card-thumbnail__shadow" />
+    <div className="card-thumbnail">
+      <img src={src} alt="" className="card-thumbnail__img" />
     </div>
   );
 }
 
 function CardsList({ accountType }: { accountType: AccountType }) {
   const { t } = useLanguage();
-  const cardCount = useCardCount(accountType);
-  const hasTaxes = useHasGroup(accountType);
-  const isBusiness = accountType === 'business';
+  const allCards = useAllCards(accountType);
+  const currentAccountCards = allCards.filter((c) => c.accountNameKey === 'home.currentAccount');
+  const subAccountCards = allCards.filter((c) => c.accountNameKey !== 'home.currentAccount');
+
   return (
     <>
       <ul className="wds-list list-unstyled m-y-0 cards-list">
@@ -62,67 +60,41 @@ function CardsList({ accountType }: { accountType: AccountType }) {
       </ul>
 
       <ul className="wds-list list-unstyled m-y-0 cards-list cards-list--cards">
-        {isBusiness ? (
-          <>
-            <ListItem
-              title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Physical •••• 5271</span>}
-              subtitle={t('common.readyToUse')}
-              media={<BusinessCardThumbnail variant="biz-physical" />}
-              control={<ListItem.Navigation onClick={() => {}} />}
-            />
-            {cardCount >= 2 && (
-              <ListItem
-                title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Digital card •••• 9034</span>}
-                subtitle={t('common.readyToUse')}
-                media={<BusinessCardThumbnail variant="biz-aqua" />}
-                control={<ListItem.Navigation onClick={() => {}} />}
-              />
-            )}
-            {hasTaxes && (
-              <>
-                <ListItem
-                  title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Digital card •••• 4219</span>}
-                  subtitle={t('cards.taxesReadyToUse')}
-                  media={<BusinessCardThumbnail variant="biz-green" />}
-                  control={<ListItem.Navigation onClick={() => {}} />}
-                />
-                <ListItem
-                  title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Digital card •••• 7803</span>}
-                  subtitle={t('cards.taxesReadyToUse')}
-                  media={<BusinessCardThumbnail variant="biz-orange" />}
-                  control={<ListItem.Navigation onClick={() => {}} />}
-                />
-              </>
-            )}
-          </>
-        ) : (
-          <>
-            <ListItem
-              title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Physical •••• 8130</span>}
-              subtitle={t('common.readyToUse')}
-              media={<CardThumbnail variant="physical" />}
-              control={<ListItem.Navigation onClick={() => {}} />}
-            />
-            {cardCount >= 2 && (
-              <ListItem
-                title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>Digital card •••• 6663</span>}
-                subtitle={t('common.readyToUse')}
-                media={<CardThumbnail variant="digital" />}
-                control={<ListItem.Navigation onClick={() => {}} />}
-              />
-            )}
-          </>
-        )}
+        {currentAccountCards.map((card, i) => (
+          <ListItem
+            key={`current-${i}`}
+            title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{card.type === 'physical' ? 'Physical' : 'Digital card'} •••• {card.lastFour}</span>}
+            subtitle={t('common.readyToUse')}
+            media={<CardThumbnail image={card.image} />}
+            control={<ListItem.Navigation onClick={() => {}} />}
+          />
+        ))}
+        {subAccountCards.map((card, i) => (
+          <ListItem
+            key={`sub-${i}`}
+            title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{card.type === 'physical' ? 'Physical' : 'Digital card'} •••• {card.lastFour}</span>}
+            subtitle={`${t(card.accountNameKey as any)} · ${t('common.readyToUse')}`}
+            media={<CardThumbnail image={card.image} />}
+            control={<ListItem.Navigation onClick={() => {}} />}
+          />
+        ))}
       </ul>
     </>
   );
 }
 
-function TeamCardsList() {
+function TeamCardsList({ accountType }: { accountType: AccountType }) {
   const { t } = useLanguage();
+  const visibleAccounts = useVisibleAccounts(accountType);
+  const teamAccounts = visibleAccounts.filter((a) => a.features.participantStyle === 'team' && a.participants.length > 0);
+  const teamParticipants = teamAccounts.flatMap((a) =>
+    a.participants.map((p) => ({ ...p, cardCount: a.getCards(accountType).length, cards: a.getCards(accountType) }))
+  );
   const [search, setSearch] = useState('');
   const isSearching = search.length >= 2;
-  const hasResults = !isSearching || 'jamie reynolds'.includes(search.toLowerCase());
+  const filteredParticipants = isSearching
+    ? teamParticipants.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
+    : teamParticipants;
 
   const headers = [
     { header: t('cards.cardholder'), width: '44%' },
@@ -130,37 +102,35 @@ function TeamCardsList() {
     { header: t('cards.status') },
   ];
 
-  const dataRows = [
-    {
-      id: 0,
-      cells: [
-        {
-          children: (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <AvatarView size={40} imgSrc="https://www.tapback.co/api/avatar/jamie-reynolds.webp" style={{ border: 'none' }} />
-              <span className="np-text-body-default" style={{ fontWeight: 600, color: 'var(--color-content-primary)' }}>Jamie Reynolds</span>
+  const dataRows = filteredParticipants.map((p, i) => ({
+    id: i,
+    cells: [
+      {
+        children: (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <AvatarView size={40} imgSrc={p.imgSrc} style={{ border: 'none' }} />
+            <span className="np-text-body-default" style={{ fontWeight: 600, color: 'var(--color-content-primary)' }}>{p.name}</span>
+          </div>
+        ),
+      },
+      {
+        children: p.cards[0] ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <CardThumbnail image={p.cards[0].image} />
+            <div>
+              <span className="np-text-body-default" style={{ fontWeight: 600, display: 'block', color: 'var(--color-content-primary)' }}>•••• {p.cards[0].lastFour}</span>
+              <span className="np-text-body-default" style={{ color: 'var(--color-content-secondary)' }}>{t('cards.digitalCard')}</span>
             </div>
-          ),
-        },
-        {
-          children: (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <BusinessCardThumbnail variant="biz-purple" />
-              <div>
-                <span className="np-text-body-default" style={{ fontWeight: 600, display: 'block', color: 'var(--color-content-primary)' }}>•••• 7165</span>
-                <span className="np-text-body-default" style={{ color: 'var(--color-content-secondary)' }}>{t('cards.digitalCard')}</span>
-              </div>
-            </div>
-          ),
-        },
-        {
-          children: (
-            <span className="np-text-body-default" style={{ fontWeight: 600, color: 'var(--color-content-primary)' }}>{t('common.readyToUse')}</span>
-          ),
-        },
-      ],
-    },
-  ];
+          </div>
+        ) : null,
+      },
+      {
+        children: (
+          <span className="np-text-body-default" style={{ fontWeight: 600, color: 'var(--color-content-primary)' }}>{t('common.readyToUse')}</span>
+        ),
+      },
+    ],
+  }));
 
   const emptyRow = [
     {
@@ -212,8 +182,8 @@ function TeamCardsList() {
       <Table
         data={{
           headers,
-          rows: hasResults ? dataRows : emptyRow,
-          ...(hasResults ? { onRowClick: () => {} } : {}),
+          rows: filteredParticipants.length > 0 ? dataRows : emptyRow,
+          ...(filteredParticipants.length > 0 ? { onRowClick: () => {} } : {}),
         }}
         fullWidth
         className="team-cards-table"
@@ -224,7 +194,8 @@ function TeamCardsList() {
 
 export function Cards({ accountType = 'personal', onTravelHub }: { accountType?: AccountType; onTravelHub?: () => void } = {}) {
   const { t } = useLanguage();
-  const hasTaxes = useHasGroup(accountType);
+  const visibleAccounts = useVisibleAccounts(accountType);
+  const hasTeamTab = accountType === 'business' && visibleAccounts.some((a) => a.features.participantStyle === 'team');
   const [selectedTab, setSelectedTab] = useState(0);
 
   return (
@@ -239,7 +210,7 @@ export function Cards({ accountType = 'personal', onTravelHub }: { accountType?:
         </button>
       </div>
 
-      {accountType === 'business' && hasTaxes ? (
+      {hasTeamTab ? (
         <Tabs
           name="cards-tabs"
           selected={selectedTab}
@@ -254,7 +225,7 @@ export function Cards({ accountType = 'personal', onTravelHub }: { accountType?:
             {
               title: t('cards.teamCards'),
               disabled: false,
-              content: <TeamCardsList />,
+              content: <TeamCardsList accountType={accountType} />,
             },
           ]}
         />

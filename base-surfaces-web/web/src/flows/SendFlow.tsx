@@ -14,7 +14,7 @@ import { formatBalance } from '@shared/data/balances';
 import { recipients, businessRecipients, recentContacts, businessRecentContacts, getAvatarSrc, getBadge, type Recipient } from '@shared/data/recipients';
 import { currencies } from '@shared/data/currencies';
 import { businessCurrencies } from '@shared/data/business-currencies';
-import { groupCurrencies } from '@shared/data/group-data';
+import { accountRegistry } from '@shared/data/account-registry';
 import type { AccountType } from '../App';
 
 type ButtonState = 'disabled' | 'loading' | 'active';
@@ -45,18 +45,16 @@ type Props = {
   prefillReceiveAmount?: number;
   startStep?: 'recipient' | 'amount';
   forcedReceiveCurrency?: string;
+  forceClose?: boolean;
 };
 
-export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, onClose, onStepChange, accountType, avatarUrl, initials, recipient: initialRecipient, prefillAmount, prefillReceiveAmount, startStep = 'recipient', forcedReceiveCurrency }: Props) {
+export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, onClose, onStepChange, accountType, avatarUrl, initials, recipient: initialRecipient, prefillAmount, prefillReceiveAmount, startStep = 'recipient', forcedReceiveCurrency, forceClose }: Props) {
   const { t } = useLanguage();
   const { consumerName } = usePrototypeNames();
   const rates = useLiveRates();
 
   const isBusiness = accountType === 'business';
   const isGroup = !!group;
-  const avatarStyle = isBusiness
-    ? { backgroundColor: '#163300', color: '#9fe870' }
-    : undefined;
 
   const [step, setStep] = useState<'recipient' | 'amount'>(initialRecipient ? 'amount' : startStep);
   const [selectedRecipient, setSelectedRecipient] = useState<RecipientInfo | null>(initialRecipient ?? null);
@@ -157,8 +155,17 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
 
   const isSearching = searchQuery.trim().length > 0;
 
-  // Find balance for the sending currency
-  const allCurrencies = [...(isGroup ? groupCurrencies : []), ...(isBusiness ? businessCurrencies : currencies)];
+  // Find balance for the sending currency — resolve from registry
+  const resolveAccountCurrencies = () => {
+    if (group) {
+      const match = accountRegistry.find((a) => a.subPageType === `${group}-account`);
+      if (match) return match.getCurrencies();
+    }
+    const matchByStyle = accountRegistry.find((a) => a.style.iconName === accountStyle.iconName && a.style.color === accountStyle.color);
+    if (matchByStyle && matchByStyle.subPageType !== 'account') return matchByStyle.getCurrencies();
+    return isBusiness ? businessCurrencies : currencies;
+  };
+  const allCurrencies = resolveAccountCurrencies();
   const sendCurrencyData = allCurrencies.find((c) => c.code === sendCurrency);
   const availableBalance = sendCurrencyData ? formatBalance(sendCurrencyData) : `0.00 ${sendCurrency}`;
 
@@ -168,7 +175,7 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
   const avatar = avatarUrl ? (
     <AvatarView size={48} imgSrc={avatarUrl} />
   ) : (
-    <AvatarView size={48} style={avatarStyle}>
+    <AvatarView size={48}>
       {initials}
     </AvatarView>
   );
@@ -737,7 +744,7 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
                       </div>
                     ),
                   }}
-                  showChevron={!sendInputFocused}
+                  showChevron={!sendInputFocused && !inputFocused && !amount && !receiveAmount}
                   onFocusChange={setSendInputFocused}
                 />
                 <p className="convert-flow__available np-text-body-default">
@@ -779,7 +786,7 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
                   </div>
                 ),
               }}
-              showChevron={!inputFocused}
+              showChevron={!inputFocused && !sendInputFocused && !amount && !receiveAmount}
               onFocusChange={setInputFocused}
             />
 

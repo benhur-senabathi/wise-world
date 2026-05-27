@@ -1,4 +1,4 @@
-import { Savings, Suitcase, Money } from '@transferwise/icons';
+import { Savings, Suitcase, Money, People, Heart, Backpack } from '@transferwise/icons';
 
 export function WiseLogoIcon() {
   return (
@@ -13,6 +13,9 @@ export function resolveIcon(iconName: string) {
     case 'Savings': return <Savings size={16} />;
     case 'Suitcase': return <Suitcase size={16} />;
     case 'Money': return <Money size={16} />;
+    case 'People': return <People size={16} />;
+    case 'Heart': return <Heart size={16} />;
+    case 'Backpack': return <Backpack size={16} />;
     default: return <WiseLogoIcon />;
   }
 }

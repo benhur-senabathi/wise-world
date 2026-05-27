@@ -83,6 +83,36 @@ See `shared-resources/account-logic/` for the authoritative reference. Key rules
 - Balances auto-computed from transactions — never hardcode
 - "Taxes" is just the display name for the Group account — code uses `groupCurrencies` / `isGroup`
 
+### Account Registry
+
+The **Account Registry** (`shared-resources/data/account-registry.ts`) is the single source of truth for all account definitions. Everything is data-driven from this one file.
+
+**What it contains:** Each `AccountDefinition` has: `id`, `subPageType`, `nameKey`, `style` (color/textColor/iconName), `visibleFor`, `features` (hasCards, hasSend, hasConvert, moveOnly, etc.), `getCards`, `homeCard`, `participants`, `getCurrencies`, `getTransactions`, `menuItemKeys`.
+
+**Lookup helpers** (exported from the same file):
+- `getAccountBySubPageType(type)` — find account by route type
+- `getAccountById(groupId)` — find account by GROUP_ID
+- `getAccountByBalanceId(balanceId)` — resolve any balance ID to its parent account + currency
+- `getVisibleAccounts(accountType)` — all accounts visible for personal/business
+- `getAllCards(accountType)` / `getAllCurrencies(accountType)` / `getAllTransactions(accountType)` — flat aggregated lists
+- `buildBalanceOwnerMap()` — Map of all balance IDs for routing resolution
+
+**Hook layer** (`mobile/src/hooks/useAccountRegistry.ts`):
+- `useVisibleAccounts(accountType)` — dataset-aware visible accounts
+- `useAllCards(accountType)` — all cards across visible accounts
+- `useAllCurrencies(accountType)` — all currencies (excluding Current Account)
+- `useAllTransactions(accountType)` — all transactions (excluding Current Account)
+
+**What it drives automatically:** Home carousel, Cards page, Transactions page, Insights, Payments, Currency pages, Account pages, action buttons, colours, icons, flows, total balance, URL routing, balance owner map.
+
+**Adding a new account type** (4 steps):
+1. Create a data file (`shared-resources/data/<name>-data.tsx`) with currencies + transactions
+2. Add one entry to `shared-resources/data/account-registry.ts` (+ GROUP_ID in `jar-data.tsx`)
+3. Add translation keys (`en.ts` + `es.ts`)
+4. Add card images: large (1192x752 PNG in `/public/`), medium (256x168 PNG for thumbnails), tapestry (1000x416 JPG in `src/assets/` for MCA)
+
+See `shared-resources/account-logic/adding-account-types.md` for the full guide.
+
 ## i18n
 
 - `src/translations/en.ts` — English strings, exported `as const`
@@ -162,6 +192,7 @@ Account logic docs in `shared-resources/account-logic/` — platform-agnostic bu
 | Doc | Contents |
 |-----|----------|
 | `account-types.md` | Account type hierarchy (Current, Jar, Group/Shared), feature matrix, action button logic, more menu logic, visual alignment rules |
+| `adding-account-types.md` | **Full step-by-step guide for adding a new account type** — data, routing, navigation, pages, translations, cross-page impact, file checklist |
 | `balances-and-accounts.md` | What updates when balances change, full checklist for adding jars/groups/currencies, ID rules, realism rules |
 | `interest-stocks.md` | Interest/stocks feature flag system (hasInterest, hasStocks, interestRate, totalReturns) |
 | `routing.md` | Full URL reference, ID system (group IDs + balance IDs), and how to add new routes |

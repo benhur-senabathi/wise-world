@@ -7,6 +7,7 @@ import { useActiveTransactions } from '../hooks/useDatasetData';
 import { groupByDate, type Transaction } from '@shared/data/transactions';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
+import { useAllTransactions } from '../hooks/useAccountRegistry';
 
 function TransactionsTableView({ transactions }: { transactions: Transaction[] }) {
   const { t } = useLanguage();
@@ -108,7 +109,9 @@ export function Transactions({ accountType = 'personal' }: { accountType?: Accou
   const { consumerName, businessName } = usePrototypeNames();
   const { t } = useLanguage();
   const txLabels = useTxLabels();
-  const transactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
+  const currentAccountTx = useActiveTransactions(accountType, consumerName, businessName, txLabels);
+  const subAccountTx = useAllTransactions(accountType);
+  const transactions = [...currentAccountTx, ...subAccountTx];
   const [search, setSearch] = useState('');
   const [selectedChips, setSelectedChips] = useState<string[]>([]);
   const [backToTopVisible, setBackToTopVisible] = useState(false);

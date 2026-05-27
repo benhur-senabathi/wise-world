@@ -1,47 +1,84 @@
+import { useMemo } from 'react';
 import { ListItem } from '@transferwise/components';
 import { Plus } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import type { AccountType } from '../App';
 import type { TranslationKey } from '../translations/en';
+import { useVisibleAccounts } from '../hooks/useAccountRegistry';
+import { useActiveCurrencies } from '../hooks/useDatasetData';
 
-type ReceivableCurrency = {
-  code: string;
-  nameKey: TranslationKey;
-  subtitle: string | null;
-  subtitleKey?: TranslationKey;
+const currencyNameKeys: Record<string, TranslationKey> = {
+  GBP: 'accountDetailsList.britishPound',
+  EUR: 'accountDetailsList.euro',
+  USD: 'accountDetailsList.usDollar',
+  CAD: 'accountDetailsList.canadianDollar',
+  TRY: 'accountDetailsList.turkishLira',
+  HUF: 'accountDetailsList.hungarianForint',
+  SGD: 'accountDetailsList.singaporeDollar',
 };
-
-const personalReceivableCurrencies: ReceivableCurrency[] = [
-  { code: 'EUR', nameKey: 'accountDetailsList.euro', subtitle: 'BE68 9670 3781 7624' },
-  { code: 'GBP', nameKey: 'accountDetailsList.britishPound', subtitle: '23-08-01 \u00B7 73868918' },
-  { code: 'USD', nameKey: 'accountDetailsList.usDollar', subtitle: '8311094826' },
-  { code: 'CAD', nameKey: 'accountDetailsList.canadianDollar', subtitle: '200110083474' },
-  { code: 'TRY', nameKey: 'accountDetailsList.turkishLira', subtitle: null, subtitleKey: 'accountDetailsList.swiftOnly' },
-  { code: 'HUF', nameKey: 'accountDetailsList.hungarianForint', subtitle: '12600016-19774787-72217791' },
-];
-
-const businessReceivableCurrencies: ReceivableCurrency[] = [
-  { code: 'EUR', nameKey: 'accountDetailsList.euro', subtitle: 'BE42 9670 5519 3847' },
-  { code: 'GBP', nameKey: 'accountDetailsList.britishPound', subtitle: '23-08-01 \u00B7 81204736' },
-  { code: 'USD', nameKey: 'accountDetailsList.usDollar', subtitle: '9402718365' },
-  { code: 'SGD', nameKey: 'accountDetailsList.singaporeDollar', subtitle: '2048193756' },
-  { code: 'TRY', nameKey: 'accountDetailsList.turkishLira', subtitle: null, subtitleKey: 'accountDetailsList.swiftOnly' },
-  { code: 'HUF', nameKey: 'accountDetailsList.hungarianForint', subtitle: '12600016-19774787-72217791' },
-];
 
 type Props = {
   accountType?: AccountType;
+  from?: string;
   onSelectCurrency: (code: string) => void;
-  accountCurrencyCodes?: string[];
 };
 
-export function AccountDetailsList({ accountType = 'personal', onSelectCurrency, accountCurrencyCodes }: Props) {
+export function AccountDetailsList({ accountType = 'personal', from, onSelectCurrency }: Props) {
   const { t } = useLanguage();
-  const allCurrencies = accountType === 'business' ? businessReceivableCurrencies : personalReceivableCurrencies;
-  const currencies = accountCurrencyCodes
-    ? allCurrencies.filter((c) => accountCurrencyCodes.includes(c.code))
-    : allCurrencies;
+  const visibleAccounts = useVisibleAccounts(accountType);
+  const currentAccountCurrencies = useActiveCurrencies(accountType);
+
+  const allDetails = useMemo(() => {
+    const details: { code: string; nameKey: TranslationKey; subtitle: string; accountLabel?: string }[] = [];
+
+    const showAll = from === 'payments';
+    const fromSubAccount = from && !['account', 'payments', 'home'].includes(from);
+
+    if (fromSubAccount) {
+      const account = visibleAccounts.find((a) => a.subPageType === from);
+      if (account) {
+        for (const c of account.getCurrencies()) {
+          if (c.accountDetails) {
+            details.push({
+              code: c.code,
+              nameKey: currencyNameKeys[c.code] || 'accountDetailsList.britishPound',
+              subtitle: c.accountDetails,
+            });
+          }
+        }
+      }
+      return details;
+    }
+
+    for (const c of currentAccountCurrencies) {
+      if (c.accountDetails) {
+        details.push({
+          code: c.code,
+          nameKey: currencyNameKeys[c.code] || 'accountDetailsList.britishPound',
+          subtitle: c.accountDetails,
+        });
+      }
+    }
+
+    if (showAll) {
+      const subAccounts = visibleAccounts.filter((a) => a.subPageType !== 'account' && a.features.hasAccountDetails);
+      for (const account of subAccounts) {
+        for (const c of account.getCurrencies()) {
+          if (c.accountDetails) {
+            details.push({
+              code: c.code,
+              nameKey: currencyNameKeys[c.code] || 'accountDetailsList.britishPound',
+              subtitle: c.accountDetails,
+              accountLabel: account.nameKey,
+            });
+          }
+        }
+      }
+    }
+
+    return details;
+  }, [visibleAccounts, currentAccountCurrencies, from]);
 
   return (
     <div className="account-details-list">
@@ -56,17 +93,17 @@ export function AccountDetailsList({ accountType = 'personal', onSelectCurrency,
       </p>
 
       <div className="account-details-list__items">
-        {currencies.map((currency) => (
+        {allDetails.map((detail, i) => (
           <ListItem
-            key={currency.code}
-            title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t(currency.nameKey)}</span>}
-            subtitle={currency.subtitleKey ? t(currency.subtitleKey) : currency.subtitle}
+            key={`${detail.code}-${i}`}
+            title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t(detail.nameKey)}</span>}
+            subtitle={detail.subtitle}
             media={
               <ListItem.AvatarView size={48}>
-                <Flag code={currency.code} />
+                <Flag code={detail.code} />
               </ListItem.AvatarView>
             }
-            control={<ListItem.Navigation onClick={() => onSelectCurrency(currency.code)} />}
+            control={<ListItem.Navigation onClick={() => onSelectCurrency(detail.code)} />}
           />
         ))}
 

@@ -7,7 +7,7 @@ import { useShimmer } from '../context/Shimmer';
 import { ShimmerAccountActionButtons } from './Shimmer';
 import { BottomSheet } from './BottomSheet';
 
-export function AccountActionButtons({ accountType = 'personal', hideGetPaid = false, sendSecondary = false, onAdd, onConvert, onSend, onRequest, onPaymentLink }: { accountType?: AccountType; hideGetPaid?: boolean; sendSecondary?: boolean; onAdd?: () => void; onConvert?: () => void; onSend?: () => void; onRequest?: () => void; onPaymentLink?: () => void }) {
+export function AccountActionButtons({ accountType = 'personal', hideGetPaid = false, hideSend = false, sendSecondary = false, moveOnly = false, onAdd, onConvert, onSend, onRequest, onPaymentLink }: { accountType?: AccountType; hideGetPaid?: boolean; hideSend?: boolean; sendSecondary?: boolean; moveOnly?: boolean; onAdd?: () => void; onConvert?: () => void; onSend?: () => void; onRequest?: () => void; onPaymentLink?: () => void }) {
   const { t } = useLanguage();
   const { shimmerMode } = useShimmer();
   const isBusiness = accountType === 'business';
@@ -19,12 +19,16 @@ export function AccountActionButtons({ accountType = 'personal', hideGetPaid = f
     </div>
   );
 
+  const showSend = !moveOnly && !hideSend;
+  const buttonCount = moveOnly ? 2 : ((hideSend ? 0 : 1) + (hideGetPaid ? 0 : 1) + 2);
+
   return (
     <>
-      <div className="account-action-buttons">
+      <div className={`account-action-buttons${buttonCount === 2 ? ' account-action-buttons--two-buttons' : ''}`}>
         <CircularButton icon={<Plus size={24} />} priority="primary" onClick={onAdd}>{t('common.add')}</CircularButton>
-        <CircularButton icon={<Convert size={24} />} priority="primary" onClick={onConvert}>{t('common.convertOrMove')}</CircularButton>
-        <CircularButton icon={<Send size={24} />} priority={sendSecondary ? 'secondary' : 'primary'} onClick={sendSecondary ? undefined : onSend}>{t('common.send')}</CircularButton>
+        {!moveOnly && <CircularButton icon={<Convert size={24} />} priority="primary" onClick={onConvert}>{t('common.convertOrMove')}</CircularButton>}
+        {moveOnly && <CircularButton icon={<Convert size={24} />} priority="primary" onClick={onConvert}>{t('common.move')}</CircularButton>}
+        {showSend && <CircularButton icon={<Send size={24} />} priority={sendSecondary ? 'secondary' : 'primary'} onClick={sendSecondary ? undefined : onSend}>{t('common.send')}</CircularButton>}
         {!hideGetPaid && (
           <CircularButton icon={<Receive size={24} />} priority="primary" onClick={() => setShowRequestSheet(true)}>{isBusiness ? t('common.getPaid') : t('common.request')}</CircularButton>
         )}

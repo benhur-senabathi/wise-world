@@ -16,7 +16,7 @@ import { formatBalance } from '@shared/data/balances';
 import { recipients, businessRecipients, recentContacts, businessRecentContacts, getAvatarSrc, getBadge, type Recipient } from '@shared/data/recipients';
 import { currencies } from '@shared/data/currencies';
 import { businessCurrencies } from '@shared/data/business-currencies';
-import { groupCurrencies } from '@shared/data/group-data';
+import { accountRegistry } from '@shared/data/account-registry';
 import type { AccountType } from '../App';
 
 type ButtonState = 'disabled' | 'loading' | 'active';
@@ -56,7 +56,6 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
   const rates = useLiveRates();
 
   const isBusiness = accountType === 'business';
-  const isGroup = !!group;
 
   const [step, setStep] = useState<'recipient' | 'amount'>(initialRecipient ? 'amount' : startStep);
   const [selectedRecipient, setSelectedRecipient] = useState<RecipientInfo | null>(initialRecipient ?? null);
@@ -132,8 +131,17 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
 
   const isSearching = searchQuery.trim().length > 0;
 
-  // Find balance for the sending currency
-  const allCurrencies = [...(isGroup ? groupCurrencies : []), ...(isBusiness ? businessCurrencies : currencies)];
+  // Find balance for the sending currency — resolve from registry
+  const resolveAccountCurrencies = () => {
+    if (group) {
+      const match = accountRegistry.find((a) => a.subPageType === `${group}-account`);
+      if (match) return match.getCurrencies();
+    }
+    const matchByStyle = accountRegistry.find((a) => a.style.iconName === accountStyle.iconName && a.style.color === accountStyle.color);
+    if (matchByStyle && matchByStyle.subPageType !== 'account') return matchByStyle.getCurrencies();
+    return isBusiness ? businessCurrencies : currencies;
+  };
+  const allCurrencies = resolveAccountCurrencies();
   const sendCurrencyData = allCurrencies.find((c) => c.code === sendCurrency);
   const availableBalance = sendCurrencyData ? formatBalance(sendCurrencyData) : `0.00 ${sendCurrency}`;
 

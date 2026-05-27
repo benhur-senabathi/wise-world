@@ -37,6 +37,7 @@ const WISE_BANK_ADDRESS_SG = 'Wise Asia-Pacific Pte. Ltd., 2 Tanjong Katong Road
 type AccountDetailsMap = Record<string, {
   personal?: CurrencyAccountDetailsData;
   business?: CurrencyAccountDetailsData;
+  [subPageType: string]: CurrencyAccountDetailsData | undefined;
 }>;
 
 const accountDetailsMap: AccountDetailsMap = {
@@ -75,6 +76,32 @@ const accountDetailsMap: AccountDetailsMap = {
         { labelKey: 'accountDetails.accountNumber', value: '81204736', copySnackbarKey: 'accountDetails.accountNumberCopied' },
         { labelKey: 'accountDetails.sortCode', value: '23-08-01', helperKey: 'accountDetails.sortCodeHelper', copySnackbarKey: 'accountDetails.sortCodeCopied' },
         { labelKey: 'accountDetails.iban', value: 'GB62 TRWI 2308 0181 2047 36', helperKey: 'accountDetails.ibanHelper', helperLinkKey: 'accountDetails.ibanHelperLink', copySnackbarKey: 'accountDetails.ibanCopied' },
+        { labelKey: 'accountDetails.swiftBic', value: 'TRWIGB2LXXX', helperKey: 'accountDetails.swiftHelper', copySnackbarKey: 'accountDetails.swiftCopied' },
+        { labelKey: 'accountDetails.bankNameAndAddress', value: WISE_BANK_ADDRESS_UK, helperKey: 'accountDetails.bankHelper', helperLinkKey: 'common.learnMore', copySnackbarKey: 'accountDetails.bankCopied' },
+      ],
+      fees: [
+        { labelKey: 'accountDetails.feeFromDomestic', valueKey: 'accountDetails.noFees' },
+        { labelKey: 'accountDetails.feeFromSwift', valueKey: 'accountDetails.gbpSwiftFee', helperKey: 'accountDetails.bankFeesMayApply' },
+      ],
+      speeds: [
+        { labelKey: 'accountDetails.feeFromDomestic', valueKey: 'accountDetails.speedFewMinutes', helperKey: 'accountDetails.speedUpTo1Day' },
+        { labelKey: 'accountDetails.feeFromSwift', valueKey: 'accountDetails.speed1WorkingDay', helperKey: 'accountDetails.speedUpTo5Days' },
+      ],
+      limits: [
+        { labelKey: 'accountDetails.from150Countries', valueKey: 'accountDetails.noReceivingLimits' },
+      ],
+      availability: [
+        { type: 'positive', titleKey: 'accountDetails.directDebitsAvailable', subtitleKey: 'accountDetails.directDebitsSub' },
+      ],
+    },
+    'joint-account': {
+      receiveSubtitleKey: 'accountDetails.receiveFromUK',
+      countriesLinkKey: 'accountDetails.countriesLink150',
+      fields: (name) => [
+        { labelKey: 'accountDetails.name', value: name, copySnackbarKey: 'accountDetails.nameCopied' },
+        { labelKey: 'accountDetails.accountNumber', value: '81052943', copySnackbarKey: 'accountDetails.accountNumberCopied' },
+        { labelKey: 'accountDetails.sortCode', value: '23-14-70', helperKey: 'accountDetails.sortCodeHelper', copySnackbarKey: 'accountDetails.sortCodeCopied' },
+        { labelKey: 'accountDetails.iban', value: 'GB29 TRWI 2314 7081 0529 43', helperKey: 'accountDetails.ibanHelper', helperLinkKey: 'accountDetails.ibanHelperLink', copySnackbarKey: 'accountDetails.ibanCopied' },
         { labelKey: 'accountDetails.swiftBic', value: 'TRWIGB2LXXX', helperKey: 'accountDetails.swiftHelper', copySnackbarKey: 'accountDetails.swiftCopied' },
         { labelKey: 'accountDetails.bankNameAndAddress', value: WISE_BANK_ADDRESS_UK, helperKey: 'accountDetails.bankHelper', helperLinkKey: 'common.learnMore', copySnackbarKey: 'accountDetails.bankCopied' },
       ],
@@ -199,6 +226,33 @@ const accountDetailsMap: AccountDetailsMap = {
         { type: 'positive', titleKey: 'accountDetails.achDebitsAvailable', subtitleKey: 'accountDetails.directDebitsSub' },
       ],
     },
+    'joint-account': {
+      receiveSubtitleKey: 'accountDetails.receiveFromUS',
+      countriesLinkKey: 'accountDetails.countriesLink150',
+      fields: (name) => [
+        { labelKey: 'accountDetails.name', value: name, copySnackbarKey: 'accountDetails.nameCopied' },
+        { labelKey: 'accountDetails.accountNumber', value: '9402184763', copySnackbarKey: 'accountDetails.accountNumberCopied' },
+        { labelKey: 'accountDetails.accountType', value: 'Checking', helperKey: 'accountDetails.sortCodeHelper', copySnackbarKey: 'accountDetails.accountTypeCopied' },
+        { labelKey: 'accountDetails.routingNumber', value: '026073150', helperKey: 'accountDetails.sortCodeHelper', copySnackbarKey: 'accountDetails.routingCopied' },
+        { labelKey: 'accountDetails.swiftBic', value: 'CMFGUS33', helperKey: 'accountDetails.swiftHelper', copySnackbarKey: 'accountDetails.swiftCopied' },
+        { labelKey: 'accountDetails.bankNameAndAddress', value: WISE_BANK_ADDRESS_US, helperKey: 'accountDetails.bankHelperUS', helperLinkKey: 'accountDetails.bankHelperUSLink', copySnackbarKey: 'accountDetails.bankCopied' },
+      ],
+      fees: [
+        { labelKey: 'accountDetails.feeFromACH', valueKey: 'accountDetails.usdAchFree', helperKey: 'accountDetails.usdWireTransfersCost' },
+        { labelKey: 'accountDetails.feeFromWire', valueKey: 'accountDetails.usdSwiftFee', helperKey: 'accountDetails.bankFeesMayApply' },
+      ],
+      speeds: [
+        { labelKey: 'accountDetails.feeFromUSDomestic', valueKey: 'accountDetails.speed1to3daysShort' },
+        { labelKey: 'accountDetails.feeFromOutsideUS', valueKey: 'accountDetails.speed1WorkingDay', helperKey: 'accountDetails.speedUpTo5Days' },
+      ],
+      limits: [
+        { labelKey: 'accountDetails.fromTheUS', valueKey: 'accountDetails.usdLimit50m' },
+        { labelKey: 'accountDetails.maxRollingYear', valueKey: 'accountDetails.usdLimit100m' },
+      ],
+      availability: [
+        { type: 'positive', titleKey: 'accountDetails.achDebitsAvailable', subtitleKey: 'accountDetails.directDebitsSub' },
+      ],
+    },
   },
   CAD: {
     personal: {
@@ -260,8 +314,9 @@ const accountDetailsMap: AccountDetailsMap = {
   },
 };
 
-export function getAccountDetails(code: string, accountType: 'personal' | 'business'): CurrencyAccountDetailsData | null {
+export function getAccountDetails(code: string, accountType: 'personal' | 'business', subPageType?: string): CurrencyAccountDetailsData | null {
   const entry = accountDetailsMap[code];
   if (!entry) return null;
+  if (subPageType && entry[subPageType]) return entry[subPageType]!;
   return entry[accountType] ?? entry.personal ?? entry.business ?? null;
 }

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { ListItem, Button } from '@transferwise/components';
 import {
   DirectDebits, RequestReceive, BillSplit, Calendar, Reload, Plus, AutoConvert, FastFlag, Upload,
@@ -7,6 +7,8 @@ import {
 import { Flag } from '@wise/art';
 import type { AccountType } from '../App';
 import { useLanguage } from '../context/Language';
+import { useVisibleAccounts } from '../hooks/useAccountRegistry';
+import { useActiveCurrencies } from '../hooks/useDatasetData';
 import type { TranslationKey } from '../translations/en';
 
 type SpotlightItem = { titleKey: TranslationKey; subtitleKey: TranslationKey; icon: React.ReactNode };
@@ -33,17 +35,39 @@ const businessIncomingItems: SpotlightItem[] = [
   { titleKey: 'payments.qrCodes', subtitleKey: 'payments.qrCodesSub', icon: <QrCode size={24} /> },
 ];
 
-const personalAccountDetails = [
-  { currency: 'GBP', titleKey: 'payments.britishPound' as TranslationKey, number: '39215' },
-  { currency: 'USD', titleKey: 'payments.usDollar' as TranslationKey, number: '94826' },
-  { currency: 'EUR', titleKey: 'payments.euro' as TranslationKey, number: '17624' },
-];
+const currencyNameKeys: Record<string, TranslationKey> = {
+  GBP: 'payments.britishPound',
+  USD: 'payments.usDollar',
+  EUR: 'payments.euro',
+  CAD: 'accountDetailsList.canadianDollar',
+};
 
-const businessAccountDetails = [
-  { currency: 'GBP', titleKey: 'payments.britishPound' as TranslationKey, number: '04736' },
-  { currency: 'USD', titleKey: 'payments.usDollar' as TranslationKey, number: '18365' },
-  { currency: 'EUR', titleKey: 'payments.euro' as TranslationKey, number: '93847' },
-];
+function useAccountDetails(accountType: 'personal' | 'business') {
+  const visibleAccounts = useVisibleAccounts(accountType);
+  const currentAccountCurrencies = useActiveCurrencies(accountType);
+  return useMemo(() => {
+    const details: { currency: string; titleKey: TranslationKey; number: string }[] = [];
+    const seen = new Set<string>();
+    for (const c of currentAccountCurrencies) {
+      if (c.accountDetails && !seen.has(c.code)) {
+        seen.add(c.code);
+        const lastFive = c.accountDetails.replace(/\D/g, '').slice(-5);
+        details.push({ currency: c.code, titleKey: currencyNameKeys[c.code] || 'payments.britishPound', number: lastFive });
+      }
+    }
+    const subAccounts = visibleAccounts.filter((a) => a.subPageType !== 'account' && a.features.hasAccountDetails);
+    for (const account of subAccounts) {
+      for (const c of account.getCurrencies()) {
+        if (c.accountDetails && !seen.has(c.code)) {
+          seen.add(c.code);
+          const lastFive = c.accountDetails.replace(/\D/g, '').slice(-5);
+          details.push({ currency: c.code, titleKey: currencyNameKeys[c.code] || 'payments.britishPound', number: lastFive });
+        }
+      }
+    }
+    return details;
+  }, [visibleAccounts, currentAccountCurrencies]);
+}
 
 function SpotlightGrid({ items }: { items: SpotlightItem[] }) {
   const { t } = useLanguage();
@@ -73,7 +97,8 @@ function SpotlightGrid({ items }: { items: SpotlightItem[] }) {
 export function Payments({ accountType = 'personal', personalAvatarUrl, onSend, onRequest, onPaymentLink, onAccountDetails, onAccountDetailsList }: { accountType?: AccountType; personalAvatarUrl?: string; onSend?: () => void; onRequest?: () => void; onPaymentLink?: () => void; onAccountDetails?: (code: string) => void; onAccountDetailsList?: () => void }) {
   const { t } = useLanguage();
   const isBusiness = accountType === 'business';
-  const accountDetails = isBusiness ? businessAccountDetails : personalAccountDetails;
+  const accountDetails = useAccountDetails(accountType);
+  const displayedAccountDetails = accountDetails.slice(0, 3);
   const [getPaidOpen, setGetPaidOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -303,7 +328,7 @@ export function Payments({ accountType = 'personal', personalAvatarUrl, onSend, 
           <Button v2 size="sm" priority="tertiary" onClick={() => onAccountDetailsList?.()}>{t('common.seeAll')}</Button>
         </div>
         <div className="payments-page__accounts-grid">
-          {accountDetails.map((account) => (
+          {displayedAccountDetails.map((account) => (
             <ListItem
               key={account.currency}
               title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t(account.titleKey)}</span>}

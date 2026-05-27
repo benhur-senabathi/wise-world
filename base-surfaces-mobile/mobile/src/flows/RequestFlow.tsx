@@ -6,10 +6,13 @@ import { FlowHeader, GlassPill } from '../components/FlowHeader';
 import { ButtonCue } from '../components/ButtonCue';
 import { RecentContactCard } from '../components/RecentContactCard';
 import { RecipientSearchEmpty } from '../components/RecipientSearchEmpty';
-import { WiseLogoIcon } from '../components/WiseLogoIcon';
+import { WiseLogoIcon, resolveIcon } from '../components/WiseLogoIcon';
 import { useLanguage } from '../context/Language';
 import { recipients, recentContacts, getAvatarSrc, getBadge, type Recipient } from '@shared/data/recipients';
 import type { AccountType } from '../App';
+import { getAccountBySubPageType } from '@shared/data/account-registry';
+
+export type AccountStyle = { color: string; textColor: string; iconName: string };
 
 type ButtonState = 'disabled' | 'loading' | 'active';
 
@@ -26,6 +29,7 @@ type Props = {
   defaultCurrency: string;
   accountLabel: string;
   group?: string;
+  accountStyle?: AccountStyle;
   onClose: () => void;
   onStepChange?: (step: string) => void;
   accountType: AccountType;
@@ -35,7 +39,7 @@ type Props = {
   recipient?: RecipientInfo;
 };
 
-export function RequestFlow({ defaultCurrency, accountLabel, group, onClose, onStepChange, accountType, avatarUrl, initials, startStep = 'recipient', recipient: initialRecipient }: Props) {
+export function RequestFlow({ defaultCurrency, accountLabel, group, accountStyle, onClose, onStepChange, accountType, avatarUrl, initials, startStep = 'recipient', recipient: initialRecipient }: Props) {
   const { t } = useLanguage();
 
   const isBusiness = accountType === 'business';
@@ -78,11 +82,13 @@ export function RequestFlow({ defaultCurrency, accountLabel, group, onClose, onS
 
   const isSearching = searchQuery.trim().length > 0;
 
-  const accountAvatarStyle = isGroup
-    ? { backgroundColor: '#FFEB69', color: '#3a341c' }
+  const caStyle = getAccountBySubPageType('account')!.style;
+  const accountAvatarStyle = accountStyle
+    ? { backgroundColor: accountStyle.color, color: accountStyle.textColor }
     : isBusiness
-      ? { backgroundColor: '#163300', color: '#9fe870' }
+      ? { backgroundColor: caStyle.textColor, color: caStyle.color }
       : { backgroundColor: 'var(--color-interactive-accent)', color: 'var(--color-interactive-control)' };
+  const accountAvatarIcon = accountStyle ? resolveIcon(accountStyle.iconName) : (isGroup ? <Money size={16} /> : <WiseLogoIcon />);
 
   // Select a recipient and transition to request step
   const handleSelectRecipient = useCallback((r: Recipient) => {
@@ -361,7 +367,7 @@ export function RequestFlow({ defaultCurrency, accountLabel, group, onClose, onS
                     <Button v2 size="md" priority="secondary-neutral" className="wds-currency-selector"
                       addonStart={{
                         type: 'avatar',
-                        value: [{ style: accountAvatarStyle, asset: isGroup ? <Money size={16} /> : <WiseLogoIcon /> }, { asset: <Flag code={currency} loading="eager" /> }],
+                        value: [{ style: accountAvatarStyle, asset: accountAvatarIcon }, { asset: <Flag code={currency} loading="eager" /> }],
                       }}
                       addonEnd={{ type: 'icon', value: <ChevronDown size={16} /> }}
                     >

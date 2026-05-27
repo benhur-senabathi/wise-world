@@ -4,9 +4,12 @@ import { InfoCircle, ChevronDown, Money } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { FlowHeader } from '../components/FlowHeader';
 import { ButtonCue } from '../components/ButtonCue';
-import { WiseLogoIcon } from '../components/WiseLogoIcon';
+import { WiseLogoIcon, resolveIcon } from '../components/WiseLogoIcon';
 import { useLanguage } from '../context/Language';
 import type { AccountType } from '../App';
+import { getAccountBySubPageType } from '@shared/data/account-registry';
+
+export type AccountStyle = { color: string; textColor: string; iconName: string };
 
 type ButtonState = 'disabled' | 'loading' | 'active';
 
@@ -14,13 +17,14 @@ type Props = {
   defaultCurrency: string;
   accountLabel: string;
   group?: string;
+  accountStyle?: AccountStyle;
   onClose: () => void;
   accountType: AccountType;
   avatarUrl: string;
   initials: string;
 };
 
-export function PaymentLinkFlow({ defaultCurrency, accountLabel, group, onClose, accountType, avatarUrl, initials }: Props) {
+export function PaymentLinkFlow({ defaultCurrency, accountLabel, group, accountStyle, onClose, accountType, avatarUrl, initials }: Props) {
   const { t } = useLanguage();
 
   const isBusiness = accountType === 'business';
@@ -36,11 +40,13 @@ export function PaymentLinkFlow({ defaultCurrency, accountLabel, group, onClose,
   const bodyRef = useRef<HTMLDivElement>(null);
   const hasAmountRef = useRef(false);
 
-  const accountAvatarStyle = isGroup
-    ? { backgroundColor: '#FFEB69', color: '#3a341c' }
+  const caStyle = getAccountBySubPageType('account')!.style;
+  const accountAvatarStyle = accountStyle
+    ? { backgroundColor: accountStyle.color, color: accountStyle.textColor }
     : isBusiness
-      ? { backgroundColor: '#163300', color: '#9fe870' }
+      ? { backgroundColor: caStyle.textColor, color: caStyle.color }
       : { backgroundColor: 'var(--color-interactive-accent)', color: 'var(--color-interactive-control)' };
+  const accountAvatarIcon = accountStyle ? resolveIcon(accountStyle.iconName) : (isGroup ? <Money size={16} /> : <WiseLogoIcon />);
 
   // Button state machine
   const updateButtonState = useCallback((hasAmount: boolean) => {
@@ -115,7 +121,7 @@ export function PaymentLinkFlow({ defaultCurrency, accountLabel, group, onClose,
                   <Button v2 size="md" priority="secondary-neutral" className="wds-currency-selector"
                     addonStart={{
                       type: 'avatar',
-                      value: [{ style: accountAvatarStyle, asset: isGroup ? <Money size={16} /> : <WiseLogoIcon /> }, { asset: <Flag code={currency} loading="eager" /> }],
+                      value: [{ style: accountAvatarStyle, asset: accountAvatarIcon }, { asset: <Flag code={currency} loading="eager" /> }],
                     }}
                     addonEnd={{ type: 'icon', value: <ChevronDown size={16} /> }}
                   >

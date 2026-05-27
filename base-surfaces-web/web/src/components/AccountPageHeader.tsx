@@ -1,5 +1,5 @@
 import { Button, IconButton, AvatarView, AvatarLayout } from '@transferwise/components';
-import { Bank, ChevronRight, Money } from '@transferwise/icons';
+import { Bank, ChevronRight } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { AccountActionButtons } from './AccountActionButtons';
 import { MoreMenu } from './MoreMenu';
@@ -8,6 +8,7 @@ import type { AccountType } from '../App';
 import { useLanguage } from '../context/Language';
 import { useShimmer } from '../context/Shimmer';
 import { ShimmerAccountPageHeader } from './Shimmer';
+import { getAccountBySubPageType } from '@shared/data/account-registry';
 
 type Props = {
   type: 'account' | 'currency' | 'group' | 'jar';
@@ -20,9 +21,11 @@ type Props = {
   onBreadcrumbClick?: () => void;
   accountType?: AccountType;
   jarColor?: string;
+  jarTextColor?: string;
   jarName?: string;
   jarIcon?: React.ReactNode;
   hideGetPaid?: boolean;
+  moveOnly?: boolean;
   sendSecondary?: boolean;
   onAdd?: () => void;
   onConvert?: () => void;
@@ -42,9 +45,11 @@ export function AccountPageHeader({
   onBreadcrumbClick,
   accountType = 'personal',
   jarColor,
+  jarTextColor,
   jarName,
   jarIcon,
   hideGetPaid: hideGetPaidProp,
+  moveOnly,
   sendSecondary,
   onAdd,
   onConvert,
@@ -59,15 +64,14 @@ export function AccountPageHeader({
   const isJar = type === 'jar';
   const isJarCurrency = type === 'currency' && !!jarColor;
   const hideGetPaid = hideGetPaidProp ?? false;
-  const wiseAvatarStyle = (isJar || isJarCurrency) && jarColor
-    ? { backgroundColor: jarColor, color: '#121511' }
-    : isGroup
-      ? { backgroundColor: '#FFEB69', color: '#3a341c' }
-      : isBusiness
-        ? { backgroundColor: '#163300', color: '#9fe870' }
-        : { backgroundColor: 'var(--color-interactive-accent)', color: 'var(--color-interactive-control)' };
+  const caStyle = getAccountBySubPageType('account')!.style;
+  const wiseAvatarStyle = jarColor
+    ? { backgroundColor: jarColor, color: jarTextColor || '#121511' }
+    : isBusiness
+      ? { backgroundColor: caStyle.textColor, color: caStyle.color }
+      : { backgroundColor: 'var(--color-interactive-accent)', color: 'var(--color-interactive-control)' };
 
-  const avatarIcon = (isJar || isJarCurrency) && jarIcon ? jarIcon : isGroup ? <Money size={16} /> : <WiseLogoIcon />;
+  const avatarIcon = jarIcon ? jarIcon : <WiseLogoIcon />;
 
   if (shimmerMode) return (
     <div className="account-header">
@@ -150,13 +154,13 @@ export function AccountPageHeader({
           )}
         </div>
         <div className="account-header__actions-desktop">
-          <AccountActionButtons accountType={accountType} hideGetPaid={hideGetPaid} sendSecondary={sendSecondary} onAdd={onAdd} onConvert={onConvert} onSend={onSend} onRequest={onRequest} onPaymentLink={onPaymentLink} />
+          <AccountActionButtons accountType={accountType} hideGetPaid={hideGetPaid} moveOnly={moveOnly} sendSecondary={sendSecondary} onAdd={onAdd} onConvert={onConvert} onSend={onSend} onRequest={onRequest} onPaymentLink={onPaymentLink} />
         </div>
       </div>
 
       {/* Mobile/tablet: action buttons below, centered */}
       <div className="account-header__actions-mobile">
-        <AccountActionButtons accountType={accountType} hideGetPaid={hideGetPaid} sendSecondary={sendSecondary} onAdd={onAdd} onConvert={onConvert} onSend={onSend} onRequest={onRequest} onPaymentLink={onPaymentLink} />
+        <AccountActionButtons accountType={accountType} hideGetPaid={hideGetPaid} moveOnly={moveOnly} sendSecondary={sendSecondary} onAdd={onAdd} onConvert={onConvert} onSend={onSend} onRequest={onRequest} onPaymentLink={onPaymentLink} />
       </div>
     </div>
   );

@@ -666,16 +666,15 @@ html.np-theme-dark .np-overlay-header .np-logo-svg path {
   overflow: hidden;
 }
 
-.mca-cards__stack--single {
-  padding-bottom: 20%;
+.mca-cards__stack--single .mca-cards__info {
+  top: calc(11% - 4px);
 }
 
-.mca-cards__stack--single .mca-cards__info {
-  top: 0;
+.mca-cards__stack--tapestry img {
+  filter: brightness(0.85);
 }
 
 .mca-cards__stack--empty {
-  padding-bottom: 24%;
   overflow: visible;
 }
 
@@ -746,6 +745,19 @@ html[class*="dark"] .mca-cards__empty-card {
 
 .mca-cards__stack:hover .mca-cards__info {
   top: -2px;
+}
+
+.mca-cards__stack--single .mca-cards__green,
+.mca-cards__stack--single .mca-cards__info {
+  transition: none;
+}
+
+.mca-cards__stack--single:hover .mca-cards__green {
+  top: 0;
+}
+
+.mca-cards__stack--single:hover .mca-cards__info {
+  top: calc(11% - 4px);
 }
 
 .mca-cards__link {
@@ -920,7 +932,7 @@ html[class*="dark"] .mca-cards__empty-card {
 
 .jar-card__header-content {
   position: absolute;
-  top: 14px;
+  top: 19px;
   left: 20px;
   right: 16px;
   display: flex;
@@ -2117,6 +2129,13 @@ html.np-theme-dark .cards-travel-hub-btn .tw-icon {
     inset 0 -0.6px 0.6px 0 rgba(255, 255, 255, 0.3);
 }
 
+.card-thumbnail__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .card-thumbnail--physical {
   background: #9ae86a;
 }
@@ -2126,7 +2145,7 @@ html.np-theme-dark .cards-travel-hub-btn .tw-icon {
 }
 
 .card-thumbnail--biz-physical {
-  background: #163300;
+  background: var(--color-forest-green);
 }
 
 .card-thumbnail--biz-aqua {
@@ -3194,8 +3213,8 @@ html.np-theme-personal--dark .recipients-page__chips .np-chip--selected:active {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #9FE870;
-  color: #163300;
+  background: var(--color-interactive-accent);
+  color: var(--color-forest-green);
   line-height: 0;
 }
 
@@ -3208,8 +3227,8 @@ html.np-theme-personal--dark .recipients-page__chips .np-chip--selected:active {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #9FE870;
-  color: #163300;
+  background: var(--color-interactive-accent);
+  color: var(--color-forest-green);
 }
 
 .account-page__plus-badge .tw-icon {

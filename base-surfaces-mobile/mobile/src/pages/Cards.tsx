@@ -3,27 +3,15 @@ import { ListItem, CircularButton } from '@transferwise/components';
 import { LiquidGlassSegmentedControl } from '../components/LiquidGlassSegmentedControl';
 import { Dial, CardWise, Freeze, List, Cog, PadlockUnlocked, Edit, Limit, Bin, QrCode, Plus, Camera } from '@transferwise/icons';
 import type { AccountType } from '../App';
-import { useCardCount, useHasGroup } from '../hooks/useDatasetData';
 import { useLanguage } from '../context/Language';
 import { useHapticOnChange, triggerHaptic } from '../hooks/useHaptics';
+import { useAllCards, useVisibleAccounts } from '../hooks/useAccountRegistry';
 
 type CardInfo = {
   type: 'physical' | 'digital';
   lastFour: string;
   image: string;
 };
-
-const personalCards: CardInfo[] = [
-  { type: 'physical', lastFour: '8130', image: '/wise-card-physical.png' },
-  { type: 'digital', lastFour: '6663', image: '/wise-card-personal-digital-turquoise.png' },
-];
-
-const businessCards: CardInfo[] = [
-  { type: 'physical', lastFour: '5271', image: '/wise-card-biz-physical.png' },
-  { type: 'digital', lastFour: '9034', image: '/wise-card-biz-digital-aqua.png' },
-  { type: 'digital', lastFour: '4219', image: '/wise-card-biz-digital-yellow.png' },
-  { type: 'digital', lastFour: '7803', image: '/wise-card-biz-digital-orange.png' },
-];
 
 function QrCard() {
   return (
@@ -141,7 +129,7 @@ function CardCarousel({ cards, selectedIndex, onSelect, hasQr }: { cards: CardIn
     <div className="cards-carousel">
       <div className="cards-carousel__track" ref={scrollRef}>
         {hasQr && (
-          <div className="cards-carousel__card" onClick={(e) => {
+          <div className="cards-carousel__card cards-carousel__card--qr" onClick={(e) => {
             triggerHaptic();
             (e.currentTarget as HTMLElement).scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
           }}>
@@ -159,11 +147,6 @@ function CardCarousel({ cards, selectedIndex, onSelect, hasQr }: { cards: CardIn
               className="cards-carousel__image"
               draggable={false}
             />
-            {card.type === 'digital' && (
-              <svg className="cards-carousel__wise-logo" viewBox="0 0 1340 305" fill="#fff" aria-hidden="true">
-                <path d="M746.324 4.55894H828.892L787.355 300.89H704.787L746.324 4.55894ZM642.228 4.55894L586.508 175.266L562.194 4.55894H504.447L431.504 174.759L422.386 4.55894H342.351L370.212 300.89H436.569L518.63 113.467L547.504 300.89H612.849L720.744 4.55894H642.228ZM1335.44 176.786H1139.41C1140.42 215.283 1163.47 240.611 1197.41 240.611C1222.99 240.611 1243.25 226.934 1258.95 200.847L1325.13 230.936C1302.39 275.74 1254.47 304.943 1195.38 304.943C1114.84 304.943 1061.4 250.741 1061.4 163.615C1061.4 67.8782 1124.21 0 1212.86 0C1290.86 0 1340 52.6817 1340 134.742C1340 148.419 1338.48 162.096 1335.44 176.786ZM1261.99 120.052C1261.99 85.607 1242.74 63.8252 1211.84 63.8252C1180.94 63.8252 1153.59 86.6201 1146.5 120.052H1261.99ZM84.2898 93.8636L0 192.362H150.496L167.415 145.912H102.931L142.34 100.347L142.467 99.1317L116.836 55.0366H232.101L142.746 300.89H203.886L311.781 4.55894H33.027L84.2645 93.8636H84.2898ZM963.127 63.8252C992.254 63.8252 1017.78 79.4777 1040.07 106.325L1051.77 22.7947C1031 8.73805 1002.89 0 965.66 0C891.704 0 850.167 43.3102 850.167 98.2705C850.167 136.388 871.442 159.69 906.394 174.759L923.11 182.358C954.263 195.655 962.621 202.24 962.621 216.297C962.621 230.353 948.564 240.104 927.162 240.104C891.831 240.231 863.211 222.122 841.682 191.222L829.753 276.348C854.27 295.039 885.701 304.943 927.162 304.943C997.446 304.943 1040.63 264.418 1040.63 208.192C1040.63 169.947 1023.66 145.38 980.857 126.131L962.621 117.519C937.293 106.249 928.682 100.043 928.682 87.633C928.682 74.2095 940.459 63.8252 963.127 63.8252Z" />
-              </svg>
-            )}
           </div>
         ))}
       </div>
@@ -253,7 +236,7 @@ function ManageCardSection({ card }: { card: CardInfo }) {
   );
 }
 
-function TeamCardsView() {
+function TeamCardsView({ participants }: { participants: { name: string; imgSrc: string; cardCount: number }[] }) {
   const { t } = useLanguage();
   return (
     <>
@@ -262,17 +245,20 @@ function TeamCardsView() {
         {t('cards.teamMembersWithCards')}
       </h3>
       <ul className="wds-list list-unstyled m-y-0">
-        <ListItem
-          title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t('cards.teamMemberName')}</span>}
-          subtitle={t('cards.teamCardCount')}
-          media={
-            <ListItem.AvatarView
-              size={48}
-              imgSrc="https://www.tapback.co/api/avatar/jamie-reynolds.webp"
-            />
-          }
-          control={<ListItem.Navigation onClick={() => {}} />}
-        />
+        {participants.map((p) => (
+          <ListItem
+            key={p.name}
+            title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{p.name}</span>}
+            subtitle={t('cards.teamCardCount')}
+            media={
+              <ListItem.AvatarView
+                size={48}
+                imgSrc={p.imgSrc}
+              />
+            }
+            control={<ListItem.Navigation onClick={() => {}} />}
+          />
+        ))}
       </ul>
     </>
   );
@@ -280,11 +266,16 @@ function TeamCardsView() {
 
 export function Cards({ accountType = 'personal', cardsTab = 'your', onCardsTabChange }: { accountType?: AccountType; cardsTab?: 'your' | 'team'; onCardsTabChange?: (tab: 'your' | 'team') => void } = {}) {
   const { t } = useLanguage();
-  const cardCount = useCardCount(accountType);
-  const hasTaxes = useHasGroup(accountType);
   const isBusiness = accountType === 'business';
-  const totalCards = isBusiness ? cardCount + (hasTaxes ? 2 : 0) : cardCount;
-  const cards = (isBusiness ? businessCards : personalCards).slice(0, totalCards);
+  const registryCards = useAllCards(accountType);
+  const visibleAccounts = useVisibleAccounts(accountType);
+  const cards: CardInfo[] = registryCards.map((c) => ({ type: c.type, lastFour: c.lastFour, image: c.image }));
+  // Team tab: show if any visible account has participantStyle 'team'
+  const teamAccounts = visibleAccounts.filter((a) => a.features.participantStyle === 'team' && a.participants.length > 0);
+  const hasTeamTab = isBusiness && teamAccounts.length > 0;
+  const teamParticipants = teamAccounts.flatMap((a) =>
+    a.participants.map((p) => ({ ...p, cardCount: a.getCards(accountType).length }))
+  );
   const [selectedIndex, setSelectedIndex] = useState(1); // Start on first real card (after QR)
   useHapticOnChange(selectedIndex);
 
@@ -295,7 +286,7 @@ export function Cards({ accountType = 'personal', cardsTab = 'your', onCardsTabC
   return (
     <div className="cards-page cards-page--mobile">
       <h1 className="np-text-title-screen" style={{ margin: '0 0 16px' }}>{isQr && !showTeam ? t('cards.payWithQr') : t('cards.title')}</h1>
-      {isBusiness && hasTaxes && (
+      {isBusiness && hasTeamTab && (
         <div style={{ marginBottom: 16 }}>
           <LiquidGlassSegmentedControl
             name="cards-tabs"
@@ -310,7 +301,7 @@ export function Cards({ accountType = 'personal', cardsTab = 'your', onCardsTabC
       )}
 
       {showTeam ? (
-        <TeamCardsView />
+        <TeamCardsView participants={teamParticipants} />
       ) : (
         <>
           <CardCarousel cards={cards} selectedIndex={selectedIndex} onSelect={setSelectedIndex} hasQr />

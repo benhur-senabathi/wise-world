@@ -205,6 +205,10 @@ The `JarCard` header must align pixel-perfectly with the `MultiCurrencyAccountCa
 - **Jar currency:** JarIcon + Flag > "JarName > CurrencyCode" (e.g. "Savings > GBP")
 - **Group/Shared Spending currency:** TBD (likely similar to jar breadcrumb pattern)
 
+## Adding a new account type
+
+For the full step-by-step guide (data, routing, navigation, pages, translations, cross-page impact), see **`adding-account-types.md`** in this directory.
+
 ## Account Type Notes
 
 - **Young Explorer** is also referred to as child/kids/u18 account. Single currency, no interest/stocks, no send — parent manages the account.

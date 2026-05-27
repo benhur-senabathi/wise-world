@@ -2,8 +2,8 @@ import { useState, useMemo } from 'react';
 import { ListItem, Button, IconButton, Modal } from '@transferwise/components';
 import { Graph, Money, Rewards, QuestionMarkCircle } from '@transferwise/icons';
 import type { AccountType } from '../App';
-import { useActiveCurrencies, useActiveTransactions, useActiveJars, useHasGroup } from '../hooks/useDatasetData';
-import { groupTotalBalance } from '@shared/data/group-data';
+import { useActiveCurrencies, useActiveTransactions, useActiveJars } from '../hooks/useDatasetData';
+import { useAllCurrencies, useAllTransactions } from '../hooks/useAccountRegistry';
 import { computeTotalBalance } from '@shared/data/balances';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useDataset } from '../context/Dataset';
@@ -19,12 +19,14 @@ export function Insights({ accountType = 'personal' }: { accountType?: AccountTy
   const rates = usdBaseRates;
   const isBusiness = accountType === 'business';
   const homeCurrency = isBusiness ? businessHomeCurrency : consumerHomeCurrency;
-  const activeCurrencies = useActiveCurrencies(accountType);
-  const activeTransactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
+  const currentCurrencies = useActiveCurrencies(accountType);
+  const currentTransactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
   const activeJars = useActiveJars(accountType);
-  const hasTaxes = useHasGroup(accountType);
+  const subAccountCurrencies = useAllCurrencies(accountType);
+  const subAccountTransactions = useAllTransactions(accountType);
+  const activeCurrencies = [...currentCurrencies, ...subAccountCurrencies];
+  const activeTransactions = [...currentTransactions, ...subAccountTransactions];
 
-  const groupBalance = hasTaxes ? groupTotalBalance : 0;
   const jarBalance = activeJars.reduce((sum, jar) => sum + jar.currencies.reduce((s, c) => s + convertToHomeCurrency(c.balance, c.code, homeCurrency, rates), 0), 0);
 
   const { totalBalance, cashBalance, interestBalance, hasStocks, stocksBalance, totalInterestReturns, totalStocksReturns, spentThisMonth, spentLastMonth, products } = useMemo(() => {
@@ -38,7 +40,7 @@ export function Insights({ accountType = 'personal' }: { accountType?: AccountTy
     const hasAnyStocks = stocksCurrencies.length > 0;
     const interestInHome = interestOnlyCurrencies.reduce((sum, c) => sum + convertToHomeCurrency(c.balance, c.code, homeCurrency, rates), 0);
     const stocksInHome = stocksCurrencies.reduce((sum, c) => sum + convertToHomeCurrency(c.balance, c.code, homeCurrency, rates), 0);
-    const cashInHome = cashCurrencies.reduce((sum, c) => sum + convertToHomeCurrency(c.balance, c.code, homeCurrency, rates), 0) + convertToHomeCurrency(groupBalance, 'GBP', homeCurrency, rates) + jarBalance;
+    const cashInHome = cashCurrencies.reduce((sum, c) => sum + convertToHomeCurrency(c.balance, c.code, homeCurrency, rates), 0) + jarBalance;
 
 
     const stocks = hasAnyStocks
@@ -139,7 +141,7 @@ export function Insights({ accountType = 'personal' }: { accountType?: AccountTy
       spentLastMonth: spentLast,
       products: prods,
     };
-  }, [activeCurrencies, activeTransactions, homeCurrency, rates, groupBalance, jarBalance, accountType]);
+  }, [activeCurrencies, activeTransactions, homeCurrency, rates, jarBalance, accountType]);
   const [isBalanceInfoOpen, setIsBalanceInfoOpen] = useState(false);
 
   return (

@@ -2,6 +2,20 @@
 
 What updates when balances change, and the full checklist for adding new accounts. Read this before modifying any balance data or adding a jar/group.
 
+## Account Registry — source of truth
+
+All account definitions live in `shared-resources/data/account-registry.ts`. The registry is the single source of truth for which accounts exist, their currencies, transactions, features, and styles. Every page in the prototype reads from the registry — nothing is hardcoded elsewhere.
+
+`computeTotalBalance()` aggregates balances from all registry-visible accounts for the given account type. It calls `getVisibleAccounts(accountType)` and sums across all currencies returned by each account's `getCurrencies()`.
+
+Key helpers:
+- `getVisibleAccounts(accountType)` — all accounts visible for personal/business
+- `getAccountByBalanceId(id)` — resolves any balance ID to its parent account
+- `buildBalanceOwnerMap()` — builds a Map of all balance IDs to their owning accounts (used for routing)
+- `getAllCurrencies(accountType)` / `getAllTransactions(accountType)` — flat lists across all visible accounts
+
+Hook layer (`mobile/src/hooks/useAccountRegistry.ts`): `useVisibleAccounts`, `useAllCards`, `useAllCurrencies`, `useAllTransactions` — these are the React-side entry points for components.
+
 ## How balances work
 
 Balances are never hardcoded. Every currency's `balance` field is computed from its transaction array using `computeCurrencyBalance(code, txList)`. Change the transactions and the balance updates automatically.

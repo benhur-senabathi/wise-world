@@ -2,8 +2,8 @@ import { ListItem } from '@transferwise/components';
 import { CardWise, Savings as SavingsIcon, People, Suitcase, SpendDollar, Jar } from '@transferwise/icons';
 import { FlowHeader } from '../components/FlowHeader';
 import { useLanguage } from '../context/Language';
-import { savingsJar, suppliesJar } from '@shared/data/jar-data';
-import { groupCurrencies } from '@shared/data/group-data';
+import { useVisibleAccounts } from '../hooks/useAccountRegistry';
+import { useActiveJars } from '../hooks/useDatasetData';
 import type { AccountType } from '../App';
 
 type OpenItem = {
@@ -21,11 +21,6 @@ const openItems: OpenItem[] = [
   { titleKey: 'open.loungePass', subtitleKey: 'open.loungePassSub', icon: <Suitcase size={24} />, bg: 'var(--color-dark-charcoal)', color: 'var(--color-bright-blue)' },
 ];
 
-type AccountItem = {
-  label: string;
-  icon: React.ReactNode;
-};
-
 type Props = {
   onClose: () => void;
   accountType: AccountType;
@@ -33,22 +28,10 @@ type Props = {
 
 export function OpenPlusFlow({ onClose, accountType }: Props) {
   const { t } = useLanguage();
-  const isBusiness = accountType === 'business';
+  const visibleAccounts = useVisibleAccounts(accountType);
+  const activeJars = useActiveJars(accountType);
 
   const accountAvatarStyle = { backgroundColor: 'var(--color-dark-gold)', color: 'var(--color-bright-yellow)', border: 'none' };
-
-  const accountItems: AccountItem[] = [
-    { label: t('home.currentAccount'), icon: <SpendDollar size={24} /> },
-  ];
-
-  if (isBusiness) {
-    if (groupCurrencies.length > 0) {
-      accountItems.push({ label: t('home.taxes' as any), icon: <Jar size={24} /> });
-    }
-    accountItems.push({ label: t(suppliesJar.nameKey as any), icon: <Jar size={24} /> });
-  } else {
-    accountItems.push({ label: t(savingsJar.nameKey as any), icon: <Jar size={24} /> });
-  }
 
   return (
     <div className="open-plus-flow">
@@ -86,16 +69,31 @@ export function OpenPlusFlow({ onClose, accountType }: Props) {
         </div>
 
         <div className="open-plus-flow__accounts">
-          {accountItems.map((account) => (
+          {visibleAccounts.map((account) => (
             <ListItem
-              key={account.label}
-              title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{account.label}</span>}
+              key={account.id}
+              title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t(account.nameKey as any)}</span>}
               media={
                 <ListItem.AvatarView
                   size={48}
                   style={accountAvatarStyle}
                 >
-                  {account.icon}
+                  {account.subPageType === 'account' ? <SpendDollar size={24} /> : <Jar size={24} />}
+                </ListItem.AvatarView>
+              }
+              control={<ListItem.Navigation onClick={() => {}} />}
+            />
+          ))}
+          {activeJars.map((jar) => (
+            <ListItem
+              key={jar.id}
+              title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t(jar.nameKey as any)}</span>}
+              media={
+                <ListItem.AvatarView
+                  size={48}
+                  style={accountAvatarStyle}
+                >
+                  <Jar size={24} />
                 </ListItem.AvatarView>
               }
               control={<ListItem.Navigation onClick={() => {}} />}

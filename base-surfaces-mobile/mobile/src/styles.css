@@ -621,7 +621,7 @@ html[class*="dark"] .wise-bottom-sheet__backdrop--visible {
 /* Dark mode: Wise logo in primary green */
 html.np-theme-personal--dark .np-overlay-header .np-logo-svg path,
 html.np-theme-dark .np-overlay-header .np-logo-svg path {
-  fill: #9FE870;
+  fill: var(--color-interactive-accent);
 }
 
 .mca--empty {
@@ -638,11 +638,11 @@ html.np-theme-dark .np-overlay-header .np-logo-svg path {
 }
 
 .mca-cards__stack--single {
-  padding-bottom: 20%;
+  padding-bottom: 24%;
 }
 
 .mca-cards__stack--single .mca-cards__info {
-  top: 0;
+  top: 11%;
 }
 
 .mca-cards__stack--empty {
@@ -683,12 +683,12 @@ html[class*="dark"] .mca-cards__empty-card {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .mca-cards__green {
   position: absolute;
-  top: 25%;
+  top: 12%;
   left: 0;
   width: 100%;
   z-index: 1;
@@ -697,9 +697,13 @@ html[class*="dark"] .mca-cards__empty-card {
   cursor: pointer;
 }
 
+.mca-cards__stack--tapestry img {
+  filter: brightness(0.85);
+}
+
 .mca-cards__info {
   position: absolute;
-  top: 25%;
+  top: 12%;
   left: 0;
   right: 0;
   z-index: 2;
@@ -906,12 +910,12 @@ html[class*="dark"] .mca-cards__empty-card {
 
 .jar-card__header-content {
   position: absolute;
-  top: 14px;
+  top: 19px;
   left: 20px;
   right: 16px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .jar-card__label {
@@ -2175,7 +2179,7 @@ html.np-theme-business--dark .lg-transform__body {
 }
 
 .card-thumbnail--biz-physical {
-  background: #163300;
+  background: var(--color-forest-green);
 }
 
 .card-thumbnail--biz-aqua {
@@ -2188,6 +2192,13 @@ html.np-theme-business--dark .lg-transform__body {
 
 .card-thumbnail--biz-orange {
   background: linear-gradient(135deg, #e8856e 0%, #d95a4e 40%, #c4405a 100%);
+}
+
+.card-thumbnail__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
 }
 
 /* Fast flag — positioned top-right per Figma (inset 12.7% 8.33% 49.21% 66.67%) */
@@ -2240,7 +2251,7 @@ html.np-theme-business--dark .lg-transform__body {
 }
 
 .cards-carousel {
-  overflow: hidden;
+  overflow: visible;
   margin-left: -16px;
   margin-right: -16px;
   padding: 6px 0;
@@ -2248,13 +2259,15 @@ html.np-theme-business--dark .lg-transform__body {
 
 .cards-carousel__track {
   display: flex;
-  gap: 32px;
-  overflow-x: auto;
+  align-items: flex-start;
+  gap: 36px;
+  overflow: auto visible;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 8px 0;
+  padding: 8px 0 120px;
+  margin-bottom: -120px;
 }
 
 .cards-carousel__track::-webkit-scrollbar {
@@ -2264,33 +2277,29 @@ html.np-theme-business--dark .lg-transform__body {
 .cards-carousel__card {
   scroll-snap-align: center;
   flex-shrink: 0;
-  width: calc(100vw - 120px);
-  max-width: 273px;
+  width: calc(100vw - 116px);
+  max-width: 283px;
   position: relative;
 }
 
 .cards-carousel__card:first-child {
-  margin-left: calc((100vw - (100vw - 120px)) / 2);
+  margin-left: 50px;
 }
 
 .cards-carousel__card:last-child {
-  margin-right: calc((100vw - (100vw - 120px)) / 2);
+  margin-right: 50px;
 }
 
 .cards-carousel__image {
   width: 100%;
   height: auto;
-  border-radius: 11px;
+  border-radius: 0;
   display: block;
   pointer-events: none;
-}
-
-.cards-carousel__wise-logo {
-  position: absolute;
-  top: calc(4% + 10px);
-  right: 5%;
-  width: 40%;
-  height: auto;
+  filter:
+    drop-shadow(0 5px 12px rgba(22, 51, 0, 0.06))
+    drop-shadow(0 22px 22px rgba(22, 51, 0, 0.05))
+    drop-shadow(0 49px 30px rgba(22, 51, 0, 0.03));
 }
 
 /* QR scan card */
@@ -3066,8 +3075,8 @@ html.np-theme-business--dark .lg-transform__body {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #9FE870;
-  color: #163300;
+  background: var(--color-interactive-accent);
+  color: var(--color-forest-green);
   line-height: 0;
 }
 
@@ -3086,8 +3095,8 @@ html.np-theme-business--dark .lg-transform__body {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #9FE870;
-  color: #163300;
+  background: var(--color-interactive-accent);
+  color: var(--color-forest-green);
 }
 
 .account-page__plus-badge .tw-icon {
@@ -3237,6 +3246,7 @@ html.np-theme-business--dark .lg-transform__body {
 
 .account-action-buttons {
   display: flex;
+  justify-content: center;
   gap: 0;
   padding: 16px 0;
 }
@@ -3444,13 +3454,13 @@ html.np-theme-business--dark .lg-transform__body {
   padding-top: 24px;
 }
 
-.account-action-buttons {
-  width: 100%;
-  justify-content: space-between;
+.account-action-buttons--two-buttons {
+  justify-content: center;
+  gap: 24px;
 }
 
-.account-action-buttons .np-circular-btn {
-  flex: 1;
+.account-action-buttons--two-buttons .np-circular-btn {
+  flex: none;
 }
 
 /* ===== Shared: Section Card Containers ===== */
@@ -4085,7 +4095,7 @@ html.np-theme-business--dark .lg-transform__body {
   background: var(--color-background-screen);
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .open-plus-flow__body {
@@ -4094,6 +4104,7 @@ html.np-theme-business--dark .lg-transform__body {
   width: 100%;
   padding: 132px 16px 48px;
   flex: 1;
+  overflow-y: auto;
 }
 
 .open-plus-flow__items {

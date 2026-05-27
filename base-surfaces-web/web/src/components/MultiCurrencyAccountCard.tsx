@@ -76,7 +76,7 @@ export function MultiCurrencyAccountCard({
     <article className="mca">
       {hasCards && (
         <div
-          className={`mca-cards__stack${cardCount <= 1 ? ' mca-cards__stack--single' : ''}`}
+          className={`mca-cards__stack${cardCount <= 1 ? ' mca-cards__stack--single' : ''}${cardInfoLight ? ' mca-cards__stack--tapestry' : ''}`}
           role="button"
           tabIndex={0}
           onClick={() => onNavigateCards?.()}
@@ -86,7 +86,7 @@ export function MultiCurrencyAccountCard({
           {cardCount >= 2 && (
             <div className="mca-cards__fire">
               <img
-                src={cardTopImage || (businessCardStyle ? new URL('../assets/card-tapestry.jpg', import.meta.url).href : '/wise-card-personal-digital-turquoise.png')}
+                src={cardTopImage || (businessCardStyle ? new URL('../assets/card-tapestry.jpg', import.meta.url).href : new URL('../assets/card-tapestry-turquoise.jpg', import.meta.url).href)}
                 alt="Wise card"
                 loading="eager"
               />
@@ -95,7 +95,7 @@ export function MultiCurrencyAccountCard({
           {businessCardStyle ? (
             <div
               className={cardCount >= 2 ? 'mca-cards__green' : 'mca-cards__fire'}
-              style={{ background: 'linear-gradient(135deg, #1a3d00 0%, #163300 40%, #122b00 100%)', aspectRatio: '330/208', borderRadius: '20px 20px 0 0' }}
+              style={{ background: 'linear-gradient(135deg, #1a3d00 0%, var(--color-forest-green) 40%, #122b00 100%)', aspectRatio: '330/208', borderRadius: '20px 20px 0 0' }}
             />
           ) : (
             <img
@@ -109,7 +109,7 @@ export function MultiCurrencyAccountCard({
             <a href="#" className="mca-cards__link" style={effectiveCardInfoLight ? { color: '#fff' } : undefined} onClick={(e) => { e.preventDefault(); onNavigateCards?.(); }}>
               {t('accountCard.cards', { count: cardCount })} <ChevronRight size={16} />
             </a>
-            <span className="mca-cards__badge" style={businessCardStyle ? { color: '#9fe870' } : effectiveCardInfoLight ? { color: '#fff' } : undefined}>
+            <span className="mca-cards__badge" style={businessCardStyle ? { color: 'var(--color-interactive-accent)' } : effectiveCardInfoLight ? { color: '#fff' } : undefined}>
               <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M1.875 15.28 7.35 8.838h-.002L4.02 3h18.105l-7.008 19.375h-3.97L16.95 6.3H9.463l1.665 2.883-.008.08-2.56 2.979h4.188l-1.098 3.037z" />
               </svg>
@@ -189,7 +189,7 @@ export function MultiCurrencyAccountCard({
               size="sm"
               priority="secondary-neutral"
               addonStart={{ type: 'icon', value: <Bank size={16} /> }}
-              onClick={onAccountDetails}
+              onClick={() => onAccountDetails?.()}
             >
               {t('common.accountDetails')}
             </Button>

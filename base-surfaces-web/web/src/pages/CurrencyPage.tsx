@@ -1,19 +1,25 @@
 import { useState, useMemo } from 'react';
-import { Download, Slider, UpwardGraph, Graph, AutoConvert, Link as LinkIcon, ChevronRight, QuestionMarkCircle, Savings, Suitcase, Money } from '@transferwise/icons';
+import { Download, Slider, UpwardGraph, AutoConvert, Link as LinkIcon, ChevronRight, QuestionMarkCircle, Savings, Suitcase, Money, People, Heart, Backpack } from '@transferwise/icons';
 import { Button, ListItem, SearchInput, Size, SegmentedControl } from '@transferwise/components';
 import type { AccountType } from '../App';
 import { AccountPageHeader } from '../components/AccountPageHeader';
 import { ActivitySummary } from '../components/ActivitySummary';
-import { currencies, type CurrencyData } from '@shared/data/currencies';
+import { type CurrencyData } from '@shared/data/currencies';
 import { formatBalance } from '@shared/data/balances';
-import { businessCurrencies } from '@shared/data/business-currencies';
-import { buildTransactions, getTransactionsForCurrency, groupByDate, type Transaction } from '@shared/data/transactions';
-import { buildBusinessTransactions } from '@shared/data/business-transactions';
+import { getTransactionsForCurrency, groupByDate, type Transaction } from '@shared/data/transactions';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
+import { useActiveCurrencies, useActiveTransactions } from '../hooks/useDatasetData';
 
-import { groupCurrencies, groupTransactions } from '@shared/data/group-data';
+import { getAccountBySubPageType } from '../hooks/useAccountRegistry';
 import type { JarDefinition } from '@shared/data/jar-data';
+
+const ICON_MAP: Record<string, React.ReactNode> = {
+  Money: <Money size={16} />,
+  People: <People size={16} />,
+  Heart: <Heart size={16} />,
+  Backpack: <Backpack size={16} />,
+};
 
 type Props = {
   code: string;
@@ -21,6 +27,8 @@ type Props = {
   onAccountDetails?: () => void;
   accountType?: AccountType;
   group?: string;
+  joint?: boolean;
+  youngExplorer?: boolean;
   jarConfig?: JarDefinition;
   onAdd?: () => void;
   onConvert?: () => void;
@@ -100,7 +108,7 @@ function TransactionsSection({ currency, isMobile, txList }: { currency: Currenc
 function InterestListItem({ currency, accountType = 'personal', isJar = false }: { currency: CurrencyData; accountType?: AccountType; isJar?: boolean }) {
   const { t } = useLanguage();
   const isStocks = currency.hasStocks;
-  const isActive = !isJar && (isStocks || (currency.code === 'GBP' && accountType === 'personal') || currency.hasInterest);
+  const isActive = !isJar && (isStocks || currency.hasInterest);
   return (
     <ListItem
       spotlight={isActive ? 'active' : 'inactive'}
@@ -108,10 +116,10 @@ function InterestListItem({ currency, accountType = 'personal', isJar = false }:
       subtitle={isStocks ? t('currencyPage.stocksIndex') : isActive ? t('currencyPage.variableRate') : t('currencyPage.exploreGrow')}
       media={
         <ListItem.AvatarView size={48} style={isActive
-          ? { backgroundColor: '#9fe870', border: 'none', color: '#163300' }
+          ? { backgroundColor: 'var(--color-interactive-accent)', border: 'none', color: 'var(--color-forest-green)' }
           : { backgroundColor: 'var(--color-background-neutral)', border: 'none' }
         }>
-          {isStocks ? <Graph size={24} /> : <UpwardGraph size={24} />}
+          <UpwardGraph size={24} />
         </ListItem.AvatarView>
       }
       control={<ListItem.Navigation onClick={() => {}} />}
@@ -233,70 +241,29 @@ function OptionsContent({ currency, accountType = 'personal', interestReturns, i
 }
 
 function Sidebar({ currency, accountType = 'personal', interestReturns, isJar = false }: { currency: CurrencyData; accountType?: AccountType; interestReturns?: number; isJar?: boolean }) {
-  const { t } = useLanguage();
-  const showRateCard = (currency.hasStocks || currency.hasInterest) && accountType === 'personal';
-
   return (
     <aside className="currency-page__sidebar">
-      {showRateCard && (
-        <>
-          <InterestRateCard currency={currency} interestReturns={interestReturns} />
-          <p className="np-text-body-small currency-page__disclaimer" style={{ margin: '12px 0 20px', color: 'var(--color-content-secondary)', textAlign: 'center' }}>
-            {t(currency.hasStocks ? 'currencyPage.disclaimerStocks' : 'currencyPage.disclaimerInterest')}
-          </p>
-        </>
-      )}
-      <InterestListItem currency={currency} accountType={accountType} isJar={isJar} />
-      {!showRateCard && (
-        <p className="np-text-body-small currency-page__disclaimer" style={{ margin: '12px 0 8px', color: 'var(--color-content-secondary)', textAlign: 'center' }}>
-          {t('currencyPage.disclaimer')}
-        </p>
-      )}
-
-      <div style={{ marginTop: 16 }}>
-        <ListItem
-          spotlight="inactive"
-          title={t('currencyPage.autoConversions')}
-          subtitle={t('currencyPage.autoConversionsSub')}
-          media={
-            <ListItem.AvatarView size={48} style={{ backgroundColor: 'var(--color-background-neutral)', border: 'none' }}>
-              <AutoConvert size={24} />
-            </ListItem.AvatarView>
-          }
-          control={<ListItem.Navigation onClick={() => {}} />}
-        />
-      </div>
-
-      {accountType === 'business' && (
-        <div style={{ marginTop: 16 }}>
-          <ListItem
-            spotlight="inactive"
-            title={t('currencyPage.setupConnection')}
-            subtitle={t('currencyPage.setupConnectionSub')}
-            media={
-              <ListItem.AvatarView size={48} style={{ backgroundColor: 'var(--color-background-neutral)', border: 'none' }}>
-                <LinkIcon size={24} />
-              </ListItem.AvatarView>
-            }
-            control={<ListItem.Navigation onClick={() => {}} />}
-          />
-        </div>
-      )}
+      <OptionsContent currency={currency} accountType={accountType} interestReturns={interestReturns} isJar={isJar} />
     </aside>
   );
 }
 
-export function CurrencyPage({ code, onNavigateAccount, onAccountDetails, accountType = 'personal', group, jarConfig, onAdd, onConvert, onSend, onRequest, onPaymentLink }: Props) {
+export function CurrencyPage({ code, onNavigateAccount, onAccountDetails, accountType = 'personal', group, joint, youngExplorer, jarConfig, onAdd, onConvert, onSend, onRequest, onPaymentLink }: Props) {
   const { t } = useLanguage();
   const txLabels = useTxLabels();
   const { consumerName, businessName } = usePrototypeNames();
   const [activeTab, setActiveTab] = useState('transactions');
-  const personalTransactions = useMemo(() => buildTransactions(consumerName, businessName, txLabels), [consumerName, businessName, txLabels]);
-  const businessTransactions = useMemo(() => buildBusinessTransactions(consumerName, txLabels), [consumerName, txLabels]);
+  const datasetCurrencies = useActiveCurrencies(accountType);
+  const datasetTransactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
   const isGroup = !!group;
+  const isJoint = !!joint;
+  const isYoungExplorer = !!youngExplorer;
   const isJar = !!jarConfig;
-  const activeCurrencies = isJar ? jarConfig.currencies : isGroup ? groupCurrencies : (accountType === 'business' ? businessCurrencies : currencies);
-  const activeTxList = isJar ? jarConfig.transactions : isGroup ? groupTransactions : (accountType === 'business' ? businessTransactions : personalTransactions);
+  const subPageType = group === 'shared-spending' ? 'shared-spending-account' : isGroup ? 'group-account' : isJoint ? 'joint-account' : isYoungExplorer ? 'young-explorer-account' : 'account';
+  const accountDef = isJar ? undefined : subPageType !== 'account' ? getAccountBySubPageType(subPageType) : undefined;
+  const features = accountDef?.features;
+  const activeCurrencies = isJar ? jarConfig.currencies : accountDef ? accountDef.getCurrencies() : datasetCurrencies;
+  const activeTxList = isJar ? jarConfig.transactions : accountDef ? accountDef.getTransactions() : datasetTransactions;
   const currency = activeCurrencies.find((c) => c.code === code);
 
   const interestReturns = useMemo(() => {
@@ -330,21 +297,23 @@ export function CurrencyPage({ code, onNavigateAccount, onAccountDetails, accoun
         currencyCode={currency.code}
         label={currency.code}
         balance={formatBalance(currency)}
-        accountDetails={(isJar || isGroup) ? undefined : currency.accountDetails}
+        accountDetails={isJar ? undefined : features?.hasAccountDetails === false ? undefined : currency.accountDetails}
         menuItems={menuItems}
-        onAccountDetailsClick={(isJar || isGroup) ? undefined : onAccountDetails}
+        onAccountDetailsClick={isJar ? undefined : features?.hasAccountDetails === false ? undefined : onAccountDetails}
         onBreadcrumbClick={onNavigateAccount}
         accountType={accountType}
-        jarColor={isJar ? jarConfig.color : isGroup ? '#FFEB69' : undefined}
-        jarName={isJar ? t(jarConfig.nameKey as any) : isGroup ? t('home.taxes') : undefined}
-        jarIcon={jarIcon ? jarIcon : isGroup ? <Money size={16} /> : undefined}
-        hideGetPaid={isJar}
+        jarColor={isJar ? jarConfig.color : accountDef && accountDef.subPageType !== 'account' ? accountDef.style.color : undefined}
+        jarTextColor={accountDef && accountDef.subPageType !== 'account' ? accountDef.style.textColor : undefined}
+        jarName={isJar ? t(jarConfig.nameKey as any) : accountDef && accountDef.subPageType !== 'account' ? t(accountDef.nameKey as any) : undefined}
+        jarIcon={jarIcon ? jarIcon : accountDef && accountDef.subPageType !== 'account' ? ICON_MAP[accountDef.style.iconName] || null : undefined}
+        hideGetPaid={isJar || (features ? !features.hasRequest : false)}
+        moveOnly={features?.moveOnly}
         sendSecondary={currency.balance === 0}
         onAdd={onAdd}
-        onConvert={onConvert}
-        onSend={onSend}
-        onRequest={isJar ? undefined : onRequest}
-        onPaymentLink={isJar ? undefined : onPaymentLink}
+        onConvert={features?.hasConvert === false ? undefined : onConvert}
+        onSend={features?.hasSend === false ? undefined : onSend}
+        onRequest={isJar || features?.hasRequest === false ? undefined : onRequest}
+        onPaymentLink={isJar || features?.hasPaymentLink === false ? undefined : onPaymentLink}
       />
 
       {/* Desktop: two-column layout (60/40), no tabs */}

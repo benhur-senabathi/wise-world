@@ -10,7 +10,7 @@ import { convertToHomeCurrency } from '@shared/data/currency-rates';
 import { formatBalance } from '@shared/data/balances';
 import { currencies } from '@shared/data/currencies';
 import { businessCurrencies } from '@shared/data/business-currencies';
-import { groupCurrencies } from '@shared/data/group-data';
+import { accountRegistry } from '@shared/data/account-registry';
 import { getJar } from '@shared/data/jar-data';
 import type { AccountType } from '../App';
 
@@ -50,10 +50,6 @@ export function ConvertFlow({ fromCurrency: initFrom, toCurrency: initTo, accoun
   const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isBusiness = accountType === 'business';
-  const isGroup = !!group;
-  const avatarStyle = isBusiness
-    ? { backgroundColor: '#163300', color: '#9fe870' }
-    : undefined;
 
   // Track swap state so labels and avatar styles follow currency positions
   const [labelsSwapped, setLabelsSwapped] = useState(false);
@@ -69,9 +65,19 @@ export function ConvertFlow({ fromCurrency: initFrom, toCurrency: initTo, accoun
   const toAvatarStyle = { backgroundColor: toStyle.color, color: toStyle.textColor };
   const toAvatarIcon = resolveIcon(toStyle.iconName);
 
-  // Find the balance for the "from" currency — search the active account's currencies
+  // Find the balance for the "from" currency — resolve from registry by matching style
   const jarDef = jarId ? getJar(jarId) : undefined;
-  const fromAccountCurrencies = jarDef ? jarDef.currencies : isGroup ? groupCurrencies : (isBusiness ? businessCurrencies : currencies);
+  const resolveAccountCurrencies = () => {
+    if (jarDef) return jarDef.currencies;
+    if (group) {
+      const match = accountRegistry.find((a) => a.subPageType === `${group}-account`);
+      if (match) return match.getCurrencies();
+    }
+    const matchByStyle = accountRegistry.find((a) => a.style.iconName === accountStyle.iconName && a.style.color === accountStyle.color);
+    if (matchByStyle && matchByStyle.subPageType !== 'account') return matchByStyle.getCurrencies();
+    return isBusiness ? businessCurrencies : currencies;
+  };
+  const fromAccountCurrencies = resolveAccountCurrencies();
   const fromCurrencyData = fromAccountCurrencies.find((c) => c.code === fromCurrency);
   const availableBalance = fromCurrencyData ? formatBalance(fromCurrencyData) : `0.00 ${fromCurrency}`;
 
@@ -82,7 +88,7 @@ export function ConvertFlow({ fromCurrency: initFrom, toCurrency: initTo, accoun
   const avatar = avatarUrl ? (
     <AvatarView size={48} imgSrc={avatarUrl} />
   ) : (
-    <AvatarView size={48} style={avatarStyle}>
+    <AvatarView size={48}>
       {initials}
     </AvatarView>
   );
@@ -203,7 +209,7 @@ export function ConvertFlow({ fromCurrency: initFrom, toCurrency: initTo, accoun
                 </div>
               ),
             }}
-            showChevron={!fromFocused}
+            showChevron={!fromFocused && !toFocused && !fromAmount && !toAmount}
             onFocusChange={setFromFocused}
           />
           <p className="convert-flow__available np-text-body-default">
@@ -244,7 +250,7 @@ export function ConvertFlow({ fromCurrency: initFrom, toCurrency: initTo, accoun
                 </div>
               ),
             }}
-            showChevron={!toFocused}
+            showChevron={!fromFocused && !toFocused && !fromAmount && !toAmount}
             onFocusChange={setToFocused}
           />
           {/* Static divider below the "To" input */}

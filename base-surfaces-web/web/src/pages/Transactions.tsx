@@ -4,6 +4,7 @@ import { Button, SearchInput, Size, AvatarView, Table, Tooltip } from '@transfer
 import type { AccountType } from '../App';
 import { ActivitySummary } from '../components/ActivitySummary';
 import { useActiveTransactions } from '../hooks/useDatasetData';
+import { useAllTransactions } from '../hooks/useAccountRegistry';
 import { groupByDate, type Transaction } from '@shared/data/transactions';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
@@ -108,7 +109,9 @@ export function Transactions({ accountType = 'personal' }: { accountType?: Accou
   const { consumerName, businessName } = usePrototypeNames();
   const { t } = useLanguage();
   const txLabels = useTxLabels();
-  const transactions = useActiveTransactions(accountType, consumerName, businessName, txLabels);
+  const currentAccountTx = useActiveTransactions(accountType, consumerName, businessName, txLabels);
+  const subAccountTx = useAllTransactions(accountType);
+  const transactions = [...currentAccountTx, ...subAccountTx];
   const [search, setSearch] = useState('');
   const [backToTopVisible, setBackToTopVisible] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
