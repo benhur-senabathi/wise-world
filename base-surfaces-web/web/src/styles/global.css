@@ -1,0 +1,377 @@
+/* 1. Neptune CSS reset and base styles */
+@import '@transferwise/neptune-css/dist/css/neptune.css';
+
+/* 2. Component styles */
+@import '@transferwise/components/build/main.css';
+
+/* 3. Illustration styles */
+@import '@wise/art/dist/Illustration.css';
+
+/* 4. Base design tokens */
+@import '@transferwise/neptune-tokens/tokens.css';
+
+/* 5. Theme tokens */
+@import '@transferwise/neptune-tokens/themes/personal/tokens.css';
+@import '@transferwise/neptune-tokens/themes/personal--dark/tokens.css';
+@import '@transferwise/neptune-tokens/themes/dark/tokens.css';
+@import '@transferwise/neptune-tokens/themes/business/tokens.css';
+@import '@transferwise/neptune-tokens/themes/business--dark/tokens.css';
+
+/* ===== Body Background (dark mode support) ===== */
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  background: var(--color-background-screen);
+}
+
+/* ===== Custom Typography Tokens ===== */
+
+.np-text-caption {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  font-family: var(--font-family);
+}
+
+.np-text-caption-bold {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  font-family: var(--font-family);
+}
+
+.np-text-link-caption {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  font-family: var(--font-family);
+  color: var(--color-interactive-primary);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.np-text-link-caption:hover {
+  color: var(--color-interactive-primary-hover);
+}
+
+/* ===== Touch: suppress hover states on touch devices (prevents double-tap) ===== */
+@media (hover: none) {
+  .wds-list-item-interactive:not(.wds-list-item-spotlight):not(.disabled):not(:disabled):hover:before {
+    display: none !important;
+  }
+}
+
+/* ===== Page Layout (matches production) ===== */
+
+.page-layout {
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--color-background-screen);
+}
+
+.column-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.column-layout-left {
+  width: 280px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.column-layout-main {
+  flex: 1;
+  min-width: 0;
+  margin: 0 92px;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.container-content {
+  flex: 1;
+  padding-bottom: 64px;
+}
+
+/* ===== Custom Solid Colors =====
+   Neutral background as solid hex (--color-background-neutral is semi-transparent).
+   Computed: rgba(22,51,0,0.08) on #FFFFFF screen = #EDF0EA (light)
+   Computed: rgba(255,255,255,0.10) on #121511 screen = #2A2C29 (dark)
+*/
+:root {
+  --color-background-neutral-solid: #EDF0EA;
+  --color-background-neutral-solid-secondary: #E2E2E1;
+  --color-mca-background: #F3F4F3;
+  --color-forest-green: #163300;
+  --color-sage-green: #CBD9C3;
+}
+
+html.np-theme-personal--dark,
+html.np-theme-dark {
+  --color-background-neutral-solid: #2A2C29;
+  --color-background-neutral-solid-secondary: #424441;
+  --color-mca-background: #2A2C29;
+  --color-forest-green: #163300;
+  --color-sage-green: #CBD9C3;
+}
+
+/* ===== Home Page Sections ===== */
+
+.home {
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  padding: 24px 0 12px;
+}
+
+.section:first-child {
+  padding: 24px 0 0;
+}
+
+.section:nth-child(2) {
+  padding-top: 22px;
+  padding-bottom: 0;
+}
+
+.section:nth-child(3) {
+  padding: 20px 0 12px;
+}
+
+/* ===== Z-index fixes: portaled elements above Drawer dimmer ===== */
+/* Neptune SelectInput popover and Snackbar portal to <body> at z-index 1060,
+   same level as the Drawer's Dimmer (1050). Bump both above everything. */
+.np-popover-v2-container {
+  z-index: 99998 !important;
+}
+.snackbar {
+  z-index: 99999 !important;
+}
+
+/* ===== Pop-out animation ===== */
+
+@keyframes popout-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.action-button-row__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 1000;
+  animation: popout-enter 0.15s ease-out;
+}
+
+.action-button-row__panel .np-panel__content {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: none;
+  border-radius: 10px;
+}
+
+.action-button-row__dropdown {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  width: 184px;
+  animation: popout-enter 0.15s ease-out;
+}
+
+.action-button-row__dropdown-item {
+  display: block;
+  padding: 12px 8px;
+  color: var(--color-content-primary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  border-radius: 10px;
+}
+
+.action-button-row__dropdown-item:hover {
+  background: var(--color-background-neutral);
+  text-decoration: none;
+  color: var(--color-content-primary);
+}
+
+
+/* ===== Section Dismiss Animation ===== */
+
+.section--dismissible {
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.35s, margin 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.35s, padding 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.35s;
+  overflow: hidden;
+  max-height: 600px;
+}
+
+.section--dismissing {
+  opacity: 0;
+  max-height: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* ===== Section Headers ===== */
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* Align "See all" button text with content edge, hover overhangs */
+.section-header > .wds-Button:last-child {
+  margin-right: -12px;
+}
+
+.section--dismissible .section-header {
+  margin-bottom: 24px;
+}
+
+
+/* ===== FastFlag badge — always dark green brand ===== */
+
+.tw-icon-fast-flag {
+  color: var(--color-forest-green, #163300) !important;
+}
+
+/* ===== Shared: Section Card Containers ===== */
+
+.section-card {
+  border: 1px solid var(--color-border-neutral);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.section-card + .section-card {
+  margin-top: 8px;
+}
+
+.section-card .np-circle-border::after {
+  display: none;
+}
+
+.currency-page__sidebar .np-circle-border::after,
+.currency-page__mobile .np-circle-border::after,
+.current-account__desktop-sidebar .np-circle-border::after,
+.current-account__mobile .np-circle-border::after {
+  display: none;
+}
+
+.savings-goal-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: transparent !important;
+  border: 4px solid var(--color-border-neutral);
+  box-sizing: border-box;
+  opacity: 0.5;
+}
+
+.section-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.section-card__title {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--color-content-primary);
+}
+
+/* Empty state */
+.section-card__empty {
+  text-align: center;
+  padding: 48px 24px 48px;
+}
+
+/* Transaction list spacing inside cards */
+.section-card .np-section {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.section-card .np-section + .np-section {
+  margin-top: 16px !important;
+}
+
+.section-card .np-text-title-group {
+  padding-top: 4px;
+  padding-bottom: 0;
+}
+
+.section-card .transactions-list {
+  padding-top: 8px;
+}
+
+/* ===== Responsive: Small Desktop (992–1279px) ===== */
+
+@media (min-width: 992px) and (max-width: 1279px) {
+  .column-layout-main { margin: 0; padding: 0 20px; }
+}
+
+/* ===== Responsive: Tablet (768–991px) ===== */
+
+@media (max-width: 991px) {
+  .column-layout-left { display: none; }
+  .column-layout-main { margin: 0; padding: 0 20px; }
+  .top-bar {
+    justify-content: space-between;
+    padding: 0 8px 0 0;
+  }
+  .top-bar__hamburger { display: flex; }
+}
+
+/* ===== Responsive: Mobile (<768px) ===== */
+
+@media (max-width: 767px) {
+  /* MCA cards stay 346px at all viewports — carousel handles overflow */
+  .column-layout-main { margin: 0; padding: 0 16px; }
+  .top-bar { height: 88px; justify-content: flex-end; padding: 0 4px 0 0; }
+  .top-bar__hamburger { display: none !important; }
+  .account-switcher__name,
+  .account-switcher .tw-icon,
+  .account-switcher svg:not(.tw-avatar svg) { display: none; }
+  .account-switcher { padding: 0; }
+
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 68px;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    background: var(--color-background-screen);
+    bottom: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .container-content { padding-bottom: 80px; }
+}

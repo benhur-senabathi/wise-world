@@ -1,0 +1,16 @@
+/* ===== Account Action Buttons (circular green) ===== */
+
+.account-action-buttons {
+  display: flex;
+  gap: 0;
+}
+
+.account-action-buttons .np-circular-btn {
+  width: 100px;
+}
+
+.account-action-buttons .np-circular-btn .tw-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

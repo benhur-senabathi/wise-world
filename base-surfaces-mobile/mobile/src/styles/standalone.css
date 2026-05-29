@@ -1,0 +1,156 @@
+/* ===== Mobile breakpoint — standalone only (not inside DeviceFrame iframe) ===== */
+@media (max-width: 460px) {
+  html.standalone .ios-top-bar {
+    padding: 0 16px 0;
+  }
+  html.standalone .ios-top-bar__fade {
+    height: 80px;
+  }
+  html.standalone .column-layout-main {
+    --content-pad-top: 66px;
+  }
+  html.standalone .wise-bottom-sheet {
+    max-height: calc(100vh - 40px);
+    bottom: 12px;
+  }
+  html.standalone .flow-header {
+    padding: 0 16px 0;
+  }
+  html.standalone .flow-header__fade {
+    height: 80px;
+  }
+  html.standalone .send-flow__body,
+  html.standalone .request-flow__body,
+  html.standalone .add-money-flow__body,
+  html.standalone .convert-flow__body,
+  html.standalone .payment-link-flow__body {
+    padding-top: 94px;
+  }
+  html.standalone .transactions-page__mobile-header {
+    top: 50px;
+    padding: 30px 0 0;
+  }
+  html.standalone .transactions-page {
+    padding-top: 100px;
+  }
+  html.standalone .fs-sheet {
+    top: 2%;
+  }
+  html.standalone .wise-bottom-sheet__backdrop,
+  html.standalone .fs-sheet__backdrop {
+    top: -60px;
+  }
+  /* Fix flow continue buttons going under iPhone bezel */
+  html.standalone .add-money-flow__continue,
+  html.standalone .send-flow__continue,
+  html.standalone .request-flow__continue,
+  html.standalone .convert-flow__continue {
+    bottom: 30px;
+  }
+  html.standalone * {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  html.standalone input,
+  html.standalone textarea {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}
+
+/* Portrait lock — landscape overlay (standalone + Figma Make + any mobile) */
+@media (orientation: landscape) and (max-height: 500px) {
+  .page-layout {
+    display: none;
+  }
+  body::after {
+    content: 'Please rotate your device to portrait mode';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    inset: 0;
+    background: var(--color-background-screen, #f2f2f2);
+    color: var(--color-content-primary, #000);
+    font-size: 18px;
+    text-align: center;
+    padding: 32px;
+    z-index: 99999;
+  }
+}
+
+.transfer-calculator__body {
+  flex-direction: column;
+}
+
+.transfer-calculator__inputs-col {
+  width: 100%;
+  max-width: 100%;
+}
+
+.transfer-calculator__chart-section {
+  max-width: 100%;
+}
+
+.transfer-calculator {
+  min-height: auto;
+  padding: 20px 20px 20px;
+}
+
+.mobile-nav__wrapper {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-nav {
+  position: relative;
+  width: 100%;
+  border-radius: 999px;
+  overflow: visible;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+}
+
+/* Dark mode: mobile nav */
+html.np-theme-personal--dark .mobile-nav__track::before,
+html.np-theme-dark .mobile-nav__track::before,
+html.np-theme-business--dark .mobile-nav__track::before {
+  background: rgba(40, 40, 40, 0.75);
+}
+
+html.np-theme-personal--dark .mobile-nav__track-burn,
+html.np-theme-dark .mobile-nav__track-burn,
+html.np-theme-business--dark .mobile-nav__track-burn {
+  background: rgba(60,60,60,0.3);
+}
+
+html.np-theme-personal--dark .mobile-nav__track-darken,
+html.np-theme-dark .mobile-nav__track-darken,
+html.np-theme-business--dark .mobile-nav__track-darken {
+  background: rgba(40,40,40,0.3);
+}
+
+html.np-theme-personal--dark .mobile-nav__track-border,
+html.np-theme-dark .mobile-nav__track-border,
+html.np-theme-business--dark .mobile-nav__track-border {
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+}
+
+html.np-theme-personal--dark .mobile-nav-item__icon,
+html.np-theme-dark .mobile-nav-item__icon,
+html.np-theme-business--dark .mobile-nav-item__icon {
+  color: #fff;
+}
+
+html.np-theme-personal--dark .mobile-nav-item__label,
+html.np-theme-dark .mobile-nav-item__label,
+html.np-theme-business--dark .mobile-nav-item__label {
+  color: #fff;
+}

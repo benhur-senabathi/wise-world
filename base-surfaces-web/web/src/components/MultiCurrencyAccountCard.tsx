@@ -5,7 +5,8 @@ import { Flag } from '@wise/art';
 import { currencies as defaultCurrencyData, type CurrencyData } from '@shared/data/currencies';
 import { useLanguage } from '../context/Language';
 import { useShimmer } from '../context/Shimmer';
-import { ShimmerAccountCard } from './Shimmer';
+import { ShimmerAccountCard } from './MultiCurrencyAccountCard.shimmer';
+import './MultiCurrencyAccountCard.css';
 
 const MAX_BODY_WIDTH = 85;
 

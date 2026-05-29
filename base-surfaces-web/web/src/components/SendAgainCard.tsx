@@ -2,7 +2,8 @@ import { AvatarView, Button, IconButton } from '@transferwise/components';
 import { Cross, FastFlag } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
 import { useShimmer } from '../context/Shimmer';
-import { ShimmerSendAgainCard } from './Shimmer';
+import { ShimmerSendAgainCard } from './SendAgainCard.shimmer';
+import './SendAgainCard.css';
 
 type Props = {
   name: string;

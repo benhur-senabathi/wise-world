@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from '@transferwise/components';
 import { ThemeProvider } from '@wise/components-theming';
 import en from '@transferwise/components/build/i18n/en.json';
-import './styles.css';
+import './styles/global.css';
+import './styles/standalone.css';
 import App from './App';
 import { DeviceFrame, DEVICE_CSS, isAppMode } from './DeviceFrame';
 

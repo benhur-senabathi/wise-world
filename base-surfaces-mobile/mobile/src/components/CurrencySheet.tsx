@@ -6,6 +6,7 @@ import { Flag } from '@wise/art';
 import { currencyMeta } from '@shared/data/currency-rates';
 import { useLiquidGlass } from '../hooks/useLiquidGlass';
 import { useLanguage } from '../context/Language';
+import './LiquidGlassButton.css';
 
 type Props = {
   open: boolean;

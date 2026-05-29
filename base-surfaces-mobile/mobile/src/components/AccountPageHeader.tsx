@@ -4,11 +4,12 @@ import { Flag } from '@wise/art';
 import { AccountActionButtons } from './AccountActionButtons';
 import { MoreMenu } from './MoreMenu';
 import { WiseLogoIcon } from './WiseLogoIcon';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { useLanguage } from '../context/Language';
 import { useShimmer } from '../context/Shimmer';
-import { ShimmerAccountPageHeader } from './Shimmer';
+import { ShimmerAccountPageHeader } from './AccountPageHeader.shimmer';
 import { getAccountBySubPageType } from '@shared/data/account-registry';
+import './AccountPageHeader.css';
 
 type Props = {
   type: 'account' | 'currency' | 'group' | 'jar';

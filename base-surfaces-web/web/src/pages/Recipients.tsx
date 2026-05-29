@@ -1,12 +1,13 @@
 import { useState, useMemo, useRef } from 'react';
 import { Chips, ListItem, Button, InputGroup, Input, Size } from '@transferwise/components';
 import { Search, CrossCircleFill, Plus, ScanSparkle } from '@transferwise/icons';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { RecentContactCard } from '../components/RecentContactCard';
 import { RecipientSearchEmpty } from '../components/RecipientSearchEmpty';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage } from '../context/Language';
 import { recipients, businessRecipients, recentContacts, businessRecentContacts, getAvatarSrc, getBadge, type Recipient } from '@shared/data/recipients';
+import './Recipients.css';
 
 const BUSINESS_AVATAR = '/berry-design-logo.png';
 

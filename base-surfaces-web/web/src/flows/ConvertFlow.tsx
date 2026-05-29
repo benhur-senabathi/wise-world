@@ -12,7 +12,8 @@ import { currencies } from '@shared/data/currencies';
 import { businessCurrencies } from '@shared/data/business-currencies';
 import { accountRegistry } from '@shared/data/account-registry';
 import { getJar } from '@shared/data/jar-data';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
+import './ConvertFlow.css';
 
 type ButtonState = 'disabled' | 'loading' | 'active';
 

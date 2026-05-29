@@ -1,0 +1,101 @@
+/* ===== Liquid Glass Transform ===== */
+
+.lg-transform {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lg-transform__body {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: width 0.5s cubic-bezier(0.32, 0.72, 0, 1), height 0.5s cubic-bezier(0.32, 0.72, 0, 1), border-radius 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.lg-transform__body--expanded {
+  cursor: default;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+}
+
+
+.lg-transform__flash {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transition: opacity 200ms ease-out;
+  pointer-events: none;
+}
+
+.lg-transform__icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-interactive-primary);
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.3s 0.2s ease-out, transform 0.3s 0.2s ease-out;
+  pointer-events: none;
+}
+
+.lg-transform__icon--hidden {
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+}
+
+.lg-transform__content {
+  position: absolute;
+  inset: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  transition: none;
+  pointer-events: none;
+}
+
+.lg-transform__content--visible {
+  opacity: 1;
+  transition: opacity 0.2s 0.33s ease-out;
+  pointer-events: auto;
+}
+
+.lg-transform__content-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.lg-transform__close {
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  border: none;
+  background-color: var(--color-background-neutral);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-content-primary);
+}
+
+.lg-transform__text {
+  margin: 0;
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-20);
+  font-family: var(--font-family);
+  color: var(--color-content-primary);
+}
+
+html.np-theme-personal--dark .lg-transform__body,
+html.np-theme-dark .lg-transform__body,
+html.np-theme-business--dark .lg-transform__body {
+  box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+}

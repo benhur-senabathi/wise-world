@@ -1,0 +1,301 @@
+/* ===== Transactions Page ===== */
+
+.transactions-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.transactions-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 16px;
+}
+
+.transactions-page__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Search bar: 260px wide, 8px gap from filters */
+.transactions-page__search {
+  width: 260px;
+  margin-right: 8px;
+}
+
+.transactions-page__search input {
+  height: 32px;
+}
+
+/* Align the search icon with product positioning */
+.transactions-page__search .np-input-group .tw-icon {
+  display: flex;
+  align-items: center;
+}
+
+.transactions-page__search .np-input-group__prefix {
+  padding-left: 10px;
+}
+
+/* Transaction date group headers — tighter padding */
+.transactions-page .np-text-title-group {
+  padding-top: 4px;
+  padding-bottom: 0;
+}
+
+/* Gap between header and transaction list */
+.transactions-page .transactions-list {
+  padding-top: 8px;
+}
+
+/* 16px spacing between date groups */
+.transactions-page .np-section {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.transactions-page .np-section + .np-section {
+  margin-top: 16px !important;
+}
+
+/* Back to top button — fixed, centered on content column via JS left */
+.back-to-top {
+  position: fixed;
+  bottom: 24px;
+  z-index: 40;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(80px);
+  opacity: 0;
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+}
+
+.back-to-top--visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.back-to-top > * {
+  pointer-events: auto;
+}
+
+.transactions-page__header--business {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.transactions-page__header--business .transactions-page__actions {
+  width: 100%;
+}
+
+.transactions-page__header--business .transactions-page__search {
+  width: 276px;
+}
+
+.transactions-page__statements {
+  margin-left: auto;
+}
+
+/* Small desktop: keep actions inline */
+
+/* Mobile: actions wrap below title, search stretches */
+@media (max-width: 767px) {
+  .transactions-page__header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .transactions-page__actions {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .transactions-page__search {
+    width: 337px;
+    flex: none;
+    margin-right: auto;
+  }
+
+  .transactions-page__statements {
+    width: 100%;
+    margin-left: 0;
+    padding-top: 8px;
+  }
+}
+
+/* Very small mobile: filter + download become icon-only green buttons, search flexes */
+@media (max-width: 480px) {
+  .transactions-page__actions {
+    flex-wrap: wrap !important;
+  }
+  .transactions-page__search {
+    width: auto !important;
+    flex: 1 1 0 !important;
+    min-width: 0;
+    margin-right: 0 !important;
+  }
+  .transactions-page__actions > .wds-Button--primary .wds-Button-labelText {
+    display: none;
+  }
+  .transactions-page__actions > .wds-Button--primary {
+    min-width: 32px;
+    width: 32px;
+    height: 32px;
+    padding: 0 !important;
+    flex: none;
+  }
+  .transactions-page__actions > .wds-Button--primary .wds-Button-icon--start {
+    margin-inline-end: 0;
+  }
+}
+
+/* ===== Transactions Table (Business desktop/tablet) ===== */
+
+/* Show table on desktop+tablet, hide on mobile */
+.transactions-page__table-view {
+  display: block;
+  margin-top: 24px;
+}
+
+.transactions-page__list-view {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .transactions-page__table-view {
+    display: none;
+  }
+
+  .transactions-page__list-view {
+    display: block;
+  }
+}
+
+/* Hidden date — only shown on row hover */
+.tx-table__hidden-date {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.tx-table tr:hover .tx-table__hidden-date {
+  opacity: 1;
+}
+
+/* Table: overflow visible so tooltip renders above */
+.tx-table,
+.tx-table table,
+.tx-table thead,
+.tx-table tbody,
+.tx-table tr,
+.tx-table td,
+.tx-table th {
+  overflow: visible !important;
+}
+
+/* Table layout auto for content-driven widths */
+
+/* Remove avatar border in table rows */
+.tx-table .np-circle-border::after {
+  display: none;
+}
+
+/* Reduce cell padding throughout */
+.tx-table .np-table-header,
+.tx-table td {
+  padding-left: 8px !important;
+  padding-right: 4px !important;
+}
+
+/* First column: left edge padding */
+.tx-table .np-table-header:first-child,
+.tx-table td:first-child {
+  padding-left: 20px !important;
+}
+
+/* Action/chevron column: tight width, padding mirrors date left edge */
+.tx-table .np-table-header--action {
+  width: 1px !important;
+  padding: 0 20px 0 0 !important;
+}
+
+.tx-table .np-table-cell--action {
+  width: 1px !important;
+  padding-right: 20px !important;
+  padding-left: 0 !important;
+}
+
+.tx-table .np-table-cell--action .tw-chevron {
+  margin-left: 0 !important;
+}
+
+/* 12px gap between amount and chevron */
+.tx-table td:nth-last-child(2) {
+  padding-right: 12px !important;
+}
+
+.tx-table .np-table-header:nth-last-child(2) {
+  padding-right: 12px !important;
+}
+
+/* Prevent amount text from wrapping */
+.tx-table__amount {
+  white-space: nowrap;
+}
+
+/* Details cell layout */
+.tx-table__details-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tx-table__details-text {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Attachment column: center-align header and content */
+.tx-table td:nth-child(3),
+.tx-table .np-table-header:nth-child(3) {
+  text-align: center !important;
+}
+
+/* Amount column: right-align header and content */
+.tx-table td:nth-child(4),
+.tx-table .np-table-header:nth-child(4) {
+  text-align: right !important;
+}
+
+/* Attachment badge: background neutral for badge circle */
+.tx-table .tw-badge__content .np-circle {
+  background-color: var(--color-background-neutral) !important;
+}
+
+/* Attachment badge icon: content primary for visibility in both themes */
+.tx-table .tw-badge__content .tw-icon {
+  color: var(--color-content-primary) !important;
+}
+
+/* Attachment receipt avatar: background neutral on all circles */
+.tx-table td .np-avatar-view .np-circle {
+  background-color: var(--color-background-neutral);
+}
+
+/* Tooltip: render above table header, no text wrap */
+.tx-table .tw-tooltip-container {
+  z-index: 200;
+  position: relative;
+}
+
+.tx-table .tw-tooltip-container [role="tooltip"],
+.tx-table .tw-tooltip-container .np-panel,
+.tx-table .tw-tooltip-container .tooltip-inner {
+  white-space: nowrap !important;
+  z-index: 200;
+}
+
+.tx-table thead {
+  position: relative;
+  z-index: 1;
+}

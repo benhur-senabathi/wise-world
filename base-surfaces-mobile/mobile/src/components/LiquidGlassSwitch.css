@@ -1,0 +1,28 @@
+/* ===== Liquid Glass Switch ===== */
+
+.lg-switch {
+  display: inline-block;
+  user-select: none;
+  touch-action: none;
+}
+
+.lg-switch--disabled {
+  opacity: 0.5;
+}
+
+.lg-switch__track {
+  position: relative;
+  cursor: pointer;
+  background-color: var(--color-interactive-secondary);
+  transition: background-color 150ms;
+}
+
+.lg-switch__track--on {
+  background-color: var(--color-interactive-primary);
+}
+
+.lg-switch__thumb {
+  position: absolute;
+  cursor: pointer;
+  transition: transform 100ms ease-out;
+}

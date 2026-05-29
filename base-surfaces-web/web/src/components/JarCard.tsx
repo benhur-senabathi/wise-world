@@ -2,6 +2,7 @@ import { ListItem } from '@transferwise/components';
 import { ChevronRight } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { useLanguage } from '../context/Language';
+import './JarCard.css';
 
 type Balance = {
   code: string;

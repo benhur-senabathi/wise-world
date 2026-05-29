@@ -250,10 +250,11 @@ Apply theme class to the flow's root element (not just success panel) so FlowNav
 Skeleton loading placeholders mirroring real component layouts. Uses `.shimmer-el` base class with translating gradient animation.
 
 ### Files
-- `src/components/Shimmer.tsx` — All shimmer components
+- `src/components/Shimmer.tsx` — Primitives + DS composites (ShimmerCircle, ShimmerBar, ShimmerRect, ShimmerListItem, etc.)
+- `src/components/ComponentName.shimmer.tsx` — Co-located shimmer composites per component (e.g. `MultiCurrencyAccountCard.shimmer.tsx`)
 - `src/context/Shimmer.tsx` — `ShimmerProvider` + `useShimmer()` hook
 
-### Primitives
+### Primitives (in `Shimmer.tsx`)
 
 | Component | Props | Description |
 |-----------|-------|-------------|
@@ -261,19 +262,20 @@ Skeleton loading placeholders mirroring real component layouts. Uses `.shimmer-e
 | `ShimmerBar` | `width?, height?` (120, 12) | Rounded bar |
 | `ShimmerRect` | `width?, height?, borderRadius?` | Rectangle |
 
-### Page-Level Composites
+### Component Composites (co-located `.shimmer.tsx` files)
 
-| Component | Mirrors |
-|-----------|---------|
-| `ShimmerAccountCard` | `MultiCurrencyAccountCard` |
-| `ShimmerAccountPageHeader` | `AccountPageHeader` |
-| `ShimmerCurrenciesSection` | Currency balance list |
-| `ShimmerTransferCalculator` | `TransferCalculator` |
-| `ShimmerTransactionList` | Transaction list section |
-| `ShimmerTaskCard` | `TaskCard` |
+| Component | File | Mirrors |
+|-----------|------|---------|
+| `ShimmerAccountCard` | `MultiCurrencyAccountCard.shimmer.tsx` | `MultiCurrencyAccountCard` |
+| `ShimmerAccountPageHeader` | `AccountPageHeader.shimmer.tsx` | `AccountPageHeader` |
+| `ShimmerTransferCalculator` | `TransferCalculator.shimmer.tsx` | `TransferCalculator` |
+| `ShimmerTransactionList` | `pages/Transactions.shimmer.tsx` | Transaction list section |
+| `ShimmerTaskCard` | `TasksStack.shimmer.tsx` | `TaskCard` |
 
 ### Usage
 ```tsx
+import { ShimmerAccountPageHeader } from './AccountPageHeader.shimmer';
+
 const { shimmerMode } = useShimmer();
 if (shimmerMode) return <ShimmerAccountPageHeader />;
 ```

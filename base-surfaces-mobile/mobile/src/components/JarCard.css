@@ -1,0 +1,44 @@
+/* ===== Jar Card ===== */
+
+.jar-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.jar-card__header {
+  border-radius: 20px 20px 0 0;
+  position: relative;
+  /* Match MCA .mca-cards__stack exactly — only padding-bottom, no top padding */
+  padding-bottom: 24%;
+}
+
+.jar-card__header-content {
+  position: absolute;
+  top: 19px;
+  left: 20px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jar-card__label {
+  color: #121511;
+}
+
+.jar-card__icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #121511;
+}
+
+.jar-card__front {
+  margin-top: -15px;
+  padding-top: 15px;
+  position: relative;
+  z-index: 2;
+  background: var(--color-mca-background);
+}

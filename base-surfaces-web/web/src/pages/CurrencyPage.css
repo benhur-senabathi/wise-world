@@ -1,0 +1,307 @@
+/* ===== Current Account Page ===== */
+
+.current-account {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-account__tabs {
+  margin-bottom: 24px;
+}
+
+@media (max-width: 767px) {
+  .current-account__tabs {
+    margin-bottom: 32px;
+  }
+}
+
+/* Desktop/Tablet: two columns, no tabs */
+.current-account__desktop {
+  display: none;
+}
+
+.current-account__mobile {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .current-account__desktop {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+  }
+
+  .current-account__desktop-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .current-account__desktop-sidebar {
+    width: 340px;
+    flex-shrink: 0;
+  }
+
+  .current-account__mobile {
+    display: none;
+  }
+}
+
+/* ===== Currency Page ===== */
+
+.currency-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.currency-page__tabs {
+  margin-bottom: 28px;
+}
+
+/* Desktop/Tablet: two columns, no tabs */
+.currency-page__desktop {
+  display: none;
+}
+
+.currency-page__mobile {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .currency-page__desktop {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+  }
+
+  .currency-page__desktop-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .currency-page__mobile {
+    display: none;
+  }
+}
+
+/* Sidebar spotlight ListItems — 82px total including spotlight, centered */
+.current-account__desktop-sidebar .wds-list-item,
+.current-account__mobile .wds-list-item,
+.currency-page__sidebar .wds-list-item,
+.currency-page__mobile > .wds-list-item {
+  min-height: 82px;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.current-account__desktop-sidebar .wds-list-item .wds-list-item-spotlight,
+.current-account__mobile .wds-list-item .wds-list-item-spotlight,
+.currency-page__sidebar .wds-list-item-spotlight,
+.currency-page__mobile > .wds-list-item .wds-list-item-spotlight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 82px;
+}
+
+/* Currency sidebar: desktop only */
+.currency-page__sidebar {
+  width: 340px;
+  flex-shrink: 0;
+}
+
+.currency-page__sidebar .wds-list-item-media,
+.current-account__desktop-sidebar .wds-list-item-media,
+.current-account__mobile .wds-list-item-media {
+  align-self: center;
+}
+
+/* Sidebar spacing between ListItems */
+.currency-page__sidebar .np-list-item + .np-list-item {
+  margin-top: 16px;
+}
+
+/* ===== Transaction Search Bar ===== */
+
+.account-tab-panel__tx-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.account-tab-panel__tx-search {
+  flex: 1;
+  max-width: 300px;
+  margin-right: 4px;
+}
+
+.account-tab-panel__tx-search input {
+  height: 32px;
+}
+
+.account-tab-panel__tx-search .np-input-group .tw-icon {
+  display: flex;
+  align-items: center;
+}
+
+.account-tab-panel__tx-search .np-input-group__prefix {
+  padding-left: 10px;
+}
+
+/* Mobile tab panel transaction spacing */
+.current-account__mobile .np-section,
+.currency-page__mobile .np-section {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.current-account__mobile .np-section + .np-section,
+.currency-page__mobile .np-section + .np-section {
+  margin-top: 16px !important;
+}
+
+.current-account__mobile .np-text-title-group,
+.currency-page__mobile .np-text-title-group {
+  padding-top: 4px;
+  padding-bottom: 0;
+}
+
+.current-account__mobile .transactions-list,
+.currency-page__mobile .transactions-list {
+  padding-top: 8px;
+}
+
+/* Mobile: section cards inside tabs */
+.current-account__mobile .section-card,
+.currency-page__mobile .section-card {
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* ===== Spend Card Stacked Media ===== */
+
+.spend-card-media {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.spend-card-media .card-thumbnail:first-child:not(:only-child) {
+  transform: scale(0.85);
+}
+
+.spend-card-media .card-thumbnail:last-child:not(:only-child) {
+  margin-top: -20px;
+  z-index: 1;
+}
+
+/* ===== Interest Rate Card (Currency Page) ===== */
+
+.interest-rate-card {
+  display: flex;
+  border: 1px solid var(--color-border-neutral);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .interest-rate-card {
+    height: 82px;
+  }
+}
+
+.interest-rate-card__cell {
+  flex: 45;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 12px;
+  gap: 2px;
+}
+
+.interest-rate-card__cell--clickable {
+  flex: 55;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: inherit;
+  transition: background-color 0.15s ease;
+}
+
+.interest-rate-card__cell--clickable:hover {
+  background-color: var(--color-background-neutral);
+}
+
+.interest-rate-card__divider {
+  width: 1px;
+  background-color: var(--color-border-neutral);
+  align-self: stretch;
+  margin: 8px 0;
+}
+
+.interest-rate-card__value {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  color: var(--color-content-primary);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.interest-rate-card__chevron {
+  display: flex;
+  align-items: center;
+  color: var(--color-content-primary);
+}
+
+.currency-page__mobile-rate-card {
+  margin-bottom: 40px;
+}
+
+/* Hide rate card inside Options tab on mobile — it's already shown above the segmented control */
+.currency-page__mobile .currency-page__options-rate-card {
+  display: none;
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 767px) {
+  .account-tab-panel__tx-header {
+    flex-wrap: wrap;
+  }
+
+  .account-tab-panel__tx-search {
+    max-width: none;
+  }
+
+  .currency-page__disclaimer {
+    margin-bottom: 16px !important;
+  }
+
+  .current-account .account-header {
+    padding-bottom: 48px;
+  }
+
+  .currency-page .account-header {
+    padding-bottom: 32px;
+  }
+
+}
+
+@media (min-width: 992px) and (max-width: 1279px) {
+  .account-tab-panel__tx-header {
+    flex-wrap: wrap;
+  }
+
+  .account-tab-panel__tx-search {
+    max-width: none;
+  }
+}

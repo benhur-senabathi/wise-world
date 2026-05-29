@@ -5,7 +5,8 @@ import { Flag } from '@wise/art';
 import { ButtonCue } from '../components/ButtonCue';
 import { WiseLogoIcon, resolveIcon } from '../components/WiseLogoIcon';
 import { useLanguage } from '../context/Language';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
+import './AddMoneyFlow.css';
 
 /* ---- AddMoneyFlow ---- */
 

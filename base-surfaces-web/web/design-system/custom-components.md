@@ -1607,7 +1607,7 @@ A full-screen success/confirmation pattern used at the end of flows. Switches th
 </div>
 ```
 
-**Required CSS import** (add to styles.css theme imports):
+**Required CSS import** (add to `src/styles/global.css` theme imports):
 ```css
 @import '@transferwise/neptune-tokens/themes/personal--forest-green/tokens.css';
 ```

@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import { useLiquidGlass } from '../hooks/useLiquidGlass';
+import './LiquidGlassContainer.css';
 
 interface LiquidGlassContainerProps {
   children: ReactNode;

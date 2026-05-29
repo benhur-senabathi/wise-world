@@ -1,0 +1,155 @@
+/* ===== Convert Flow ===== */
+
+.convert-flow {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--color-background-screen);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.convert-flow__body {
+  display: flex;
+  flex-direction: column;
+  max-width: 522px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 56px 0 64px;
+  flex: 1;
+}
+
+.convert-flow__rate-pill {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.convert-flow__available {
+  text-align: right;
+  margin: 4px 0 0;
+  color: var(--color-content-secondary);
+}
+
+.convert-flow__available-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-content-link);
+  text-decoration: underline;
+  font-weight: 600;
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.convert-flow__available-link:hover {
+  opacity: 0.8;
+}
+
+.convert-flow__swap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.convert-flow__swap-line {
+  width: 120px;
+  height: 1px;
+  background: var(--color-border-neutral);
+  flex-shrink: 0;
+  transition: width 0.3s ease;
+}
+
+.convert-flow__swap-line--expanded {
+  width: 241px;
+}
+
+.convert-flow__swap-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-neutral);
+  background: var(--color-background-screen);
+  color: var(--color-content-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.convert-flow__swap-btn .tw-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.convert-flow__swap-btn .tw-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.convert-flow__swap-btn:hover {
+  background: var(--color-background-neutral);
+}
+
+.convert-flow__to-divider {
+  height: 1px;
+  background: var(--color-border-neutral);
+  margin-top: 24px;
+}
+
+.convert-flow__auto-convert {
+  margin-top: 40px;
+}
+
+.convert-flow__auto-convert .np-circle-border::after {
+  display: none !important;
+}
+
+.convert-flow__review {
+  margin-top: 32px;
+  transition: margin-top 0.3s ease-out;
+}
+
+.convert-flow__review--active {
+  margin-top: 16px;
+}
+
+/* Rate pill: fixed size, 14px text, 16px chevron */
+.convert-flow__rate-btn {
+  height: 40px !important;
+  min-width: 179px !important;
+  justify-content: center !important;
+}
+
+.convert-flow__rate-btn .wds-Button-labelText {
+  font-size: 14px !important;
+  line-height: 20px !important;
+}
+
+.convert-flow__rate-btn .tw-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.convert-flow__btn-loading {
+  mix-blend-mode: luminosity !important;
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+.convert-flow__btn-loading .wds-Button-loader .process-circle {
+  stroke: var(--color-interactive-primary) !important;
+}
+
+@media (max-width: 554px) {
+  .convert-flow__body {
+    max-width: none;
+    padding: 56px 16px 48px;
+  }
+}

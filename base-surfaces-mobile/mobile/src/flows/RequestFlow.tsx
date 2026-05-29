@@ -9,8 +9,9 @@ import { RecipientSearchEmpty } from '../components/RecipientSearchEmpty';
 import { WiseLogoIcon, resolveIcon } from '../components/WiseLogoIcon';
 import { useLanguage } from '../context/Language';
 import { recipients, recentContacts, getAvatarSrc, getBadge, type Recipient } from '@shared/data/recipients';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { getAccountBySubPageType } from '@shared/data/account-registry';
+import './RequestFlow.css';
 
 export type AccountStyle = { color: string; textColor: string; iconName: string };
 

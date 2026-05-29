@@ -1,0 +1,104 @@
+/* ===== Top Bar ===== */
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 136px;
+  flex-shrink: 0;
+  padding: 0 8px 0 0;
+}
+
+
+.top-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ===== Account Switcher ===== */
+
+.account-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 5px;
+  border-radius: 36px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.account-switcher:hover {
+  background: var(--color-background-neutral);
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.account-switcher__name {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: -0.084px;
+  color: var(--color-content-primary);
+}
+
+.account-switcher .tw-icon,
+.account-switcher svg {
+  display: block;
+  color: var(--color-content-primary);
+}
+
+/* Dark mode: account switcher chevron green */
+html.np-theme-personal--dark .account-switcher .tw-icon,
+html.np-theme-personal--dark .account-switcher svg {
+  color: var(--color-interactive-primary);
+}
+
+/* ===== Responsive: Hamburger Button (hidden by default) ===== */
+
+.top-bar__hamburger {
+  display: none;
+}
+
+/* ===== TopBar — Back Button ===== */
+
+/* Hidden by default */
+.top-bar__back {
+  margin-right: auto;
+  display: none;
+}
+
+/* 16px gap between hamburger and back button — only when hamburger is visible (tablet) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .top-bar__hamburger + .top-bar__back {
+    margin-left: 16px;
+  }
+}
+
+/* TopBar icons: content primary color */
+.top-bar__hamburger .tw-icon,
+.top-bar__back .tw-icon {
+  color: var(--color-content-primary) !important;
+}
+
+/* Ensure icons are centered in all avatar/button containers */
+.np-circle .tw-icon,
+.np-icon-button .tw-icon,
+.np-circular-btn .tw-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* On desktop, show back button only for Account page */
+.column-layout-main--show-back .top-bar__back {
+  display: flex;
+}
+
+/* On mobile, show back button only for Account, Transactions, Insights */
+@media (max-width: 767px) {
+  .column-layout-main--show-back .top-bar__back,
+  .column-layout-main--mobile-back .top-bar__back { display: flex; }
+}

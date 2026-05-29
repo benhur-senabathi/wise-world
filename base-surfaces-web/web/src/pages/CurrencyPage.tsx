@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Download, Slider, UpwardGraph, AutoConvert, Link as LinkIcon, ChevronRight, QuestionMarkCircle, Savings, Suitcase, Money, People, Heart, Backpack } from '@transferwise/icons';
 import { Button, ListItem, SearchInput, Size, SegmentedControl } from '@transferwise/components';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { AccountPageHeader } from '../components/AccountPageHeader';
 import { ActivitySummary } from '../components/ActivitySummary';
 import { type CurrencyData } from '@shared/data/currencies';
@@ -13,6 +13,7 @@ import { useActiveCurrencies, useActiveTransactions } from '../hooks/useDatasetD
 
 import { getAccountBySubPageType } from '../hooks/useAccountRegistry';
 import type { JarDefinition } from '@shared/data/jar-data';
+import './CurrencyPage.css';
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   Money: <Money size={16} />,

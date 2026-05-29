@@ -1,0 +1,106 @@
+/* ===== Prototype Settings Sheet ===== */
+
+.fs-sheet__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.3s ease;
+}
+
+.fs-sheet__backdrop--visible {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+html[class*="dark"] .fs-sheet__backdrop--visible {
+  background: var(--color-background-overlay);
+}
+
+.fs-sheet {
+  position: fixed;
+  top: 10%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 201;
+  background: var(--color-background-screen);
+  border-radius: 40px 40px 0 0;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform;
+}
+
+.fs-sheet--open {
+  transform: translateY(0);
+}
+
+.fs-sheet__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.fs-sheet__header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    var(--color-background-screen) 0%,
+    var(--color-background-screen) 40%,
+    transparent 100%
+  );
+  border-radius: 40px 40px 0 0;
+}
+
+.fs-sheet__header-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 16px 16px 0;
+  pointer-events: auto;
+}
+
+.fs-sheet__inline-title {
+  flex: 1;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.005em;
+  color: var(--color-content-primary);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.fs-sheet__inline-title--visible {
+  opacity: 1;
+}
+
+.fs-sheet__body {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 64px 16px 48px;
+}
+
+.fs-sheet__section {
+  margin-bottom: 24px;
+}
+
+/* Hide navigation chevron in currency sheet list items */
+.fs-sheet__body .wds-list-item-navigation .tw-icon-chevron-right {
+  display: none;
+}
+
+.fs-sheet__body .np-text-title-group {
+  padding-top: 4px;
+  padding-bottom: 0;
+}

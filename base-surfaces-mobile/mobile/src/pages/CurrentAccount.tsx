@@ -3,7 +3,7 @@ import { Plus, Money, Savings, Suitcase, Upload, Edit, Document, CrossCircle, Pe
 import { Button, ListItem, AvatarLayout } from '@transferwise/components';
 import { LiquidGlassSegmentedControl } from '../components/LiquidGlassSegmentedControl';
 import { Flag } from '@wise/art';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { AccountPageHeader } from '../components/AccountPageHeader';
 import { ActivitySummary } from '../components/ActivitySummary';
 import { useActiveCurrencies, useActiveTransactions } from '../hooks/useDatasetData';
@@ -16,6 +16,7 @@ import { convertToHomeCurrency, usdBaseRates } from '@shared/data/currency-rates
 import type { JarDefinition } from '@shared/data/jar-data';
 import { getAccountBySubPageType, type AccountDefinition } from '@shared/data/account-registry';
 import { useAllCards } from '../hooks/useAccountRegistry';
+import './CurrentAccount.css';
 
 type Props = {
   onNavigateCurrency?: (code: string) => void;

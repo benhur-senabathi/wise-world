@@ -1,0 +1,130 @@
+/* ===== Convert Flow ===== */
+
+.convert-flow {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--color-background-screen);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.convert-flow__body {
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  width: 100%;
+  margin: 0 auto;
+  padding: 148px 16px 48px;
+  flex: 1;
+}
+
+
+
+.convert-flow__available {
+  text-align: right;
+  margin: 4px 0 0;
+  color: var(--color-content-secondary);
+}
+
+.convert-flow__available-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-content-link);
+  text-decoration: underline;
+  font-weight: 600;
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.convert-flow__available-link:hover {
+  opacity: 0.8;
+}
+
+.convert-flow__swap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.convert-flow__swap-line {
+  height: 1px;
+  background: var(--color-border-neutral);
+  flex: 0 0 80px;
+  transition: flex-grow 0.3s ease, flex-basis 0.3s ease;
+}
+
+.convert-flow__swap-line--expanded {
+  flex: 1 0 0px;
+}
+
+.convert-flow__swap-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-neutral);
+  background: var(--color-background-screen);
+  color: var(--color-content-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.convert-flow__swap-btn .tw-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.convert-flow__swap-btn .tw-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.convert-flow__swap-btn:hover {
+  background: var(--color-background-neutral);
+}
+
+.convert-flow__to-divider {
+  height: 1px;
+  background: var(--color-border-neutral);
+  margin-top: 24px;
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.convert-flow__auto-convert {
+  margin-top: 40px;
+}
+
+.convert-flow__auto-convert .np-circle-border::after {
+  display: none !important;
+}
+
+.convert-flow__review {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  z-index: 10;
+  background: linear-gradient(to top, var(--color-background-screen) 60%, transparent 100%);
+}
+
+
+.convert-flow__btn-loading {
+  mix-blend-mode: luminosity !important;
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+.convert-flow__btn-loading .wds-Button-loader .process-circle {
+  stroke: var(--color-interactive-primary) !important;
+}

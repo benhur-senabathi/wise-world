@@ -1,0 +1,8 @@
+/* ===== Total Balance Header ===== */
+
+.total-balance-header__amount {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+

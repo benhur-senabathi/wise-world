@@ -1,0 +1,89 @@
+/* ===== Wise Bottom Sheet ===== */
+
+.wise-bottom-sheet__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.3s ease;
+}
+
+.wise-bottom-sheet__backdrop--visible {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+html[class*="dark"] .wise-bottom-sheet__backdrop--visible {
+  background: var(--color-background-overlay);
+}
+
+.wise-bottom-sheet {
+  position: fixed;
+  bottom: 20px;
+  left: 8px;
+  right: 8px;
+  z-index: 1101;
+  background: var(--color-background-screen);
+  border-radius: 32px;
+  transform: translateY(calc(100% + 40px));
+  /* iOS spring: damping 0.7, velocity 0.5 — sampled as linear(), slight delay on entry */
+  transition: transform 0.42s linear(
+    0, 0.22 8%, 0.58 18%, 0.82 26%, 0.94 32%,
+    1.02 38%, 1.06 42%, 1.065 46%, 1.045 50%,
+    1.015 56%, 0.998 64%, 0.995 74%, 1.0 86%, 1 100%
+  ) 0.04s;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.wise-bottom-sheet--open {
+  transform: translateY(0);
+}
+
+.wise-bottom-sheet__header {
+  padding: 24px 56px 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wise-bottom-sheet__header h3 {
+  margin: 0;
+}
+
+.wise-bottom-sheet__close {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+}
+
+.wise-bottom-sheet__content {
+  padding: 12px 0 16px;
+}
+
+.wise-bottom-sheet--compact-list .wise-bottom-sheet__content .wds-list-item-view {
+  padding: 8px 0;
+}
+
+
+/* Wrap a SelectInput so clicks open BottomSheet instead of native dropdown */
+.wise-sheet-select-wrap {
+  position: relative;
+  cursor: pointer;
+}
+
+.wise-sheet-select-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+
+/* Safe area bottom padding for notch devices */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .wise-bottom-sheet {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+

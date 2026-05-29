@@ -1,0 +1,241 @@
+/* ===== Cards Page ===== */
+
+.cards-page {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card thumbnail media — matches Figma "Card M" component (64×42) */
+.card-thumbnail {
+  position: relative;
+  width: 48px;
+  height: 32px;
+  border-radius: 5px;
+  overflow: hidden;
+  flex-shrink: 0;
+  align-self: center;
+  box-shadow:
+    inset 0 0 0.4px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -0.6px 0.6px 0 rgba(255, 255, 255, 0.3);
+}
+
+.card-thumbnail--physical {
+  background: #9ae86a;
+}
+
+.card-thumbnail--digital {
+  background: linear-gradient(135deg, rgba(54, 183, 217, 1) 0%, rgba(96, 213, 181, 1) 50%, rgba(144, 217, 110, 1) 100%);
+}
+
+.card-thumbnail--biz-physical {
+  background: var(--color-forest-green);
+}
+
+.card-thumbnail--biz-aqua {
+  background: linear-gradient(135deg, #54e1ef 0%, #7ecfb8 50%, #a8c070 100%);
+}
+
+.card-thumbnail--biz-green {
+  background: linear-gradient(135deg, #3d8a2e 0%, #5aaf3a 40%, #7bc45a 100%);
+}
+
+.card-thumbnail--biz-orange {
+  background: linear-gradient(135deg, #e8856e 0%, #d95a4e 40%, #c4405a 100%);
+}
+
+.card-thumbnail__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* Fast flag — positioned top-right per Figma (inset 12.7% 8.33% 49.21% 66.67%) */
+.card-thumbnail__flag {
+  position: absolute;
+  top: 12.7%;
+  left: 66.67%;
+  display: block;
+}
+
+/* Digital card: white fast flag */
+.card-thumbnail--digital .card-thumbnail__flag {
+  color: #fff;
+  fill: #fff;
+}
+
+/* Light overlay — right side, white blur */
+.card-thumbnail__light {
+  position: absolute;
+  top: -13%;
+  right: -13%;
+  width: 36px;
+  height: 52px;
+  background: #fff;
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+  filter: blur(5.5px);
+  transform: rotate(-1deg);
+}
+
+/* Shadow overlay — left side, dark blur */
+.card-thumbnail__shadow {
+  position: absolute;
+  top: -13%;
+  left: -28%;
+  width: 36px;
+  height: 52px;
+  background: #000;
+  opacity: 0.14;
+  mix-blend-mode: overlay;
+  filter: blur(9px);
+  transform: rotate(-1deg);
+}
+
+/* ===== Cards Page — Mobile ===== */
+
+.cards-page--mobile {
+  padding-top: 16px;
+  padding-bottom: 32px;
+}
+
+.cards-carousel {
+  overflow: visible;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 6px 0;
+}
+
+.cards-carousel__track {
+  display: flex;
+  align-items: flex-start;
+  gap: 36px;
+  overflow: auto visible;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 8px 0 120px;
+  margin-bottom: -120px;
+}
+
+.cards-carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.cards-carousel__card {
+  scroll-snap-align: center;
+  flex-shrink: 0;
+  width: calc(100vw - 116px);
+  max-width: 283px;
+  position: relative;
+}
+
+.cards-carousel__card:first-child {
+  margin-left: 50px;
+}
+
+.cards-carousel__card:last-child {
+  margin-right: 50px;
+}
+
+.cards-carousel__image {
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  display: block;
+  pointer-events: none;
+  filter:
+    drop-shadow(0 5px 12px rgba(22, 51, 0, 0.06))
+    drop-shadow(0 22px 22px rgba(22, 51, 0, 0.05))
+    drop-shadow(0 49px 30px rgba(22, 51, 0, 0.03));
+}
+
+/* QR scan card */
+.cards-carousel__qr-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 298 / 188;
+  background: var(--color-background-neutral);
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.cards-carousel__qr-icon {
+  color: var(--color-content-primary);
+  display: flex;
+  transform: scale(2.2);
+}
+
+.cards-carousel__qr-corner {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-color: var(--color-interactive-primary);
+  border-style: solid;
+  border-width: 0;
+}
+
+.cards-carousel__qr-corner--tl {
+  top: -4px;
+  left: -4px;
+  border-top-width: 4px;
+  border-left-width: 4px;
+  border-top-left-radius: 15px;
+}
+
+.cards-carousel__qr-corner--tr {
+  top: -4px;
+  right: -4px;
+  border-top-width: 4px;
+  border-right-width: 4px;
+  border-top-right-radius: 15px;
+}
+
+.cards-carousel__qr-corner--bl {
+  bottom: -4px;
+  left: -4px;
+  border-bottom-width: 4px;
+  border-left-width: 4px;
+  border-bottom-left-radius: 15px;
+}
+
+.cards-carousel__qr-corner--br {
+  bottom: -4px;
+  right: -4px;
+  border-bottom-width: 4px;
+  border-right-width: 4px;
+  border-bottom-right-radius: 15px;
+}
+
+.cards-page__card-label {
+  text-align: center;
+  padding: 16px 0 0;
+}
+
+.cards-page__actions {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 24px 0 8px;
+}
+
+.cards-page__manage {
+  padding: 0;
+}
+
+.cards-page__qr-info {
+  padding: 16px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.cards-page__paynow-logo {
+  width: 48px;
+  height: auto;
+}

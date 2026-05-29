@@ -1,0 +1,320 @@
+/* ===== Send Flow ===== */
+
+.send-flow {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--color-background-screen);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Step track — horizontal carousel holding both steps side by side */
+.send-flow__track {
+  display: flex;
+  width: 200%;
+  flex: 1;
+  min-height: 0;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.send-flow__track--step-amount {
+  transform: translateX(-50%);
+}
+
+/* Hide the search bar on the recipient panel while it's off-screen / animating out */
+.send-flow__track--step-amount .send-flow__panel:first-child .send-flow__search {
+  visibility: hidden;
+  transition: visibility 0s 0.05s;
+}
+.send-flow__panel:first-child .send-flow__search {
+  visibility: visible;
+  transition: visibility 0s 0.4s;
+}
+
+/* Each panel is viewport-width; two panels make the track 200% */
+.send-flow__panel {
+  min-width: 50%;
+  width: 50%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: var(--color-background-screen);
+}
+
+/* Hide scrollbar on off-screen panel */
+.send-flow__track--step-amount .send-flow__panel:first-child,
+.send-flow__track:not(.send-flow__track--step-amount) .send-flow__panel:last-child {
+  overflow-y: hidden;
+}
+
+/* Hide all scrollbars during slide animation */
+.send-flow__track--animating .send-flow__panel {
+  overflow-y: hidden;
+}
+
+.send-flow__body {
+  display: flex;
+  flex-direction: column;
+  max-width: 522px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 56px 0 64px;
+  flex: 1;
+  position: relative;
+}
+
+.send-flow__body--wide {
+  max-width: 668px;
+  padding-top: 72px;
+}
+
+/* Step 1: Recipient selection */
+.send-flow__title {
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+.send-flow__add-recipient {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 32px;
+  transition: margin-bottom 0.4s ease-out;
+}
+
+.send-flow__add-recipient .wds-Button {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.send-flow__add-recipient .wds-Button--primary {
+  padding-left: 34px;
+  padding-right: 34px;
+}
+
+/* When searching, add spacing below buttons so search doesn't crowd them */
+.send-flow--searching .send-flow__add-recipient {
+  margin-bottom: 40px;
+}
+
+/* Recents section — matches recipients page spacing */
+.send-flow__recents-section {
+  margin-bottom: 28px;
+  container-type: inline-size;
+  /* Reverse (opening): slower ease-in for smooth reappear */
+  transition: opacity 0.3s ease-in 0.1s, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
+  max-height: 500px;
+  overflow: hidden;
+  opacity: 1;
+}
+
+.send-flow--searching .send-flow__recents-section {
+  /* Forward (closing): fast fade then collapse */
+  transition: opacity 0.2s ease-out, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+}
+
+.send-flow__recents {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* When container can't fit 5 × 120px cards, switch to grid so wrapped items left-align */
+@container (max-width: 600px) {
+  .send-flow__recents {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 120px);
+    row-gap: 4px;
+  }
+}
+
+/* All accounts section — matches recipients page spacing */
+.send-flow__all-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.send-flow__all-label {
+  transition: opacity 0.3s ease-in 0.1s, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
+  max-height: 50px;
+  overflow: hidden;
+}
+
+.send-flow--searching .send-flow__all-label {
+  transition: opacity 0.2s ease-out, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0 !important;
+}
+
+.send-flow__search {
+  margin-bottom: 16px;
+}
+
+/* Align search icon to text */
+.send-flow__search .np-input-group .tw-icon {
+  display: flex;
+  align-items: center;
+}
+
+.send-flow__filters {
+  margin-top: 0;
+}
+
+/* Chips: unselected border uses border-neutral, not interactive-secondary */
+.send-flow__filters .np-chip {
+  border-color: var(--color-border-neutral) !important;
+}
+
+/* Chips: selected state — grey fill, no border */
+.send-flow__filters .np-chip--selected,
+.send-flow__filters .np-chip--selected:hover,
+.send-flow__filters .np-chip--selected:active {
+  background-color: var(--color-background-neutral) !important;
+  color: var(--color-content-primary) !important;
+  border-color: transparent !important;
+}
+
+/* Dark mode: chip text green */
+html.np-theme-personal--dark .send-flow__filters .np-chip {
+  color: var(--color-interactive-primary) !important;
+}
+html.np-theme-personal--dark .send-flow__filters .np-chip--selected,
+html.np-theme-personal--dark .send-flow__filters .np-chip--selected:hover,
+html.np-theme-personal--dark .send-flow__filters .np-chip--selected:active {
+  color: var(--color-interactive-primary) !important;
+}
+
+.send-flow__list {
+  margin-top: 8px;
+  list-style: none;
+  padding: 0;
+}
+
+/* Initials avatars: filled (no outline ring) — matches recipients */
+.send-flow__list .np-circle-border::after,
+.send-flow__you-send .np-circle-border::after {
+  display: none;
+}
+
+/* Initials avatars: neutral background */
+.send-flow__list .np-avatar-view-content.np-circle {
+  background-color: var(--color-background-neutral) !important;
+}
+
+/* Step 2: Amount input */
+.send-flow__divider {
+  height: 1px;
+  background: var(--color-border-neutral);
+  margin: 32px 0 8px;
+}
+
+.send-flow__you-send {
+  margin: 0 -16px;
+  padding: 0 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.send-flow__you-send:hover {
+  background: var(--color-background-neutral);
+}
+
+/* Currency popover (floating below trigger button) */
+.send-flow__currency-popover {
+  position: absolute;
+  width: 384px;
+  max-height: 480px;
+  background: var(--color-background-screen);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+/* Inline variant: positioned below the Change button list item */
+.send-flow__currency-popover--inline {
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  left: auto;
+}
+
+.send-flow__currency-popover .currency-dropdown__search {
+  margin: 16px 16px 8px;
+}
+
+.send-flow__currency-popover-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 16px 16px;
+}
+
+.send-flow__currency-section-label {
+  margin: 16px 0 0;
+  color: var(--color-content-secondary);
+}
+
+.send-flow__currency-section-divider {
+  height: 1px;
+  background: var(--color-border-neutral);
+  margin: 8px 0;
+}
+
+.send-flow__currency-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 48px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+  border-radius: 12px;
+  text-align: left;
+  transition: border-color 0.15s ease;
+}
+.send-flow__currency-option:hover {
+  border-color: var(--color-border-interactive-control);
+}
+
+.send-flow__currency-option > :first-child {
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px var(--color-border-neutral);
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.send-flow__currency-option-code {
+  flex-shrink: 0;
+  color: var(--color-content-primary);
+}
+
+.send-flow__currency-option-name {
+  flex: 1;
+  min-width: 0;
+  color: var(--color-content-secondary);
+}
+
+.send-flow__currency-option-check {
+  flex-shrink: 0;
+  color: var(--color-sentiment-positive);
+}
+
+/* Cross-currency UI */
+.send-flow__rate-pill {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.send-flow__send-input {
+  margin-bottom: 0;
+}

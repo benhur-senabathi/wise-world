@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import { ArrowRight, Cross } from '@transferwise/icons';
 import { useShimmer } from '../context/Shimmer';
-import { ShimmerPromotionBanner } from './Shimmer';
+import { ShimmerPromotionBanner } from './PromotionBanner.shimmer';
+import './PromotionBanner.css';
 
 type Props = {
   title: string;

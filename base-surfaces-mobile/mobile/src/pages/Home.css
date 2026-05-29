@@ -1,0 +1,43 @@
+/* ===== Transaction List — ListItem hover expansion ===== */
+
+.transactions-list {
+  margin: 0 -16px;
+  padding: 0 16px;
+  overflow: visible;
+}
+
+/* Hide navigation chevron and reclaim its grid space */
+.transactions-list .wds-list-item-control-wrapper {
+  display: none;
+}
+
+.transactions-list .wds-list-item-gridWrapper {
+  grid-template-columns: auto 1fr !important;
+  grid-template-areas: "media body" !important;
+}
+
+/* Transaction avatars: filled (no outline ring) */
+.transactions-list .np-circle-border::after {
+  display: none;
+}
+
+
+.transactions-list .wds-list-item-interactive:not(.wds-list-item-spotlight):not(.disabled):not(:disabled):hover:before,
+.transactions-list .wds-list-item-interactive:not(.wds-list-item-spotlight):not(.disabled):not(:disabled):active:before {
+  inset: 0 -8px;
+}
+
+/* ===== Home → Transactions Transition ===== */
+
+/* Page title hidden by default, section header visible */
+.home__tx-page-title {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out 0.1s;
+}
+
+.home__tx-section-header {
+  transition: opacity 0.15s ease-out;
+}
+

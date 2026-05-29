@@ -2,7 +2,7 @@ import { useState, useCallback, useRef } from 'react';
 import { Plus, RequestReceive, Send, Savings, Suitcase } from '@transferwise/icons';
 import { Button } from '@transferwise/components';
 import { Illustration } from '@wise/art';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { useActiveCurrencies, useActiveTransactions, useActiveJars } from '../hooks/useDatasetData';
 import { useVisibleAccounts, useAllCards } from '../hooks/useAccountRegistry';
 import { usePrototypeNames } from '../context/PrototypeNames';
@@ -25,6 +25,7 @@ import { SendAgainCard } from '../components/SendAgainCard';
 import { PromotionBanner } from '../components/PromotionBanner';
 import { TransferCalculator } from '../components/TransferCalculator';
 import { PageFooter } from '../components/PageFooter';
+import './Home.css';
 
 function buildBalances(currencyList: CurrencyData[]) {
   return currencyList.map((c) => ({

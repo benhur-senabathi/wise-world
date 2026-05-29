@@ -1,0 +1,11 @@
+/* ===== Account Details List ===== */
+
+.account-details-list {
+  width: 100%;
+  padding-top: 12px;
+}
+
+.account-details-list__items {
+  display: flex;
+  flex-direction: column;
+}

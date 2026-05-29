@@ -3,6 +3,7 @@ import { IconButton } from '@transferwise/components';
 import { ChevronDown } from '@transferwise/icons';
 import type { NavItem } from '../data/nav';
 import { useLanguage } from '../context/Language';
+import './SideNav.css';
 
 export function SideNav({ items, activeItem, onSelect }: {
   items: NavItem[];

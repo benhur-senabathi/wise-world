@@ -1,0 +1,120 @@
+/* ===== Payments Page ===== */
+
+.payments-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.payments-page__header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 0 0 12px;
+}
+
+.payments-page__header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* 2-column grid for spotlight items */
+.payments-page__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* All list items on payments page: min 100px height, centered content */
+.payments-page .wds-list-item {
+  min-height: 88px !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Reduce spotlight padding — content wraps upward into top padding */
+.payments-page .wds-list-item-spotlight {
+  padding-top: 4px !important;
+  padding-bottom: 8px !important;
+}
+
+/* Force side-by-side layout at all sizes — override DS container queries */
+.payments-page .wds-list-item-gridWrapper {
+  grid-template-columns: auto 1fr auto !important;
+  grid-template-rows: auto !important;
+  grid-template-areas: "media body control" !important;
+  align-items: center !important;
+}
+
+/* Keep media/avatar vertically centered when subtitle wraps */
+.payments-page .wds-list-item-media {
+  align-self: center !important;
+}
+
+/* Badge icons use interactive control color (correct in dark mode) */
+.payments-page .tw-badge__content .tw-icon {
+  color: var(--color-interactive-control) !important;
+}
+
+/* Override DS spotlight margin in all payments grids */
+.payments-page .wds-list-item + .wds-list-item {
+  margin-top: 0 !important;
+}
+
+.payments-page__section {
+  margin-top: 64px;
+}
+
+.payments-page__header + .payments-page__section,
+.payments-page__header + .payments-page__grid {
+  margin-top: 40px;
+}
+
+/* Payment tools 2-column grid */
+.payments-page__tools-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Account details single column */
+.payments-page__accounts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Footer */
+.payments-page__footer {
+  text-align: center;
+  padding: 32px 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Mobile: single column */
+@media (max-width: 767px) {
+  .payments-page__grid,
+  .payments-page__tools-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Payments Incoming Header ===== */
+
+.payments-page__incoming-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 12px;
+}
+
+
+.payments-page .payments-page__waitlist-item .wds-list-item-spotlight {
+  background: transparent !important;
+  border: 2px dashed var(--color-border-neutral) !important;
+}

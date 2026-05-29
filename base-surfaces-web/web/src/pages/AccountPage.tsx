@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Download, Slider, Plus, Money, Savings, Suitcase, Upload, People, Heart, Backpack } from '@transferwise/icons';
 import { Button, ListItem, SearchInput, Size, SegmentedControl, AvatarLayout } from '@transferwise/components';
 import { Flag } from '@wise/art';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { AccountPageHeader } from '../components/AccountPageHeader';
 import { ActivitySummary } from '../components/ActivitySummary';
 import { useActiveCurrencies, useActiveTransactions } from '../hooks/useDatasetData';
@@ -14,6 +14,7 @@ import { useLanguage, useTxLabels } from '../context/Language';
 import { convertToHomeCurrency, usdBaseRates } from '@shared/data/currency-rates';
 
 import type { JarDefinition } from '@shared/data/jar-data';
+import './Account.css';
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   Money: <Money size={16} />,

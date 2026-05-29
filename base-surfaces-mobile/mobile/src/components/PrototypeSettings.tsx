@@ -11,6 +11,8 @@ import { useLanguage, type Language } from '../context/Language';
 import { currencyMeta } from '@shared/data/currency-rates';
 import { Flag } from '@wise/art';
 import { useLiquidGlass } from '../hooks/useLiquidGlass';
+import './PrototypeSettings.css';
+import './LiquidGlassButton.css';
 
 export function PrototypeSettings() {
   const { isScreenModeDark, setScreenMode } = useTheme();

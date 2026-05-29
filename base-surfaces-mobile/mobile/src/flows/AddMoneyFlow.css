@@ -1,0 +1,40 @@
+/* ===== Add Money Flow ===== */
+
+.add-money-flow {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--color-background-screen);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.add-money-flow__body {
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  width: 100%;
+  margin: 0 auto;
+  padding: 148px 16px 48px;
+  flex: 1;
+}
+
+.add-money-flow__continue {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  z-index: 10;
+  background: linear-gradient(to top, var(--color-background-screen) 60%, transparent 100%);
+}
+
+.add-money-flow__btn-loading {
+  mix-blend-mode: luminosity !important;
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+.add-money-flow__btn-loading .wds-Button-loader .process-circle {
+  stroke: var(--color-interactive-primary) !important;
+}

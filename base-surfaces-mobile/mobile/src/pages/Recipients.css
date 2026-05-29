@@ -1,0 +1,81 @@
+/* ===== Recipients Page ===== */
+
+.recipients-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.recipients-page__header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 12px 0 44px;
+}
+
+.recipients-page__header .wds-Button {
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+/* Recent contacts */
+.recipients-page__recent {
+  margin-bottom: 12px;
+  /* Reverse (opening): slower ease-in for smooth reappear */
+  transition: opacity 0.3s ease-in 0.1s, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
+  max-height: 500px;
+  overflow: hidden;
+  opacity: 1;
+
+}
+
+.recipients-page--searching .recipients-page__recent {
+  /* Forward (closing): fast fade then collapse */
+  transition: opacity 0.2s ease-out, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+}
+
+.recipients-page__recent-scroll {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+.recipients-page__filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.recipients-page__filter-spacer {
+  flex: 1;
+}
+
+/* Recipient list */
+.recipients-page__list {
+  margin-top: 8px;
+  list-style: none;
+  padding: 0;
+}
+
+/* Initials avatars: filled (no outline ring) — matches transactions */
+.recipients-page__list .np-circle-border::after {
+  display: none;
+}
+
+/* Initials avatars: neutral background (DS sets transparent for non-interactive) */
+.recipients-page__list .np-avatar-view-content.np-circle {
+  background-color: var(--color-background-neutral) !important;
+}
+
+.recipients-page__recent-scroll {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 120px);
+  justify-content: space-between;
+  row-gap: 4px;
+}
+

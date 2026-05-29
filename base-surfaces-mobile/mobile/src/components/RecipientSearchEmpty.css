@@ -1,0 +1,35 @@
+/* ===== Recipient Search Empty State ===== */
+
+.recipient-search-empty {
+  padding: 24px 0 0;
+}
+
+.recipient-search-empty__title {
+  margin: 24px 0 28px;
+}
+
+.recipient-search-empty .np-header {
+  margin-bottom: 8px;
+}
+
+.recipient-search-empty .wds-list-item + .wds-list-item {
+  margin-top: 8px;
+}
+
+.recipient-search-empty__add-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-interactive-primary);
+  text-decoration: underline;
+  margin-top: 4px;
+}
+
+.recipient-search-empty__add-link:hover {
+  color: var(--color-interactive-primary-hover);
+}
+
+.recipient-search-empty .np-avatar-view-content.np-circle {
+  background-color: transparent !important;
+}

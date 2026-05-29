@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { UpwardGraph, AutoConvert, Link as LinkIcon, ChevronRight, QuestionMarkCircle, Savings, Suitcase, Documents, DirectDebits, Bank, Bin, Money, People, Heart, Backpack } from '@transferwise/icons';
 import { Button, ListItem } from '@transferwise/components';
 import { LiquidGlassSegmentedControl } from '../components/LiquidGlassSegmentedControl';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { AccountPageHeader } from '../components/AccountPageHeader';
 import { ActivitySummary } from '../components/ActivitySummary';
 import { type CurrencyData } from '@shared/data/currencies';
@@ -14,6 +14,7 @@ import { useActiveCurrencies, useActiveTransactions } from '../hooks/useDatasetD
 
 import type { JarDefinition } from '@shared/data/jar-data';
 import { getAccountBySubPageType } from '@shared/data/account-registry';
+import './CurrencyPage.css';
 
 type Props = {
   code: string;

@@ -1,0 +1,65 @@
+/* ===== Carousel ===== */
+
+.carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel__track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 4px;
+}
+
+.carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel__track > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+.carousel__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.carousel__nav--next {
+  right: 16px;
+}
+
+.carousel__nav--prev {
+  left: 16px;
+}
+
+.carousel__nav .np-circle {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+@media (hover: hover) {
+  .carousel:hover .carousel__nav {
+    opacity: 1;
+  }
+}
+
+/* Touch devices: show arrows only while scrolling */
+@media (hover: none) {
+  .carousel__nav {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .carousel.carousel--scrolling .carousel__nav {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

@@ -1,0 +1,263 @@
+/* ===== Multi-Currency Account Card ===== */
+
+.mca {
+  background: var(--color-mca-background);
+  border-radius: 26px;
+  padding: 8px;
+  width: 346px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dark mode: Wise logo in primary green */
+html.np-theme-personal--dark .nav-sidebar-brand .np-logo-svg path,
+html.np-theme-dark .nav-sidebar-brand .np-logo-svg path,
+html.np-theme-personal--dark .np-overlay-header .np-logo-svg path,
+html.np-theme-dark .np-overlay-header .np-logo-svg path {
+  fill: #9FE870;
+}
+
+.mca--empty {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card stack */
+.mca-cards__stack {
+  position: relative;
+  padding-bottom: 24%;
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+}
+
+.mca-cards__stack--single .mca-cards__info {
+  top: calc(11% - 4px);
+}
+
+.mca-cards__stack--tapestry img {
+  filter: brightness(0.85);
+}
+
+.mca-cards__stack--empty {
+  overflow: visible;
+}
+
+.mca-cards__empty-card {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  height: calc(100% + 8px);
+  background: rgb(232, 235, 231);
+  border-radius: 26px 26px 0 0;
+}
+
+html[class*="dark"] .mca-cards__empty-card {
+  background: rgb(35, 38, 32);
+}
+
+.mca-cards__fire {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.mca-cards__fire img {
+  display: block;
+  width: 100%;
+}
+
+.mca-cards__fire::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.mca-cards__green {
+  position: absolute;
+  top: 25%;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  border-radius: 20px 20px 0 0;
+  display: block;
+  cursor: pointer;
+  transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mca-cards__stack:hover .mca-cards__green {
+  top: -2px;
+}
+
+.mca-cards__info {
+  position: absolute;
+  top: 25%;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 12px 0 20px;
+  transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mca-cards__stack:hover .mca-cards__info {
+  top: -2px;
+}
+
+.mca-cards__stack--single .mca-cards__green,
+.mca-cards__stack--single .mca-cards__info {
+  transition: none;
+}
+
+.mca-cards__stack--single:hover .mca-cards__green {
+  top: 0;
+}
+
+.mca-cards__stack--single:hover .mca-cards__info {
+  top: calc(11% - 4px);
+}
+
+.mca-cards__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-forest-green, #163300);
+  text-decoration: none;
+  line-height: 1;
+}
+
+.mca-cards__link svg {
+  display: block;
+}
+
+.mca-cards__link:hover {
+  text-decoration: none;
+  color: var(--color-forest-green, #163300);
+}
+
+.mca-cards__badge {
+  color: var(--color-forest-green, #163300);
+  display: flex;
+  align-items: center;
+}
+
+/* Front panel */
+.mca-front {
+  background: var(--color-mca-background);
+  position: relative;
+  z-index: 2;
+  padding: 0 8px 8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mca-front__cutout {
+  position: absolute;
+  top: -15px;
+  left: -8px;
+  right: -8px;
+  height: 16px;
+  z-index: 2;
+  color: var(--color-mca-background);
+}
+
+.mca-front__cutout svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mca-front::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.12);
+  z-index: 3;
+}
+
+/* Balance grid */
+.mca-balances {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin: 0 -8px;
+}
+
+
+.mca-balances .wds-list-item {
+  --wds-list-item-value-min-height: 24px;
+  overflow: hidden;
+  border-radius: 12px;
+  container-type: normal;
+}
+
+.mca-balances .wds-list-item-gridWrapper {
+  grid-template-columns: auto 1fr auto !important;
+  grid-template-rows: auto !important;
+  grid-template-areas: "media body control" !important;
+  align-items: center !important;
+  gap: 4px 12px !important;
+  padding: 0 8px;
+}
+
+.mca-balances .wds-list-item-view {
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.mca-balances .wds-list-item-body {
+  white-space: nowrap !important;
+}
+
+.mca-balances .wds-list-item-media {
+  display: flex !important;
+  align-items: center !important;
+  margin-right: 4px !important;
+}
+
+.mca-balances .wds-list-item-control-wrapper {
+  margin-top: 2px;
+}
+
+.mca-balances--stacked {
+  grid-template-columns: 1fr;
+}
+
+/* Diagonal double avatar scaled to fit 24px container in MCA card */
+.mca-diagonal-avatar {
+  width: 24px;
+  height: 24px;
+}
+
+.mca-diagonal-avatar .np-avatar-layout {
+  transform: scale(0.5);
+  transform-origin: top left;
+}
+
+.mca-diagonal-avatar .np-avatar-layout-diagonal-child .tw-icon {
+  color: var(--color-content-primary);
+}
+
+.mca-diagonal-avatar .np-avatar-layout-diagonal-child .tw-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.mca-footer {
+  padding: 12px 0 0;
+  margin-top: auto;
+}

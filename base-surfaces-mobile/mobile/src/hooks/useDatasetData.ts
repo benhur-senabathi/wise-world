@@ -14,7 +14,7 @@ import { buildConnorBusinessTransactions } from '@shared/data/connor-business-tr
 import { connorPersonalJars } from '@shared/data/connor-personal-jars';
 import { connorBusinessJars } from '@shared/data/connor-business-jars';
 import type { CurrencyData } from '@shared/data/currencies';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 
 const allConnorJars = [...connorPersonalJars, ...connorBusinessJars];
 registerJarResolver((id) => allConnorJars.find((j) => j.id === id));

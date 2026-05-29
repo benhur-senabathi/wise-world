@@ -1,6 +1,7 @@
 import { IconButton } from '@transferwise/components';
 import { Plus } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
+import './EmptyAccountCard.css';
 
 export function EmptyAccountCard({ onOpen }: { onOpen?: () => void }) {
   const { t } = useLanguage();

@@ -2,10 +2,11 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { ListItem, CircularButton } from '@transferwise/components';
 import { LiquidGlassSegmentedControl } from '../components/LiquidGlassSegmentedControl';
 import { Dial, CardWise, Freeze, List, Cog, PadlockUnlocked, Edit, Limit, Bin, QrCode, Plus, Camera } from '@transferwise/icons';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { useLanguage } from '../context/Language';
 import { useHapticOnChange, triggerHaptic } from '../hooks/useHaptics';
 import { useAllCards, useVisibleAccounts } from '../hooks/useAccountRegistry';
+import './Cards.css';
 
 type CardInfo = {
   type: 'physical' | 'digital';

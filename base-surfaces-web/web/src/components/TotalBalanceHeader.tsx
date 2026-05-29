@@ -3,7 +3,8 @@ import { IconButton, Modal } from '@transferwise/components';
 import { BarChart, InfoCircle } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
 import { useShimmer } from '../context/Shimmer';
-import { ShimmerTotalBalanceHeader } from './Shimmer';
+import { ShimmerTotalBalanceHeader } from './TotalBalanceHeader.shimmer';
+import './TotalBalanceHeader.css';
 
 export function TotalBalanceHeader({ amount, currency, onInsightsClick, variant = 'personal' }: { amount: string; currency: string; onInsightsClick?: () => void; variant?: 'personal' | 'business' }) {
   const { t } = useLanguage();

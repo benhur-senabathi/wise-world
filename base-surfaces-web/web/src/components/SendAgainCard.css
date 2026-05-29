@@ -1,0 +1,48 @@
+/* ===== Send Again Card — smaller badge on 56px avatar ===== */
+
+.send-again-card .tw-badge {
+  --badge-size: 20px;
+}
+
+.send-again-card .tw-badge__content .np-circle {
+  transform: scale(0.9);
+}
+
+/* ===== Send Again Card ===== */
+
+.send-again-card {
+  background: var(--color-background-neutral-solid);
+  border-radius: 16px;
+  padding: 16px;
+  width: 320px;
+}
+
+.send-again-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.send-again-card__recipient {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.send-again-card__details {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+
+.send-again-card__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.send-again-card__actions > * {
+  flex: 1;
+  min-width: 0;
+}

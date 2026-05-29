@@ -1,0 +1,55 @@
+/* ===== Payment Link Flow ===== */
+.payment-link-flow {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--color-background-screen);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.payment-link-flow__scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.payment-link-flow__body {
+  display: flex;
+  flex-direction: column;
+  max-width: 522px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 56px 0 64px;
+  flex: 1;
+}
+
+.payment-link-flow__quick-amounts {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  animation: request-flow-chips-in 0.3s ease-out;
+}
+
+.payment-link-flow__continue {
+  margin-top: 32px;
+}
+
+.payment-link-flow__btn-loading {
+  mix-blend-mode: luminosity !important;
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+.payment-link-flow__btn-loading .wds-Button-loader .process-circle {
+  stroke: var(--color-interactive-primary) !important;
+}
+
+@media (max-width: 554px) {
+  .payment-link-flow__body {
+    max-width: none;
+    padding: 56px 16px 48px;
+  }
+}

@@ -1,9 +1,10 @@
 import { OverlayHeader, Logo, AvatarView, ListItem } from '@transferwise/components';
 import { CardWise, Savings as SavingsIcon, People, Suitcase, SpendDollar, Jar } from '@transferwise/icons';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { useLanguage } from '../context/Language';
 import { useVisibleAccounts } from '../hooks/useAccountRegistry';
 import { useActiveJars } from '../hooks/useDatasetData';
+import './OpenPlus.css';
 
 type OpenItem = {
   titleKey: string;

@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { ListItem, Button, SearchInput, Size } from '@transferwise/components';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage } from '../context/Language';
+import './Team.css';
 
 export function Team({ personalAvatarUrl }: { personalAvatarUrl?: string } = {}) {
   const { consumerName } = usePrototypeNames();

@@ -1,0 +1,103 @@
+/* ===== Flow Header (iOS glass) ===== */
+
+.flow-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 110;
+  padding: 46px 16px 0;
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.flow-header__fade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 134px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.flow-header__fade::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0.5) 70%,
+    transparent 100%
+  );
+}
+
+.flow-header__fade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
+}
+
+.flow-header__bar {
+  display: flex;
+  align-items: flex-end;
+  height: 72px;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+.flow-header__spacer {
+  flex: 1;
+}
+
+.flow-header__trailing {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Rate flipper — clip wrapper matches pill height, inner strip animates */
+.flow-header__rate-clip {
+  display: block;
+  height: 44px;
+  overflow: hidden;
+  position: relative;
+  margin: -12px 0;
+}
+
+.flow-header__rate-flipper {
+  display: flex;
+  flex-direction: column;
+  animation: rate-ticker 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.flow-header__rate-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Rate is line 1 (top), Guaranteed is line 2 (below).
+   Default: shows rate (translateY 0).
+   Phase 2: slides up by 44px → rate exits up, guaranteed enters from bottom.
+   Phase 3: slides back to 0 → guaranteed exits down, rate enters from top. */
+@keyframes rate-ticker {
+  0%, 42%   { transform: translateY(0); }
+  48%, 90%  { transform: translateY(-44px); }
+  96%, 100% { transform: translateY(0); }
+}
+
+/* Hide currency selector dropdowns globally — mobile version coming later */
+.np-select-input-options-container,
+.np-popover-v2-container {
+  display: none !important;
+}

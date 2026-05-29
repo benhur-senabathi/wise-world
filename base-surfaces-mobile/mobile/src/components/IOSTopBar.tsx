@@ -7,6 +7,8 @@ const PlusSmall = () => (
 import { Flag } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import { useLiquidGlass } from '../hooks/useLiquidGlass';
+import './IOSTopBar.css';
+import './LiquidGlassButton.css';
 
 // Raw SVGs — Neptune icons don't render at non-standard sizes
 const EyeShutIcon = () => (

@@ -6,8 +6,9 @@ import { FlowHeader } from '../components/FlowHeader';
 import { ButtonCue } from '../components/ButtonCue';
 import { WiseLogoIcon, resolveIcon } from '../components/WiseLogoIcon';
 import { useLanguage } from '../context/Language';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { getAccountBySubPageType } from '@shared/data/account-registry';
+import './PaymentLinkFlow.css';
 
 export type AccountStyle = { color: string; textColor: string; iconName: string };
 

@@ -2,7 +2,8 @@ import { IconButton } from '@transferwise/components';
 import { BarChart } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
 import { useShimmer } from '../context/Shimmer';
-import { ShimmerTotalBalanceHeader } from './Shimmer';
+import { ShimmerTotalBalanceHeader } from './TotalBalanceHeader.shimmer';
+import './TotalBalanceHeader.css';
 
 const EyeShutIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">

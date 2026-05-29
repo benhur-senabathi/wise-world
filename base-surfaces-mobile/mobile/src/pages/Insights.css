@@ -1,0 +1,106 @@
+/* ===== Insights Page ===== */
+
+.insights-page {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Balance header */
+.insights-page__balance {
+  padding: 40px 0 36px;
+  text-align: center;
+}
+
+.insights-page__balance-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+/* Product list */
+.insights-page__products {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 0;
+}
+
+/* Avatars: remove border ring on all insights avatars */
+.insights-page .np-circle-border::after {
+  display: none;
+}
+
+
+/* Section titles: 18px */
+.insights-page .np-text-title-subsection {
+  font-size: 18px;
+}
+
+/* Total returns card */
+.insights-page__returns {
+  margin-top: 20px;
+}
+
+.insights-page__returns-card {
+  display: flex;
+  background: var(--color-background-neutral);
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.insights-page__returns-card > div {
+  flex: 1;
+  text-align: center;
+}
+
+/* Spending card */
+.insights-page__spending {
+  margin-top: 16px;
+}
+
+.insights-page__spending-card {
+  border: 1px solid var(--color-border-neutral);
+  border-radius: 16px;
+  padding: 16px 16px 24px;
+}
+
+.insights-page__spending-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.insights-page__spending-card .wds-list-item + .wds-list-item {
+  margin-top: 4px;
+}
+
+/* Spending list items: flip title/subtitle so label (secondary) is on top, amount (primary) on bottom */
+.insights-page__spending-card .wds-list-item-titles {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+/* Spending avatars: neutral background */
+.insights-page__spending-card .np-avatar-view-content.np-circle {
+  background-color: var(--color-background-neutral) !important;
+}
+
+/* Spending amount titles: large default (not bold) */
+.insights-page__spending-card .wds-list-item-title {
+  font-weight: 400 !important;
+  font-size: 16px !important;
+}
+
+/* Feedback footer */
+.insights-page__footer {
+  text-align: center;
+  padding: 28px 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}

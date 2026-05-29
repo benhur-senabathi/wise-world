@@ -5,8 +5,9 @@ import { Flag } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import { useVisibleAccounts } from '../hooks/useAccountRegistry';
 import { useActiveCurrencies } from '../hooks/useDatasetData';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import type { TranslationKey } from '../translations/en';
+import '../components/AccountDetailsList.css';
 
 const currencyNameKeys: Record<string, TranslationKey> = {
   GBP: 'accountDetailsList.britishPound',

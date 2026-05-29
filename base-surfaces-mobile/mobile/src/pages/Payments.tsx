@@ -5,12 +5,13 @@ import {
   Bills, Batch, Document, Link as LinkIcon, QrCode, Email,
 } from '@transferwise/icons';
 import { Flag } from '@wise/art';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { useLanguage } from '../context/Language';
 import { useVisibleAccounts } from '../hooks/useAccountRegistry';
 import { useActiveCurrencies } from '../hooks/useDatasetData';
 import type { TranslationKey } from '../translations/en';
 import { BottomSheet } from '../components/BottomSheet';
+import './Payments.css';
 
 type SpotlightItem = { titleKey: TranslationKey; subtitleKey: TranslationKey; icon: React.ReactNode };
 

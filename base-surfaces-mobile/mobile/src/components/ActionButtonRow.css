@@ -1,0 +1,40 @@
+/* ===== Action Button Row ===== */
+
+.action-button-row {
+  overflow: hidden;
+}
+
+.action-button-row {
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin: 0 -16px;
+  padding: 0 16px;
+}
+.action-button-row::-webkit-scrollbar {
+  display: none;
+}
+.action-button-row__scroll::after {
+  content: '';
+  flex-shrink: 0;
+  width: 16px;
+}
+
+.action-button-row__scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: visible;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: relative;
+  z-index: 1;
+}
+
+.action-button-row__scroll > * {
+  flex-shrink: 0;
+}
+
+.action-button-row__scroll::-webkit-scrollbar {
+  display: none;
+}

@@ -1,6 +1,7 @@
 import { House, CardWise, Recipients, Payments } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
 import type { TranslationKey } from '../translations/en';
+import './MobileNav.css';
 
 const items: { label: string; translationKey: TranslationKey; icon: React.ReactNode; href: string }[] = [
   { label: 'Home', translationKey: 'nav.home', icon: <House size={24} />, href: '/home' },

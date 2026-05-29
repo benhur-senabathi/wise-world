@@ -1,0 +1,106 @@
+/* ===== Mobile Nav ===== */
+/* Matches production mobileNav / mobileNavItem pattern */
+
+.mobile-nav__items {
+  display: flex;
+  position: absolute;
+  inset: 0;
+  padding: 0 12px;
+  align-items: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.mobile-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 2px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.mobile-nav-item__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0e0f0c;
+  width: 24px;
+  height: 24px;
+}
+
+.mobile-nav-item__label {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  color: #0e0f0c;
+  line-height: 1;
+  letter-spacing: 0.2px;
+  text-align: center;
+}
+
+.mobile-nav-item--active .mobile-nav-item__label {
+  font-weight: 600;
+}
+
+.mobile-nav__thumb {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transition: transform 150ms ease-out, border-radius 150ms ease-out;
+  pointer-events: none;
+}
+
+.mobile-nav__track {
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 2px 28px rgba(0,0,0,0.065), 0 8px 44px rgba(0,0,0,0.045);
+}
+
+.mobile-nav__track::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255,255,255,0.65);
+}
+
+.mobile-nav__track-burn {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(221,221,221,0.15);
+  mix-blend-mode: color-burn;
+}
+
+.mobile-nav__track-darken {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(247,247,247,0.2);
+  mix-blend-mode: darken;
+}
+
+.mobile-nav__track-border {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: solid rgba(255,255,255,0.75);
+  border-width: 0.75px 0.5px 0.5px 0.75px;
+  box-shadow: inset 0 2px 10px rgba(255,255,255,0.65);
+}
+
+.mobile-nav__track-flash {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transition: opacity 150ms ease-out;
+  pointer-events: none;
+}

@@ -4,7 +4,8 @@ import { FlowHeader } from '../components/FlowHeader';
 import { useLanguage } from '../context/Language';
 import { useVisibleAccounts } from '../hooks/useAccountRegistry';
 import { useActiveJars } from '../hooks/useDatasetData';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
+import './OpenPlusFlow.css';
 
 type OpenItem = {
   titleKey: string;

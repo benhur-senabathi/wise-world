@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Button, ListItem, IconButton } from '@transferwise/components';
 import { ScanSparkle, ChevronDown } from '@transferwise/icons';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { useLanguage } from '../context/Language';
 import { useShimmer } from '../context/Shimmer';
-import { ShimmerActionButtonRow } from './Shimmer';
+import { ShimmerActionButtonRow } from './ActionButtonRow.shimmer';
 import { BottomSheet } from './BottomSheet';
+import './ActionButtonRow.css';
 
 export function ActionButtonRow({ accountType = 'personal', onAddMoney, onSend, onRequest, onPaymentLink, onScan }: { accountType?: AccountType; onAddMoney?: () => void; onSend?: () => void; onRequest?: () => void; onPaymentLink?: () => void; onScan?: () => void } = {}) {
   const { t } = useLanguage();

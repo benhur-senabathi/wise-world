@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { GlassFilter } from './GlassFilter';
+import './LiquidGlassSwitch.css';
 
 interface LiquidGlassSwitchProps {
   checked?: boolean;

@@ -1,0 +1,86 @@
+/* ===== Disabled primary button: grey out across all flows ===== */
+.button-cue .wds-Button:disabled,
+.button-cue .wds-Button.wds-Button--disabled,
+.button-cue button:disabled {
+  background-color: var(--color-background-neutral) !important;
+  color: var(--color-content-secondary) !important;
+  border-color: transparent !important;
+  opacity: 1 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+/* ===== ButtonCue: animated spotlight container ===== */
+
+.button-cue {
+  position: relative;
+  width: 100%;
+}
+
+/* The surface sits behind the button content */
+.button-cue__surface {
+  position: absolute;
+  top: 0;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: var(--color-background-neutral);
+  border-radius: 24px;
+  opacity: 0;
+  transform: scaleY(0.4) scaleX(0.96);
+  transform-origin: bottom center;
+  transition: opacity 0.3s ease-out, transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+  pointer-events: none;
+}
+
+.button-cue--visible .button-cue__surface {
+  opacity: 1;
+  transform: scaleY(1) scaleX(1);
+}
+
+/* Content stays on top of the surface */
+.button-cue__content {
+  position: relative;
+  width: 100%;
+}
+
+/* Hint text centered above the button */
+.button-cue__hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 0 8px;
+  color: var(--color-content-primary);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.1s ease-out, transform 0.1s ease-out;
+}
+
+.button-cue--visible .button-cue__hint {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.25s ease-out 0.1s, transform 0.25s ease-out 0.1s;
+}
+
+.button-cue__hint .tw-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  color: var(--color-content-primary);
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.button-cue__hint .np-text-body-default {
+  display: inline;
+}
+
+/* Mobile: keep column width until viewport is narrower than 522px + 32px */
+@media (max-width: 554px) {
+  .add-money-flow__body {
+    max-width: none;
+    padding: 72px 16px 48px;
+  }
+}

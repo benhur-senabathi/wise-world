@@ -1,0 +1,64 @@
+/* ===== Recent Contact Card ===== */
+
+.recent-contact-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
+  height: 172px;
+  min-height: 172px;
+  max-height: 172px;
+  flex-shrink: 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 8px;
+  border-radius: 16px;
+  transition: background-color 0.15s ease;
+}
+
+.recent-contact-card:hover {
+  background: var(--color-background-neutral);
+}
+
+.recent-contact-card__avatar-wrapper {
+  flex-shrink: 0;
+  transform: scale(1.222);
+  transform-origin: top center;
+  margin-bottom: 16px;
+}
+
+.recent-contact-card__avatar-wrapper .np-circle-border::after {
+  display: none !important;
+}
+
+.recent-contact-card__avatar-wrapper .tw-badge {
+  --badge-size: 19.6px;
+  --badge-mask: 2.5px;
+}
+
+.recent-contact-card__avatar-wrapper .tw-badge__content .tw-icon {
+  transform: scale(0.716);
+}
+
+.recent-contact-card__name {
+  margin-top: 8px;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-content-primary);
+}
+
+.recent-contact-card__subtitle {
+  text-align: center;
+  color: var(--color-content-secondary);
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

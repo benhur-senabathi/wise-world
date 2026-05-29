@@ -3,7 +3,8 @@ import { SwitchVertical, ChevronDown } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { CurrencyDropdown } from './CurrencyDropdown';
 import { useShimmer } from '../context/Shimmer';
-import { ShimmerCurrencyInputGroup } from './Shimmer';
+import { ShimmerCurrencyInputGroup } from './CurrencyInputGroup.shimmer';
+import './CurrencyInputGroup.css';
 
 type CurrencyInputProps = {
   label: string;

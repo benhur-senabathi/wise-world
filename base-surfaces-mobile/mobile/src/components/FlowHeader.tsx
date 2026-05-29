@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import { Cross, ArrowLeft } from '@transferwise/icons';
 import { useLiquidGlass } from '../hooks/useLiquidGlass';
+import './FlowHeader.css';
+import './LiquidGlassButton.css';
 
 export function GlassCircle({ children, onClick, ariaLabel }: { children: ReactNode; onClick?: () => void; ariaLabel?: string }) {
   const glass = useLiquidGlass<HTMLButtonElement>();

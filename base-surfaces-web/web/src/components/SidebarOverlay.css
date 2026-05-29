@@ -1,0 +1,85 @@
+/* ===== Responsive: Sidebar Overlay ===== */
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.sidebar-overlay--open {
+  pointer-events: auto;
+  visibility: visible;
+}
+
+/* Scrim: full-viewport dimmer, behind panel and close button */
+.sidebar-overlay__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay--open .sidebar-overlay__scrim {
+  opacity: 1;
+}
+
+/* Panel: slides in from left, layered on top of scrim */
+.sidebar-overlay__panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100%;
+  background: var(--color-background-screen);
+  overflow-y: auto;
+  z-index: 1;
+  transform: translateX(-100%);
+  transition: transform 0.35s ease-out;
+}
+
+.sidebar-overlay--open .sidebar-overlay__panel {
+  transform: translateX(0);
+}
+
+/* Close wrapper: positions and fades the close button on top of scrim */
+.sidebar-overlay__close-wrapper {
+  position: absolute;
+  top: 20px;
+  left: 300px;
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-background-screen);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.sidebar-overlay--open .sidebar-overlay__close-wrapper {
+  opacity: 1;
+  transition: opacity 0.15s ease 0.35s;
+}
+
+/* Close button: neutral circle inside the white-backed wrapper */
+.sidebar-overlay__close {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-background-neutral);
+  color: var(--color-content-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 0;
+  transition: background-color 0.15s ease;
+}
+
+.sidebar-overlay__close:hover {
+  background: var(--color-background-neutral-hover);
+}

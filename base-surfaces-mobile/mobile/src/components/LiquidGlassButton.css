@@ -1,0 +1,339 @@
+/* ===== Liquid Glass Buttons ===== */
+
+.ios-glass-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  color: #0e0f0c;
+  font-family: inherit;
+  touch-action: none;
+  background: transparent;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.05), 0 8px 40px rgba(0,0,0,0.035);
+  border-radius: 1000px;
+}
+
+.ios-glass-btn__surface {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.ios-glass-btn__surface::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255,255,255,0.65);
+}
+
+.ios-glass-btn__surface::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: solid rgba(255,255,255,0.7);
+  border-width: 0.75px 0.5px 0.5px 0.75px;
+  box-shadow: inset 0 1px 4px rgba(255,255,255,0.65);
+}
+
+.ios-glass-btn--accent .ios-glass-btn__surface::after {
+  border: solid rgba(255,255,255,0.25);
+  border-width: 0.75px 0.5px 0.5px 0.75px;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.3);
+}
+
+.ios-glass-btn__surface-burn {
+  display: none;
+}
+
+.ios-glass-btn__surface-darken {
+  display: none;
+}
+
+.ios-glass-btn__flash {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255,255,255,0.85);
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+  pointer-events: none;
+}
+
+.ios-glass-btn > *:not(.ios-glass-btn__surface):not(.ios-glass-btn__flash) {
+  position: relative;
+  z-index: 2;
+}
+
+.ios-glass-btn--pressed {
+  box-shadow: 0 2px 20px rgba(0,0,0,0.05), 0 6px 32px rgba(0,0,0,0.035);
+}
+
+.ios-glass-btn--pressed .ios-glass-btn__flash {
+  opacity: 1;
+  transition: opacity 80ms ease-out;
+}
+
+
+
+/* Circle button (back, action icons) */
+.ios-glass-btn--circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+
+
+.ios-glass-btn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  color: inherit;
+  position: relative;
+  z-index: 2;
+}
+
+.ios-glass-btn .tw-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit !important;
+  position: relative;
+  z-index: 2;
+}
+
+.ios-glass-btn .tw-icon svg {
+  fill: currentColor !important;
+  width: 22px;
+  height: 22px;
+}
+
+/* Avatar button — no glass background, just the avatar */
+.ios-glass-btn--avatar {
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+/* Pill button */
+.ios-glass-btn--pill {
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 22px;
+  gap: 2px;
+}
+
+/* Capsule — pill with icon-only content, wider spacing */
+.ios-glass-btn--pill.ios-glass-btn--capsule,
+.ios-glass-btn--capsule {
+  padding: 0 14px;
+  gap: 8px;
+  width: auto;
+  height: 44px;
+}
+
+.ios-glass-btn__label {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+}
+
+/* Accent (green primary) pill */
+.ios-glass-btn--accent {
+  color: var(--color-interactive-control);
+}
+
+.ios-glass-btn--accent .ios-glass-btn__surface::before {
+  background: rgba(146, 222, 95, 0.9);
+}
+
+.ios-glass-btn--accent .ios-glass-btn__surface-burn,
+.ios-glass-btn--accent .ios-glass-btn__surface-darken {
+  display: none;
+}
+
+.ios-glass-btn--accent .ios-glass-btn__flash {
+  background: rgba(137,255,69,0.4);
+}
+
+.ios-glass-btn--accent .ios-glass-btn__label {
+  color: var(--color-interactive-control);
+}
+
+.ios-glass-btn--accent .ios-glass-btn__icon {
+  color: var(--color-interactive-control);
+}
+
+.ios-glass-btn--accent .tw-icon {
+  color: var(--color-interactive-control) !important;
+}
+
+/* Dark mode fade — flow header
+   background-screen in personal dark = #121511 = rgb(18, 21, 17) */
+html.np-theme-personal--dark .flow-header__fade::before,
+html.np-theme-dark .flow-header__fade::before,
+html.np-theme-business--dark .flow-header__fade::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 21, 17, 0.7) 0%,
+    rgba(18, 21, 17, 0.5) 50%,
+    rgba(18, 21, 17, 0.5) 70%,
+    rgba(18, 21, 17, 0) 100%
+  );
+}
+
+/* Dark mode scrollbar */
+html.np-theme-personal--dark ::-webkit-scrollbar-thumb,
+html.np-theme-dark ::-webkit-scrollbar-thumb,
+html.np-theme-business--dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Dark mode glass adjustments */
+html.np-theme-personal--dark .ios-glass-btn,
+html.np-theme-dark .ios-glass-btn,
+html.np-theme-business--dark .ios-glass-btn {
+  color: var(--color-content-primary);
+  box-shadow: none;
+}
+
+html.np-theme-personal--dark .ios-glass-btn__icon,
+html.np-theme-dark .ios-glass-btn__icon,
+html.np-theme-business--dark .ios-glass-btn__icon {
+  color: var(--color-content-primary);
+}
+
+html.np-theme-personal--dark .ios-glass-btn .tw-icon,
+html.np-theme-dark .ios-glass-btn .tw-icon,
+html.np-theme-business--dark .ios-glass-btn .tw-icon {
+  color: var(--color-content-primary) !important;
+}
+
+html.np-theme-personal--dark .ios-glass-btn .tw-icon svg,
+html.np-theme-dark .ios-glass-btn .tw-icon svg,
+html.np-theme-business--dark .ios-glass-btn .tw-icon svg {
+  fill: currentColor !important;
+}
+
+html.np-theme-personal--dark .ios-glass-btn__label,
+html.np-theme-dark .ios-glass-btn__label,
+html.np-theme-business--dark .ios-glass-btn__label {
+  color: var(--color-content-primary);
+}
+
+html.np-theme-personal--dark .ios-glass-btn__surface::before,
+html.np-theme-dark .ios-glass-btn__surface::before,
+html.np-theme-business--dark .ios-glass-btn__surface::before {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+html.np-theme-personal--dark .ios-glass-btn__surface::after,
+html.np-theme-dark .ios-glass-btn__surface::after,
+html.np-theme-business--dark .ios-glass-btn__surface::after {
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.06), inset 0 -1px 1px rgba(0,0,0,0.06);
+}
+
+html.np-theme-personal--dark .ios-glass-btn__surface,
+html.np-theme-dark .ios-glass-btn__surface,
+html.np-theme-business--dark .ios-glass-btn__surface {
+  box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+}
+
+html.np-theme-personal--dark .ios-glass-btn__surface-burn,
+html.np-theme-dark .ios-glass-btn__surface-burn,
+html.np-theme-business--dark .ios-glass-btn__surface-burn {
+  background: rgba(60,60,60,0.3);
+}
+
+html.np-theme-personal--dark .ios-glass-btn__surface-darken,
+html.np-theme-dark .ios-glass-btn__surface-darken,
+html.np-theme-business--dark .ios-glass-btn__surface-darken {
+  background: rgba(40,40,40,0.4);
+}
+
+html.np-theme-personal--dark .ios-glass-btn--accent,
+html.np-theme-dark .ios-glass-btn--accent,
+html.np-theme-business--dark .ios-glass-btn--accent {
+  color: var(--color-interactive-control);
+}
+
+html.np-theme-personal--dark .ios-glass-btn--accent .ios-glass-btn__label,
+html.np-theme-dark .ios-glass-btn--accent .ios-glass-btn__label,
+html.np-theme-business--dark .ios-glass-btn--accent .ios-glass-btn__label {
+  color: var(--color-interactive-control);
+}
+
+html.np-theme-personal--dark .ios-glass-btn--accent .ios-glass-btn__icon,
+html.np-theme-dark .ios-glass-btn--accent .ios-glass-btn__icon,
+html.np-theme-business--dark .ios-glass-btn--accent .ios-glass-btn__icon {
+  color: var(--color-interactive-control);
+}
+
+html.np-theme-personal--dark .ios-glass-btn--accent .tw-icon,
+html.np-theme-dark .ios-glass-btn--accent .tw-icon,
+html.np-theme-business--dark .ios-glass-btn--accent .tw-icon {
+  color: var(--color-interactive-control) !important;
+}
+
+html.np-theme-personal--dark .ios-glass-btn--accent .ios-glass-btn__surface::before,
+html.np-theme-dark .ios-glass-btn--accent .ios-glass-btn__surface::before,
+html.np-theme-business--dark .ios-glass-btn--accent .ios-glass-btn__surface::before {
+  background: rgba(146, 222, 95, 0.9);
+}
+
+html.np-theme-personal--dark .ios-glass-btn--accent .ios-glass-btn__surface::after,
+html.np-theme-dark .ios-glass-btn--accent .ios-glass-btn__surface::after,
+html.np-theme-business--dark .ios-glass-btn--accent .ios-glass-btn__surface::after {
+  border: solid rgba(255,255,255,0.25);
+  border-width: 0.75px 0.5px 0.5px 0.75px;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.3);
+}
+
+html.np-theme-personal--dark .ios-glass-btn--accent .ios-glass-btn__surface,
+html.np-theme-dark .ios-glass-btn--accent .ios-glass-btn__surface,
+html.np-theme-business--dark .ios-glass-btn--accent .ios-glass-btn__surface {
+  box-shadow: 0 2px 24px rgba(0,0,0,0.05), 0 8px 40px rgba(0,0,0,0.035);
+}
+
+html.np-theme-personal--dark .ios-glass-btn--accent .ios-glass-btn__flash,
+html.np-theme-dark .ios-glass-btn--accent .ios-glass-btn__flash,
+html.np-theme-business--dark .ios-glass-btn--accent .ios-glass-btn__flash {
+  background: rgba(137,255,69,0.4);
+}
+
+html.np-theme-personal--dark .ios-glass-btn__flash,
+html.np-theme-dark .ios-glass-btn__flash,
+html.np-theme-business--dark .ios-glass-btn__flash {
+  background: rgba(255,255,255,0.5);
+}
+
+/* Dark mode: top bar fade
+   background-screen in personal dark = #121511 = rgb(18, 21, 17) */
+html.np-theme-personal--dark .ios-top-bar__fade::before,
+html.np-theme-dark .ios-top-bar__fade::before,
+html.np-theme-business--dark .ios-top-bar__fade::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 21, 17, 0.7) 0%,
+    rgba(18, 21, 17, 0.5) 50%,
+    rgba(18, 21, 17, 0.5) 70%,
+    rgba(18, 21, 17, 0) 100%
+  );
+}
+

@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { ListItem, SelectInput, Button } from '@transferwise/components';
 import { Lightning, Coins, Bank, ArrowRight } from '@transferwise/icons';
 import { Flag } from '@wise/art';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { useLanguage } from '../context/Language';
+import './TravelHub.css';
 
 const destinationItems = [
   { type: 'option' as const, value: 'ES', filterMatchers: ['Spain'] },

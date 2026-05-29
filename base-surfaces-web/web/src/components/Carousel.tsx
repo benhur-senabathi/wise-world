@@ -2,6 +2,7 @@ import { useRef, useState, useEffect, useCallback, type ReactNode } from 'react'
 import { IconButton } from '@transferwise/components';
 import { ChevronLeft, ChevronRight } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
+import './Carousel.css';
 
 export function Carousel({ children }: { children: ReactNode }) {
   const { t } = useLanguage();

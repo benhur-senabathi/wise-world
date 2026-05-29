@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { ListItem, AvatarView, Tabs, Button, Table, SearchInput, Size } from '@transferwise/components';
 import { Plus, Limit, Suitcase, Team, Alert } from '@transferwise/icons';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { useAllCards, useVisibleAccounts } from '../hooks/useAccountRegistry';
 import { useLanguage } from '../context/Language';
+import './Cards.css';
 
 const mediumCardMap: Record<string, string> = {
   '/wise-card-physical.png': '/wise-card-medium-physical.png',

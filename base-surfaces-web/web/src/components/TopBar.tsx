@@ -1,6 +1,7 @@
 import { Button, AvatarView, IconButton } from '@transferwise/components';
 import { ArrowLeft, ChevronRight, Menu, Plus } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
+import './TopBar.css';
 
 export function TopBar({
   name,

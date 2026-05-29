@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useLiquidGlass } from '../hooks/useLiquidGlass';
+import './LiquidGlassButton.css';
 
 interface LiquidGlassIconButtonProps {
   icon: ReactNode;

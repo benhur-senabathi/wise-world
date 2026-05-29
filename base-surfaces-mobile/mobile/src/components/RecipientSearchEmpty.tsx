@@ -1,6 +1,7 @@
 import { ListItem, Header } from '@transferwise/components';
 import { Search, Recipients, Link as LinkIcon } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
+import './RecipientSearchEmpty.css';
 
 type Props = {
   query: string;

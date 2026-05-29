@@ -7,7 +7,8 @@ import { useLanguage } from '../context/Language';
 import { usdBaseRates } from '@shared/data/currency-rates';
 import { useLiveRates } from '../context/LiveRates';
 import { useShimmer } from '../context/Shimmer';
-import { ShimmerTransferCalculator } from './Shimmer';
+import { ShimmerTransferCalculator } from './TransferCalculator.shimmer';
+import './TransferCalculator.css';
 
 type RatePoint = { date: string; rate: number };
 

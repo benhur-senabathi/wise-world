@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { IconButton } from '@transferwise/components';
 import { More } from '@transferwise/icons';
+import './MoreMenu.css';
 
 type MenuItem = {
   label: string;

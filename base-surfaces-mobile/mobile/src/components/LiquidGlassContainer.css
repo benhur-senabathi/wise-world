@@ -1,0 +1,106 @@
+/* ===== Liquid Glass Container ===== */
+
+.lg-container {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.lg-container__surface,
+.lg-transform__surface {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255,255,255,0.86);
+}
+
+.lg-container__surface-burn,
+.lg-transform__surface-burn {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(221,221,221,0.3);
+  mix-blend-mode: color-burn;
+}
+
+.lg-container__surface-darken,
+.lg-transform__surface-darken {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(247,247,247,0.4);
+  mix-blend-mode: darken;
+}
+
+.lg-container__border,
+.lg-transform__border {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.6), inset 0 -1px 1px rgba(0,0,0,0.04);
+  pointer-events: none;
+}
+
+.lg-container__flash {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transition: opacity 200ms ease-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.lg-container__content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Dark mode: container + transform */
+html.np-theme-personal--dark .lg-container__surface,
+html.np-theme-dark .lg-container__surface,
+html.np-theme-business--dark .lg-container__surface,
+html.np-theme-personal--dark .lg-transform__surface,
+html.np-theme-dark .lg-transform__surface,
+html.np-theme-business--dark .lg-transform__surface {
+  background: rgba(42,44,41,0.55);
+}
+
+html.np-theme-personal--dark .lg-container__surface-burn,
+html.np-theme-dark .lg-container__surface-burn,
+html.np-theme-business--dark .lg-container__surface-burn,
+html.np-theme-personal--dark .lg-transform__surface-burn,
+html.np-theme-dark .lg-transform__surface-burn,
+html.np-theme-business--dark .lg-transform__surface-burn {
+  background: rgba(40,40,40,0.4);
+}
+
+html.np-theme-personal--dark .lg-container__surface-darken,
+html.np-theme-dark .lg-container__surface-darken,
+html.np-theme-business--dark .lg-container__surface-darken,
+html.np-theme-personal--dark .lg-transform__surface-darken,
+html.np-theme-dark .lg-transform__surface-darken,
+html.np-theme-business--dark .lg-transform__surface-darken {
+  background: rgba(20,20,20,0.4);
+}
+
+html.np-theme-personal--dark .lg-container__border,
+html.np-theme-dark .lg-container__border,
+html.np-theme-business--dark .lg-container__border,
+html.np-theme-personal--dark .lg-transform__border,
+html.np-theme-dark .lg-transform__border,
+html.np-theme-business--dark .lg-transform__border {
+  border-color: rgba(255,255,255,0.10);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.06), inset 0 -1px 1px rgba(0,0,0,0.1);
+}
+
+html.np-theme-personal--dark .lg-container,
+html.np-theme-dark .lg-container,
+html.np-theme-business--dark .lg-container {
+  box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+}

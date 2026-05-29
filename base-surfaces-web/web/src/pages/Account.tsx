@@ -10,7 +10,8 @@ import {
   Tags, Camera, Plus,
 } from '@transferwise/icons';
 import type { ComponentType } from 'react';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
+import './Account.css';
 
 interface MenuItem {
   titleKey: TranslationKey;

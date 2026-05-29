@@ -1,0 +1,17 @@
+/* ===== Current Account Page ===== */
+
+.current-account {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-account__tabs {
+  margin-bottom: 16px;
+}
+
+.current-account__tabs .segmented-control__text {
+  white-space: nowrap;
+  word-break: normal;
+  font-size: 14px;
+}
+

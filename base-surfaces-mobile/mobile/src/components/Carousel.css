@@ -1,0 +1,72 @@
+/* ===== Carousel ===== */
+
+.acct-carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.acct-carousel__track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 4px;
+}
+
+.acct-carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.acct-carousel__track > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+
+/* ===== Mobile Carousel (matches iOS: 347px cards, 20px gap, 16px margins) ===== */
+/* Full-bleed: same pattern as action-button-row — scroll + negative margins on same element */
+.acct-carousel__track--mobile {
+  display: flex;
+  gap: 16px;
+}
+
+.acct-carousel--mobile {
+  overflow: visible;
+  position: static;
+}
+.acct-carousel__track--mobile {
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin: 0 -16px;
+  padding: 0 16px;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 16px;
+  -webkit-overflow-scrolling: touch;
+}
+.acct-carousel__track--mobile::-webkit-scrollbar {
+  display: none;
+}
+.acct-carousel__track--mobile::after {
+  content: '';
+  flex-shrink: 0;
+  width: 8px;
+}
+
+.acct-carousel__track--mobile > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  width: 338px;
+  min-width: 338px;
+}
+
+/* Override any fixed width on cards inside mobile carousel */
+.acct-carousel__track--mobile .mca,
+.acct-carousel__track--mobile .jar-card,
+.acct-carousel__track--mobile .mca--empty {
+  width: 338px;
+}
+

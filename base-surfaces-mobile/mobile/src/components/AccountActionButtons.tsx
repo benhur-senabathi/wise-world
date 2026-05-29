@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { CircularButton, ListItem } from '@transferwise/components';
 import { Plus, Convert, Send, Receive } from '@transferwise/icons';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { useLanguage } from '../context/Language';
 import { useShimmer } from '../context/Shimmer';
-import { ShimmerAccountActionButtons } from './Shimmer';
+import { ShimmerAccountActionButtons } from './AccountActionButtons.shimmer';
 import { BottomSheet } from './BottomSheet';
+import './AccountActionButtons.css';
 
 export function AccountActionButtons({ accountType = 'personal', hideGetPaid = false, hideSend = false, sendSecondary = false, moveOnly = false, onAdd, onConvert, onSend, onRequest, onPaymentLink }: { accountType?: AccountType; hideGetPaid?: boolean; hideSend?: boolean; sendSecondary?: boolean; moveOnly?: boolean; onAdd?: () => void; onConvert?: () => void; onSend?: () => void; onRequest?: () => void; onPaymentLink?: () => void }) {
   const { t } = useLanguage();

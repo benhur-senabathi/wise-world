@@ -1,0 +1,411 @@
+/* ===== Global Shimmer System ===== */
+
+/* Base element: every shimmer shape inherits this */
+.shimmer-el {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-background-neutral);
+}
+.shimmer-el::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+  animation: shimmer-sweep 1.6s ease-in-out infinite;
+}
+
+/* ListItem composite */
+.shimmer-list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+}
+.shimmer-list-item__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.shimmer-list-item__value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* CircularButton composite */
+.shimmer-circular-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* MoneyInput composite */
+.shimmer-money-input {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.shimmer-money-input__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Chips row */
+.shimmer-chips {
+  display: flex;
+  gap: 8px;
+}
+
+/* SegmentedControl */
+.shimmer-segmented-control {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--color-background-neutral);
+  border-radius: 12px;
+}
+
+/* Tabs */
+.shimmer-tabs {
+  display: flex;
+  gap: 24px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border-neutral);
+}
+
+/* Table row */
+.shimmer-table-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border-neutral);
+}
+.shimmer-table-row__detail {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Badge composite */
+.shimmer-badge {
+  position: relative;
+  flex-shrink: 0;
+}
+.shimmer-badge__pip {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  border-radius: 50%;
+  background: var(--color-background-neutral);
+  border: 2px solid var(--color-background-screen);
+}
+
+/* TotalBalanceHeader composite */
+.shimmer-total-balance-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.shimmer-total-balance-header__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ActionButtonRow */
+.shimmer-action-button-row {
+  display: flex;
+  gap: 8px;
+}
+
+/* AccountActionButtons */
+.shimmer-account-action-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+/* AccountCard composite */
+.shimmer-account-card {
+  width: 346px;
+  border-radius: 26px;
+  border: 1px solid var(--color-border-neutral);
+  padding: 8px;
+  flex-shrink: 0;
+}
+.shimmer-account-card__front {
+  padding: 8px;
+}
+.shimmer-account-card__balances {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.shimmer-account-card__balances .shimmer-list-item {
+  padding: 4px 0;
+}
+
+/* TaskCard composite */
+.shimmer-task-card {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--color-border-neutral);
+  background: var(--color-background-screen);
+}
+.shimmer-task-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* SendAgainCard composite */
+.shimmer-send-again-card {
+  width: 256px;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--color-border-neutral);
+  flex-shrink: 0;
+}
+.shimmer-send-again-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.shimmer-send-again-card__actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* RecentContact composite */
+.shimmer-recent-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* AccountPageHeader composite */
+.shimmer-account-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px 0;
+}
+.shimmer-account-page-header__top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.shimmer-account-page-header__bottom {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* TransferCalculator */
+.shimmer-transfer-calculator {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.shimmer-transfer-calculator__body {
+  display: flex;
+  gap: 24px;
+}
+.shimmer-transfer-calculator__inputs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (max-width: 1023px) {
+  .shimmer-transfer-calculator__body {
+    flex-direction: column;
+  }
+}
+
+/* CurrencyInputGroup */
+.shimmer-currency-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+/* CurrencyDropdown */
+.shimmer-currency-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  width: 384px;
+  border-radius: 16px;
+  border: 1px solid var(--color-border-neutral);
+}
+
+/* Transaction list */
+.shimmer-transaction-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Carousel */
+.shimmer-carousel {
+  display: flex;
+  gap: 16px;
+  overflow: hidden;
+}
+
+/* Recent contacts row */
+.shimmer-recent-contacts {
+  display: flex;
+  gap: 16px;
+  overflow: hidden;
+}
+
+/* Menu list */
+.shimmer-menu-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Send Flow Shimmer (existing) ---- */
+.send-flow__shimmer-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+}
+.send-flow__shimmer-el {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-background-neutral);
+  border-radius: 8px;
+}
+.send-flow__shimmer-el::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  animation: shimmer-sweep 1.6s ease-in-out infinite;
+}
+@keyframes shimmer-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.send-flow__shimmer-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.send-flow__shimmer-bars {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.send-flow__shimmer-bar {
+  height: 12px;
+  border-radius: 6px;
+}
+.send-flow__shimmer-bar--sm {
+  width: 72px;
+}
+.send-flow__shimmer-bar--lg {
+  width: 148px;
+}
+.send-flow__shimmer-pill {
+  width: 76px;
+  height: 36px;
+  border-radius: 18px;
+  flex-shrink: 0;
+}
+
+/* ---- Cross-top: fades in at natural height, slide-down handled by JS animation ---- */
+.send-flow__cross-top {
+  opacity: 0;
+}
+.send-flow__cross-top--revealing {
+  animation: send-cross-fadein 0.8s ease-out 0.1s both;
+}
+.send-flow__cross-top--expanded {
+  opacity: 1;
+}
+.send-flow__cross-top--collapsing {
+  /* Height + opacity animated via JS Web Animations API */
+}
+@keyframes send-cross-fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Rate pill fades in quickly */
+.send-flow__rate-pill--fadein {
+  animation: send-rate-fadein 0.3s ease-out 0.2s both;
+}
+@keyframes send-rate-fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.send-flow__cross-divider {
+  height: 1px;
+  background: var(--color-border-neutral);
+  margin: 24px 0;
+  opacity: 0;
+  transition: opacity 0.25s ease, margin 0.25s ease;
+}
+
+.send-flow__cross-divider--visible {
+  opacity: 1;
+  margin: 24px 0;
+}
+
+.send-flow__continue {
+  position: relative;
+  z-index: 0;
+  margin-top: 32px;
+}
+
+.send-flow__btn-loading {
+  mix-blend-mode: luminosity !important;
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+.send-flow__btn-loading .wds-Button-loader .process-circle {
+  stroke: var(--color-interactive-primary) !important;
+}
+
+@media (max-width: 554px) {
+  .send-flow__body {
+    max-width: none;
+    padding: 56px 16px 48px;
+  }
+}
+
+@media (max-width: 700px) {
+  .send-flow__body--wide {
+    max-width: none;
+    padding: 56px 16px 48px;
+  }
+}

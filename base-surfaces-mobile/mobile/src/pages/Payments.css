@@ -1,0 +1,83 @@
+/* ===== Payments Page ===== */
+
+.payments-page {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 16px;
+}
+
+.payments-page__header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 12px 0 12px;
+}
+
+.payments-page__header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* 2-column grid for spotlight items */
+.payments-page__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Standard list items — no fixed min-height */
+.payments-page .wds-list-item {
+  height: auto !important;
+}
+
+/* Force side-by-side layout at all sizes — override DS container queries */
+.payments-page .wds-list-item-gridWrapper {
+  grid-template-columns: auto 1fr auto !important;
+  grid-template-rows: auto !important;
+  grid-template-areas: "media body control" !important;
+  align-items: center !important;
+}
+
+/* Keep media/avatar vertically centered when subtitle wraps */
+.payments-page .wds-list-item-media {
+  align-self: center !important;
+}
+
+/* Badge icons use interactive control color (correct in dark mode) */
+.payments-page .tw-badge__content .tw-icon {
+  color: var(--color-interactive-control) !important;
+}
+
+/* Override DS spotlight margin in all payments grids */
+.payments-page .wds-list-item + .wds-list-item {
+  margin-top: 0 !important;
+}
+
+.payments-page__section {
+  margin-top: 40px;
+}
+
+.payments-page__header + .payments-page__section,
+.payments-page__header + .payments-page__grid {
+  margin-top: 24px;
+}
+
+/* Payment tools grid — single column on mobile */
+.payments-page__tools-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* Account details single column */
+.payments-page__accounts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+
+.payments-page__grid {
+  grid-template-columns: 1fr;
+}

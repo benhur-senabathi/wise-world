@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { IconButton } from '@transferwise/components';
 import { Cross } from '@transferwise/icons';
 import { triggerHaptic } from '../hooks/useHaptics';
+import './BottomSheet.css';
 
 type BottomSheetProps = {
   open: boolean;

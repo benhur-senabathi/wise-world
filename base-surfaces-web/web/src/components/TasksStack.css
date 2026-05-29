@@ -1,0 +1,100 @@
+/* ===== Tasks Stack ===== */
+
+/* Custom toggle button — pill that morphs to circle */
+.tasks-stack__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 16px;
+  background: var(--color-background-neutral);
+  color: var(--color-content-primary);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-radius 0.4s ease, padding 0.4s ease, gap 0.4s ease, width 0.4s ease, background-color 0.15s ease;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.tasks-stack__btn:hover {
+  background: var(--color-background-neutral-hover);
+}
+
+/* Expanded: circle */
+.tasks-stack__btn--expanded {
+  padding: 0;
+  width: 32px;
+  border-radius: 50%;
+  gap: 0;
+}
+
+/* Count: slides right and fades */
+.tasks-stack__count {
+  display: inline-block;
+  max-width: 20px;
+  opacity: 1;
+  overflow: hidden;
+  transition: max-width 0.4s ease, opacity 0.2s ease, transform 0.4s ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.tasks-stack__count--hidden {
+  max-width: 0;
+  opacity: 0;
+  transform: translateX(8px);
+}
+
+/* Dark mode: count + chevron green */
+html.np-theme-personal--dark .tasks-stack__count,
+html.np-theme-personal--dark .tasks-stack__chevron {
+  color: var(--color-interactive-primary);
+}
+
+/* Chevron: rotates and stays centered */
+.tasks-stack__chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.4s ease;
+  line-height: 0;
+}
+
+.tasks-stack__btn--expanded .tasks-stack__chevron {
+  transform: rotate(180deg);
+}
+
+.tasks-stack__animated {
+  position: relative;
+  overflow: hidden;
+  transition: height 0.5s cubic-bezier(0.55, 0, 0.15, 1.3) 0.16s;
+}
+
+.tasks-stack__placeholder {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  right: 8px;
+  height: 80px;
+  background: var(--color-background-neutral-solid-secondary);
+  border-radius: 16px;
+  z-index: 0;
+  transition: opacity 0.35s ease-out 0.16s, transform 0.5s cubic-bezier(0.55, 0, 0.15, 1.3) 0.16s;
+}
+
+.tasks-stack__cards {
+  position: relative;
+  z-index: 1;
+}
+
+.tasks-stack__extra-card {
+  transition: opacity 0.35s ease-out 0.16s, transform 0.5s cubic-bezier(0.55, 0, 0.15, 1.3) 0.16s;
+}
+
+

@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { Plus, Cross } from '@transferwise/icons';
 import { useLiquidGlass } from '../hooks/useLiquidGlass';
+import './LiquidGlassTransform.css';
 
 const COLLAPSED = { width: 56, height: 56, borderRadius: 28 };
 const EXPANDED = { width: 280, height: 160, borderRadius: 24 };

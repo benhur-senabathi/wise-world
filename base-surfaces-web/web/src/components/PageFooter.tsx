@@ -1,6 +1,7 @@
 import { Button } from '@transferwise/components';
 import { Shield } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
+import './PageFooter.css';
 
 export function PageFooter() {
   const { t } = useLanguage();

@@ -1,0 +1,201 @@
+/* ===== Travel Hub Page ===== */
+
+.travel-hub-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.travel-hub-page__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: stretch;
+}
+
+.travel-hub-page__left,
+.travel-hub-page__right {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.travel-hub-page__lounge-card {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  aspect-ratio: 2 / 1;
+  cursor: pointer;
+}
+
+.travel-hub-page__lounge-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.travel-hub-page__lounge-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, transparent 60%);
+}
+
+.travel-hub-page__lounge-title {
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.travel-hub-page__lounge-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-end;
+}
+
+.travel-hub-page__lounge-cta {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 40px;
+  border: none;
+  background: rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.travel-hub-page__lounge-arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-interactive-accent, #9fe870);
+  color: var(--color-dark, #163300);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.travel-hub-page__search {
+  margin-bottom: 12px;
+}
+
+.travel-hub-page__destinations {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.travel-hub-page__destinations::-webkit-scrollbar {
+  display: none;
+}
+
+.travel-hub-page__destination-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 8px;
+  border-radius: 100px;
+  border: 1px solid var(--color-border-neutral);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.travel-hub-page__destination-chip:hover {
+  background: var(--color-background-neutral);
+}
+
+.travel-hub-page__destination-flag {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.travel-hub-page__destination-flag .wise-art-flag {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.travel-hub-page__tips {
+  display: flex;
+  flex-direction: column;
+}
+
+.travel-hub-page__stamps-card {
+  border: 1px solid var(--color-border-neutral);
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.008);
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+  background-size: 10px 10px;
+}
+
+.travel-hub-page__stamps-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 32px 16px;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.015);
+}
+
+.travel-hub-page__stamps-img {
+  width: 110%;
+  max-width: none;
+  height: auto;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
+.travel-hub-page__stamps-inner .wds-Button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+html.np-theme-personal--dark .travel-hub-page__stamps-card,
+html.np-theme-dark .travel-hub-page__stamps-card,
+html.np-theme-business--dark .travel-hub-page__stamps-card {
+  background-color: rgba(255, 255, 255, 0.02);
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+}
+
+html.np-theme-personal--dark .travel-hub-page__stamps-inner,
+html.np-theme-dark .travel-hub-page__stamps-inner,
+html.np-theme-business--dark .travel-hub-page__stamps-inner {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+@media (max-width: 767px) {
+  .travel-hub-page__grid {
+    grid-template-columns: 1fr;
+  }
+}

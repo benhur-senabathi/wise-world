@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { ListItem, Button, IconButton, Modal } from '@transferwise/components';
 import { Graph, Money, Rewards, QuestionMarkCircle } from '@transferwise/icons';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { useActiveCurrencies, useActiveTransactions, useActiveJars } from '../hooks/useDatasetData';
 import { useAllCurrencies, useAllTransactions } from '../hooks/useAccountRegistry';
 import { computeTotalBalance } from '@shared/data/balances';
@@ -10,6 +10,7 @@ import { useDataset } from '../context/Dataset';
 import { useLanguage, useTxLabels } from '../context/Language';
 import type { TranslationKey } from '../translations/en';
 import { convertToHomeCurrency, getCurrencySymbol, usdBaseRates } from '@shared/data/currency-rates';
+import './Insights.css';
 
 export function Insights({ accountType = 'personal' }: { accountType?: AccountType }) {
   const { consumerName, businessName, consumerHomeCurrency, businessHomeCurrency } = usePrototypeNames();

@@ -3,6 +3,7 @@ import { House, CardWise, Recipients, Payments } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
 import { GlassFilter } from './GlassFilter';
 import type { TranslationKey } from '../translations/en';
+import './MobileNav.css';
 
 const items: { label: string; translationKey: TranslationKey; icon: React.ReactNode }[] = [
   { label: 'Home', translationKey: 'nav.home', icon: <House size={24} /> },

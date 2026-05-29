@@ -1,7 +1,8 @@
 import { type ReactNode } from 'react';
 import { AvatarView, Badge, StatusIcon } from '@transferwise/components';
 import { useShimmer } from '../context/Shimmer';
-import { ShimmerTaskCard } from './Shimmer';
+import { ShimmerTaskCard } from './TasksStack.shimmer';
+import './TaskCard.css';
 
 type Props = {
   icon: ReactNode;

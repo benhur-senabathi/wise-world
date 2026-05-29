@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useCallback, type ReactNode } from 'react';
+import './PageTransition.css';
 
 function resetScroll(top = 0) {
   window.scrollTo({ top, behavior: 'instant' as ScrollBehavior });

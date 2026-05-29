@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Download, Slider, Documents, Receipt, Plus } from '@transferwise/icons';
 import { Button, SearchInput, Size, AvatarView, Table, Tooltip } from '@transferwise/components';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import { ActivitySummary } from '../components/ActivitySummary';
 import { useActiveTransactions } from '../hooks/useDatasetData';
 import { useAllTransactions } from '../hooks/useAccountRegistry';
 import { groupByDate, type Transaction } from '@shared/data/transactions';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
+import './Transactions.css';
 
 function TransactionsTableView({ transactions }: { transactions: Transaction[] }) {
   const { t } = useLanguage();

@@ -1,6 +1,7 @@
 import { useState, useEffect, type ReactNode } from 'react';
 import { ChevronDown } from '@transferwise/icons';
 import { useLanguage } from '../context/Language';
+import './TasksStack.css';
 
 type Props = {
   children: ReactNode[];

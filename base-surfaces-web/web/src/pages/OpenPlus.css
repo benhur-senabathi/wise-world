@@ -1,0 +1,44 @@
+/* ===== Open+ Page ===== */
+
+.open-plus-flow {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--color-background-screen);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.open-plus-flow__body {
+  display: flex;
+  flex-direction: column;
+  max-width: 522px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 56px 0 64px;
+  flex: 1;
+}
+
+.open-plus-flow__items {
+  display: flex;
+  flex-direction: column;
+}
+
+.open-plus-flow__section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 32px 0 16px;
+}
+
+.open-plus-flow__divider {
+  border: none;
+  border-top: 1px solid var(--color-border-neutral);
+  margin: 0;
+}
+
+.open-plus-flow__accounts {
+  display: flex;
+  flex-direction: column;
+}

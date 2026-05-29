@@ -1,0 +1,30 @@
+/* ===== Action Button Row ===== */
+
+.action-button-row__scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: visible;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: relative;
+  z-index: 100;
+}
+
+.action-button-row__scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.action-button-row__request {
+  position: relative;
+}
+
+.action-button-row__chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.action-button-row__chevron--open {
+  transform: rotate(180deg);
+}

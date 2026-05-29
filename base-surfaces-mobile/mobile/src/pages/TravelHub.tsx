@@ -3,6 +3,7 @@ import { Search, ArrowRight } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import type { TranslationKey } from '../translations/en';
+import './TravelHub.css';
 
 const countries: { nameKey: TranslationKey; flagCode: string }[] = [
   { nameKey: 'travel.countrySpain' as TranslationKey, flagCode: 'ES' },

@@ -12,6 +12,7 @@ React + TypeScript + Vite prototype of the Wise mobile app. Runs inside a Device
 6. **Commit message formatting.** No co-authored-by lines. Use `• ` (bullet character) for lists in commit bodies (renders in Slack notifications). Keep each bullet short and concise — no filler, just what changed.
 7. **Shared data.** Balances, transactions, recipients, rates, jars, and account details live in `shared-resources/data/` at the repo root — edit data there, not locally. Import shared data via `@shared/data/` (Vite alias).
 8. **Never guess component APIs.** Always verify `@transferwise/components` props via the Wise Design System MCP before writing JSX. If the MCP is unavailable, tell the user.
+9. **CSS is per-component.** Every custom component, page, and flow has a co-located `.css` file imported at the top of the `.tsx`. Global tokens, resets, and shared layout live in `src/styles/global.css`; mobile standalone/DeviceFrame overrides in `src/styles/standalone.css`. When creating a new component: create `ComponentName.css` alongside the `.tsx` and add `import './ComponentName.css'`. When using another component's class names directly (e.g. `.ios-glass-btn`), import that component's CSS explicitly.
 
 ## Quick Start
 

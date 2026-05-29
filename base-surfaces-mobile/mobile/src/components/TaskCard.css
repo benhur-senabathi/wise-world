@@ -1,0 +1,33 @@
+/* ===== Task Card ===== */
+
+.task-card {
+  position: relative;
+  background: var(--color-background-neutral-solid);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.task-card__wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.task-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.task-card__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-card__action {
+  flex-shrink: 0;
+}

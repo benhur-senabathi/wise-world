@@ -1,0 +1,119 @@
+/* ===== iOS Top Bar ===== */
+
+.ios-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 46px 16px 0;
+  isolation: isolate;
+}
+
+.ios-top-bar__fade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 134px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Color overlay */
+.ios-top-bar__fade::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0.5) 70%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Blur layer — fades from full blur at top to none at bottom */
+.ios-top-bar__fade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
+}
+
+.ios-top-bar__bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  height: 72px;
+  gap: 12px;
+}
+
+.ios-top-bar__spacer {
+  flex: 1;
+}
+
+.ios-top-bar__scroll-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 44px;
+  letter-spacing: -0.005em;
+  color: var(--color-content-primary);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Account details: flag avatar in top bar (trailing, opposite back button) */
+.ios-top-bar__detail-flag {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ios-top-bar__detail-flag .wds-flag {
+  width: 40px;
+  height: 40px;
+}
+
+/* Centered heading + subtitle for account details */
+.ios-top-bar__center-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  line-height: 1.2;
+}
+
+.ios-top-bar__center-heading {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-content-primary);
+}
+
+.ios-top-bar__center-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-content-secondary);
+}
+
+.ios-top-bar__trailing {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { IconButton } from '@transferwise/components';
 import { Cross, QrCode, Image as ImageIcon, Document } from '@transferwise/icons';
 import { GlassCircle } from '../components/FlowHeader';
+import './ScanFlow.css';
 
 type Props = {
   onClose: () => void;

@@ -5,8 +5,9 @@ import { Flag } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { getAccountDetails } from '@shared/data/account-details-data';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import type { AccountDetailField, QuickFactFee, AvailabilityItem } from '@shared/data/account-details-data';
+import './AccountDetailsPage.css';
 
 type Props = {
   code: string;

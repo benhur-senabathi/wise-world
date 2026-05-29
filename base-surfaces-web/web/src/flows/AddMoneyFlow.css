@@ -1,0 +1,62 @@
+/* ===== Add Money Flow ===== */
+
+.add-money-flow {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--color-background-screen);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* Flow navigation: prevent flex compression and ensure consistent rendering */
+.add-money-flow .np-flow-navigation,
+.convert-flow .np-flow-navigation,
+.send-flow .np-flow-navigation {
+  flex-shrink: 0;
+}
+
+/* Center close button icon in all flows */
+.add-money-flow .np-close-button,
+.convert-flow .np-close-button,
+.send-flow .np-close-button,
+.open-plus-flow .np-close-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 48px !important;
+  height: 48px !important;
+  padding: 0 !important;
+  float: none !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+}
+
+/* OverlayHeader (Convert) — match FlowNavigation spacing */
+.np-overlay-header {
+  flex-shrink: 0;
+}
+
+.add-money-flow__body {
+  display: flex;
+  flex-direction: column;
+  max-width: 522px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 112px 0 64px;
+  flex: 1;
+}
+
+.add-money-flow__continue {
+  margin-top: 32px;
+}
+
+.add-money-flow__btn-loading {
+  mix-blend-mode: luminosity !important;
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+.add-money-flow__btn-loading .wds-Button-loader .process-circle {
+  stroke: var(--color-interactive-primary) !important;
+}

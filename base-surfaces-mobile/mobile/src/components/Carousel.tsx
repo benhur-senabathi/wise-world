@@ -1,4 +1,5 @@
 import { type ReactNode } from 'react';
+import './Carousel.css';
 
 export function Carousel({ children }: { children: ReactNode }) {
   return (

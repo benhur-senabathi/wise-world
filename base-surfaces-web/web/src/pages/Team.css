@@ -1,0 +1,101 @@
+/* ===== Team Page ===== */
+
+.team-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.team-page__header {
+  padding: 0 0 24px;
+}
+
+.team-page__actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 0 0 24px;
+}
+
+.team-page__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  min-width: 0;
+}
+
+.team-page__search {
+  width: 250px;
+  min-width: 250px;
+  flex-shrink: 0;
+  margin-right: 24px;
+}
+
+.team-page__members {
+  margin: 8px 0 0;
+}
+
+/* Member title with inline pills */
+.team-page__member-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.team-page__pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.team-page__pill--you {
+  background: var(--color-interactive-control);
+  color: var(--color-interactive-accent);
+}
+
+.team-page__pill--role {
+  background: var(--color-background-neutral);
+  color: var(--color-content-primary);
+}
+
+.team-page__footer {
+  text-align: center;
+  margin-top: 48px;
+}
+
+.team-page__footer a {
+  display: block;
+  margin-top: 4px;
+}
+
+/* Search icon alignment */
+.team-page__search .np-input-group .tw-icon {
+  display: flex;
+  align-items: center;
+}
+
+.team-page__search .np-input-group__prefix {
+  padding-left: 10px;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .team-page__actions-row {
+    flex-wrap: wrap;
+    padding: 0 0 16px;
+  }
+
+  .team-page__search {
+    order: -1;
+    width: 250px;
+    min-width: 250px;
+    margin-right: 0;
+  }
+}

@@ -1,0 +1,22 @@
+/* ===== Page Footer ===== */
+
+.page-footer {
+  text-align: center;
+  padding: 32px 0 16px;
+}
+
+.page-footer__title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.page-footer__description {
+  color: var(--color-content-secondary);
+  margin-bottom: 16px;
+  max-width: 595px;
+  margin-left: auto;
+  margin-right: auto;
+}

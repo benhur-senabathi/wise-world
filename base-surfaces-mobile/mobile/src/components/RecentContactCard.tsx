@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import { AvatarView } from '@transferwise/components';
 import { useShimmer } from '../context/Shimmer';
-import { ShimmerRecentContactCard } from './Shimmer';
+import { ShimmerRecentContactCard } from './RecentContactCard.shimmer';
+import './RecentContactCard.css';
 
 type RecentContactCardProps = {
   name: string;

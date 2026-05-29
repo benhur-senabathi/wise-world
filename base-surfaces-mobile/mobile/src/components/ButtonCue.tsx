@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import './ButtonCue.css';
 
 export function ButtonCue({ visible, hint, children }: { visible: boolean; hint?: ReactNode; children: ReactNode }) {
   return (

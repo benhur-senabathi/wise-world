@@ -6,8 +6,9 @@ import { ButtonCue } from '../components/ButtonCue';
 import { WiseLogoIcon, resolveIcon } from '../components/WiseLogoIcon';
 import { useLanguage } from '../context/Language';
 import { getAccountBySubPageType } from '@shared/data/account-registry';
-import type { AccountType } from '../App';
+import type { AccountType } from '@shared/data/account-registry';
 import type { AccountStyle } from './RequestFlow';
+import './PaymentLinkFlow.css';
 
 type ButtonState = 'disabled' | 'loading' | 'active';
 

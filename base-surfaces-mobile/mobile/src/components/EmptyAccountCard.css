@@ -1,0 +1,17 @@
+/* ===== Empty Account Card ===== */
+
+.mca--empty .mca-front {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.empty-account-card__content {
+  padding: 16px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
+}

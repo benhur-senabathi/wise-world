@@ -1,0 +1,322 @@
+/* ===== Request Flow ===== */
+.request-flow {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--color-background-screen);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.request-flow__track {
+  display: flex;
+  width: 200%;
+  flex: 1;
+  overflow-y: auto;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.request-flow__track--step-request {
+  transform: translateX(-50%);
+}
+
+.request-flow__panel {
+  width: 50%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+/* Hide scrollbar on off-screen panel */
+.request-flow__track--step-request .request-flow__panel:first-child,
+.request-flow__track:not(.request-flow__track--step-request) .request-flow__panel:last-child {
+  overflow-y: hidden;
+}
+
+/* Hide all scrollbars during slide animation */
+.request-flow__track--animating .request-flow__panel {
+  overflow-y: hidden;
+}
+
+.request-flow__body {
+  display: flex;
+  flex-direction: column;
+  max-width: 522px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 0 64px;
+  flex: 1;
+}
+
+.request-flow__body--wide {
+  max-width: 668px;
+  padding-top: 56px;
+}
+
+/* Step 1: Recipient selection */
+.request-flow__title {
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+.request-flow__invite {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+  /* Reverse (opening): slower ease-in for smooth reappear */
+  transition: opacity 0.3s ease-in 0.1s, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
+  max-height: 100px;
+  overflow: hidden;
+  opacity: 1;
+}
+
+.request-flow__recents-section {
+  margin-bottom: 28px;
+  container-type: inline-size;
+  /* Reverse (opening): slower ease-in for smooth reappear */
+  transition: opacity 0.3s ease-in 0.1s, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
+  max-height: 500px;
+  overflow: hidden;
+  opacity: 1;
+}
+
+.request-flow__recents {
+  display: flex;
+  justify-content: space-between;
+}
+
+@container (max-width: 600px) {
+  .request-flow__recents {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 120px);
+    row-gap: 4px;
+  }
+}
+
+.request-flow__someone-else-section {
+  margin-bottom: 24px;
+  /* Reverse (opening): slower ease-in for smooth reappear */
+  transition: opacity 0.3s ease-in 0.1s, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
+  max-height: 500px;
+  overflow: hidden;
+  opacity: 1;
+}
+
+.request-flow__someone-else {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .request-flow__someone-else {
+    flex-direction: column;
+  }
+}
+
+.request-flow__spotlight-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--size-12, 12px);
+  padding: var(--size-12, 12px);
+  border-radius: var(--radius-medium, 16px);
+  border: none;
+  background: rgba(134, 167, 189, 0.025);
+  background: color-mix(in srgb, var(--color-background-neutral) 25%, transparent);
+  cursor: pointer;
+  text-align: left;
+  color: var(--color-content-primary);
+  position: relative;
+}
+
+/* Dashed border SVG — matches DS spotlight exactly */
+.request-flow__spotlight-card > .request-flow__spotlight-border {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.request-flow__spotlight-border rect {
+  fill: none;
+  stroke: var(--color-border-neutral);
+  stroke-width: 1px;
+  stroke-dasharray: 6px 6px;
+  x: 0.5px;
+  y: 0.5px;
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
+  rx: calc(var(--radius-medium, 16px) - 0.5px);
+  ry: calc(var(--radius-medium, 16px) - 0.5px);
+}
+
+.request-flow__spotlight-card:hover {
+  background: color-mix(in srgb, var(--color-background-neutral-hover) 35%, transparent);
+}
+
+.request-flow__spotlight-card:active {
+  background: color-mix(in srgb, var(--color-background-neutral-active) 45%, transparent);
+}
+
+/* Active spotlight variant — no dashed border */
+.request-flow__spotlight-card--active {
+  background: var(--color-background-neutral);
+}
+
+.request-flow__spotlight-card--active .request-flow__spotlight-border {
+  display: none;
+}
+
+.request-flow__spotlight-card--active:hover {
+  background: var(--color-background-neutral-hover);
+}
+
+.request-flow__spotlight-card--active:active {
+  background: var(--color-background-neutral-active);
+}
+
+.request-flow__all-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+}
+
+.request-flow__all-label {
+  transition: opacity 0.3s ease-in 0.1s, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
+  max-height: 50px;
+  overflow: hidden;
+}
+
+.request-flow__search {
+  margin-bottom: 12px;
+}
+
+.request-flow__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.request-flow__list .np-circle-border::after,
+.request-flow__recents .np-circle-border::after,
+.request-flow__from .np-circle-border::after {
+  display: none;
+}
+
+.request-flow__list .np-avatar-view-content.np-circle {
+  background-color: var(--color-background-neutral) !important;
+}
+
+/* Step 2: Request */
+.request-flow__quick-amounts {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  animation: request-flow-chips-in 0.3s ease-out;
+}
+
+@keyframes request-flow-chips-in {
+  from {
+    opacity: 0;
+    max-height: 0;
+    margin-top: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 50px;
+    margin-top: 12px;
+  }
+}
+
+.request-flow__divider {
+  height: 1px;
+  background: var(--color-border-neutral);
+  margin: 24px 0;
+}
+
+.request-flow__from {
+  margin: 0 -16px;
+  padding: 0 16px;
+}
+
+.request-flow__note {
+  margin-bottom: 0;
+}
+
+.request-flow__continue {
+  margin-top: 32px;
+}
+
+.request-flow__btn-loading {
+  mix-blend-mode: luminosity !important;
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+.request-flow__btn-loading .wds-Button-loader .process-circle {
+  stroke: var(--color-interactive-primary) !important;
+}
+
+/* Hide search during step animation */
+.request-flow__track--step-request .request-flow__panel:first-child .request-flow__search {
+  visibility: hidden;
+  transition: visibility 0s 0.05s;
+}
+.request-flow__panel:first-child .request-flow__search {
+  visibility: visible;
+  transition: visibility 0s 0.4s;
+}
+
+/* Searching state: fade out and collapse recents + someone-else only */
+.request-flow--searching .request-flow__recents-section {
+  transition: opacity 0.2s ease-out, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+}
+
+.request-flow--searching .request-flow__someone-else-section {
+  transition: opacity 0.2s ease-out, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+}
+
+.request-flow--searching .request-flow__all-label {
+  transition: opacity 0.2s ease-out, max-height 0.4s ease-out, margin-bottom 0.4s ease-out;
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0 !important;
+}
+
+/* Close button fix */
+.request-flow .np-close-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 48px !important;
+  height: 48px !important;
+  padding: 0 !important;
+  float: none !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 554px) {
+  .request-flow__body {
+    max-width: none;
+    padding: 40px 16px 48px;
+  }
+}
+
+@media (max-width: 700px) {
+  .request-flow__body--wide {
+    max-width: none;
+    padding: 40px 16px 48px;
+  }
+}
