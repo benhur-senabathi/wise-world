@@ -4,12 +4,18 @@
   width: 100%;
   text-align: left;
   border: 1px solid var(--color-border-neutral);
-  border-radius: var(--radius-large, 20px);
+  border-radius: var(--radius-large);
   background: var(--color-background-screen);
-  padding: 16px;
+  padding: var(--size-16);
   cursor: pointer;
 }
 
 .cass-progress-card:active {
   background: var(--color-background-neutral);
+}
+
+/* Left-align the "Step X of 5" label and give it 4px more room below the bar */
+.cass-progress-card .np-progress-bar > .justify-content-end {
+  justify-content: flex-start;
+  margin-top: var(--size-8);
 }

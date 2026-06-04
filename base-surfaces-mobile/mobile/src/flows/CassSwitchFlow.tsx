@@ -1,13 +1,16 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { Button, Field, Input, ListItem, StatusIcon, DateInput, InfoPrompt, IconButton } from '@transferwise/components';
+import { Button, Field, Input, ListItem, StatusIcon, DateLookup, InfoPrompt, IconButton, PromoCard } from '@transferwise/components';
 import { ArrowLeft, Cross, Bank, FastFlag, Convert } from '@transferwise/icons';
 import { Illustration } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import { useCass } from '../context/Cass';
+import { CassSwitchGuaranteeOrbit } from '../components/CassSwitchGuaranteeOrbit';
+import { BottomSheet } from '../components/BottomSheet';
 import {
   oldBank,
   heldAddress,
   getMinSwitchDate,
+  getMaxSwitchDate,
   formatSwitchDate,
 } from '../data/cass-switch-data';
 import './CassSwitchFlow.css';
@@ -49,9 +52,11 @@ export function CassSwitchFlow({ onClose }: Props) {
   const [addressLine, setAddressLine] = useState(heldAddress.line1);
   const [city, setCity] = useState(heldAddress.city);
   const [postcode, setPostcode] = useState(heldAddress.postcode);
+  const [showAddressSheet, setShowAddressSheet] = useState(false);
 
   // Step 6 — switch date.
   const minDate = useMemo(() => getMinSwitchDate(), []);
+  const maxDate = useMemo(() => getMaxSwitchDate(), []);
   const [switchDate, setSwitchDate] = useState<Date | null>(minDate);
 
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -91,8 +96,8 @@ export function CassSwitchFlow({ onClose }: Props) {
     }, 1100);
   }, [goTo]);
 
-  const handleDateChange = useCallback((value: string | null) => {
-    setSwitchDate(value ? new Date(value) : null);
+  const handleDateChange = useCallback((value: Date | null) => {
+    setSwitchDate(value);
   }, []);
 
   const handleSubmit = useCallback(() => {
@@ -130,8 +135,7 @@ export function CassSwitchFlow({ onClose }: Props) {
       <div className="cass-flow__body" ref={bodyRef}>
         {screen === 'intro' && (
           <div className="cass-flow__screen">
-            {/* Placeholder for the Current Account Switch logo — to be replaced with the real asset later. */}
-            <div className="cass-flow__logo-placeholder" aria-hidden />
+            <CassSwitchGuaranteeOrbit />
             <h1 className="np-text-display-small cass-flow__display-title">{t('cass.intro.title')}</h1>
 
             <p className="np-text-title-group cass-flow__section-label">{t('cass.intro.whatHappens')}</p>
@@ -153,12 +157,19 @@ export function CassSwitchFlow({ onClose }: Props) {
                 subtitle={t('cass.intro.redirectBody')}
               />
             </ul>
+
+            <div className="cass-flow__promo">
+              <PromoCard
+                title={t('cass.intro.promoTitle')}
+                description={t('cass.intro.promoDescription')}
+              />
+            </div>
           </div>
         )}
 
         {screen === 'bank' && (
           <div className="cass-flow__screen">
-            <h1 className="np-text-title-screen cass-flow__title">{t('cass.bank.title')}</h1>
+            <h1 className="np-text-title-screen cass-flow__title cass-flow__title--form">{t('cass.bank.title')}</h1>
 
             <Field label={t('cass.bank.fullName')}>
               <Input
@@ -235,20 +246,12 @@ export function CassSwitchFlow({ onClose }: Props) {
             <Field label={t('cass.address.postcode')}>
               <Input type="text" value={postcode} onChange={(e) => setPostcode(e.target.value)} />
             </Field>
-
-            <div className="cass-flow__prompt">
-              <InfoPrompt
-                sentiment="warning"
-                title={t('cass.address.warningTitle')}
-                description={t('cass.address.warningBody')}
-              />
-            </div>
           </div>
         )}
 
         {screen === 'card' && (
           <div className="cass-flow__screen">
-            <h1 className="np-text-title-screen cass-flow__title">{t('cass.card.title')}</h1>
+            <h1 className="np-text-title-screen cass-flow__title cass-flow__title--form">{t('cass.card.title')}</h1>
 
             <Field label={t('cass.card.label')}>
               <Input
@@ -261,7 +264,7 @@ export function CassSwitchFlow({ onClose }: Props) {
 
             <div className="cass-flow__prompt">
               <InfoPrompt
-                sentiment="warning"
+                sentiment="neutral"
                 title={t('cass.card.warningTitle')}
                 description={t('cass.card.warningBody')}
               />
@@ -275,7 +278,13 @@ export function CassSwitchFlow({ onClose }: Props) {
             <p className="np-text-body-large cass-flow__lede">{t('cass.date.hint')}</p>
 
             <Field label={t('cass.date.fieldLabel')}>
-              <DateInput value={switchDate ?? undefined} monthFormat="long" onChange={handleDateChange} />
+              <DateLookup
+                value={switchDate}
+                min={minDate}
+                max={maxDate}
+                monthFormat="long"
+                onChange={handleDateChange}
+              />
             </Field>
             <div className="cass-flow__date-hint">
               <StatusIcon sentiment="neutral" size={16} />
@@ -346,7 +355,7 @@ export function CassSwitchFlow({ onClose }: Props) {
 
         {screen === 'bank' && (
           <Button v2 size="lg" priority="primary" block disabled={!bankValid || checking} loading={checking} onClick={runCoP}>
-            {t('common.continue')}
+            {t('cass.bank.cta')}
           </Button>
         )}
 
@@ -357,7 +366,7 @@ export function CassSwitchFlow({ onClose }: Props) {
         {screen === 'address' && (
           <div className="cass-flow__footer-stack">
             <Button v2 size="lg" priority="primary" block onClick={goNext}>{t('common.continue')}</Button>
-            <Button v2 size="lg" priority="tertiary" block onClick={goNext}>{t('cass.address.notMyAddress')}</Button>
+            <Button v2 size="lg" priority="tertiary" block onClick={() => setShowAddressSheet(true)}>{t('cass.address.notMyAddress')}</Button>
           </div>
         )}
 
@@ -381,6 +390,19 @@ export function CassSwitchFlow({ onClose }: Props) {
           <Button v2 size="lg" priority="primary" block onClick={onClose}>{t('cass.sent.cta')}</Button>
         )}
       </div>
+
+      <BottomSheet
+        open={showAddressSheet}
+        onClose={() => setShowAddressSheet(false)}
+        title={t('cass.address.sheetTitle')}
+      >
+        <div className="cass-flow__sheet-body">
+          <p className="np-text-body-large">{t('cass.address.sheetBody')}</p>
+          <Button v2 size="lg" priority="primary" block onClick={() => setShowAddressSheet(false)}>
+            {t('cass.address.sheetCta')}
+          </Button>
+        </div>
+      </BottomSheet>
     </div>
   );
 }

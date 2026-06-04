@@ -596,6 +596,8 @@ const en = {
   'cass.intro.debitsBody': 'We\'ll move all your direct debits, standing orders to your Wise account.',
   'cass.intro.redirectTitle': 'Redirect payments',
   'cass.intro.redirectBody': 'We close your old account and redirect all future payments to your Wise current account. Including salary.',
+  'cass.intro.promoTitle': 'Earn 2% cashback',
+  'cass.intro.promoDescription': 'Move 3 or more direct debits and get 2% cashback on your direct debit spend, up to £50 a year.',
   'cass.intro.cta': 'Continue',
 
   // Old bank details
@@ -604,6 +606,7 @@ const en = {
   'cass.bank.fullNamePlaceholder': '<Full name as per Wise account>',
   'cass.bank.sortCode': 'UK sort code',
   'cass.bank.accountNumber': 'Account number',
+  'cass.bank.cta': 'Check details',
 
   // CoP match result
   'cass.match.title': 'Account name and account details match',
@@ -618,15 +621,16 @@ const en = {
   'cass.address.homeAddress': 'Home address',
   'cass.address.city': 'City',
   'cass.address.postcode': 'Postcode',
-  'cass.address.warningTitle': 'Addresses must match',
-  'cass.address.warningBody': 'Your address details of the bank account you\'re switching from must match the above.',
   'cass.address.notMyAddress': 'This is not my current address',
+  'cass.address.sheetTitle': 'Update your address first',
+  'cass.address.sheetBody': 'If this isn\'t your current address, update it with Wise and your old bank before you start the switch. Both need to match for your old bank to verify you.',
+  'cass.address.sheetCta': 'Got it',
 
   // Card identity
   'cass.card.title': 'Enter the last 5 digits of your old bank card',
   'cass.card.label': 'Last 5 digits',
-  'cass.card.warningTitle': 'What happens if this is incorrect?',
-  'cass.card.warningBody': 'Your switch will not go through. Make sure that you are using the same bank card of the account you\'re switching from',
+  'cass.card.warningTitle': 'Why we ask for this',
+  'cass.card.warningBody': 'It\'s how your old bank checks it\'s really you. Double-check it\'s the card for the account you\'re switching from. Your switch will not go through if this is wrong',
 
   // Switch date
   'cass.date.title': 'Pick your switch date',

@@ -42,6 +42,11 @@
   text-align: center;
 }
 
+/* Form screens — 32px between the title and the first field (Figma 2046-5484) */
+.cass-flow__title--form {
+  margin-bottom: var(--space-medium);
+}
+
 .cass-flow__display-title {
   margin: 16px 0 32px;
   text-transform: uppercase;
@@ -66,29 +71,39 @@
   margin-bottom: 8px;
 }
 
+/* Promo card sits below the "What happens" list with a section gap */
+.cass-flow__promo {
+  margin-top: var(--space-medium);
+}
+
 .cass-flow__hero {
   display: flex;
   justify-content: center;
   padding: 8px 0 16px;
 }
 
-/* Intro logo placeholder — gray box standing in for the CASS logo */
-.cass-flow__logo-placeholder {
-  width: 144px;
-  height: 144px;
-  border-radius: var(--radius-large, 20px);
-  background: var(--color-background-neutral);
-  margin: 8px auto 0;
-}
 
 /* CoP match list — centred check then verified rows */
 .cass-flow__match-list {
   margin-top: 16px;
 }
 
-/* Info prompt spacing (address + card warnings) */
+/* Info prompt follows the field's own DS bottom margin (24px) — no extra gap */
 .cass-flow__prompt {
-  margin-top: 16px;
+  margin-top: 0;
+}
+
+/* "Not my address" bottom sheet body */
+.cass-flow__sheet-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-medium);
+  padding: 0 16px 16px;
+}
+
+.cass-flow__sheet-body p {
+  margin: 0;
+  color: var(--color-content-secondary);
 }
 
 /* DateInput uses a Bootstrap grid whose columns only go horizontal at ≥576px.
@@ -120,7 +135,7 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  margin-top: 8px;
+  margin-top: 0;
   padding: 8px 12px;
   border-radius: var(--radius-large, 20px);
   background: var(--color-background-neutral);
@@ -152,7 +167,7 @@
 .cass-flow__footer-stack {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--size-8);
 }
 
 /* Success screen (forest-green theme applied on root) */
