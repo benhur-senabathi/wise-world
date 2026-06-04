@@ -1,6 +1,7 @@
 import type { Translations } from './en';
 
-const fr: Translations = {
+// CASS prototype keys are English-only; missing keys fall back to en via t().
+const fr: Partial<Translations> = {
   // Navigation
   'nav.home': 'Accueil',
   'nav.cards': 'Cartes',

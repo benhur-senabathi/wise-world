@@ -6,7 +6,7 @@ import fr from '../translations/fr';
 
 export type Language = 'en' | 'es' | 'de' | 'fr';
 
-const dictionaries: Record<Language, Translations> = { en, es, de, fr };
+const dictionaries: Record<Language, Partial<Translations>> = { en, es, de, fr };
 
 function resolvePlural(template: string, count: number): string {
   // Match {count, plural, one {...} other {...}} — supports nested {var} inside forms

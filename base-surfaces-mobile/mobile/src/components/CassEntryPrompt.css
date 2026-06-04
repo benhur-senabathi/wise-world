@@ -1,0 +1,15 @@
+/* ===== CASS progress card (Home) ===== */
+.cass-progress-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--color-border-neutral);
+  border-radius: var(--radius-large, 20px);
+  background: var(--color-background-screen);
+  padding: 16px;
+  cursor: pointer;
+}
+
+.cass-progress-card:active {
+  background: var(--color-background-neutral);
+}

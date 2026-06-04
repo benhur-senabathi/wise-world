@@ -4,6 +4,7 @@ export * from './AccountDetailsList';
 export * from './AccountDetailsPage.shimmer';
 export * from './AccountDetailsPage';
 export * from './Cards';
+export * from './CassProgress';
 export * from './CurrencyPage';
 export * from './CurrentAccount';
 export * from './Home';

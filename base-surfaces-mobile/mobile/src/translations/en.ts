@@ -560,6 +560,138 @@ const en = {
   'accountDetails.obtNotAvailable': 'Online bill transfers (OBT) not available',
   'accountDetails.obtNotAvailableSub': 'You can\'t receive Online Bill Transfers',
   'accountDetails.sgdNoDirectDebits': 'You can receive FAST payments, but you can\'t set up direct debit collections from your Wise SGD local account',
+
+  // ===== CASS — Current Account Switch =====
+  'common.continue': 'Continue',
+
+  // Entry prompt (Home)
+  'cass.entry.title': 'Switch your bank to Wise',
+  'cass.entry.description': 'Move your direct debits, standing orders and balance in 7 days.',
+  'cass.entry.action': 'Start switch',
+
+  // Next steps card (Home)
+  'cass.nextSteps.title': 'Your next steps',
+  'cass.nextSteps.description': 'Simple things you can do to save time and money.',
+  'cass.nextSteps.orderCard': 'Order a card',
+  'cass.nextSteps.receiveMoney': 'Get set up to receive money',
+  'cass.nextSteps.switchTitle': 'Switch to Wise',
+  'cass.nextSteps.switchDescription': 'Bring your balance, direct debits and standing orders to Wise',
+
+  // Complete prompt (Home)
+  'cass.complete.title': 'Your switch is complete',
+  'cass.complete.description': 'See everything that moved from {bank}.',
+  'cass.complete.action': 'See summary',
+
+  // Progress card (Home)
+  'cass.progress.cardTitle': 'Switching from {bank}',
+  'cass.progress.cardEstimate': 'Estimated complete by {date}',
+  'cass.progress.cardStep': 'Step {step} of 5',
+
+  // Intro screen
+  'cass.intro.title': 'Switch to Wise in 7 days',
+  'cass.intro.whatHappens': 'What happens',
+  'cass.intro.balanceTitle': 'Your balance',
+  'cass.intro.balanceBody': 'Your balance from your old bank account will move to Wise GBP balance.',
+  'cass.intro.debitsTitle': 'Direct debits',
+  'cass.intro.debitsBody': 'We\'ll move all your direct debits, standing orders to your Wise account.',
+  'cass.intro.redirectTitle': 'Redirect payments',
+  'cass.intro.redirectBody': 'We close your old account and redirect all future payments to your Wise current account. Including salary.',
+  'cass.intro.cta': 'Continue',
+
+  // Old bank details
+  'cass.bank.title': 'Enter the account details of the bank you\'re switching from',
+  'cass.bank.fullName': 'Full name of the account holder',
+  'cass.bank.fullNamePlaceholder': '<Full name as per Wise account>',
+  'cass.bank.sortCode': 'UK sort code',
+  'cass.bank.accountNumber': 'Account number',
+
+  // CoP match result
+  'cass.match.title': 'Account name and account details match',
+  'cass.match.holderName': 'Account holder name',
+  'cass.match.sortCode': 'UK sort code',
+  'cass.match.accountNumber': 'Account number',
+  'cass.match.accountType': 'Account type',
+
+  // Confirm address
+  'cass.address.title': 'Confirm your address',
+  'cass.address.subtitle': 'These are the details we hold for you. Make sure they match with your old bank account and is your current address',
+  'cass.address.homeAddress': 'Home address',
+  'cass.address.city': 'City',
+  'cass.address.postcode': 'Postcode',
+  'cass.address.warningTitle': 'Addresses must match',
+  'cass.address.warningBody': 'Your address details of the bank account you\'re switching from must match the above.',
+  'cass.address.notMyAddress': 'This is not my current address',
+
+  // Card identity
+  'cass.card.title': 'Enter the last 5 digits of your old bank card',
+  'cass.card.label': 'Last 5 digits',
+  'cass.card.warningTitle': 'What happens if this is incorrect?',
+  'cass.card.warningBody': 'Your switch will not go through. Make sure that you are using the same bank card of the account you\'re switching from',
+
+  // Switch date
+  'cass.date.title': 'Pick your switch date',
+  'cass.date.hint': 'The process takes 7 days to complete and we will keep you updated at each step.',
+  'cass.date.fieldLabel': 'Switch date',
+  'cass.date.firstPossible': 'First possible switch date',
+
+  // Review documents
+  'cass.review.title': 'Review and confirm',
+  'cass.review.subtitle': 'Go through these documents before you finish',
+  'cass.review.guarantee': 'Current account guarantee',
+  'cass.review.agreement': 'Current account switch agreement',
+  'cass.review.closure': 'Account closure instruction',
+  'cass.review.closureSub': 'Your {bank} account will close on {date}',
+
+  // Finalise
+  'cass.finalise.title': 'Finalise the switch',
+  'cass.finalise.switchingFrom': 'Switching from',
+  'cass.finalise.switchDate': 'Switch date',
+  'cass.finalise.whatMoves': 'What moves to Wise',
+  'cass.finalise.whatMovesValue': 'Balance, Direct debits, standing orders',
+
+  // Request sent (success)
+  'cass.sent.title': 'Switch requested',
+  'cass.sent.body': 'We\'ve asked {bank} to start your switch. It\'ll be complete by {date}. You can find updates on the homepage',
+  'cass.sent.cta': 'Done',
+
+  // Progress detail
+  'cass.progress.title': 'Switching from {bank}',
+  'cass.progress.estimate': 'Estimated complete by {date}',
+  'cass.progress.seeSummary': 'See switch summary',
+
+  // Milestones
+  'cass.milestone.requested.label': 'Switch requested',
+  'cass.milestone.requested.sub': 'We\'ve asked {bank} to start your switch.',
+  'cass.milestone.verified.label': 'Verified by your old bank',
+  'cass.milestone.verified.sub': '{bank} confirmed your details.',
+  'cass.milestone.payments.label': 'Payments being moved',
+  'cass.milestone.payments.sub': 'Setting up your direct debits and standing orders.',
+  'cass.milestone.balance.label': 'Balance transferring',
+  'cass.milestone.balance.sub': 'Moving your money to Wise.',
+  'cass.milestone.complete.label': 'Switch complete',
+  'cass.milestone.complete.sub': 'All done — see what moved.',
+
+  // Switch result
+  'cass.result.title': 'Your switch is complete',
+  'cass.result.subtitle': 'Welcome to your new current account.',
+  'cass.result.balanceTitle': 'Balance transferred',
+  'cass.result.balanceMoved': 'Moved from {bank}',
+  'cass.result.ddTitle': 'Direct Debits moved ({count})',
+  'cass.result.soTitle': 'Standing Orders moved ({count})',
+  'cass.result.redirectionTitle': 'Payment redirection active',
+  'cass.result.redirectionSub': 'Payments to your old account come to Wise for {months} months.',
+  'cass.result.cashbackTitle': '{rate} cashback unlocked',
+  'cass.result.cashbackBody': 'You moved 3+ direct debits, so you\'ve unlocked {rate} cashback on direct debit spend (up to {cap}/year), paid to your Wise card.',
+  'cass.result.cardReminderTitle': 'Card payments don\'t transfer',
+  'cass.result.cardReminderBody': 'Card payments and subscriptions don\'t switch. Update your card details with those providers.',
+  'cass.result.viewAccount': 'View account',
+  'cass.result.setupCard': 'Set up Wise card',
+
+  // Demo control (PrototypeSettings)
+  'cass.demo.title': 'CASS switch',
+  'cass.demo.milestoneLabel': 'Current milestone: {step} of 5',
+  'cass.demo.advance': 'Advance switch step',
+  'cass.demo.reset': 'Reset CASS switch',
 } as const;
 
 export type TranslationKey = keyof typeof en;

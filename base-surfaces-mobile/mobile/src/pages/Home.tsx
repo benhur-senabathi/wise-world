@@ -7,6 +7,7 @@ import { useActiveCurrencies, useActiveTransactions, useActiveJars } from '../ho
 import { useVisibleAccounts, useAllCards } from '../hooks/useAccountRegistry';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
+import { useCass } from '../context/Cass';
 import { convertToHomeCurrency, usdBaseRates } from '@shared/data/currency-rates';
 import type { CurrencyData } from '@shared/data/currencies';
 import type { TranslationKey } from '../translations/en';
@@ -25,6 +26,8 @@ import { SendAgainCard } from '../components/SendAgainCard';
 import { PromotionBanner } from '../components/PromotionBanner';
 import { TransferCalculator } from '../components/TransferCalculator';
 import { PageFooter } from '../components/PageFooter';
+import { CassEntryPrompt } from '../components/CassEntryPrompt';
+import { CassNextSteps } from '../components/CassNextSteps';
 import './Home.css';
 
 const assetMap: Record<string, string> = {
@@ -92,10 +95,11 @@ const businessPromotionVariants = allPromotionVariants.filter((p) => p.sectionTi
 
 type SendAgainRecipient = { name: string; subtitle: string; avatarUrl?: string; hasFastFlag: boolean; badgeFlagCode?: string };
 
-export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavigateSubAccount, onNavigateSubAccountCurrency, onNavigateJarAccount, onNavigateJarCurrency, accountType = 'personal', balanceHidden, onToggleBalance, onAddMoney, onSend, onSendWithCurrency, onSendAgain, onRequest, onPaymentLink, onScan, onAccountDetails }: { onNavigate?: (page: string, push?: boolean) => void; onNavigateAccount?: () => void; onNavigateCurrency?: (code: string) => void; onNavigateSubAccount?: (subPageType: string) => void; onNavigateSubAccountCurrency?: (subPageType: string, code: string) => void; onNavigateJarAccount?: (jarId: string) => void; onNavigateJarCurrency?: (jarId: string, code: string) => void; accountType?: AccountType; balanceHidden?: boolean; onToggleBalance?: () => void; onAddMoney?: () => void; onSend?: () => void; onSendWithCurrency?: (sourceCurrency: string, targetCurrency: string, sourceAmount?: string, targetAmount?: string) => void; onSendAgain?: (recipient: SendAgainRecipient, amount?: string) => void; onRequest?: () => void; onPaymentLink?: () => void; onScan?: () => void; onAccountDetails?: (subPageType?: string) => void }) {
+export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavigateSubAccount, onNavigateSubAccountCurrency, onNavigateJarAccount, onNavigateJarCurrency, accountType = 'personal', balanceHidden, onToggleBalance, onAddMoney, onSend, onSendWithCurrency, onSendAgain, onRequest, onPaymentLink, onScan, onAccountDetails, onCassStart, onCassProgress }: { onNavigate?: (page: string, push?: boolean) => void; onNavigateAccount?: () => void; onNavigateCurrency?: (code: string) => void; onNavigateSubAccount?: (subPageType: string) => void; onNavigateSubAccountCurrency?: (subPageType: string, code: string) => void; onNavigateJarAccount?: (jarId: string) => void; onNavigateJarCurrency?: (jarId: string, code: string) => void; accountType?: AccountType; balanceHidden?: boolean; onToggleBalance?: () => void; onAddMoney?: () => void; onSend?: () => void; onSendWithCurrency?: (sourceCurrency: string, targetCurrency: string, sourceAmount?: string, targetAmount?: string) => void; onSendAgain?: (recipient: SendAgainRecipient, amount?: string) => void; onRequest?: () => void; onPaymentLink?: () => void; onScan?: () => void; onAccountDetails?: (subPageType?: string) => void; onCassStart?: () => void; onCassProgress?: () => void }) {
   const { consumerName, businessName, consumerHomeCurrency, businessHomeCurrency } = usePrototypeNames();
   const { t } = useLanguage();
   const txLabels = useTxLabels();
+  const { cass } = useCass();
   const { dataset } = useDataset();
   const rates = usdBaseRates;
   const isBusiness = accountType === 'business';
@@ -258,6 +262,14 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
         </TasksStack>
       </section>
 
+      {/* CASS — switch your bank to Wise */}
+      <section className="section">
+        <CassEntryPrompt
+          onStartSwitch={() => onCassStart?.()}
+          onOpenProgress={() => onCassProgress?.()}
+        />
+      </section>
+
       {/* Transactions */}
       <section className="section home__tx-section">
         <h1 className="np-text-title-screen home__tx-page-title" style={{ margin: 0 }}>{t('home.transactions')}</h1>
@@ -279,6 +291,13 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
           ))}
         </ul>
       </section>
+
+      {/* CASS — your next steps (next best action) */}
+      {cass.status === 'none' && (
+        <section className="section">
+          <CassNextSteps onStartSwitch={() => onCassStart?.()} />
+        </section>
+      )}
 
       {/* Send Again */}
       {showSendAgain && (

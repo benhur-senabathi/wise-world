@@ -7,6 +7,7 @@ import { triggerHaptic } from './hooks/useHaptics';
 import { PrototypeNamesProvider, usePrototypeNames } from './context/PrototypeNames';
 import { LiveRatesProvider } from './context/LiveRates';
 import { ShimmerProvider } from './context/Shimmer';
+import { CassProvider } from './context/Cass';
 import { IOSTopBar } from './components/IOSTopBar';
 import { MobileNav, type MobileNavHandle } from './components/MobileNav';
 import { PrototypeSettings } from './components/PrototypeSettings';
@@ -29,7 +30,9 @@ import { RequestFlow } from './flows/RequestFlow';
 import { PaymentLinkFlow } from './flows/PaymentLinkFlow';
 import { OpenPlusFlow } from './flows/OpenPlusFlow';
 import { ScanFlow } from './flows/ScanFlow';
+import { CassSwitchFlow } from './flows/CassSwitchFlow';
 import { TravelHub } from './pages/TravelHub';
+import { CassProgress } from './pages/CassProgress';
 
 import { useSwipeBack } from './hooks/useSwipeBack';
 import { currencies } from '@shared/data/currencies';
@@ -56,6 +59,7 @@ type SubPage =
   | { type: 'account-details-list'; from: string }
   | { type: 'account-details'; code: string; from: 'currency' | 'account-details-list' | 'payments'; group?: string; listFrom?: string; joint?: boolean }
   | { type: 'travel-hub' }
+  | { type: 'cass-progress' }
   | null;
 
 function getInitials(name: string): string {
@@ -79,6 +83,7 @@ type ActiveFlow =
   | { type: 'payment-link'; defaultCurrency: string; accountLabel: string; group?: string; accountStyle?: AccountStyle }
   | { type: 'open-plus' }
   | { type: 'scan' }
+  | { type: 'cass-switch' }
   | null;
 
 function flowToPath(flow: ActiveFlow): string | null {
@@ -91,6 +96,7 @@ function flowToPath(flow: ActiveFlow): string | null {
     case 'payment-link': return '/request';
     case 'open-plus': return '/open';
     case 'scan': return '/scan';
+    case 'cass-switch': return '/switch-bank';
   }
 }
 
@@ -158,8 +164,13 @@ function parseUrl(pathname: string): { navItem: string; subPage: SubPage } {
     return { navItem: 'Cards', subPage: { type: 'travel-hub' } };
   }
 
+  // CASS switch progress
+  if (pathname === '/switch-progress') {
+    return { navItem: 'Home', subPage: { type: 'cass-progress' } };
+  }
+
   // Flow paths — can't reconstruct flow state from URL, so fall through to Home
-  if (pathname.startsWith('/send/') || pathname === '/convert' || pathname === '/add' || pathname.startsWith('/request/') || pathname === '/payment-link') {
+  if (pathname.startsWith('/send/') || pathname === '/convert' || pathname === '/add' || pathname.startsWith('/request/') || pathname === '/payment-link' || pathname === '/switch-bank') {
     return { navItem: 'Home', subPage: null };
   }
 
@@ -203,6 +214,7 @@ function stateToPath(navItem: string, subPage: SubPage, accountType: AccountType
         return `/account-details/${currencyData?.balanceId ?? subPage.code}`;
       }
       case 'travel-hub': return '/travel';
+      case 'cass-progress': return '/switch-progress';
     }
   }
   switch (navItem) {
@@ -686,6 +698,9 @@ function AppInner() {
       if (subPage.type === 'travel-hub') {
         return <TravelHub />;
       }
+      if (subPage.type === 'cass-progress') {
+        return <CassProgress onClose={() => { setTransitionDirection('pop'); setSubPage(null); }} />;
+      }
       if (subPage.type === 'currency') {
         const jarDef = subPage.jarId ? getJar(subPage.jarId) : undefined;
         const currencySubPageType = subPage.group === 'shared-spending' ? 'shared-spending-account' : subPage.group ? 'group-account' : subPage.joint ? 'joint-account' : subPage.youngExplorer ? 'young-explorer-account' : 'account';
@@ -776,6 +791,8 @@ function AppInner() {
           onPaymentLink={() => handleOpenPaymentLink(accountType === 'business' ? businessHomeCurrency : consumerHomeCurrency)}
           onScan={() => setActiveFlow({ type: 'scan' })}
           onAccountDetails={(subPageType?: string) => handleNavigateAccountDetailsList(subPageType || 'home')}
+          onCassStart={() => setActiveFlow({ type: 'cass-switch' })}
+          onCassProgress={() => { setTransitionDirection('push'); setSubPage({ type: 'cass-progress' }); }}
         />
       );
     }
@@ -865,6 +882,9 @@ function AppInner() {
       {activeFlow.type === 'scan' && (
         <ScanFlow onClose={handleCloseFlow} />
       )}
+      {activeFlow.type === 'cass-switch' && (
+        <CassSwitchFlow onClose={handleCloseFlow} avatarUrl={avatarUrl} />
+      )}
     </>
   );
 
@@ -907,7 +927,9 @@ function App() {
         <PrototypeNamesProvider>
           <LiveRatesProvider>
             <ShimmerProvider>
-              <AppInner />
+              <CassProvider>
+                <AppInner />
+              </CassProvider>
             </ShimmerProvider>
           </LiveRatesProvider>
         </PrototypeNamesProvider>

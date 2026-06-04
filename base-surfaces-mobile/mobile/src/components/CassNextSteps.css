@@ -1,0 +1,105 @@
+/* ===== CASS "Your next steps" card (Home) ===== */
+.cass-next-steps {
+  background: var(--color-background-neutral);
+  border-radius: var(--radius-large, 16px);
+  padding: 16px;
+}
+
+/* Header — progress ring + heading + collapse chevron */
+.cass-next-steps__header {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.cass-next-steps__ring {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.cass-next-steps__ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-content-primary);
+}
+
+.cass-next-steps__heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.cass-next-steps__title {
+  margin: 0;
+  color: var(--color-content-primary);
+}
+
+.cass-next-steps__desc {
+  margin: 0;
+  color: var(--color-content-secondary);
+}
+
+.cass-next-steps__collapse {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-content-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Action rows */
+.cass-next-steps__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.cass-next-steps__action {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius-large, 16px);
+}
+
+.cass-next-steps__action--done {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.cass-next-steps__action--switch {
+  background: var(--color-background-screen);
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.cass-next-steps__action--switch:active {
+  background: var(--color-background-neutral);
+}
+
+.cass-next-steps__action-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cass-next-steps__action-title {
+  margin: 0;
+  color: var(--color-content-primary);
+}
+
+.cass-next-steps__action-sub {
+  color: var(--color-content-secondary);
+}

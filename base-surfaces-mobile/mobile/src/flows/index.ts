@@ -1,4 +1,5 @@
 export { AddMoneyFlow } from './AddMoneyFlow';
+export { CassSwitchFlow } from './CassSwitchFlow';
 export { ConvertFlow } from './ConvertFlow';
 export { OpenPlusFlow } from './OpenPlusFlow';
 export { PaymentLinkFlow } from './PaymentLinkFlow';

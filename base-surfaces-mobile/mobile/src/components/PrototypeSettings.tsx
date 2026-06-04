@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { SelectInput, SelectInputOptionContent, SegmentedControl, Field, Input, ListItem } from '@transferwise/components';
+import { SelectInput, SelectInputOptionContent, SegmentedControl, Field, Input, ListItem, Button } from '@transferwise/components';
 import { Cross, Sun, Moon } from '@transferwise/icons';
 import { BottomSheet } from './BottomSheet';
 
@@ -7,6 +7,7 @@ import { BottomSheet } from './BottomSheet';
 
 import { useTheme } from '@wise/components-theming';
 import { usePrototypeNames } from '../context/PrototypeNames';
+import { useCass } from '../context/Cass';
 import { useLanguage, type Language } from '../context/Language';
 import { currencyMeta } from '@shared/data/currency-rates';
 import { Flag } from '@wise/art';
@@ -18,6 +19,7 @@ export function PrototypeSettings() {
   const { isScreenModeDark, setScreenMode } = useTheme();
   const { consumerName, setConsumerName, businessName, setBusinessName, consumerHomeCurrency, setConsumerHomeCurrency, businessHomeCurrency, setBusinessHomeCurrency } = usePrototypeNames();
   const { language, setLanguage, t } = useLanguage();
+  const { cass, advanceMilestone, resetSwitch } = useCass();
 
   const [sheetOpen, setSheetOpen] = useState(false);
   const [sheetAnimating, setSheetAnimating] = useState(false);
@@ -355,6 +357,26 @@ export function PrototypeSettings() {
                 </BottomSheet>
               </div>
             </div>
+
+            {cass.status !== 'none' && (
+              <>
+                <hr style={{ border: 'none', borderTop: '1px solid var(--color-border-neutral)', margin: '24px 0' }} />
+                <div className="fs-sheet__section">
+                  <h3 className="np-text-title-body" style={{ margin: '0 0 4px' }}>{t('cass.demo.title')}</h3>
+                  <p className="np-text-body-default" style={{ margin: '0 0 16px', color: 'var(--color-content-secondary)' }}>
+                    {t('cass.demo.milestoneLabel', { step: String(cass.milestone) })}
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <Button v2 size="md" priority="primary" block disabled={cass.milestone >= 5} onClick={advanceMilestone}>
+                      {t('cass.demo.advance')}
+                    </Button>
+                    <Button v2 size="md" priority="secondary" block onClick={resetSwitch}>
+                      {t('cass.demo.reset')}
+                    </Button>
+                  </div>
+                </div>
+              </>
+            )}
 
           </div>
         </div>
