@@ -596,8 +596,8 @@ const en = {
   'cass.intro.debitsBody': 'We\'ll move all your direct debits, standing orders to your Wise account.',
   'cass.intro.redirectTitle': 'Redirect payments',
   'cass.intro.redirectBody': 'We close your old account and redirect all future payments to your Wise current account. Including salary.',
-  'cass.intro.promoTitle': 'Earn 2% cashback',
-  'cass.intro.promoDescription': 'Move 3 or more direct debits and get 2% cashback on your direct debit spend, up to £50 a year.',
+  'cass.intro.promoTitle': 'One account for your whole life',
+  'cass.intro.promoDescription': 'Get your salary, pay your bills, and spend in 40+ currencies around the world — all from one account, with low fees.',
   'cass.intro.cta': 'Continue',
 
   // Old bank details

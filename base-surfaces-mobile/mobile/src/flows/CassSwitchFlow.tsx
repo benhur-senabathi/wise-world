@@ -15,6 +15,8 @@ import {
 } from '../data/cass-switch-data';
 import './CassSwitchFlow.css';
 
+const promoTapestry = new URL('../assets/card-tapestry-turquoise.jpg', import.meta.url).href;
+
 type Screen =
   | 'intro'
   | 'bank'
@@ -162,6 +164,8 @@ export function CassSwitchFlow({ onClose }: Props) {
               <PromoCard
                 title={t('cass.intro.promoTitle')}
                 description={t('cass.intro.promoDescription')}
+                imageSource={promoTapestry}
+                imageAlt=""
               />
             </div>
           </div>
