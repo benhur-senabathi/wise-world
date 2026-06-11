@@ -70,6 +70,11 @@ const RINGS = [
 const DOTS_PER_RING = 23;
 const RING_ANGLE_OFFSET = 0.4;
 
+// Collision margin per dot (mirrors the reference's SKPhysicsBody radius = size + 3)
+// and the number of relaxation passes used to separate shoved dots each frame.
+const DOT_MARGIN = 2;
+const SEPARATION_ITERS = 6;
+
 // --- Timeline (ms), plays once ---
 const BANK_POP = 600;
 const BANK_STAGGER = 780;
@@ -89,15 +94,19 @@ const ROT_PERIOD = 16000; // one shared rotation for the whole field
 
 const TAU = Math.PI * 2;
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const easeInCubic = (t: number) => t * t * t;
-const easeOutBack = (t: number) => {
-  const c1 = 1.9;
-  const c3 = c1 + 1;
-  return 1 + c3 * (t - 1) ** 3 + c1 * (t - 1) ** 2;
-};
+const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
+const rgbStr = (c: RGB) => `rgb(${c[0] | 0}, ${c[1] | 0}, ${c[2] | 0})`;
+const mixRGB = (a: RGB, b: RGB, t: number): RGB => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
 
-// Sample the conic gradient at gradient-position p (0..1).
-function samplePalette(p: number): string {
+function hexToRGB(hex: string): RGB {
+  const h = hex.replace('#', '');
+  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+}
+
+// Sample the conic gradient at gradient-position p (0..1), as RGB.
+function samplePaletteRGB(p: number): RGB {
   let t = p % 1;
   if (t < 0) t += 1;
   for (let i = 0; i < PALETTE.length - 1; i += 1) {
@@ -105,14 +114,16 @@ function samplePalette(p: number): string {
     const b = PALETTE[i + 1];
     if (t >= a.t && t <= b.t) {
       const k = (t - a.t) / (b.t - a.t);
-      const r = Math.round(a.rgb[0] + (b.rgb[0] - a.rgb[0]) * k);
-      const g = Math.round(a.rgb[1] + (b.rgb[1] - a.rgb[1]) * k);
-      const bl = Math.round(a.rgb[2] + (b.rgb[2] - a.rgb[2]) * k);
-      return `rgb(${r}, ${g}, ${bl})`;
+      return [
+        a.rgb[0] + (b.rgb[0] - a.rgb[0]) * k,
+        a.rgb[1] + (b.rgb[1] - a.rgb[1]) * k,
+        a.rgb[2] + (b.rgb[2] - a.rgb[2]) * k,
+      ];
     }
   }
-  return '#9FE870';
+  return [159, 232, 112];
 }
+const samplePalette = (p: number): string => rgbStr(samplePaletteRGB(p));
 
 type View = { logo: boolean; absorbing: boolean; badge: boolean };
 
@@ -159,6 +170,10 @@ export function CassSwitchGuaranteeOrbit() {
       }
     });
 
+    // Reusable scratch buffer for the per-frame separation solver (avoids per-frame GC).
+    // One entry per dot: resolved position, collision radius, draw radius, gradient stop.
+    const solved = dots.map(() => ({ x: 0, y: 0, cr: 0, draw: 0, gradientT: 0 }));
+
     let cw = 0;
     let ch = 0;
     let cx = 0;
@@ -187,26 +202,43 @@ export function CassSwitchGuaranteeOrbit() {
 
     const dotScale = () => outerR / 120;
 
+    const bankBg = BANKS.map((b) => hexToRGB(b.bg));
+
     // Upright bank bubble centred at (x, y) — never tilts.
-    const drawBank = (x: number, y: number, diameter: number, bank: Bank, img: HTMLImageElement) => {
+    //   birth (0..1): 0 = still a coloured orbit particle (fill = its gradient
+    //   hue, no logo), 1 = fully the brand bubble with logo. Lets a bank
+    //   BALLOON out of one dot rather than popping from thin air.
+    const drawBank = (
+      x: number,
+      y: number,
+      diameter: number,
+      bank: Bank,
+      bi: number,
+      img: HTMLImageElement,
+      birth = 1,
+    ) => {
       const rad = diameter / 2;
+      const fill = birth >= 1 ? bankBg[bi] : mixRGB(samplePaletteRGB(bank.slot), bankBg[bi], clamp01(birth * 1.4));
       ctx.beginPath();
       ctx.arc(x, y, rad, 0, TAU);
-      ctx.fillStyle = bank.bg;
+      ctx.fillStyle = rgbStr(fill);
       ctx.fill();
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(14, 15, 12, 0.10)';
-      ctx.stroke();
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(x, y, rad, 0, TAU);
-      ctx.clip();
-      if (img.complete && img.naturalWidth > 0) {
-        const w = diameter * bank.logoScale;
-        const h = w / bank.ratio;
-        ctx.drawImage(img, x - w / 2, y - h / 2, w, h);
+      if (birth > 0.4) {
+        ctx.globalAlpha *= clamp01((birth - 0.4) / 0.6);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(14, 15, 12, 0.10)';
+        ctx.stroke();
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(x, y, rad, 0, TAU);
+        ctx.clip();
+        if (img.complete && img.naturalWidth > 0) {
+          const w = diameter * bank.logoScale;
+          const h = w / bank.ratio;
+          ctx.drawImage(img, x - w / 2, y - h / 2, w, h);
+        }
+        ctx.restore();
       }
-      ctx.restore();
     };
 
     let start = performance.now();
@@ -232,46 +264,111 @@ export function CassSwitchGuaranteeOrbit() {
       const dotAlpha = 1 - clamp01((t - T_LOGO) / LOGO_IN);
       const orbitR = outerR * 0.94;
       const bankD = outerR * 0.34;
+      const seedD = Math.max(2, RINGS[0].dot * dotScale()) * 2; // one orbit particle
 
-      // Live bank state: position (shared rotation), pop scale.
+      // Live bank state: position (shared rotation) + balloon growth.
+      //   birth: eased 0..1 — the bubble balloons from one orbit particle
+      //   (seedD) up to the full bank bubble (bankD), smooth ease-out.
       const bankState = BANKS.map((bank, i) => {
         const popRaw = clamp01((t - i * BANK_STAGGER) / BANK_POP);
+        const birth = easeOutCubic(popRaw);
         const angle = bank.slot * TAU + rot;
         const x = cx + orbitR * Math.cos(angle);
         const y = cy + orbitR * Math.sin(angle);
-        return { bank, i, popRaw, angle, x, y };
+        const diameter = lerp(seedD, bankD, birth);
+        return { bank, i, popRaw, birth, angle, x, y, diameter };
       });
 
       ctx.clearRect(0, 0, cw, ch);
 
       // --- Dot field (Apple iCloud halo, Wise palette) ---
+      // Ported from the SpriteKit reference's physics: each dot is a soft body
+      // with a collision radius; a ballooning bank is an immovable body. A small
+      // positional relaxation solver pushes dots off the banks AND off each other,
+      // so shoved dots part around the bubble instead of piling onto one ring.
       if (dotAlpha > 0.01) {
         const s = dotScale();
-        const influence = bankD * 1.7;
-        const maxPush = outerR * 0.07;
-        ctx.globalAlpha = dotAlpha * 0.92;
-        for (const dot of dots) {
-          const angle = dot.baseAngle + rot;
-          let x = cx + outerR * dot.rf * Math.cos(angle);
-          let y = cy + outerR * dot.rf * Math.sin(angle);
 
-          // Popping banks shove the nearby dots (rise then settle).
+        // a. Base rest positions + collision/draw radii for every dot.
+        for (let i = 0; i < dots.length; i += 1) {
+          const dot = dots[i];
+          const angle = dot.baseAngle + rot;
+          const out = solved[i];
+          out.x = cx + outerR * dot.rf * Math.cos(angle);
+          out.y = cy + outerR * dot.rf * Math.sin(angle);
+          out.draw = Math.max(0.5, dot.size * s);
+          out.cr = out.draw + DOT_MARGIN;
+          out.gradientT = dot.gradientT;
+        }
+
+        // b. Active set: dots within reach of any growing bank. Bank collision
+        // radius keeps the existing gap; b.diameter already eases in via birth,
+        // so displacement still grows smoothly with the bubble.
+        const bankClear = (b: (typeof bankState)[number]) => b.diameter / 2 + outerR * 0.05;
+        const maxDotR = RINGS[0].dot * s + DOT_MARGIN;
+        const active: number[] = [];
+        for (let i = 0; i < dots.length; i += 1) {
+          const p = solved[i];
           for (const b of bankState) {
-            if (b.popRaw <= 0 || b.popRaw >= 1) continue;
-            const pulse = Math.sin(b.popRaw * Math.PI);
-            const dx = x - b.x;
-            const dy = y - b.y;
-            const dist = Math.hypot(dx, dy);
-            if (dist > 0.001 && dist < influence) {
-              const push = ((influence - dist) / influence) * pulse * maxPush;
-              x += (dx / dist) * push;
-              y += (dy / dist) * push;
+            if (b.birth <= 0) continue;
+            if (Math.hypot(p.x - b.x, p.y - b.y) < bankClear(b) + maxDotR + p.cr) {
+              active.push(i);
+              break;
             }
           }
+        }
 
+        // c. Relax: separate dots from each other, then re-assert bank clearance
+        // last so a bank always wins (a dot never ends up inside a bubble).
+        for (let iter = 0; iter < SEPARATION_ITERS; iter += 1) {
+          for (let a = 0; a < active.length; a += 1) {
+            const pa = solved[active[a]];
+            for (let b = a + 1; b < active.length; b += 1) {
+              const pb = solved[active[b]];
+              let dx = pb.x - pa.x;
+              let dy = pb.y - pa.y;
+              const min = pa.cr + pb.cr;
+              let dist = Math.hypot(dx, dy);
+              if (dist >= min) continue;
+              if (dist < 1e-4) {
+                // Coincident: nudge apart along a deterministic angle.
+                const ang = (active[a] * 2.3999632) % TAU;
+                dx = Math.cos(ang);
+                dy = Math.sin(ang);
+                dist = 1;
+              }
+              const push = (min - dist) / 2;
+              const ux = (dx / dist) * push;
+              const uy = (dy / dist) * push;
+              pa.x -= ux;
+              pa.y -= uy;
+              pb.x += ux;
+              pb.y += uy;
+            }
+          }
+          for (const idx of active) {
+            const p = solved[idx];
+            for (const b of bankState) {
+              if (b.birth <= 0) continue;
+              const clear = bankClear(b) + p.cr;
+              const dx = p.x - b.x;
+              const dy = p.y - b.y;
+              const dist = Math.hypot(dx, dy);
+              if (dist > 1e-4 && dist < clear) {
+                p.x = b.x + (dx / dist) * clear;
+                p.y = b.y + (dy / dist) * clear;
+              }
+            }
+          }
+        }
+
+        // d. Draw.
+        ctx.globalAlpha = dotAlpha * 0.92;
+        for (let i = 0; i < dots.length; i += 1) {
+          const p = solved[i];
           ctx.beginPath();
-          ctx.arc(x, y, Math.max(0.5, dot.size * s), 0, TAU);
-          ctx.fillStyle = samplePalette(dot.gradientT);
+          ctx.arc(p.x, p.y, p.draw, 0, TAU);
+          ctx.fillStyle = samplePalette(p.gradientT);
           ctx.fill();
         }
         ctx.globalAlpha = 1;
@@ -282,18 +379,18 @@ export function CassSwitchGuaranteeOrbit() {
       const pull = easeInCubic(converge);
       const rimTarget = containerR * 0.82;
       for (const b of bankState) {
-        if (b.popRaw <= 0) continue;
-        const popScale = Math.min(1, easeOutBack(b.popRaw));
+        if (b.birth <= 0) continue;
 
         const r = orbitR + (rimTarget - orbitR) * pull;
         const x = cx + r * Math.cos(b.angle);
         const y = cy + r * Math.sin(b.angle);
 
         const dissolve = clamp01((converge - 0.32) / 0.6);
-        const alpha = (1 - dissolve) * popScale;
+        const alpha = 1 - dissolve;
         if (alpha <= 0.01) continue;
 
-        const d = bankD * (1 - 0.34 * pull) * popScale;
+        // Diameter follows the balloon while growing, then the convergence shrink.
+        const d = b.diameter * (1 - 0.34 * pull);
 
         // "Sucked in" = upright bubble + faint motion-trail ghosts smeared back
         // along the radial path (no rotation → never tilts).
@@ -307,7 +404,7 @@ export function CassSwitchGuaranteeOrbit() {
           for (let g = ghosts; g >= 1; g -= 1) {
             const back = (g / ghosts) * trailLen;
             ctx.globalAlpha = alpha * (0.16 * (1 - g / (ghosts + 1)) + 0.06);
-            drawBank(x + dirX * back, y + dirY * back, d * (1 - 0.06 * g), b.bank, images[b.i]);
+            drawBank(x + dirX * back, y + dirY * back, d * (1 - 0.06 * g), b.bank, b.i, images[b.i]);
           }
           ctx.restore();
         }
@@ -315,7 +412,7 @@ export function CassSwitchGuaranteeOrbit() {
         ctx.save();
         ctx.globalAlpha = alpha;
         if (dissolve > 0) ctx.filter = `blur(${(dissolve * 5).toFixed(2)}px)`;
-        drawBank(x, y, d, b.bank, images[b.i]);
+        drawBank(x, y, d, b.bank, b.i, images[b.i], b.birth);
         ctx.restore();
       }
 

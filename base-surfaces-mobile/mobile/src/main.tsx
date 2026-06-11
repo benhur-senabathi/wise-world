@@ -42,7 +42,7 @@ if (!isAppMode()) {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider theme="personal" screenMode={window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'}>
+    <ThemeProvider theme="personal" screenMode="light">
       <Provider i18n={{ locale: 'en-GB', messages: en }}>
         <DeviceFrame>
           <App />
