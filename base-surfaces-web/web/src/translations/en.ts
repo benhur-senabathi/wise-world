@@ -256,6 +256,7 @@ const en = {
   'payments.usDollar': 'US Dollar',
   'payments.euro': 'Euro',
   'payments.accountNumberEnding': 'Account number ending \u2022\u2022 {number}',
+  'payments.andMore': 'and {count} more',
   'payments.changesFooter': 'We\'ve made some changes to this area of the app.',
 
   // Recipients Page
@@ -378,6 +379,8 @@ const en = {
   'send.whoSendingTo': 'Who are you sending to?',
   'send.recents': 'Recents',
   'send.allAccounts': 'All accounts',
+  'send.from': 'From',
+  'send.to': 'To',
   'send.recipientGets': '{name} gets',
   'send.recipientGetsExactly': '{name} gets exactly',
   'send.youSend': 'You send',

@@ -23,9 +23,6 @@ export const sharedSpendingCurrencies: CurrencyData[] = [
     name: 'British pound',
     symbol: '£',
     balance: computeCurrencyBalance('GBP', sharedSpendingTransactions),
-    hasInterest: true,
-    interestRate: '3.26%',
-    totalReturns: '+0.62 GBP',
   },
   {
     code: 'EUR',

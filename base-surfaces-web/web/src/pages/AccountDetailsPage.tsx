@@ -5,6 +5,7 @@ import { Flag } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { getAccountDetails } from '@shared/data/account-details-data';
+import { getAccountById, useVisibleAccounts } from '../hooks/useAccountRegistry';
 import type { AccountType } from '@shared/data/account-registry';
 import type { AccountDetailField, QuickFactFee, AvailabilityItem } from '@shared/data/account-details-data';
 import './AccountDetailsPage.css';
@@ -202,11 +203,20 @@ export function AccountDetailsPage({ code, accountType = 'personal', subPageType
   const { t } = useLanguage();
   const { consumerName, businessName } = usePrototypeNames();
   const createSnackbar = useSnackbar();
+  const visibleAccounts = useVisibleAccounts(accountType);
   const [shareOpen, setShareOpen] = useState(false);
   const shareRef = useRef<HTMLDivElement>(null!);
 
   const activeName = accountType === 'business' ? businessName : consumerName;
   const details = getAccountDetails(code, accountType, subPageType);
+
+  // Get account name if filtered by specific account (not current account)
+  // Try to resolve as account ID first, then as subPageType
+  let sourceAccount = subPageType ? getAccountById(subPageType) : null;
+  if (!sourceAccount && subPageType && !['account', 'payments', 'home'].includes(subPageType)) {
+    sourceAccount = visibleAccounts.find((a) => a.subPageType === subPageType) || null;
+  }
+  const accountLabel = sourceAccount && sourceAccount.subPageType !== 'account' ? t(sourceAccount.nameKey as any) : null;
 
   useEffect(() => {
     if (!shareOpen) return;
@@ -284,7 +294,9 @@ export function AccountDetailsPage({ code, accountType = 'personal', subPageType
         </AvatarView>
         <div>
           <h1 className="np-text-title-screen" style={{ margin: 0 }}>{code}</h1>
-          <p className="np-text-body-large" style={{ margin: 0, color: 'var(--color-content-default)' }}>{t('common.accountDetails')}</p>
+          <p className="np-text-body-large" style={{ margin: 0, color: 'var(--color-content-default)' }}>
+            {accountLabel ? `${t('common.accountDetails')} · ${accountLabel}` : t('common.accountDetails')}
+          </p>
         </div>
       </div>
 

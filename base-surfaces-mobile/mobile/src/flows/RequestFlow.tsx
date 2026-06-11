@@ -89,7 +89,7 @@ export function RequestFlow({ defaultCurrency, accountLabel, group, accountStyle
     : isBusiness
       ? { backgroundColor: caStyle.textColor, color: caStyle.color }
       : { backgroundColor: 'var(--color-interactive-accent)', color: 'var(--color-interactive-control)' };
-  const accountAvatarIcon = accountStyle ? resolveIcon(accountStyle.iconName) : (isGroup ? <Money size={16} /> : <WiseLogoIcon />);
+  const accountAvatarIcon = accountStyle ? resolveIcon(accountStyle.iconName, 24) : (isGroup ? <Money size={16} /> : <WiseLogoIcon size={24} />);
 
   // Select a recipient and transition to request step
   const handleSelectRecipient = useCallback((r: Recipient) => {
@@ -287,7 +287,7 @@ export function RequestFlow({ defaultCurrency, accountLabel, group, accountStyle
                 <button type="button" className="request-flow__spotlight-card">
                   <svg className="request-flow__spotlight-border" aria-hidden="true"><rect /></svg>
                   <AvatarView size={32} style={{ backgroundColor: 'var(--color-interactive-accent)', color: 'var(--color-interactive-control)' }}>
-                    <WiseLogoIcon />
+                    <WiseLogoIcon size={24} />
                   </AvatarView>
                   <span className="np-text-body-large" style={{ fontWeight: 600, flex: 1 }}>{t('request.getWisetag')}</span>
                   <span style={{ color: 'var(--color-content-secondary)', flexShrink: 0, display: 'flex', alignItems: 'center', lineHeight: 0 }}><ChevronRight size={16} /></span>

@@ -18,6 +18,9 @@ export const groupCurrencies: CurrencyData[] = [
     name: 'British pound',
     symbol: '£',
     balance: computeCurrencyBalance('GBP', groupTransactions),
+    hasInterest: true,
+    interestRate: '3.26%',
+    totalReturns: '+8.47 GBP',
   },
 ];
 

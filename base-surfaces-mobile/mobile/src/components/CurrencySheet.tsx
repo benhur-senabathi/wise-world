@@ -158,6 +158,10 @@ export function CurrencySheet({ open, onClose, onSelect, selectedCode, recentCod
               onPointerCancel={glass.onPointerUp}
               aria-label="Close"
             >
+              <div className="ios-glass-btn__surface">
+                <div className="ios-glass-btn__surface-burn" />
+                <div className="ios-glass-btn__surface-darken" />
+              </div>
               <span className="ios-glass-btn__icon">
                 <Cross size={24} />
               </span>

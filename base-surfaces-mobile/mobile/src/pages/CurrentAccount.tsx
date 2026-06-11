@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Plus, Money, Savings, Suitcase, Upload, Edit, Document, CrossCircle, People, Heart, Backpack } from '@transferwise/icons';
+import { Plus, Money, Savings, Suitcase, Upload, Edit, Documents, Bin, CrossCircle, People, Heart, Backpack } from '@transferwise/icons';
 import { Button, ListItem, AvatarLayout } from '@transferwise/components';
 import { LiquidGlassSegmentedControl } from '../components/LiquidGlassSegmentedControl';
 import { Flag } from '@wise/art';
@@ -16,6 +16,7 @@ import { convertToHomeCurrency, usdBaseRates } from '@shared/data/currency-rates
 import type { JarDefinition } from '@shared/data/jar-data';
 import { getAccountBySubPageType, type AccountDefinition } from '@shared/data/account-registry';
 import { useAllCards } from '../hooks/useAccountRegistry';
+import { canShowInterest, type SubPageType } from '@shared/data/assets-eligibility';
 import './CurrentAccount.css';
 
 type Props = {
@@ -49,7 +50,7 @@ function AccountIcon({ iconName }: { iconName: string }) {
   return <>{ICON_MAP[iconName] || <Money size={16} />}</>;
 }
 
-function CurrenciesSection({ onNavigateCurrency, activeCurrencies, isGroup, hideAddCurrency, hideInterest }: { onNavigateCurrency?: (code: string) => void; activeCurrencies: CurrencyData[]; isGroup?: boolean; hideAddCurrency?: boolean; hideInterest?: boolean }) {
+function CurrenciesSection({ onNavigateCurrency, activeCurrencies, isGroup, hideAddCurrency, hideInterest, subPageType }: { onNavigateCurrency?: (code: string) => void; activeCurrencies: CurrencyData[]; isGroup?: boolean; hideAddCurrency?: boolean; hideInterest?: boolean; subPageType: SubPageType }) {
   const { t } = useLanguage();
   return (
     <div className="section-card">
@@ -65,10 +66,20 @@ function CurrenciesSection({ onNavigateCurrency, activeCurrencies, isGroup, hide
         />}
         {activeCurrencies.map((c) => {
           let subtitle = c.name;
+          const showInterestPromo = canShowInterest(c.code, subPageType);
+
           if (!isGroup) {
-            if (c.hasStocks) subtitle += ` • ${t('currentAccount.investedInStocks')}`;
-            else if (c.hasInterest) subtitle += ` • ${t('currentAccount.investedInInterest')}`;
-          } else if (c.hasInterest && !hideInterest) {
+            // Current Account currencies
+            if (c.hasStocks) {
+              subtitle += ` • ${t('currentAccount.investedInStocks')}`;
+            } else if (c.assetsOptedIn) {
+              subtitle += ` • ${t('currentAccount.investedInInterest')}`;
+            } else if (c.hasInterest && showInterestPromo) {
+              // Eligible but not opted in - show promo
+              subtitle += ` • ${t('currentAccount.earnInterestRate')}`;
+            }
+          } else if (c.hasInterest && !hideInterest && showInterestPromo) {
+            // Group/Jar/Shared accounts - show promo
             subtitle += ` • ${t('currentAccount.earnInterestRate')}`;
           }
 
@@ -311,8 +322,8 @@ export function CurrentAccount({ onNavigateCurrency, onNavigateCards, onAccountD
   const isSharedSpending = group === 'shared-spending';
 
   // Resolve account definition from registry
-  const subPageType = isJar ? null : isSharedSpending ? 'shared-spending-account' : isGroup ? 'group-account' : isJoint ? 'joint-account' : isYoungExplorer ? 'young-explorer-account' : 'account';
-  const accountDef = subPageType ? getAccountBySubPageType(subPageType) : undefined;
+  const subPageType: SubPageType = isJar ? 'group-account' : isSharedSpending ? 'shared-spending-account' : isGroup ? 'group-account' : isJoint ? 'joint-account' : isYoungExplorer ? 'young-explorer-account' : 'account';
+  const accountDef = !isJar ? getAccountBySubPageType(subPageType) : undefined;
   const features = accountDef?.features;
 
   const isCurrentAccount = accountDef?.subPageType === 'account';
@@ -334,18 +345,21 @@ export function CurrentAccount({ onNavigateCurrency, onNavigateCards, onAccountD
     'currentAccount.editSharedSpending': <Edit size={24} />,
     'currentAccount.editJointAccount': <Edit size={24} />,
     'currentAccount.editYoungExplorer': <Edit size={24} />,
-    'common.statementsAndReports': <Document size={24} />,
-    'currentAccount.closeGroup': <CrossCircle size={24} />,
-    'currentAccount.closeSharedSpending': <CrossCircle size={24} />,
-    'currentAccount.closeYoungExplorer': <CrossCircle size={24} />,
+    'currentAccount.editJar': <Edit size={24} />,
+    'common.statementsAndReports': <Documents size={24} />,
+    'currentAccount.closeGroup': <Bin size={24} />,
+    'currentAccount.closeSharedSpending': <Bin size={24} />,
+    'currentAccount.closeJointAccount': <Bin size={24} />,
+    'currentAccount.closeYoungExplorer': <Bin size={24} />,
+    'currentAccount.closeJar': <Bin size={24} />,
   };
   const menuItems = isJar
-    ? [{ label: t('currentAccount.editJar'), icon: <Edit size={24} /> }, { label: t('common.statementsAndReports'), icon: <Document size={24} /> }, { label: t('currentAccount.closeJar'), icon: <CrossCircle size={24} /> }]
+    ? [{ label: t('currentAccount.editJar'), icon: <Edit size={24} /> }, { label: t('common.statementsAndReports'), icon: <Documents size={24} /> }, { label: t('currentAccount.closeJar'), icon: <Bin size={24} /> }]
     : accountDef
-      ? accountDef.menuItemKeys.map((key) => ({ label: t(key), icon: menuItemIconMap[key] || <Document size={24} /> }))
-      : [{ label: t('currentAccount.editCurrentAccount'), icon: <Edit size={24} /> }, { label: t('common.statementsAndReports'), icon: <Document size={24} /> }];
+      ? accountDef.menuItemKeys.map((key) => ({ label: t(key), icon: menuItemIconMap[key] || <Documents size={24} /> }))
+      : [{ label: t('currentAccount.editCurrentAccount'), icon: <Edit size={24} /> }, { label: t('common.statementsAndReports'), icon: <Documents size={24} /> }];
 
-  const headerType = isJar ? 'jar' as const : (isGroup || isJoint || isYoungExplorer) ? 'group' as const : 'account' as const;
+  const headerType = isJar ? 'jar' as const : (isGroup || isYoungExplorer) ? 'group' as const : 'account' as const;
   const jarIcon = isJar ? (jarConfig.iconName === 'Suitcase' ? <Suitcase size={16} /> : <Savings size={16} />) : undefined;
 
   return (
@@ -388,7 +402,7 @@ export function CurrentAccount({ onNavigateCurrency, onNavigateCards, onAccountD
           />
         </div>
 
-        {activeTab === 'currencies' && <CurrenciesSection onNavigateCurrency={onNavigateCurrency} activeCurrencies={activeCurrencies} isGroup={isGroup && !isJar} hideAddCurrency={features?.hideAddCurrency} hideInterest={features?.singleCurrency} />}
+        {activeTab === 'currencies' && <CurrenciesSection onNavigateCurrency={onNavigateCurrency} activeCurrencies={activeCurrencies} isGroup={isGroup && !isJar} hideAddCurrency={features?.hideAddCurrency} hideInterest={features?.singleCurrency} subPageType={subPageType} />}
         {activeTab === 'transactions' && <TransactionsSection activeTransactions={activeTransactions} />}
         {activeTab === 'options' && !isJar && <SidebarContent onNavigateCards={onNavigateCards} accountType={accountType} group={group} joint={isJoint} youngExplorer={isYoungExplorer} accountLabel={accountLabel} personalAvatarUrl={personalAvatarUrl} cardCount={cardCount} hasCards={accountDef ? accountDef.features.hasCards : false} accountDef={accountDef} />}
         {activeTab === 'options' && isJar && accountType === 'personal' && (

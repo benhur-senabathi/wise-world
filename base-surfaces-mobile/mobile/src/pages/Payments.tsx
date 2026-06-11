@@ -7,8 +7,9 @@ import {
 import { Flag } from '@wise/art';
 import type { AccountType } from '@shared/data/account-registry';
 import { useLanguage } from '../context/Language';
-import { useVisibleAccounts } from '../hooks/useAccountRegistry';
+import { useVisibleAccounts, getAccountBySubPageType } from '../hooks/useAccountRegistry';
 import { useActiveCurrencies } from '../hooks/useDatasetData';
+import { resolveIcon } from '../components/WiseLogoIcon';
 import type { TranslationKey } from '../translations/en';
 import { BottomSheet } from '../components/BottomSheet';
 import './Payments.css';
@@ -48,27 +49,39 @@ function useAccountDetails(accountType: 'personal' | 'business') {
   const visibleAccounts = useVisibleAccounts(accountType);
   const currentAccountCurrencies = useActiveCurrencies(accountType);
   return useMemo(() => {
-    const details: { currency: string; titleKey: TranslationKey; number: string }[] = [];
-    const seen = new Set<string>();
-    // Current Account currencies (dataset-aware)
-    for (const c of currentAccountCurrencies) {
-      if (c.accountDetails && !seen.has(c.code)) {
-        seen.add(c.code);
-        const lastFive = c.accountDetails.replace(/\D/g, '').slice(-5);
-        details.push({ currency: c.code, titleKey: currencyNameKeys[c.code] || 'payments.britishPound', number: lastFive });
-      }
+    type AccountDetail = { id: string; nameKey: TranslationKey; iconName: string; color: string; textColor: string; currencies: string[] };
+    const details: AccountDetail[] = [];
+
+    // Current account
+    const currentAccountCodesWithDetails = currentAccountCurrencies.filter(c => c.accountDetails).map(c => c.code);
+    if (currentAccountCodesWithDetails.length > 0) {
+      const currentAccount = getAccountBySubPageType('account');
+      details.push({
+        id: currentAccount.id,
+        nameKey: currentAccount.nameKey as TranslationKey,
+        iconName: currentAccount.style.iconName,
+        color: currentAccount.style.color,
+        textColor: currentAccount.style.textColor,
+        currencies: currentAccountCodesWithDetails,
+      });
     }
-    // Sub-accounts with hasAccountDetails (already dataset-filtered by useVisibleAccounts)
+
+    // Sub-accounts with account details
     const subAccounts = visibleAccounts.filter((a) => a.subPageType !== 'account' && a.features.hasAccountDetails);
     for (const account of subAccounts) {
-      for (const c of account.getCurrencies()) {
-        if (c.accountDetails && !seen.has(c.code)) {
-          seen.add(c.code);
-          const lastFive = c.accountDetails.replace(/\D/g, '').slice(-5);
-          details.push({ currency: c.code, titleKey: currencyNameKeys[c.code] || 'payments.britishPound', number: lastFive });
-        }
+      const codes = account.getCurrencies().filter(c => c.accountDetails).map(c => c.code);
+      if (codes.length > 0) {
+        details.push({
+          id: account.id,
+          nameKey: account.nameKey as TranslationKey,
+          iconName: account.style.iconName,
+          color: account.style.color,
+          textColor: account.style.textColor,
+          currencies: codes,
+        });
       }
     }
+
     return details;
   }, [visibleAccounts, currentAccountCurrencies]);
 }
@@ -98,7 +111,7 @@ function SpotlightGrid({ items }: { items: SpotlightItem[] }) {
   );
 }
 
-export function Payments({ accountType = 'personal', personalAvatarUrl, onSend, onRequest, onPaymentLink, onAccountDetails, onAccountDetailsList }: { accountType?: AccountType; personalAvatarUrl?: string; onSend?: () => void; onRequest?: () => void; onPaymentLink?: () => void; onAccountDetails?: (code: string) => void; onAccountDetailsList?: () => void }) {
+export function Payments({ accountType = 'personal', personalAvatarUrl, onSend, onRequest, onPaymentLink, onAccountDetails, onAccountDetailsList }: { accountType?: AccountType; personalAvatarUrl?: string; onSend?: () => void; onRequest?: () => void; onPaymentLink?: () => void; onAccountDetails?: (code: string) => void; onAccountDetailsList?: (accountId: string) => void }) {
   const { t } = useLanguage();
   const isBusiness = accountType === 'business';
   const accountDetails = useAccountDetails(accountType);
@@ -258,23 +271,38 @@ export function Payments({ accountType = 'personal', personalAvatarUrl, onSend, 
       <div className="payments-page__section">
         <div className="section-header" style={{ margin: '0 0 12px' }}>
           <h3 className="np-text-title-subsection" style={{ margin: 0 }}>{t('common.accountDetails')}</h3>
-          <Button v2 size="sm" priority="tertiary" onClick={() => onAccountDetailsList?.()}>{t('common.seeAll')}</Button>
         </div>
         <div className="payments-page__accounts-grid">
-          {displayedAccountDetails.map((account) => (
-            <ListItem
-              key={account.currency}
-              title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t(account.titleKey)}</span>}
-              subtitle={t('payments.accountNumberEnding', { number: account.number })}
-              spotlight="active"
-              media={
-                <ListItem.AvatarView size={48}>
-                  <Flag code={account.currency} />
-                </ListItem.AvatarView>
-              }
-              control={<ListItem.Navigation onClick={() => onAccountDetails?.(account.currency)} />}
-            />
-          ))}
+          {displayedAccountDetails.map((account) => {
+            const currencyList = account.currencies.slice(0, 2).join(', ');
+            const remaining = account.currencies.length - 2;
+            const subtitle = remaining > 0
+              ? `${currencyList} ${t('payments.andMore', { count: remaining })}`
+              : account.currencies.length === 1
+              ? account.currencies[0]
+              : currencyList;
+
+            return (
+              <ListItem
+                key={account.id}
+                title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{t(account.nameKey)}</span>}
+                subtitle={subtitle}
+                spotlight="active"
+                media={
+                  <ListItem.AvatarView
+                    size={48}
+                    style={{
+                      backgroundColor: account.color,
+                      color: account.textColor,
+                    }}
+                  >
+                    {resolveIcon(account.iconName)}
+                  </ListItem.AvatarView>
+                }
+                control={<ListItem.Navigation onClick={() => onAccountDetailsList?.(account.id)} />}
+              />
+            );
+          })}
         </div>
       </div>
 

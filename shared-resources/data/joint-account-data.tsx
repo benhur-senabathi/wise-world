@@ -37,6 +37,9 @@ export const jointCurrencies: CurrencyData[] = [
     symbol: '$',
     balance: computeCurrencyBalance('USD', jointTransactions),
     accountDetails: '9402184763',
+    hasInterest: true,
+    interestRate: '4.50%',
+    totalReturns: '+2.34 USD',
   },
 ];
 

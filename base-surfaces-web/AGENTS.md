@@ -15,6 +15,7 @@ React + TypeScript + Vite prototype of the Wise app. Covers Home, Cards, Transac
 7. **Shared data.** Balances, transactions, recipients, rates, jars, and account details live in `shared-resources/data/` — import via `@shared/data/` (Vite alias). Only `src/data/nav.tsx` is platform-specific.
 8. **Never guess component APIs.** Always verify `@transferwise/components` props via the Wise Design System MCP before writing JSX. If the MCP is unavailable, tell the user.
 9. **CSS is per-component.** Every custom component, page, and flow has a co-located `.css` file imported at the top of the `.tsx`. Global tokens, resets, and shared layout live in `src/styles/global.css` only. When creating a new component: create `ComponentName.css` alongside the `.tsx` and add `import './ComponentName.css'`. When using another component's class names directly, import that component's CSS explicitly.
+10. **Registry-driven and dataset-aware.** Never hardcode account types or navigation logic. Use `getAccountBySubPageType()`, `getAccountById()`, `getVisibleAccounts()` from the account registry. All data must respect the active dataset — never directly import currency data, use dataset-aware hooks like `useActiveCurrencies()`. When building features, always ask: "Does this work if I add a new account type?" and "Does this work with different datasets?"
 
 ## Quick Start
 

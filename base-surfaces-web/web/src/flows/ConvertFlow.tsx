@@ -62,9 +62,9 @@ export function ConvertFlow({ fromCurrency: initFrom, toCurrency: initTo, accoun
   const fromStyle = labelsSwapped ? resolvedToStyle : accountStyle;
   const toStyle = labelsSwapped ? accountStyle : resolvedToStyle;
   const fromAvatarStyle = { backgroundColor: fromStyle.color, color: fromStyle.textColor };
-  const fromAvatarIcon = resolveIcon(fromStyle.iconName);
+  const fromAvatarIcon = resolveIcon(fromStyle.iconName, 24);
   const toAvatarStyle = { backgroundColor: toStyle.color, color: toStyle.textColor };
-  const toAvatarIcon = resolveIcon(toStyle.iconName);
+  const toAvatarIcon = resolveIcon(toStyle.iconName, 24);
 
   // Find the balance for the "from" currency — resolve from registry by matching style
   const jarDef = jarId ? getJar(jarId) : undefined;
@@ -185,11 +185,13 @@ export function ConvertFlow({ fromCurrency: initFrom, toCurrency: initTo, accoun
 
       <div className="convert-flow__body" ref={bodyRef}>
         {/* Rate pill */}
-        <div className="convert-flow__rate-pill">
-          <Button v2 size="md" priority="secondary-neutral" className="convert-flow__rate-btn" addonEnd={{ type: 'icon', value: <span style={{ color: 'var(--color-content-primary)' }}><ChevronRight size={16} /></span> }}>
-            {t('convert.rate', { from: fromCurrency, rate: rateDisplay, to: toCurrency })}
-          </Button>
-        </div>
+        {fromCurrency !== toCurrency && (
+          <div className="convert-flow__rate-pill">
+            <Button v2 size="md" priority="secondary-neutral" className="convert-flow__rate-btn" addonEnd={{ type: 'icon', value: <span style={{ color: 'var(--color-content-primary)' }}><ChevronRight size={16} /></span> }}>
+              {t('convert.rate', { from: fromCurrency, rate: rateDisplay, to: toCurrency })}
+            </Button>
+          </div>
+        )}
 
         {/* From section */}
         <div className="convert-flow__from-input">

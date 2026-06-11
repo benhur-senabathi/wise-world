@@ -33,7 +33,7 @@ export function AddMoneyFlow({ defaultCurrency, accountLabel, accountStyle, onCl
   const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const accountAvatarStyle = { backgroundColor: accountStyle.color, color: accountStyle.textColor };
-  const accountAvatarIcon = resolveIcon(accountStyle.iconName);
+  const accountAvatarIcon = resolveIcon(accountStyle.iconName, 24);
 
   const steps = [
     { label: t('addMoney.amount') },

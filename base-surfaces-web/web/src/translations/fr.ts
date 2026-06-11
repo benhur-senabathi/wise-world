@@ -418,6 +418,8 @@ const fr: Translations = {
   'send.whoSendingTo': '\u00C0 qui envoyez-vous\u00A0?',
   'send.recents': 'R\u00E9cents',
   'send.allAccounts': 'Tous les comptes',
+  'send.from': 'De',
+  'send.to': '\u00C0',
   'send.recipientGets': '{name} re\u00E7oit',
   'send.recipientGetsExactly': '{name} re\u00E7oit exactement',
   'send.youSend': 'Vous envoyez',

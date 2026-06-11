@@ -1,5 +1,6 @@
 import { AvatarView } from '@transferwise/components';
 import { ArrowLeft, Suitcase, GiftBox, BarChart, Graph, More, Plus, ScanSparkle } from '@transferwise/icons';
+import { getAccountById, useVisibleAccounts } from '../hooks/useAccountRegistry';
 
 const PlusSmall = () => (
   <span style={{ display: 'flex', transform: 'scale(0.75)' }}><Plus size={16} /></span>
@@ -89,6 +90,7 @@ export function IOSTopBar({
   activeNavItem,
   subPageType,
   subPageCode,
+  subPageListFrom,
   scrollTitle,
   accountType,
   onInsightsClick,
@@ -110,6 +112,7 @@ export function IOSTopBar({
   activeNavItem?: string;
   subPageType?: string | null;
   subPageCode?: string;
+  subPageListFrom?: string;
   scrollTitle?: string | null;
   accountType?: 'personal' | 'business';
   cardsTab?: 'your' | 'team';
@@ -122,6 +125,7 @@ export function IOSTopBar({
   onScan?: () => void;
 }) {
   const { t } = useLanguage();
+  const visibleAccounts = useVisibleAccounts(accountType || 'personal');
 
   const isHome = !showBack && activeNavItem === 'Home';
   const isCards = !showBack && activeNavItem === 'Cards';
@@ -130,9 +134,21 @@ export function IOSTopBar({
   const isTransactions = showBack && activeNavItem === 'Transactions';
   const isInsights = showBack && activeNavItem === 'Insights';
   const isAccount = showBack && activeNavItem === 'Account';
-  const isCurrencyOrAccount = showBack && subPageType && ['account', 'group-account', 'jar-account', 'currency'].includes(subPageType);
+  const isCurrencyOrAccount = showBack && subPageType && ['account', 'group-account', 'jar-account', 'shared-spending-account', 'joint-account', 'young-explorer-account', 'currency'].includes(subPageType);
   const isAccountDetails = showBack && subPageType === 'account-details';
   const isDrillDown = showBack && !isTransactions && !isInsights && !isAccount && !isCurrencyOrAccount && !isAccountDetails && !isCards && !isPayments && !isRecipients;
+
+  // Resolve account label for account details subtitle
+  let accountLabel: string | null = null;
+  if (isAccountDetails && subPageListFrom) {
+    let sourceAccount = getAccountById(subPageListFrom);
+    if (!sourceAccount && !['account', 'payments', 'home'].includes(subPageListFrom)) {
+      sourceAccount = visibleAccounts.find((a) => a.subPageType === subPageListFrom) || null;
+    }
+    if (sourceAccount && sourceAccount.subPageType !== 'account') {
+      accountLabel = t(sourceAccount.nameKey as any);
+    }
+  }
 
   const renderLeading = () => {
     if (showBack) {
@@ -222,9 +238,10 @@ export function IOSTopBar({
             <PlusSmall />
             <span className="ios-glass-btn__label">Add</span>
           </GlassPill>
-          <GlassCircle ariaLabel="Scan" onClick={onScan}>
-            <span className="ios-glass-btn__icon"><ScanSparkle size={24} /></span>
-          </GlassCircle>
+          <GlassPill onClick={onScan}>
+            <ScanSparkle size={16} />
+            <span className="ios-glass-btn__label">Scan</span>
+          </GlassPill>
         </div>
       );
     }
@@ -256,10 +273,12 @@ export function IOSTopBar({
         {isAccountDetails && subPageCode ? (
           <div className="ios-top-bar__center-title">
             <span className="ios-top-bar__center-heading">{subPageCode}</span>
-            <span className="ios-top-bar__center-subtitle">{t('common.accountDetails')}</span>
+            <span className="ios-top-bar__center-subtitle">
+              {accountLabel ? `${t('common.accountDetails')} · ${accountLabel}` : t('common.accountDetails')}
+            </span>
           </div>
         ) : scrollTitle ? (
-          <span className="ios-top-bar__scroll-title">{scrollTitle}</span>
+          <span className={`ios-top-bar__scroll-title${isRecipients ? ' ios-top-bar__scroll-title--left' : ''}`}>{isRecipients ? 'Recipie...' : scrollTitle}</span>
         ) : null}
         <div className="ios-top-bar__spacer" />
         {isAccountDetails && subPageCode ? (

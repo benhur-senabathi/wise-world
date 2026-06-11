@@ -53,7 +53,7 @@ export function PaymentLinkFlow({ defaultCurrency, accountLabel, group, accountS
     : isBusiness
       ? { backgroundColor: caStyle.textColor, color: caStyle.color }
       : { backgroundColor: 'var(--color-interactive-accent)', color: 'var(--color-interactive-control)' };
-  const accountAvatarIcon = accountStyle ? resolveIcon(accountStyle.iconName) : (isGroup ? <Money size={16} /> : <WiseLogoIcon />);
+  const accountAvatarIcon = accountStyle ? resolveIcon(accountStyle.iconName, 24) : (isGroup ? <Money size={16} /> : <WiseLogoIcon size={24} />);
 
   // Button state machine
   const updateButtonState = useCallback((hasAmount: boolean) => {

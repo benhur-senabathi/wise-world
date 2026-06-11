@@ -12,6 +12,7 @@ import type { CurrencyData } from '@shared/data/currencies';
 import { usePrototypeNames } from '../context/PrototypeNames';
 import { useLanguage, useTxLabels } from '../context/Language';
 import { convertToHomeCurrency, usdBaseRates } from '@shared/data/currency-rates';
+import { canShowInterest, type SubPageType } from '@shared/data/assets-eligibility';
 
 import type { JarDefinition } from '@shared/data/jar-data';
 import './Account.css';
@@ -45,7 +46,7 @@ type Props = {
   personalAvatarUrl?: string;
 };
 
-function CurrenciesSection({ onNavigateCurrency, isMobile, activeCurrencies, isGroup, hideAddCurrency, hideInterest }: { onNavigateCurrency?: (code: string) => void; isMobile?: boolean; activeCurrencies: CurrencyData[]; isGroup?: boolean; hideAddCurrency?: boolean; hideInterest?: boolean }) {
+function CurrenciesSection({ onNavigateCurrency, isMobile, activeCurrencies, isGroup, hideAddCurrency, hideInterest, subPageType }: { onNavigateCurrency?: (code: string) => void; isMobile?: boolean; activeCurrencies: CurrencyData[]; isGroup?: boolean; hideAddCurrency?: boolean; hideInterest?: boolean; subPageType: SubPageType }) {
   const { t } = useLanguage();
   return (
     <div className="section-card">
@@ -69,10 +70,20 @@ function CurrenciesSection({ onNavigateCurrency, isMobile, activeCurrencies, isG
         )}
         {activeCurrencies.map((c) => {
           let subtitle = c.name;
+          const showInterestPromo = canShowInterest(c.code, subPageType);
+
           if (!isGroup) {
-            if (c.hasStocks) subtitle += ` • ${t('currentAccount.investedInStocks')}`;
-            else if (c.hasInterest) subtitle += ` • ${t('currentAccount.investedInInterest')}`;
-          } else if (c.hasInterest && !hideInterest) {
+            // Current Account currencies
+            if (c.hasStocks) {
+              subtitle += ` • ${t('currentAccount.investedInStocks')}`;
+            } else if (c.assetsOptedIn) {
+              subtitle += ` • ${t('currentAccount.investedInInterest')}`;
+            } else if (c.hasInterest && showInterestPromo) {
+              // Eligible but not opted in - show promo
+              subtitle += ` • ${t('currentAccount.earnInterestRate')}`;
+            }
+          } else if (c.hasInterest && !hideInterest && showInterestPromo) {
+            // Group/Jar/Shared accounts - show promo
             subtitle += ` • ${t('currentAccount.earnInterestRate')}`;
           }
 
@@ -327,7 +338,7 @@ export function AccountPage({ onNavigateCurrency, onNavigateCards, onAccountDeta
       ? accountDef.menuItemKeys.map((key) => ({ label: t(key as any) }))
       : [{ label: t('currentAccount.editCurrentAccount') }, { label: t('common.statementsAndReports') }];
 
-  const headerType = isJar ? 'jar' as const : (isGroup || isJoint || isYoungExplorer) ? 'group' as const : 'account' as const;
+  const headerType = isJar ? 'jar' as const : (isGroup || isYoungExplorer) ? 'group' as const : 'account' as const;
   const headerJarColor = isJar ? jarConfig.color : accountDef && accountDef.subPageType !== 'account' ? accountDef.style.color : undefined;
   const headerJarTextColor = accountDef && accountDef.subPageType !== 'account' ? accountDef.style.textColor : undefined;
   const jarIcon = isJar ? (jarConfig.iconName === 'Suitcase' ? <Suitcase size={16} /> : <Savings size={16} />) : undefined;
@@ -357,7 +368,7 @@ export function AccountPage({ onNavigateCurrency, onNavigateCards, onAccountDeta
       {isJar ? (
         <div className="current-account__desktop">
           <div className="current-account__desktop-main">
-            <CurrenciesSection onNavigateCurrency={onNavigateCurrency} activeCurrencies={activeCurrencies} isGroup={false} />
+            <CurrenciesSection onNavigateCurrency={onNavigateCurrency} activeCurrencies={activeCurrencies} isGroup={false} subPageType={subPageType} />
             <TransactionsSection activeTransactions={activeTransactions} />
           </div>
           <aside className="current-account__desktop-sidebar">
@@ -381,7 +392,7 @@ export function AccountPage({ onNavigateCurrency, onNavigateCards, onAccountDeta
       ) : (
         <div className="current-account__desktop">
           <div className="current-account__desktop-main">
-            <CurrenciesSection onNavigateCurrency={onNavigateCurrency} activeCurrencies={activeCurrencies} isGroup={isGroup} hideAddCurrency={features?.hideAddCurrency} hideInterest={features?.singleCurrency} />
+            <CurrenciesSection onNavigateCurrency={onNavigateCurrency} activeCurrencies={activeCurrencies} isGroup={isGroup} hideAddCurrency={features?.hideAddCurrency} hideInterest={features?.singleCurrency} subPageType={subPageType} />
             <TransactionsSection activeTransactions={activeTransactions} />
           </div>
           <aside className="current-account__desktop-sidebar">
@@ -409,7 +420,7 @@ export function AccountPage({ onNavigateCurrency, onNavigateCards, onAccountDeta
           />
         </div>
 
-        {activeTab === 'currencies' && <CurrenciesSection onNavigateCurrency={onNavigateCurrency} isMobile activeCurrencies={activeCurrencies} isGroup={isGroup && !isJar} hideAddCurrency={features?.hideAddCurrency} hideInterest={features?.singleCurrency} />}
+        {activeTab === 'currencies' && <CurrenciesSection onNavigateCurrency={onNavigateCurrency} isMobile activeCurrencies={activeCurrencies} isGroup={isGroup && !isJar} hideAddCurrency={features?.hideAddCurrency} hideInterest={features?.singleCurrency} subPageType={subPageType} />}
         {activeTab === 'transactions' && <TransactionsSection isMobile activeTransactions={activeTransactions} />}
         {activeTab === 'options' && !isJar && <SidebarContent onNavigateCards={onNavigateCards} accountType={accountType} group={group} joint={isJoint} youngExplorer={isYoungExplorer} accountLabel={accountLabel} personalAvatarUrl={personalAvatarUrl} cardCount={cardCount} hasCards={accountDef ? accountDef.features.hasCards : false} accountDef={accountDef} />}
         {activeTab === 'options' && isJar && accountType === 'personal' && (

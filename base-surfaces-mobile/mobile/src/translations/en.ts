@@ -275,6 +275,7 @@ const en = {
   'payments.usDollar': 'US Dollar',
   'payments.euro': 'Euro',
   'payments.accountNumberEnding': 'Account number ending \u00b7\u00b7 {number}',
+  'payments.andMore': 'and {count} more',
   'payments.forwardInvoices': 'Forward invoices to email',
   'payments.forwardInvoicesSub': 'Save time by emailing bills and invoices to create draft payments.',
 
@@ -382,6 +383,8 @@ const en = {
 
   // Send Flow
   'send.recents': 'Recents',
+  'send.from': 'From',
+  'send.to': 'To',
   'send.recipientGets': '{name} gets',
   'send.recipientGetsExactly': '{name} gets exactly',
   'send.youSend': 'You send',

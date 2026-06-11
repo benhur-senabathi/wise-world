@@ -9,6 +9,7 @@ export type CurrencyData = {
   accountDetails?: string;
   hasStocks?: boolean;
   hasInterest?: boolean;
+  assetsOptedIn?: boolean;
   interestRate?: string;
   availableBalance?: number;
   totalReturns?: string;
@@ -23,6 +24,7 @@ export const currencies: CurrencyData[] = [
     balance: computeCurrencyBalance('GBP', transactions),
     accountDetails: '23-14-70 \u00B7 46839215',
     hasInterest: true,
+    assetsOptedIn: true,
     interestRate: '3.26%',
     totalReturns: '+1.45 GBP',
   },
@@ -34,6 +36,7 @@ export const currencies: CurrencyData[] = [
     balance: computeCurrencyBalance('EUR', transactions),
     accountDetails: 'BE68 9670 3781 7624',
     hasStocks: true,
+    assetsOptedIn: true,
     interestRate: '2.45%',
     totalReturns: '+4.80 EUR',
   },
@@ -44,6 +47,7 @@ export const currencies: CurrencyData[] = [
     symbol: '$',
     balance: computeCurrencyBalance('USD', transactions),
     accountDetails: '8311094826',
+    hasInterest: true,
   },
   {
     code: 'CAD',

@@ -68,7 +68,16 @@
   letter-spacing: -0.005em;
   color: var(--color-content-primary);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55%;
   pointer-events: none;
+}
+
+.ios-top-bar__scroll-title--left {
+  left: 112px;
+  transform: none;
+  max-width: 35%;
 }
 
 /* Account details: flag avatar in top bar (trailing, opposite back button) */
@@ -110,6 +119,9 @@
   font-size: 14px;
   font-weight: 400;
   color: var(--color-content-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ios-top-bar__trailing {

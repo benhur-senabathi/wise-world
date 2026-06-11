@@ -1,6 +1,6 @@
-import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { FlowNavigation, Logo, Button, AvatarView, ExpressiveMoneyInput, Chips, ListItem, InputGroup, Input, Size } from '@transferwise/components';
-import { InfoCircle, ChevronDown, ChevronRight, Search, CrossCircleFill, Plus, ScanSparkle, Check } from '@transferwise/icons';
+import { InfoCircle, ChevronDown, ChevronRight, Search, CrossCircleFill, Plus, ScanSparkle, Check, Padlock } from '@transferwise/icons';
 import { Flag } from '@wise/art';
 import { ButtonCue } from '../components/ButtonCue';
 import { RecentContactCard } from '../components/RecentContactCard';
@@ -64,17 +64,11 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
   const [currencyDropdownTarget, setCurrencyDropdownTarget] = useState<'send' | 'receive' | null>(null);
   const [userOverrodeReceiveCurrency, setUserOverrodeReceiveCurrency] = useState(false);
   const [currencySearchQuery, setCurrencySearchQuery] = useState('');
-  const [crossTransition, setCrossTransition] = useState<'idle' | 'shimmer' | 'revealing' | 'collapsing'>('idle');
-  const reverseShimmerRef = useRef(false);
-  const pendingSendCurrencyRef = useRef<string | null>(null);
-  const sameCurrencyBottomRef = useRef<HTMLDivElement>(null);
   const currencyDropdownRef = useRef<HTMLDivElement>(null);
-  const currencyTriggerRef = useRef<HTMLButtonElement | null>(null);
   const currencyDropdownOpen = currencyDropdownTarget !== null;
-  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number } | null>(null);
+  const [dropdownPos, setDropdownPos] = useState<{ top: number; right: number } | null>(null);
   const [amount, setAmount] = useState<number | null>(prefillAmount ?? null);
   const [receiveAmount, setReceiveAmount] = useState<number | null>(prefillReceiveAmount ?? null);
-  const [activeInput, setActiveInput] = useState<'send' | 'receive'>('send');
   const [buttonState, setButtonState] = useState<ButtonState>(prefillAmount ? 'active' : 'disabled');
   const [cueVisible, setCueVisible] = useState(false);
   const [inputFocused, setInputFocused] = useState(false);
@@ -87,9 +81,6 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
   const bodyRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const hasAmountRef = useRef(false);
-  const crossTopRef = useRef<HTMLDivElement>(null);
-  const slideWrapperRef = useRef<HTMLDivElement>(null);
-  const slideAnimRef = useRef<Animation | null>(null);
 
   // Open currency dropdown positioned below the trigger button
   const openCurrencyDropdown = useCallback((target: 'send' | 'receive', triggerEl: HTMLElement) => {
@@ -99,7 +90,7 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
     const triggerRect = triggerEl.getBoundingClientRect();
     setDropdownPos({
       top: triggerRect.bottom - bodyRect.top + 4,
-      left: triggerRect.left - bodyRect.left,
+      right: bodyRect.right - triggerRect.right,
     });
     setCurrencyDropdownTarget(target);
     setCurrencySearchQuery('');
@@ -167,11 +158,8 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
     return isBusiness ? businessCurrencies : currencies;
   };
   const allCurrencies = resolveAccountCurrencies();
-  const sendCurrencyData = allCurrencies.find((c) => c.code === sendCurrency);
-  const availableBalance = sendCurrencyData ? formatBalance(sendCurrencyData) : `0.00 ${sendCurrency}`;
 
   // Currency name for "You send" section
-  const sendCurrencyName = sendCurrencyData?.name ?? sendCurrency;
 
   const avatar = avatarUrl ? (
     <AvatarView size={48} imgSrc={avatarUrl} />
@@ -199,7 +187,6 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
     setCurrency(forcedReceiveCurrency ?? r.badgeFlagCode ?? defaultCurrency);
     setCurrencyDropdownTarget(null);
     setCurrencySearchQuery('');
-    setCrossTransition('idle');
     // Preserve prefilled amounts from calculator; otherwise reset for fresh entry
     if (loadingTimerRef.current) {
       clearTimeout(loadingTimerRef.current);
@@ -214,8 +201,7 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
     } else {
       setAmount(null);
       setReceiveAmount(null);
-      setActiveInput('send');
-      hasAmountRef.current = false;
+        hasAmountRef.current = false;
       setButtonState('disabled');
     }
     setCueVisible(false);
@@ -263,7 +249,6 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
   // Cross-currency: "You send" amount handler
   const handleSendAmountChange = useCallback((newAmount: number | null) => {
     setAmount(newAmount);
-    setActiveInput('send');
     const hasVal = newAmount !== null && newAmount !== 0;
     if (hasVal) {
       setReceiveAmount(Math.round(convertToHomeCurrency(newAmount!, sendCurrency, recipientCurrency, rates) * 100) / 100);
@@ -276,7 +261,6 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
   // Cross-currency: "{Name} gets" amount handler
   const handleReceiveAmountChange = useCallback((newAmount: number | null) => {
     setReceiveAmount(newAmount);
-    setActiveInput('receive');
     const hasVal = newAmount !== null && newAmount !== 0;
     if (hasVal) {
       setAmount(Math.round(convertToHomeCurrency(newAmount!, recipientCurrency, sendCurrency, rates) * 100) / 100);
@@ -293,80 +277,6 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
     };
   }, []);
 
-  // Animate the slide-down of gets input + button when cross-top appears (and reverse on collapse)
-  useEffect(() => {
-    if (crossTransition === 'revealing' && crossTopRef.current && slideWrapperRef.current) {
-      // Focus the gets input to trigger its active/expressive state while sliding
-      const getsInput = slideWrapperRef.current.querySelector<HTMLInputElement>('.wds-expressive-money-input input');
-      getsInput?.focus();
-
-      // Measure the cross-top's natural height — this is how far everything slides down
-      const height = crossTopRef.current.offsetHeight;
-      slideAnimRef.current = slideWrapperRef.current.animate(
-        [
-          { transform: `translateY(-${height}px)` },
-          { transform: 'translateY(0)' },
-        ],
-        {
-          duration: 550,
-          easing: 'cubic-bezier(0.4, 0, 0.1, 1.08)',
-          fill: 'forwards',
-        },
-      );
-    } else if (crossTransition === 'collapsing' && crossTopRef.current && slideWrapperRef.current) {
-      // Focus the gets input to trigger its active/expressive state while the cross-top collapses
-      const getsInput = slideWrapperRef.current.querySelector<HTMLInputElement>('.wds-expressive-money-input input');
-      getsInput?.focus();
-
-      // Animate the cross-top's height to 0
-      const crossHeight = crossTopRef.current.offsetHeight;
-      crossTopRef.current.style.overflow = 'hidden';
-      slideAnimRef.current = crossTopRef.current.animate(
-        [
-          { height: `${crossHeight}px`, opacity: 1 },
-          { height: '0px', opacity: 0 },
-        ],
-        {
-          duration: 480,
-          easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
-          fill: 'forwards',
-        },
-      );
-
-      // Simultaneously expand the same-bottom section (shimmer) from 0
-      if (reverseShimmerRef.current && sameCurrencyBottomRef.current) {
-        const el = sameCurrencyBottomRef.current;
-        el.style.overflow = 'hidden';
-        const targetHeight = el.scrollHeight;
-        el.animate(
-          [
-            { height: '0px', opacity: 0 },
-            { height: `${targetHeight}px`, opacity: 1 },
-          ],
-          {
-            duration: 480,
-            easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
-            fill: 'forwards',
-          },
-        ).onfinish = () => {
-          el.style.overflow = '';
-          el.style.height = '';
-        };
-      }
-    } else if ((crossTransition === 'idle' || crossTransition === 'shimmer') && slideAnimRef.current) {
-      slideAnimRef.current.cancel();
-      slideAnimRef.current = null;
-    }
-  }, [crossTransition]);
-
-  // Clean up same-bottom styles when transitioning from collapsing to shimmer/idle
-  useLayoutEffect(() => {
-    if ((crossTransition === 'shimmer' || crossTransition === 'idle') && sameCurrencyBottomRef.current) {
-      const el = sameCurrencyBottomRef.current;
-      el.style.overflow = '';
-      el.style.height = '';
-    }
-  }, [crossTransition]);
 
   // Close currency dropdown on click outside
   useEffect(() => {
@@ -412,55 +322,27 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
 
   const handleSelectSendCurrency = useCallback((code: string) => {
     const wasCross = sendCurrency !== recipientCurrency;
-    const wasNotCross = !wasCross;
     const willBeCross = code !== recipientCurrency;
 
     setCurrencyDropdownTarget(null);
     setCurrencySearchQuery('');
+    setSendCurrency(code);
 
-    // Recalculate amounts with new send currency
-    if (amount !== null && amount !== 0 && willBeCross) {
+    if (!wasCross && willBeCross && amount !== null && amount !== 0) {
+      // Same → cross: user's typed value stays in "To" (receiveAmount), compute "From"
+      setReceiveAmount(amount);
+      setAmount(Math.round(convertToHomeCurrency(amount, recipientCurrency, code, rates) * 100) / 100);
+    } else if (wasCross && willBeCross && amount !== null && amount !== 0) {
+      // Cross → different cross: recalculate "To" from "From" value
       setReceiveAmount(Math.round(convertToHomeCurrency(amount, code, recipientCurrency, rates) * 100) / 100);
-    }
-
-    // Transition: same → cross (shimmer → reveal)
-    if (wasNotCross && willBeCross) {
-      setSendCurrency(code);
-      setCrossTransition('shimmer');
-      setTimeout(() => setCrossTransition('revealing'), 1200);
-      setTimeout(() => setCrossTransition('idle'), 2000);
-    }
-    // Transition: cross → same (collapse cross-top + expand same-bottom simultaneously)
-    else if (wasCross && !willBeCross) {
-      reverseShimmerRef.current = true;
-      pendingSendCurrencyRef.current = code;
-      setCrossTransition('collapsing');
-      // After both animations complete, switch to shimmer briefly then idle
-      setTimeout(() => {
-        setSendCurrency(code);
-        if (amount !== null && amount !== 0) {
-          setReceiveAmount(null);
-        }
-        pendingSendCurrencyRef.current = null;
-        reverseShimmerRef.current = false;
-        setCrossTransition('shimmer');
-        setTimeout(() => {
-          setCrossTransition('idle');
-          setTimeout(() => {
-            const input = bodyRef.current?.querySelector<HTMLInputElement>('.wds-expressive-money-input input');
-            input?.focus();
-          }, 100);
-        }, 600);
-      }, 500);
-    }
-    // Same currency change (cross → different cross, or same → same)
-    else {
-      setSendCurrency(code);
-      if (wasCross && willBeCross && amount !== null && amount !== 0) {
-        setReceiveAmount(Math.round(convertToHomeCurrency(amount, code, recipientCurrency, rates) * 100) / 100);
+    } else if (!willBeCross) {
+      // Cross → same: keep amount in "To", clear receiveAmount
+      if (receiveAmount !== null && receiveAmount !== 0) {
+        setAmount(receiveAmount);
       }
+      setReceiveAmount(null);
     }
-  }, [amount, recipientCurrency, rates, sendCurrency]);
+  }, [amount, receiveAmount, sendCurrency, recipientCurrency, rates]);
 
   // Handle selecting a receive currency (from the gets input currency selector)
   const handleSelectReceiveCurrency = useCallback((code: string) => {
@@ -470,43 +352,17 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
     setUserOverrodeReceiveCurrency(true);
     setCurrencyDropdownTarget(null);
     setCurrencySearchQuery('');
+    setCurrency(code);
 
-    // Same → cross: recipient gets a different currency now
-    if (!wasCross && willBeCross) {
-      setCurrency(code);
-      setCrossTransition('shimmer');
-      if (amount !== null && amount !== 0) {
-        setReceiveAmount(Math.round(convertToHomeCurrency(amount, sendCurrency, code, rates) * 100) / 100);
-      }
-      setTimeout(() => setCrossTransition('revealing'), 1200);
-      setTimeout(() => setCrossTransition('idle'), 2000);
-    }
-    // Cross → same: recipient now gets the same currency as send
-    else if (wasCross && !willBeCross) {
-      reverseShimmerRef.current = true;
-      pendingSendCurrencyRef.current = sendCurrency; // keep same send currency, just change receive
-      setCrossTransition('collapsing');
-      setTimeout(() => {
-        setCurrency(code);
-        setReceiveAmount(null);
-        pendingSendCurrencyRef.current = null;
-        reverseShimmerRef.current = false;
-        setCrossTransition('shimmer');
-        setTimeout(() => {
-          setCrossTransition('idle');
-          setTimeout(() => {
-            const input = bodyRef.current?.querySelector<HTMLInputElement>('.wds-expressive-money-input input');
-            input?.focus();
-          }, 100);
-        }, 600);
-      }, 500);
-    }
-    // Cross → different cross
-    else {
-      setCurrency(code);
-      if (amount !== null && amount !== 0) {
-        setReceiveAmount(Math.round(convertToHomeCurrency(amount, sendCurrency, code, rates) * 100) / 100);
-      }
+    if (!wasCross && willBeCross && amount !== null && amount !== 0) {
+      // Same → cross: user's typed value stays in "To" (receiveAmount), compute "From"
+      setReceiveAmount(amount);
+      setAmount(Math.round(convertToHomeCurrency(amount, code, sendCurrency, rates) * 100) / 100);
+    } else if (willBeCross && amount !== null && amount !== 0) {
+      // Cross → different cross: recalculate receiveAmount from the From value
+      setReceiveAmount(Math.round(convertToHomeCurrency(amount, sendCurrency, code, rates) * 100) / 100);
+    } else if (!willBeCross) {
+      setReceiveAmount(null);
     }
   }, [amount, sendCurrency, recipientCurrency, rates]);
 
@@ -557,7 +413,6 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
         setSendCurrency(defaultCurrency);
         setCurrencyDropdownTarget(null);
         setCurrencySearchQuery('');
-        setCrossTransition('idle');
         setButtonState('disabled');
       }, 600);
     }
@@ -578,7 +433,23 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
         onClose={onClose}
         onGoBack={step === 'amount' ? handleBack : undefined}
         avatar={avatar}
-        logo={<Logo />}
+        logo={
+          <button
+            type="button"
+            onClick={onClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+            aria-label="Go to home"
+          >
+            <Logo />
+          </button>
+        }
       />
 
       <div className={`send-flow__track${step === 'amount' ? ' send-flow__track--step-amount' : ''}${isAnimating ? ' send-flow__track--animating' : ''}`}>
@@ -714,61 +585,61 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
         {/* Step 2: Amount */}
         <div className="send-flow__panel">
         <div className="send-flow__body" ref={step === 'amount' ? bodyRef : undefined}>
-          {/* === CROSS-TOP: rate pill + send input + divider === */}
-          {/* Expands from 0 height during revealing, pushing the gets input down with bounce */}
-          {selectedRecipient && (crossTransition === 'revealing' || crossTransition === 'collapsing' || (isCrossCurrency && crossTransition === 'idle')) && (
-            <div ref={crossTopRef} className={`send-flow__cross-top${crossTransition === 'revealing' ? ' send-flow__cross-top--revealing' : crossTransition === 'collapsing' ? ' send-flow__cross-top--collapsing' : ' send-flow__cross-top--expanded'}`}>
-              {/* Rate pill — fades in with extra delay */}
-              <div className={`send-flow__rate-pill${crossTransition === 'revealing' ? ' send-flow__rate-pill--fadein' : ''}`}>
-                <Button v2 size="md" priority="secondary-neutral" className="convert-flow__rate-btn" addonEnd={{ type: 'icon', value: <span style={{ color: 'var(--color-content-primary)' }}><ChevronRight size={16} /></span> }}>
-                  {t('send.rate', { from: sendCurrency, rate: crossRate, to: recipientCurrency })}
+          {/* === FROM section: always rendered, amount input fades in/out for cross-currency === */}
+          {selectedRecipient && (
+            <>
+              {/* Rate pill — always rendered for layout, fades in/out */}
+              <div className={`send-flow__rate-pill${isCrossCurrency ? '' : ' send-flow__rate-pill--hidden'}`}>
+                <button type="button" className="send-flow__rate-btn">
+                  <Padlock size={16} />
+                  <span className="send-flow__rate-divider" />
+                  <span className="send-flow__rate-clip">
+                    <span className="send-flow__rate-flipper">
+                      <span className="send-flow__rate-line">{t('send.rate', { from: sendCurrency, rate: crossRate, to: recipientCurrency })}</span>
+                      <span className="send-flow__rate-line">Guaranteed for 3h</span>
+                    </span>
+                  </span>
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+
+              {/* From label + currency pill row */}
+              <div className="send-flow__from-row" style={{ position: 'relative', zIndex: currencyDropdownTarget === 'send' ? 10 : undefined }}>
+                <span className="send-flow__from-label">{t('send.from')}</span>
+                <Button v2 size="md" priority="secondary-neutral" className="wds-currency-selector"
+                  onClick={(e: React.MouseEvent) => { e.stopPropagation(); if (currencyDropdownTarget === 'send') { setCurrencyDropdownTarget(null); } else { openCurrencyDropdown('send', e.currentTarget as HTMLElement); } }}
+                  addonStart={{ type: 'avatar', value: [{ asset: <Flag code={sendCurrency} loading="eager" /> }] }}
+                  addonEnd={{ type: 'icon', value: <ChevronDown size={16} /> }}
+                >
+                  <span style={{ color: 'var(--color-content-secondary)' }}>{sendCurrency}</span>
                 </Button>
               </div>
 
-              {/* You send input */}
-              <div className="send-flow__send-input">
+              {/* From amount input — fades in/out when switching to/from cross-currency */}
+              <div className={`send-flow__from-amount${isCrossCurrency ? ' send-flow__from-amount--visible' : ''}`}>
                 <ExpressiveMoneyInput
-                  label={<span style={{ whiteSpace: 'nowrap' }}>{t('send.youSend')}</span>}
+                  label={undefined}
                   currency={sendCurrency}
                   amount={amount}
                   onAmountChange={handleSendAmountChange}
-                  currencySelector={{
-                    customRender: ({ id, labelId }) => (
-                      <div id={id} aria-labelledby={labelId} className="wds-expressive-money-input-currency-selector">
-                        <Button v2 size="md" priority="secondary-neutral" className="wds-currency-selector"
-                          onClick={(e: React.MouseEvent) => { e.stopPropagation(); if (currencyDropdownTarget === 'send') { setCurrencyDropdownTarget(null); } else { openCurrencyDropdown('send', e.currentTarget as HTMLElement); } }}
-                          addonStart={{ type: 'avatar', value: [{ asset: <Flag code={sendCurrency} loading="eager" /> }] }}
-                          addonEnd={{ type: 'icon', value: <ChevronDown size={16} /> }}
-                        >
-                          {sendCurrency}
-                        </Button>
-                      </div>
-                    ),
-                  }}
+                  currencySelector={{ customRender: () => <></> }}
                   showChevron={!sendInputFocused && !inputFocused && !amount && !receiveAmount}
                   onFocusChange={setSendInputFocused}
                 />
-                <p className="convert-flow__available np-text-body-default">
-                  Amount available: <button type="button" className="convert-flow__available-link" onClick={() => handleSendAmountChange(sendCurrencyData?.balance ?? 0)}>{availableBalance}</button>
-                </p>
               </div>
-
-              {/* Cross divider */}
-              <div className={`send-flow__cross-divider${sendInputFocused || inputFocused ? ' send-flow__cross-divider--visible' : ''}`} />
-            </div>
+            </>
           )}
 
-          {/* === SLIDE WRAPPER: gets + bottom section + button — slides down via Web Animations API === */}
-          <div ref={slideWrapperRef} className="send-flow__slide-wrapper">
+          <div className="send-flow__slide-wrapper">
 
-          {/* Gets input — always visible, physically slides down when cross-top appears */}
+          {/* To input — always visible, physically slides down when cross-top appears */}
           {selectedRecipient && (
           <div className="send-flow__gets-wrapper">
             <ExpressiveMoneyInput
-              label={<span style={{ whiteSpace: 'nowrap' }}>{t(inputFocused ? 'send.recipientGetsExactly' : 'send.recipientGets', { name: selectedRecipient.name })}</span>}
+              label={<span style={{ whiteSpace: 'nowrap' }}>{t('send.to')}</span>}
               currency={recipientCurrency}
-              amount={isCrossCurrency && crossTransition !== 'shimmer' ? receiveAmount : amount}
-              onAmountChange={isCrossCurrency && crossTransition !== 'shimmer' ? handleReceiveAmountChange : handleAmountChange}
+              amount={isCrossCurrency ? receiveAmount : amount}
+              onAmountChange={isCrossCurrency ? handleReceiveAmountChange : handleAmountChange}
               currencySelector={{
                 customRender: ({ id, labelId }) => (
                   <div id={id} aria-labelledby={labelId} className="wds-expressive-money-input-currency-selector">
@@ -778,11 +649,12 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
                         type: 'avatar',
                         value: selectedRecipient.avatarUrl
                           ? [{ imgSrc: selectedRecipient.avatarUrl }, { asset: <Flag code={recipientCurrency} loading="eager" /> }]
-                          : [{ style: selectedRecipient.initials ? { backgroundColor: 'transparent' } as React.CSSProperties : accountAvatarStyle, asset: selectedRecipient.initials ? <span style={{ fontSize: 10, fontWeight: 600 }}>{selectedRecipient.initials}</span> : <WiseLogoIcon /> }, { asset: <Flag code={recipientCurrency} loading="eager" /> }],
+                          : [{ style: selectedRecipient.initials ? { backgroundColor: 'transparent' } as React.CSSProperties : accountAvatarStyle, asset: selectedRecipient.initials ? <span style={{ fontSize: 10, fontWeight: 600 }}>{selectedRecipient.initials}</span> : <WiseLogoIcon size={24} /> }, { asset: <Flag code={recipientCurrency} loading="eager" /> }],
                       }}
                       addonEnd={{ type: 'icon', value: <ChevronDown size={16} /> }}
                     >
-                      {recipientCurrency}
+                      <span style={{ color: 'var(--color-content-primary)' }}>{selectedRecipient.name}</span>
+                      <span style={{ color: 'var(--color-content-secondary)' }}> · {recipientCurrency}</span>
                     </Button>
                   </div>
                 ),
@@ -792,108 +664,23 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
             />
 
             {/* Amount available — show below gets input in same-currency mode, shimmer, and reverse-collapsing */}
-            {(!isCrossCurrency || crossTransition === 'shimmer' || (crossTransition === 'collapsing' && reverseShimmerRef.current)) && (
+            {!isCrossCurrency && (
               <p className="convert-flow__available np-text-body-default">
                 Amount available: <button type="button" className="convert-flow__available-link" onClick={() => {
-                  const bal = allCurrencies.find((c) => c.code === recipientCurrency)?.balance ?? 0;
-                  if (isCrossCurrency && crossTransition !== 'shimmer') {
-                    handleReceiveAmountChange(bal);
-                  } else {
-                    handleAmountChange(bal);
-                  }
+                  handleAmountChange(allCurrencies.find((c) => c.code === recipientCurrency)?.balance ?? 0);
                 }}>{ (() => { const c = allCurrencies.find((c) => c.code === recipientCurrency); return c ? formatBalance(c) : `0.00 ${recipientCurrency}`; })() }</button>
               </p>
             )}
           </div>
           )}
 
-          {/* === SAME-CURRENCY BOTTOM: divider + list item / shimmer === */}
-          {selectedRecipient && ((!isCrossCurrency && crossTransition === 'idle') || crossTransition === 'shimmer' || (crossTransition === 'collapsing' && reverseShimmerRef.current)) && (
-            <div ref={sameCurrencyBottomRef} className="send-flow__same-bottom">
-              <div className="send-flow__divider" />
-
-              {/* List item — same-currency idle only */}
-              {!isCrossCurrency && crossTransition === 'idle' && (
-                <div className="send-flow__you-send" style={{ position: 'relative', zIndex: currencyDropdownTarget === 'send' ? 10 : undefined }} onClick={() => { setCurrencyDropdownTarget(currencyDropdownTarget === 'send' ? null : 'send'); setCurrencySearchQuery(''); }}>
-                  <ListItem
-                    title={<span className="np-text-body-default" style={{ fontWeight: 400, color: 'var(--color-content-secondary)' }}>{t('send.youSend')}</span>}
-                    subtitle={<span className="np-text-body-large" style={{ fontWeight: 600, color: 'var(--color-content-primary)' }}>{sendCurrencyName}</span>}
-                    media={
-                      <ListItem.AvatarView size={48}>
-                        <Flag code={sendCurrency} loading="eager" />
-                      </ListItem.AvatarView>
-                    }
-                    control={
-                      <Button v2 size="sm" priority="secondary">{t('send.change')}</Button>
-                    }
-                  />
-                  {currencyDropdownTarget === 'send' && (
-                    <div className="send-flow__currency-popover send-flow__currency-popover--inline" ref={currencyDropdownRef} onClick={(e) => e.stopPropagation()}>
-                      <div className="currency-dropdown__search">
-                        <Search size={16} />
-                        <input
-                          type="text"
-                          className="currency-dropdown__search-input"
-                          placeholder={t('send.currencySearchPlaceholder')}
-                          value={currencySearchQuery}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCurrencySearchQuery(e.target.value)}
-                          autoFocus
-                        />
-                      </div>
-                      <div className="send-flow__currency-popover-list">
-                        {filteredRecentCurrencies.length > 0 && (
-                          <>
-                            <p className="send-flow__currency-section-label np-text-body-default">{t('send.recentCurrencies')}</p>
-                            <div className="send-flow__currency-section-divider" />
-                            {filteredRecentCurrencies.map((code) => {
-                              const meta = currencyMeta[code];
-                              if (!meta) return null;
-                              return (
-                                <button key={code} type="button" className="send-flow__currency-option" onClick={() => handleSelectSendCurrency(code)}>
-                                  <AvatarView size={24}><Flag code={code} intrinsicSize={24} loading="eager" /></AvatarView>
-                                  <span className="send-flow__currency-option-code np-text-body-large">{code}</span>
-                                  <span className="send-flow__currency-option-name np-text-body-default">{meta.name}</span>
-                                  {sendCurrency === code && <Check size={16} className="send-flow__currency-option-check" />}
-                                </button>
-                              );
-                            })}
-                          </>
-                        )}
-                        <p className="send-flow__currency-section-label np-text-body-default">{t('send.allCurrencies')}</p>
-                        <div className="send-flow__currency-section-divider" />
-                        {filteredAllCurrencies.map((meta) => (
-                          <button key={meta.code} type="button" className="send-flow__currency-option" onClick={() => handleSelectSendCurrency(meta.code)}>
-                            <AvatarView size={24}><Flag code={meta.code} intrinsicSize={24} loading="eager" /></AvatarView>
-                            <span className="send-flow__currency-option-code np-text-body-large">{meta.code}</span>
-                            <span className="send-flow__currency-option-name np-text-body-default">{meta.name}</span>
-                            {sendCurrency === meta.code && <Check size={16} className="send-flow__currency-option-check" />}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Shimmer skeleton — visible during shimmer phase and reverse-collapsing */}
-              {(crossTransition === 'shimmer' || (crossTransition === 'collapsing' && reverseShimmerRef.current)) && (
-                <div className="send-flow__shimmer-row">
-                  <div className="send-flow__shimmer-el send-flow__shimmer-circle" />
-                  <div className="send-flow__shimmer-bars">
-                    <div className="send-flow__shimmer-el send-flow__shimmer-bar send-flow__shimmer-bar--sm" />
-                    <div className="send-flow__shimmer-el send-flow__shimmer-bar send-flow__shimmer-bar--lg" />
-                  </div>
-                  <div className="send-flow__shimmer-el send-flow__shimmer-pill" />
-                </div>
-              )}
-            </div>
-          )}
+          {/* === SAME-CURRENCY BOTTOM: shimmer only (during cross transition) === */}
 
           {/* Continue button — persists across all transition phases */}
           {selectedRecipient && (
             <div className="send-flow__continue" style={isCrossCurrency ? { marginTop: 40 } : undefined}>
               <ButtonCue
-                visible={cueVisible && buttonState === 'disabled' && crossTransition === 'idle'}
+                visible={cueVisible && buttonState === 'disabled'}
                 hint={
                   <>
                     <InfoCircle size={16} />
@@ -912,9 +699,9 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
                   v2
                   size="lg"
                   priority="primary"
-                  disabled={buttonState !== 'active' || crossTransition !== 'idle'}
-                  loading={buttonState === 'loading' || crossTransition === 'shimmer'}
-                  className={(buttonState === 'loading' || crossTransition === 'shimmer') ? 'send-flow__btn-loading' : undefined}
+                  disabled={buttonState !== 'active'}
+                  loading={buttonState === 'loading'}
+                  className={buttonState === 'loading' ? 'send-flow__btn-loading' : undefined}
                   block
                 >
                   {t('send.continue')}
@@ -924,9 +711,9 @@ export function SendFlow({ defaultCurrency, accountLabel, group, accountStyle, o
           )}
           </div>{/* end slide-wrapper */}
 
-          {/* Currency dropdown popover — for currency selector buttons (not the Change button which uses inline dropdown) */}
-          {selectedRecipient && currencyDropdownOpen && dropdownPos && (currencyDropdownTarget === 'receive' || (currencyDropdownTarget === 'send' && isCrossCurrency)) && (
-            <div className="send-flow__currency-popover" ref={currencyDropdownRef} onClick={(e) => e.stopPropagation()} style={{ top: dropdownPos.top, left: dropdownPos.left }}>
+          {/* Currency dropdown popover — for currency selector buttons */}
+          {selectedRecipient && currencyDropdownOpen && dropdownPos && (
+            <div className="send-flow__currency-popover" ref={currencyDropdownRef} onClick={(e) => e.stopPropagation()} style={{ top: dropdownPos.top, right: dropdownPos.right }}>
               <div className="currency-dropdown__search">
                 <Search size={16} />
                 <input

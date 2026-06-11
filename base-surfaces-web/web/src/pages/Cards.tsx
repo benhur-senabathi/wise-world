@@ -74,7 +74,7 @@ function CardsList({ accountType }: { accountType: AccountType }) {
           <ListItem
             key={`sub-${i}`}
             title={<span className="np-text-body-large" style={{ fontWeight: 600 }}>{card.type === 'physical' ? 'Physical' : 'Digital card'} •••• {card.lastFour}</span>}
-            subtitle={`${t(card.accountNameKey as any)} · ${t('common.readyToUse')}`}
+            subtitle={`${t(card.accountNameKey as any)} • ${t('common.readyToUse')}`}
             media={<CardThumbnail image={card.image} />}
             control={<ListItem.Navigation onClick={() => {}} />}
           />

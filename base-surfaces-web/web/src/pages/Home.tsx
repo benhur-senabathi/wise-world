@@ -86,6 +86,7 @@ const businessPromotionVariants = allPromotionVariants.filter((p) => p.sectionTi
 
 
 const assetMap: Record<string, string> = {
+  '/card-tapestry.jpg': new URL('../assets/card-tapestry.jpg', import.meta.url).href,
   '/card-tapestry-orange.jpg': new URL('../assets/card-tapestry-orange.jpg', import.meta.url).href,
   '/card-tapestry-green.jpg': new URL('../assets/card-tapestry-green.jpg', import.meta.url).href,
 };
@@ -186,7 +187,7 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
             onNavigateCurrency={onNavigateCurrency}
             currencyData={activeCurrencies}
             businessCardStyle={accountType === 'business'}
-            onAccountDetails={onAccountDetails}
+            onAccountDetails={() => onAccountDetails?.('account')}
           />
           {visibleAccounts
             .filter((a) => a.subPageType !== 'account')
@@ -200,12 +201,14 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
               const visualCardCount = account.features.hasCards
                 ? accountCards.length
                 : (account.homeCard?.cardBottomImage ? 2 : (account.homeCard?.cardTopImage ? 1 : 0));
+              // Derive card images: prefer homeCard overrides, fall back to registry card images
+              // Physical cards use the default card-green.jpg in MCA (don't override with Cards tab PNGs)
               const derivedTopImage = account.homeCard?.cardTopImage
                 ? resolveAsset(account.homeCard.cardTopImage)
-                : accountCards.length >= 2 ? accountCards[1].image : undefined;
+                : accountCards.length >= 2 && accountCards[1].type === 'digital' ? accountCards[1].image : undefined;
               const derivedBottomImage = account.homeCard?.cardBottomImage
                 ? resolveAsset(account.homeCard.cardBottomImage)
-                : accountCards.length >= 1 ? accountCards[0].image : undefined;
+                : accountCards.length >= 1 && accountCards[0].type === 'digital' ? accountCards[0].image : undefined;
 
               return (
                 <MultiCurrencyAccountCard

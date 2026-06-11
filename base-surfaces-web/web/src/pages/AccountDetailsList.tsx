@@ -5,7 +5,7 @@ import { Flag } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import type { AccountType } from '@shared/data/account-registry';
 import type { TranslationKey } from '../translations/en';
-import { useVisibleAccounts } from '../hooks/useAccountRegistry';
+import { useVisibleAccounts, getAccountById, getAccountBySubPageType } from '../hooks/useAccountRegistry';
 import { useActiveCurrencies } from '../hooks/useDatasetData';
 import '../components/AccountDetailsList.css';
 
@@ -33,25 +33,38 @@ export function AccountDetailsList({ accountType = 'personal', from, onSelectCur
   const allDetails = useMemo(() => {
     const details: { code: string; nameKey: TranslationKey; subtitle: string; accountLabel?: string }[] = [];
 
-    const showAll = from === 'payments';
-    const fromSubAccount = from && !['account', 'payments', 'home'].includes(from);
+    // Try to resolve as account ID first (e.g. 'current', 'jar-primary')
+    let targetAccount = from ? getAccountById(from) : null;
 
-    if (fromSubAccount) {
-      const account = visibleAccounts.find((a) => a.subPageType === from);
-      if (account) {
-        for (const c of account.getCurrencies()) {
-          if (c.accountDetails) {
-            details.push({
-              code: c.code,
-              nameKey: currencyNameKeys[c.code] || 'accountDetailsList.britishPound',
-              subtitle: c.accountDetails,
-            });
-          }
+    // If not found, try as subPageType (e.g. 'account', 'joint-account')
+    // Use getAccountBySubPageType from registry, not visibleAccounts, because
+    // visibleAccounts may be filtered by dataset
+    if (!targetAccount && from && from !== 'payments' && from !== 'home') {
+      targetAccount = getAccountBySubPageType(from) || null;
+    }
+
+    // If filtering by specific account
+    if (targetAccount) {
+      // For current account, use the dataset-aware currentAccountCurrencies
+      // For other accounts, use their getCurrencies() method
+      const currencies = targetAccount.subPageType === 'account'
+        ? currentAccountCurrencies
+        : targetAccount.getCurrencies();
+
+      for (const c of currencies) {
+        if (c.accountDetails) {
+          details.push({
+            code: c.code,
+            nameKey: currencyNameKeys[c.code] || 'accountDetailsList.britishPound',
+            subtitle: c.accountDetails,
+          });
         }
       }
       return details;
     }
 
+    // Show all accounts (from === 'payments' or no filter)
+    const currentAccount = getAccountBySubPageType('account');
     for (const c of currentAccountCurrencies) {
       if (c.accountDetails) {
         details.push({
@@ -62,18 +75,16 @@ export function AccountDetailsList({ accountType = 'personal', from, onSelectCur
       }
     }
 
-    if (showAll) {
-      const subAccounts = visibleAccounts.filter((a) => a.subPageType !== 'account' && a.features.hasAccountDetails);
-      for (const account of subAccounts) {
-        for (const c of account.getCurrencies()) {
-          if (c.accountDetails) {
-            details.push({
-              code: c.code,
-              nameKey: currencyNameKeys[c.code] || 'accountDetailsList.britishPound',
-              subtitle: c.accountDetails,
-              accountLabel: account.nameKey,
-            });
-          }
+    const subAccounts = visibleAccounts.filter((a) => a.subPageType !== 'account' && a.features.hasAccountDetails);
+    for (const account of subAccounts) {
+      for (const c of account.getCurrencies()) {
+        if (c.accountDetails) {
+          details.push({
+            code: c.code,
+            nameKey: currencyNameKeys[c.code] || 'accountDetailsList.britishPound',
+            subtitle: c.accountDetails,
+            accountLabel: account.nameKey,
+          });
         }
       }
     }

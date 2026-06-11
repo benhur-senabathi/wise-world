@@ -277,6 +277,7 @@ const es: Translations = {
   'payments.usDollar': 'D\u00F3lar estadounidense',
   'payments.euro': 'Euro',
   'payments.accountNumberEnding': 'N\u00FAmero de cuenta terminado en \u2022\u2022 {number}',
+  'payments.andMore': 'y {count} m\u00E1s',
   'payments.forwardInvoices': 'Reenviar facturas por email',
   'payments.forwardInvoicesSub': 'Ahorra tiempo enviando facturas por email para crear borradores de pago.',
 
@@ -384,6 +385,8 @@ const es: Translations = {
 
   // Send Flow
   'send.recents': 'Recientes',
+  'send.from': 'Desde',
+  'send.to': 'Para',
   'send.recipientGets': '{name} recibe',
   'send.recipientGetsExactly': '{name} recibe exactamente',
   'send.youSend': 'T\u00FA env\u00EDas',

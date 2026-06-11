@@ -235,7 +235,13 @@
   gap: 8px;
 }
 
-.cards-page__paynow-logo {
-  width: 48px;
-  height: auto;
+.cards-page__qr-logos {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cards-page__qr-logo {
+  height: 20px;
+  width: auto;
 }

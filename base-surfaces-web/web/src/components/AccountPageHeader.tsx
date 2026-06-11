@@ -72,7 +72,7 @@ export function AccountPageHeader({
       ? { backgroundColor: caStyle.textColor, color: caStyle.color }
       : { backgroundColor: 'var(--color-interactive-accent)', color: 'var(--color-interactive-control)' };
 
-  const avatarIcon = jarIcon ? jarIcon : <WiseLogoIcon />;
+  const avatarIcon = jarIcon ? jarIcon : <WiseLogoIcon size={24} />;
 
   if (shimmerMode) return (
     <div className="account-header">

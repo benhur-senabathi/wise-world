@@ -14,6 +14,7 @@ import { useActiveCurrencies, useActiveTransactions } from '../hooks/useDatasetD
 
 import type { JarDefinition } from '@shared/data/jar-data';
 import { getAccountBySubPageType } from '@shared/data/account-registry';
+import { canShowAssets, canShowInterest, canShowStocks, type SubPageType } from '@shared/data/assets-eligibility';
 import './CurrencyPage.css';
 
 type Props = {
@@ -107,10 +108,19 @@ function TransactionsSection({ currency, txList }: { currency: CurrencyData; txL
   );
 }
 
-function InterestListItem({ currency, accountType = 'personal', isJar = false }: { currency: CurrencyData; accountType?: AccountType; isJar?: boolean }) {
+function InterestListItem({ currency, accountType = 'personal', isJar = false, subPageType }: { currency: CurrencyData; accountType?: AccountType; isJar?: boolean; subPageType: SubPageType }) {
   const { t } = useLanguage();
+
+  // Only show if currency is eligible for Interest OR Stocks on this account type
+  const interestEligible = canShowInterest(currency.code, subPageType);
+  const stocksEligible = canShowStocks(currency.code, subPageType);
+
+  if (!interestEligible && !stocksEligible) {
+    return null;
+  }
+
   const isStocks = currency.hasStocks;
-  const isActive = !isJar && (isStocks || currency.hasInterest);
+  const isActive = !isJar && (isStocks || currency.assetsOptedIn);
   return (
     <ListItem
       spotlight={isActive ? 'active' : 'inactive'}
@@ -188,9 +198,15 @@ function InterestRateCard({ currency, interestReturns }: { currency: CurrencyDat
   );
 }
 
-function OptionsContent({ currency, accountType = 'personal', interestReturns, isJar = false }: { currency: CurrencyData; accountType?: AccountType; interestReturns?: number; isJar?: boolean }) {
+function OptionsContent({ currency, accountType = 'personal', interestReturns, isJar = false, subPageType }: { currency: CurrencyData; accountType?: AccountType; interestReturns?: number; isJar?: boolean; subPageType: SubPageType }) {
   const { t } = useLanguage();
-  const showRateCard = (currency.hasStocks || currency.hasInterest) && accountType === 'personal';
+  const showAssets = canShowAssets(subPageType);
+  const showRateCard = (currency.hasStocks || currency.assetsOptedIn) && accountType === 'personal' && showAssets;
+
+  // Check if InterestListItem will render (same logic as inside the component)
+  const interestEligible = canShowInterest(currency.code, subPageType);
+  const stocksEligible = canShowStocks(currency.code, subPageType);
+  const showInterestListItem = interestEligible || stocksEligible;
 
   return (
     <>
@@ -203,9 +219,9 @@ function OptionsContent({ currency, accountType = 'personal', interestReturns, i
         </div>
       )}
       <div className="currency-page__options-list">
-        <InterestListItem currency={currency} accountType={accountType} isJar={isJar} />
+        <InterestListItem currency={currency} accountType={accountType} isJar={isJar} subPageType={subPageType} />
       </div>
-      {!showRateCard && (
+      {showInterestListItem && !showRateCard && (
         <p className="np-text-body-small currency-page__disclaimer" style={{ margin: '12px 0 8px', color: 'var(--color-content-secondary)', textAlign: 'center' }}>
           {t('currencyPage.disclaimer')}
         </p>
@@ -227,9 +243,15 @@ function OptionsContent({ currency, accountType = 'personal', interestReturns, i
   );
 }
 
-function Sidebar({ currency, accountType = 'personal', interestReturns, isJar = false }: { currency: CurrencyData; accountType?: AccountType; interestReturns?: number; isJar?: boolean }) {
+function Sidebar({ currency, accountType = 'personal', interestReturns, isJar = false, subPageType }: { currency: CurrencyData; accountType?: AccountType; interestReturns?: number; isJar?: boolean; subPageType: SubPageType }) {
   const { t } = useLanguage();
-  const showRateCard = (currency.hasStocks || currency.hasInterest) && accountType === 'personal';
+  const showAssets = canShowAssets(subPageType);
+  const showRateCard = (currency.hasStocks || currency.assetsOptedIn) && accountType === 'personal' && showAssets;
+
+  // Check if InterestListItem will render (same logic as inside the component)
+  const interestEligible = canShowInterest(currency.code, subPageType);
+  const stocksEligible = canShowStocks(currency.code, subPageType);
+  const showInterestListItem = interestEligible || stocksEligible;
 
   return (
     <aside className="currency-page__rate-card">
@@ -241,8 +263,8 @@ function Sidebar({ currency, accountType = 'personal', interestReturns, isJar = 
           </p>
         </>
       )}
-      <InterestListItem currency={currency} accountType={accountType} isJar={isJar} />
-      {!showRateCard && (
+      <InterestListItem currency={currency} accountType={accountType} isJar={isJar} subPageType={subPageType} />
+      {showInterestListItem && !showRateCard && (
         <p className="np-text-body-small currency-page__disclaimer" style={{ margin: '12px 0 8px', color: 'var(--color-content-secondary)', textAlign: 'center' }}>
           {t('currencyPage.disclaimer')}
         </p>
@@ -293,8 +315,8 @@ export function CurrencyPage({ code, onNavigateAccount, onAccountDetails, accoun
   const isJoint = !!joint;
   const isYoungExplorer = !!youngExplorer;
 
-  const subPageType = isJar ? null : group === 'shared-spending' ? 'shared-spending-account' : isGroup ? 'group-account' : isJoint ? 'joint-account' : isYoungExplorer ? 'young-explorer-account' : 'account';
-  const accountDef = subPageType && subPageType !== 'account' ? getAccountBySubPageType(subPageType) : undefined;
+  const subPageType: SubPageType = isJar ? 'group-account' : group === 'shared-spending' ? 'shared-spending-account' : isGroup ? 'group-account' : isJoint ? 'joint-account' : isYoungExplorer ? 'young-explorer-account' : 'account';
+  const accountDef = !isJar && subPageType !== 'account' ? getAccountBySubPageType(subPageType) : undefined;
   const features = accountDef?.features;
 
   const activeCurrencies = isJar ? jarConfig.currencies : accountDef ? accountDef.getCurrencies() : datasetCurrencies;
@@ -313,7 +335,8 @@ export function CurrencyPage({ code, onNavigateAccount, onAccountDetails, accoun
     return <div className="np-text-body-default">Currency not found.</div>;
   }
 
-  const showRateCard = (currency.hasStocks || currency.hasInterest) && accountType === 'personal';
+  const showAssets = canShowAssets(subPageType);
+  const showRateCard = (currency.hasStocks || currency.assetsOptedIn) && accountType === 'personal' && showAssets;
   const jarIcon = isJar ? (jarConfig.iconName === 'Suitcase' ? <Suitcase size={16} /> : <Savings size={16} />) : undefined;
 
   const menuItems = isJar
@@ -375,7 +398,7 @@ export function CurrencyPage({ code, onNavigateAccount, onAccountDetails, accoun
         </div>
 
         {activeTab === 'transactions' && <TransactionsSection currency={currency} txList={activeTxList} />}
-        {activeTab === 'options' && <OptionsContent currency={currency} accountType={accountType} interestReturns={interestReturns} isJar={isJar} />}
+        {activeTab === 'options' && <OptionsContent currency={currency} accountType={accountType} interestReturns={interestReturns} isJar={isJar} subPageType={subPageType} />}
       </div>
     </div>
   );

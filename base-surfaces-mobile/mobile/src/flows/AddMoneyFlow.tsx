@@ -35,7 +35,7 @@ export function AddMoneyFlow({ defaultCurrency, accountLabel, accountStyle, onCl
 
   const isBusiness = accountType === 'business';
   const accountAvatarStyle = { backgroundColor: accountStyle.color, color: accountStyle.textColor };
-  const accountAvatarIcon = resolveIcon(accountStyle.iconName);
+  const accountAvatarIcon = resolveIcon(accountStyle.iconName, 24);
 
   const bodyRef = useRef<HTMLDivElement>(null);
   const amountRef = useRef(amount);

@@ -48,7 +48,7 @@ type SubPage =
   | { type: 'jar-account'; jarId: string }
   | { type: 'currency'; code: string; from?: 'account' | 'home' | 'group-account' | 'jar-account' | 'shared-spending-account' | 'joint-account' | 'young-explorer-account'; group?: string; jarId?: string; joint?: boolean; youngExplorer?: boolean }
   | { type: 'account-details-list'; from: string; accountScope?: string }
-  | { type: 'account-details'; code: string; from: 'currency' | 'account-details-list' | 'payments'; group?: string; listFrom?: string; joint?: boolean }
+  | { type: 'account-details'; code: string; from: 'currency' | 'account-details-list' | 'payments'; group?: string; listFrom?: string; joint?: boolean; youngExplorer?: boolean }
   | { type: 'travel-hub' }
   | null;
 
@@ -185,7 +185,11 @@ function stateToPath(navItem: string, subPage: SubPage, accountType: AccountType
         const currencyData = currencyList.find((c) => c.code === subPage.code);
         return `/balances/${currencyData?.balanceId ?? subPage.code}`;
       }
-      case 'account-details-list': return `/account-details/${GROUP_IDS.currentAccount}`;
+      case 'account-details-list': {
+        // Use accountScope (account ID) if available, otherwise default to current account
+        const targetAccountId = subPage.accountScope || GROUP_IDS.currentAccount;
+        return `/account-details/${targetAccountId}`;
+      }
       case 'account-details': {
         const currencyList = resolveCurrencyList(subPage);
         const currencyData = currencyList.find((c) => c.code === subPage.code);
@@ -496,45 +500,46 @@ function AppInner() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
-  const handleNavigateAccountDetails = useCallback((code: string, from: 'currency' | 'account-details-list' | 'payments', group?: string, listFrom?: string) => {
-    setSubPage({ type: 'account-details', code, from, group, listFrom });
+  const handleNavigateAccountDetails = useCallback((code: string, from: 'currency' | 'account-details-list' | 'payments', group?: string, listFrom?: string, joint?: boolean, youngExplorer?: boolean) => {
+    setSubPage({ type: 'account-details', code, from, group, listFrom, joint, youngExplorer });
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
   const handleSubPageBack = useCallback(() => {
     if (subPage?.type === 'account-details') {
       if (subPage.from === 'currency') {
-        const currencyFrom = subPage.listFrom === 'home' ? 'home' : 'account';
-        setSubPage({ type: 'currency', code: subPage.code, from: currencyFrom as any, group: subPage.group, joint: subPage.joint });
+        const currencyFrom = subPage.listFrom === 'home' ? 'home' : (subPage.listFrom || 'account');
+        setSubPage({ type: 'currency', code: subPage.code, from: currencyFrom as any, group: subPage.group, joint: subPage.joint, youngExplorer: subPage.youngExplorer });
       } else if (subPage.from === 'account-details-list') {
         setSubPage({ type: 'account-details-list', from: subPage.listFrom ?? 'account' });
       } else {
         setSubPage(null);
       }
     } else if (subPage?.type === 'account-details-list') {
-      if (subPage.from === 'account') {
-        setSubPage({ type: 'account' });
-      } else if (subPage.from === 'joint-account') {
-        setSubPage({ type: 'joint-account' });
-      } else if (subPage.from === 'home') {
+      if (subPage.from === 'payments' || subPage.from === 'home') {
         setSubPage(null);
+      } else if (subPage.from === 'jar-account' && subPage.accountScope) {
+        // jar-account requires jarId param
+        setSubPage({ type: 'jar-account', jarId: subPage.accountScope });
       } else {
-        setSubPage(null);
+        // Check if from is a valid account type in the registry
+        const account = getAccountBySubPageType(subPage.from);
+        if (account) {
+          setSubPage({ type: subPage.from } as SubPage);
+        } else {
+          setSubPage(null);
+        }
       }
     } else if (subPage?.type === 'jar-account') {
       setSubPage(null);
-    } else if (subPage?.type === 'currency' && subPage.from === 'account') {
-      setSubPage({ type: 'account' });
-    } else if (subPage?.type === 'currency' && subPage.from === 'group-account') {
-      setSubPage({ type: 'group-account' });
-    } else if (subPage?.type === 'currency' && subPage.from === 'shared-spending-account') {
-      setSubPage({ type: 'shared-spending-account' });
-    } else if (subPage?.type === 'currency' && subPage.from === 'joint-account') {
-      setSubPage({ type: 'joint-account' });
-    } else if (subPage?.type === 'currency' && subPage.from === 'young-explorer-account') {
-      setSubPage({ type: 'young-explorer-account' });
-    } else if (subPage?.type === 'currency' && subPage.from === 'jar-account' && subPage.jarId) {
-      setSubPage({ type: 'jar-account', jarId: subPage.jarId });
+    } else if (subPage?.type === 'currency') {
+      if (subPage.from === 'home' || !subPage.from) {
+        setSubPage(null);
+      } else if (subPage.from === 'jar-account' && subPage.jarId) {
+        setSubPage({ type: 'jar-account', jarId: subPage.jarId });
+      } else {
+        setSubPage({ type: subPage.from } as SubPage);
+      }
     } else {
       setSubPage(null);
     }
@@ -593,17 +598,17 @@ function AppInner() {
             <AccountPage
               onNavigateCurrency={(code) => handleNavigateGenericCurrencyFromAccount(accountDef.subPageType, code)}
               onNavigateCards={features.hasCards ? () => handleNavigate('Cards') : undefined}
-              onAccountDetails={features.hasAccountDetails ? () => handleNavigateAccountDetailsList(accountDef.subPageType) : undefined}
+              onAccountDetails={features.hasAccountDetails ? () => handleNavigateAccountDetailsList(accountDef.subPageType, accountDef.id) : undefined}
               accountType={accountType}
               group={group}
               joint={accountDef.subPageType === 'joint-account' || undefined}
               youngExplorer={accountDef.subPageType === 'young-explorer-account' || undefined}
               personalAvatarUrl={personalAvatarUrl}
-              onAdd={() => handleOpenAddMoney(defaultCode, isCurrentAccount ? undefined : acctLabel, isCurrentAccount ? undefined : acctStyle)}
-              onConvert={features.hasConvert !== false ? () => handleOpenConvert(defaultCode, secondCode, isCurrentAccount ? undefined : acctLabel, group, isCurrentAccount ? undefined : t('home.currentAccount'), isCurrentAccount ? undefined : acctStyle, isCurrentAccount ? undefined : currentAccountStyle) : undefined}
-              onSend={features.hasSend ? () => handleOpenSend(defaultCode, isCurrentAccount ? undefined : acctLabel, group, undefined, undefined, undefined, isCurrentAccount ? undefined : acctStyle) : undefined}
-              onRequest={features.hasRequest ? () => handleOpenRequest(defaultCode, isCurrentAccount ? undefined : acctLabel, group, isCurrentAccount ? undefined : acctStyle) : undefined}
-              onPaymentLink={features.hasPaymentLink ? () => handleOpenPaymentLink(defaultCode, isCurrentAccount ? undefined : acctLabel, group, isCurrentAccount ? undefined : acctStyle) : undefined}
+              onAdd={() => handleOpenAddMoney(defaultCode, acctLabel, acctStyle)}
+              onConvert={features.hasConvert !== false ? () => handleOpenConvert(defaultCode, secondCode, acctLabel, group, isCurrentAccount ? undefined : t('home.currentAccount'), acctStyle, isCurrentAccount ? undefined : currentAccountStyle) : undefined}
+              onSend={features.hasSend ? () => handleOpenSend(defaultCode, acctLabel, group, undefined, undefined, undefined, acctStyle) : undefined}
+              onRequest={features.hasRequest ? () => handleOpenRequest(defaultCode, acctLabel, group, acctStyle) : undefined}
+              onPaymentLink={features.hasPaymentLink ? () => handleOpenPaymentLink(defaultCode, acctLabel, group, acctStyle) : undefined}
             />
           );
         }
@@ -640,7 +645,7 @@ function AppInner() {
             : () => handleNavigateSubAccountByType(currencySubPageType);
         const onAccountDetailsForCurrency = isJar || !currencyFeatures?.hasAccountDetails
           ? undefined
-          : () => handleNavigateAccountDetails(subPage.code, 'currency', subPage.group, subPage.from === 'home' ? 'home' : currencySubPageType === 'joint-account' ? 'joint-account' : undefined);
+          : () => handleNavigateAccountDetails(subPage.code, 'currency', subPage.group, subPage.from === 'home' ? 'home' : currencySubPageType, subPage.joint, subPage.youngExplorer);
         return (
           <CurrencyPage
             code={subPage.code}
@@ -665,7 +670,7 @@ function AppInner() {
       case 'Account': return <Account onBack={handleAccountBack} accountType={accountType} onSwitchAccount={handleSwitchAccount} avatarUrl={personalAvatarUrl} />;
       case 'Cards': return <Cards accountType={accountType} onTravelHub={() => { setSubPage({ type: 'travel-hub' }); window.scrollTo({ top: 0, behavior: 'instant' }); }} />;
       case 'Transactions': return <Transactions accountType={accountType} />;
-      case 'Payments': return <Payments accountType={accountType} personalAvatarUrl={personalAvatarUrl} onSend={() => handleOpenSend(accountType === 'business' ? businessHomeCurrency : consumerHomeCurrency)} onRequest={() => handleOpenRequest(accountType === 'business' ? businessHomeCurrency : consumerHomeCurrency)} onPaymentLink={() => handleOpenPaymentLink(accountType === 'business' ? businessHomeCurrency : consumerHomeCurrency)} onAccountDetails={(code: string) => handleNavigateAccountDetails(code, 'payments')} onAccountDetailsList={() => handleNavigateAccountDetailsList('payments')} />;
+      case 'Payments': return <Payments accountType={accountType} personalAvatarUrl={personalAvatarUrl} onSend={() => handleOpenSend(accountType === 'business' ? businessHomeCurrency : consumerHomeCurrency)} onRequest={() => handleOpenRequest(accountType === 'business' ? businessHomeCurrency : consumerHomeCurrency)} onPaymentLink={() => handleOpenPaymentLink(accountType === 'business' ? businessHomeCurrency : consumerHomeCurrency)} onAccountDetails={(code: string) => handleNavigateAccountDetails(code, 'payments')} onAccountDetailsList={(accountId: string) => handleNavigateAccountDetailsList('payments', accountId)} />;
       case 'Recipients': return <Recipients accountType={accountType} personalAvatarUrl={personalAvatarUrl} />;
       case 'Insights': return <Insights accountType={accountType} />;
       case 'Team': return <Team personalAvatarUrl={personalAvatarUrl} />;

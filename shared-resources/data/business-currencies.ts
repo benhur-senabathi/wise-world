@@ -10,6 +10,7 @@ export const businessCurrencies: CurrencyData[] = [
     symbol: '£',
     balance: computeCurrencyBalance('GBP', businessTransactions),
     accountDetails: '23-14-70 · 81204736',
+    hasInterest: true,
   },
   {
     code: 'USD',
@@ -18,6 +19,7 @@ export const businessCurrencies: CurrencyData[] = [
     symbol: '$',
     balance: computeCurrencyBalance('USD', businessTransactions),
     accountDetails: '9402718365',
+    hasInterest: true,
   },
   {
     code: 'EUR',
@@ -26,6 +28,7 @@ export const businessCurrencies: CurrencyData[] = [
     symbol: '€',
     balance: computeCurrencyBalance('EUR', businessTransactions),
     accountDetails: 'BE42 9670 5519 3847',
+    hasInterest: true,
   },
   {
     code: 'SGD',

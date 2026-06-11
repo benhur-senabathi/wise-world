@@ -18,3 +18,4 @@ All content must follow Wise's tone of voice (concise, modern, energetic) and us
 2. **shared-resources is the single source of truth** for data, account logic, and cross-platform design system docs.
 3. **Import data via `@shared/data/`** (Vite alias). Only `src/data/nav.tsx` stays per-project.
 4. **There are 2 projects**: `base-surfaces-web` (port 3002) and `base-surfaces-mobile` (port 3017).
+5. **Everything must work with Account Registry and Datasets.** Never hardcode account types, navigation logic, or data structures. Use `getAccountBySubPageType()`, `getAccountById()`, `useVisibleAccounts()` from the registry. All data must respect the active dataset via `useActiveCurrencies()`, `useDatasetData()`. When building features, always check: "Does this work if I add a new account type?" and "Does this work if I switch datasets?"

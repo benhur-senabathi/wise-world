@@ -68,7 +68,7 @@
 
 .send-flow__body--wide {
   max-width: 668px;
-  padding-top: 72px;
+  padding-top: 56px;
 }
 
 /* Step 1: Recipient selection */
@@ -197,8 +197,7 @@ html.np-theme-personal--dark .send-flow__filters .np-chip--selected:active {
 }
 
 /* Initials avatars: filled (no outline ring) — matches recipients */
-.send-flow__list .np-circle-border::after,
-.send-flow__you-send .np-circle-border::after {
+.send-flow__list .np-circle-border::after {
   display: none;
 }
 
@@ -208,22 +207,6 @@ html.np-theme-personal--dark .send-flow__filters .np-chip--selected:active {
 }
 
 /* Step 2: Amount input */
-.send-flow__divider {
-  height: 1px;
-  background: var(--color-border-neutral);
-  margin: 32px 0 8px;
-}
-
-.send-flow__you-send {
-  margin: 0 -16px;
-  padding: 0 16px;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-.send-flow__you-send:hover {
-  background: var(--color-background-neutral);
-}
 
 /* Currency popover (floating below trigger button) */
 .send-flow__currency-popover {
@@ -237,13 +220,6 @@ html.np-theme-personal--dark .send-flow__filters .np-chip--selected:active {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-/* Inline variant: positioned below the Change button list item */
-.send-flow__currency-popover--inline {
-  top: 100%;
-  right: 0;
-  margin-top: 4px;
-  left: auto;
 }
 
 .send-flow__currency-popover .currency-dropdown__search {
@@ -308,13 +284,191 @@ html.np-theme-personal--dark .send-flow__filters .np-chip--selected:active {
   color: var(--color-sentiment-positive);
 }
 
-/* Cross-currency UI */
-.send-flow__rate-pill {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 16px;
+/* Disable framer-motion digit animations in send flow */
+.send-flow .wds-amount-input-placeholder span {
+  zoom: 1 !important;
+  opacity: 1 !important;
 }
 
-.send-flow__send-input {
+/* Send flow ExpressiveMoneyInput override: label + currency pill on same row, amount below */
+.send-flow .wds-expressive-money-input {
+  position: relative;
+  width: 100%;
+}
+
+.send-flow .wds-expressive-money-input > label {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  line-height: 40px;
+  color: var(--color-content-primary);
+}
+
+/* Currency selector buttons: outline style (no fill), 14px bold text, 42px height */
+.send-flow .wds-currency-selector,
+.send-flow .wds-currency-selector span {
+  background: transparent !important;
+  border: none;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.send-flow .wds-currency-selector {
+  border: 1px solid var(--color-border-neutral) !important;
+  height: 42px;
+  padding: 8px !important;
+}
+
+.send-flow .wds-currency-selector:hover {
+  background: var(--color-background-neutral) !important;
+}
+
+.send-flow .wds-currency-selector .tw-icon {
+  color: var(--color-content-secondary);
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.send-flow .wds-currency-selector .tw-icon svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* Pull the currency selector to top-right, in line with the label */
+.send-flow .wds-expressive-money-input .wds-expressive-money-input-currency-selector {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-right: 0;
+  z-index: 1;
+}
+
+/* Space between label/pill row and the amount input */
+.send-flow .wds-expressive-money-input > [role="group"] {
+  margin-top: 16px;
+}
+
+
+/* From row — label left, currency pill right */
+.send-flow__from-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 0;
 }
+
+.send-flow__from-label {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--color-content-primary);
+}
+
+
+/* From amount input: fade + slide simultaneously, no clipping */
+.send-flow__from-amount {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  margin-bottom: 16px;
+  /* Cross → same: fast fade out */
+  transition: grid-template-rows 0.3s ease, opacity 0.15s ease;
+}
+
+.send-flow__from-amount > * {
+  min-height: 0;
+}
+
+.send-flow__from-amount--visible {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  /* Same → cross: slower fade in */
+  transition: grid-template-rows 0.35s ease, opacity 0.5s ease;
+}
+
+/* Rate pill — always takes up space, fades in/out */
+.send-flow__rate-pill {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+  transition: opacity 0.3s ease 0.1s;
+}
+
+.send-flow__rate-pill--hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: none;
+}
+
+/* Rate button divider */
+.send-flow__rate-divider {
+  display: inline-block;
+  width: 1px;
+  height: 24px;
+  background: var(--color-border-neutral);
+}
+
+/* Custom rate button */
+.send-flow__rate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 42px;
+  padding: 8px 16px;
+  border-radius: 1000px;
+  border: none;
+  background: var(--color-background-neutral);
+  color: var(--color-content-primary);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.send-flow__rate-btn:hover {
+  background: var(--color-background-neutral-hover, #e8e8e8);
+}
+
+.send-flow__rate-btn:active {
+  background: var(--color-background-neutral-active, #ddd);
+}
+
+.send-flow__rate-btn > .tw-icon {
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.send-flow__rate-btn > .send-flow__rate-divider {
+  flex-shrink: 0;
+  margin-top: 1px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+/* Rate flipper — same pattern as mobile FlowHeader */
+.send-flow__rate-clip {
+  display: block;
+  height: 42px;
+  overflow: hidden;
+  margin: -10px 0;
+}
+
+.send-flow__rate-flipper {
+  display: flex;
+  flex-direction: column;
+  animation: send-rate-flip 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.send-flow__rate-line {
+  height: 42px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+@keyframes send-rate-flip {
+  0%, 42% { transform: translateY(0); }
+  48%, 90% { transform: translateY(-42px); }
+  96%, 100% { transform: translateY(0); }
+}
+

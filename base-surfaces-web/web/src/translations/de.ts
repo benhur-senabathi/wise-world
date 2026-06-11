@@ -418,6 +418,8 @@ const de: Translations = {
   'send.whoSendingTo': 'An wen sendest du?',
   'send.recents': 'Letzte',
   'send.allAccounts': 'Alle Konten',
+  'send.from': 'Von',
+  'send.to': 'An',
   'send.recipientGets': '{name} erhält',
   'send.recipientGetsExactly': '{name} erhält genau',
   'send.youSend': 'Du sendest',

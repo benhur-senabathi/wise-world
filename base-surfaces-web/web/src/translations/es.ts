@@ -258,6 +258,7 @@ const es: Translations = {
   'payments.usDollar': 'D\u00F3lar estadounidense',
   'payments.euro': 'Euro',
   'payments.accountNumberEnding': 'N\u00FAmero de cuenta terminado en \u2022\u2022 {number}',
+  'payments.andMore': 'y {count} m\u00E1s',
   'payments.changesFooter': 'Hemos hecho algunos cambios en esta \u00E1rea de la app.',
 
   // Open+ Page
@@ -418,6 +419,8 @@ const es: Translations = {
   'send.whoSendingTo': '\u00BFA qui\u00E9n le env\u00EDas?',
   'send.recents': 'Recientes',
   'send.allAccounts': 'Todas las cuentas',
+  'send.from': 'Desde',
+  'send.to': 'Para',
   'send.recipientGets': '{name} recibe',
   'send.recipientGetsExactly': '{name} recibe exactamente',
   'send.youSend': 'T\u00FA env\u00EDas',

@@ -63,9 +63,9 @@ export function ConvertFlow({ fromCurrency: initFrom, toCurrency: initTo, accoun
   const fromStyle = labelsSwapped ? resolvedToStyle : accountStyle;
   const toStyle = labelsSwapped ? accountStyle : resolvedToStyle;
   const fromAvatarStyle = { backgroundColor: fromStyle.color, color: fromStyle.textColor };
-  const fromAvatarIcon = resolveIcon(fromStyle.iconName);
+  const fromAvatarIcon = resolveIcon(fromStyle.iconName, 24);
   const toAvatarStyle = { backgroundColor: toStyle.color, color: toStyle.textColor };
-  const toAvatarIcon = resolveIcon(toStyle.iconName);
+  const toAvatarIcon = resolveIcon(toStyle.iconName, 24);
 
   // Find the balance for the "from" currency — resolve from registry by matching style
   const jarDef = jarId ? getJar(jarId) : undefined;
@@ -172,7 +172,7 @@ export function ConvertFlow({ fromCurrency: initFrom, toCurrency: initTo, accoun
     <div className="convert-flow">
       <FlowHeader
         onClose={onClose}
-        trailing={
+        trailing={fromCurrency !== toCurrency ? (
           <GlassPill>
             <span className="flow-header__rate-clip">
               <span className="flow-header__rate-flipper">
@@ -190,7 +190,7 @@ export function ConvertFlow({ fromCurrency: initFrom, toCurrency: initTo, accoun
             </span>
             <span className="ios-glass-btn__icon" style={{ transform: 'scale(0.75)' }}><ChevronRight size={16} /></span>
           </GlassPill>
-        }
+        ) : undefined}
       />
 
       <div className="convert-flow__body" ref={bodyRef}>

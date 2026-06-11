@@ -179,7 +179,11 @@ function QrPageContent() {
         <p className="np-text-body-default" style={{ margin: 0, color: 'var(--color-content-secondary)' }}>
           Scan to pay with a QR code
         </p>
-        <img src="/paynow-logo.svg" alt="PayNow" className="cards-page__paynow-logo" />
+        <div className="cards-page__qr-logos">
+          <img src="/alipay-plus-logo.svg" alt="Alipay+" className="cards-page__qr-logo" />
+          <img src="/paynow-logo.svg" alt="PayNow" className="cards-page__qr-logo" />
+          <img src="/qrph-logo.svg" alt="QR Ph" className="cards-page__qr-logo" />
+        </div>
       </div>
 
       <div className="cards-page__manage">
