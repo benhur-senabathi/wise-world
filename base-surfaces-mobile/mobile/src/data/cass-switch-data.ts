@@ -8,13 +8,18 @@ export type CassMilestone = 0 | 1 | 2 | 3 | 4 | 5;
 // 0 = not started, 1 = requested, 2 = verified, 3 = payments moving,
 // 4 = balance transferring, 5 = complete
 
-export type CassStatus = 'none' | 'initiated' | 'complete';
+export type CassStatus = 'none' | 'paused' | 'initiated' | 'complete';
+
+// Screens a paused switch can resume to (every initiation step before success).
+export type CassResumeScreen = 'intro' | 'bank' | 'match' | 'address' | 'card' | 'date' | 'review' | 'finalise';
 
 export type CassState = {
   status: CassStatus;
   milestone: CassMilestone;
   switchDate: Date | null;
   entryDismissed: boolean;
+  // Screen to resume from when a paused switch is continued.
+  pausedScreen: CassResumeScreen | null;
 };
 
 export const initialCassState: CassState = {
@@ -22,6 +27,7 @@ export const initialCassState: CassState = {
   milestone: 0,
   switchDate: null,
   entryDismissed: false,
+  pausedScreen: null,
 };
 
 // Old bank — CoP "succeeds" against Monzo.

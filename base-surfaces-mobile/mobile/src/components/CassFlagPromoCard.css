@@ -1,0 +1,68 @@
+.cass-flag-promo {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--size-32, 32px);
+  min-height: 260px;
+  display: flex;
+}
+
+/* Rive waving-flag background — fills the card, sits behind everything, never
+   intercepts taps. Fit.Cover + Alignment.Center are set on the Rive layout. */
+.cass-flag-promo__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cass-flag-promo__rive {
+  width: 100%;
+  height: 100%;
+}
+
+/* Always-on progressive blur over the flag. backdrop-filter blurs the flag
+   painted beneath it; the card text above stays sharp. Heaviest at the bottom
+   where the smaller description sits. A faint dark scrim lifts white text off
+   the high-contrast Union Jack stripes. */
+.cass-flag-promo__blur {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.cass-flag-promo__blur::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.28) 45%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+}
+
+/* PromoCard text sits on top, transparent so the flag shows through. */
+.cass-flag-promo__card.np-Card--promoCard {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 100%;
+  --Card-background-color: transparent;
+  background-color: transparent;
+  border-radius: 0;
+  justify-content: flex-end;
+}
+
+.cass-flag-promo__card .np-Card-title {
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+}
+
+.cass-flag-promo__card .np-Card-description {
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}

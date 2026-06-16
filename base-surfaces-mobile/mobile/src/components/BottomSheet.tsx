@@ -22,6 +22,12 @@ export function BottomSheet({ open, onClose, title, subtitle, className, childre
   const [animating, setAnimating] = useState(false);
   const dragRef = useRef({ startY: 0, currentY: 0, dragging: false });
 
+  // Safety net: always restore body scroll if the sheet unmounts while open
+  // (e.g. a sheet action closes the parent flow before the close transition runs).
+  useEffect(() => {
+    return () => { document.body.style.overflow = ''; };
+  }, []);
+
   // Open: mount then animate in; lock body scroll while visible
   useEffect(() => {
     if (open) {

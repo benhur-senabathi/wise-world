@@ -13,6 +13,9 @@ export function CassEntryPrompt({ onStartSwitch, onOpenProgress }: Props) {
   const { t } = useLanguage();
   const { cass, dismissEntry } = useCass();
 
+  // Paused — the resumable switch task card on Home takes over this slot.
+  if (cass.status === 'paused') return null;
+
   // Progress card — replaces the entry prompt once a switch is under way.
   if (cass.status === 'initiated') {
     return (

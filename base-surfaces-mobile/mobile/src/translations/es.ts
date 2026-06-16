@@ -76,13 +76,6 @@ const es: Partial<Translations> = {
 
   // Tasks
   'tasks.title': 'Tareas',
-  'tasks.pausedBusiness': '500 GBP a tu cuenta',
-  'tasks.pausedPersonal': '12 GBP a tu cuenta',
-  'tasks.pausedDescription': 'Esperando tu pago',
-  'tasks.requestsBusiness': '3 pagos necesitan aprobaci\u00F3n',
-  'tasks.requestsPersonal': '3 solicitudes de pago',
-  'tasks.requestsDescBusiness': 'Aprobar o rechazar cada pago',
-  'tasks.requestsDescPersonal': 'Pagar o rechazar cada solicitud',
 
   // Home
   'home.currentAccount': 'Cuenta corriente',

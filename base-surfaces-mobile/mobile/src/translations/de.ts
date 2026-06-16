@@ -76,13 +76,6 @@ const de: Partial<Translations> = {
 
   // Tasks
   'tasks.title': 'Aufgaben',
-  'tasks.pausedBusiness': '500 GBP auf dein Konto',
-  'tasks.pausedPersonal': '12 GBP auf dein Konto',
-  'tasks.pausedDescription': 'Wartet auf deine Zahlung',
-  'tasks.requestsBusiness': '3 Zahlungen müssen genehmigt werden',
-  'tasks.requestsPersonal': '3 Zahlungsanfragen',
-  'tasks.requestsDescBusiness': 'Jede Zahlung genehmigen oder ablehnen',
-  'tasks.requestsDescPersonal': 'Jede Anfrage bezahlen oder ablehnen',
 
   // Home
   'home.currentAccount': 'Girokonto',

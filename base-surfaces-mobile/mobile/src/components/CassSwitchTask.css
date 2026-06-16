@@ -1,0 +1,35 @@
+/* ===== CASS "Switch to Wise" task card (paused switch) ===== */
+
+.cass-switch-task {
+  position: relative;
+  background: var(--color-background-neutral-solid);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.cass-switch-task__wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.cass-switch-task__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.cass-switch-task__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.cass-switch-task__actions {
+  display: flex;
+  flex-direction: row;
+  gap: var(--size-8);
+}

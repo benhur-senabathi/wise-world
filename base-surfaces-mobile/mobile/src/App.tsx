@@ -8,6 +8,7 @@ import { PrototypeNamesProvider, usePrototypeNames } from './context/PrototypeNa
 import { LiveRatesProvider } from './context/LiveRates';
 import { ShimmerProvider } from './context/Shimmer';
 import { CassProvider } from './context/Cass';
+import type { CassResumeScreen } from './data/cass-switch-data';
 import { IOSTopBar } from './components/IOSTopBar';
 import { MobileNav, type MobileNavHandle } from './components/MobileNav';
 import { PrototypeSettings } from './components/PrototypeSettings';
@@ -83,7 +84,7 @@ type ActiveFlow =
   | { type: 'payment-link'; defaultCurrency: string; accountLabel: string; group?: string; accountStyle?: AccountStyle }
   | { type: 'open-plus' }
   | { type: 'scan' }
-  | { type: 'cass-switch' }
+  | { type: 'cass-switch'; startScreen?: CassResumeScreen }
   | null;
 
 function flowToPath(flow: ActiveFlow): string | null {
@@ -792,6 +793,7 @@ function AppInner() {
           onScan={() => setActiveFlow({ type: 'scan' })}
           onAccountDetails={(subPageType?: string) => handleNavigateAccountDetailsList(subPageType || 'home')}
           onCassStart={() => setActiveFlow({ type: 'cass-switch' })}
+          onCassResume={(screen: CassResumeScreen) => setActiveFlow({ type: 'cass-switch', startScreen: screen })}
           onCassProgress={() => { setTransitionDirection('push'); setSubPage({ type: 'cass-progress' }); }}
         />
       );
@@ -883,7 +885,7 @@ function AppInner() {
         <ScanFlow onClose={handleCloseFlow} />
       )}
       {activeFlow.type === 'cass-switch' && (
-        <CassSwitchFlow onClose={handleCloseFlow} avatarUrl={avatarUrl} />
+        <CassSwitchFlow onClose={handleCloseFlow} avatarUrl={avatarUrl} startScreen={activeFlow.startScreen} />
       )}
     </>
   );

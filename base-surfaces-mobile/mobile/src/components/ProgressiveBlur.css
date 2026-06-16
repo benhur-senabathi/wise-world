@@ -1,0 +1,11 @@
+.progressive-blur {
+  position: relative;
+  pointer-events: none;
+}
+
+.progressive-blur__layer {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}

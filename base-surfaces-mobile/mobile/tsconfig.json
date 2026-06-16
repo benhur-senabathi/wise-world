@@ -18,7 +18,8 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["vite/client"],
     "paths": {
-      "@shared/*": ["../../shared-resources/*"]
+      "@shared/*": ["../../shared-resources/*"],
+      "@animations/*": ["../../animations/*"]
     }
   },
   "include": ["src", "../../shared-resources"]

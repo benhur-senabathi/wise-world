@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, useCallback } from 'react';
-import { initialCassState, type CassState, type CassMilestone } from '../data/cass-switch-data';
+import { initialCassState, type CassState, type CassMilestone, type CassResumeScreen } from '../data/cass-switch-data';
 
 type CassContextValue = {
   cass: CassState;
   initiateSwitch: (switchDate: Date) => void;
+  pauseSwitch: (screen: CassResumeScreen) => void;
   advanceMilestone: () => void;
   resetSwitch: () => void;
   dismissEntry: () => void;
@@ -12,6 +13,7 @@ type CassContextValue = {
 const CassContext = createContext<CassContextValue>({
   cass: initialCassState,
   initiateSwitch: () => {},
+  pauseSwitch: () => {},
   advanceMilestone: () => {},
   resetSwitch: () => {},
   dismissEntry: () => {},
@@ -22,6 +24,10 @@ export function CassProvider({ children }: { children: React.ReactNode }) {
 
   const initiateSwitch = useCallback((switchDate: Date) => {
     setCass((prev) => ({ ...prev, status: 'initiated', milestone: 1, switchDate }));
+  }, []);
+
+  const pauseSwitch = useCallback((screen: CassResumeScreen) => {
+    setCass((prev) => ({ ...prev, status: 'paused', pausedScreen: screen }));
   }, []);
 
   const advanceMilestone = useCallback(() => {
@@ -41,7 +47,7 @@ export function CassProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <CassContext.Provider value={{ cass, initiateSwitch, advanceMilestone, resetSwitch, dismissEntry }}>
+    <CassContext.Provider value={{ cass, initiateSwitch, pauseSwitch, advanceMilestone, resetSwitch, dismissEntry }}>
       {children}
     </CassContext.Provider>
   );

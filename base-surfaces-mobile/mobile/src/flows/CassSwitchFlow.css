@@ -93,6 +93,13 @@
   margin-top: 0;
 }
 
+/* Name inline prompt sits tight under the Full name field (4px), then normal
+   spacing to the next field — pull it up past the Field's own bottom margin */
+.cass-flow__name-prompt {
+  margin-top: -20px;
+  margin-bottom: 24px;
+}
+
 /* "Not my address" bottom sheet body */
 .cass-flow__sheet-body {
   display: flex;
@@ -104,6 +111,40 @@
 .cass-flow__sheet-body p {
   margin: 0;
   color: var(--color-content-secondary);
+}
+
+/* "I don't have my old bank card" bottom sheet */
+.cass-flow__card-sheet {
+  padding: 0 16px 16px;
+}
+
+.cass-flow__card-sheet-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-8);
+  margin-top: 16px;
+}
+
+/* Name-mismatch error bottom sheet — illustration-led, centred */
+.cass-flow__mismatch-sheet {
+  padding: 0 16px 16px;
+  text-align: center;
+}
+
+.cass-flow__mismatch-title {
+  margin: 0;
+}
+
+.cass-flow__mismatch-body {
+  margin: 8px 0 0;
+  color: var(--color-content-secondary);
+}
+
+.cass-flow__mismatch-sheet-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-8);
+  margin-top: var(--space-medium);
 }
 
 /* DateInput uses a Bootstrap grid whose columns only go horizontal at ≥576px.

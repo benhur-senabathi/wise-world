@@ -1,0 +1,1100 @@
+'Log files:
+/Users/benhur.senabathi/Documents/Projects/CASS/wise-world/base-surfaces-mobile/mobile/.npm-cache/_logs/2026-06-16T11_09_11_353Z-debug-0.log
+
+# npm resolution error report
+
+While resolving: @react-three/drei@10.7.7
+Found: react@18.3.1
+node_modules/react
+  peer react@">=17.0.0" from @floating-ui/react@0.27.19
+  node_modules/@floating-ui/react
+    @floating-ui/react@"^0.27.18" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+  peer react@">=16.8.0" from @floating-ui/react-dom@2.1.8
+  node_modules/@floating-ui/react-dom
+    @floating-ui/react-dom@"^2.1.8" from @floating-ui/react@0.27.19
+    node_modules/@floating-ui/react
+      @floating-ui/react@"^0.27.18" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    @floating-ui/react-dom@"^2.1.2" from @floating-ui/react@0.26.28
+    node_modules/@headlessui/react/node_modules/@floating-ui/react
+      @floating-ui/react@"^0.26.16" from @headlessui/react@2.2.9
+      node_modules/@headlessui/react
+        @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+  peer react@"^18 || ^19 || ^19.0.0-rc" from @headlessui/react@2.2.9
+  node_modules/@headlessui/react
+    @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+  peer react@">=16.8.0" from @floating-ui/react@0.26.28
+  node_modules/@headlessui/react/node_modules/@floating-ui/react
+    @floating-ui/react@"^0.26.16" from @headlessui/react@2.2.9
+    node_modules/@headlessui/react
+      @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-aria/focus@3.21.4
+  node_modules/@react-aria/focus
+    @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+    node_modules/@headlessui/react
+      @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+    node_modules/@react-aria/overlays
+      @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-aria/i18n@3.12.15
+  node_modules/@react-aria/i18n
+    @react-aria/i18n@"^3.12.15" from @react-aria/overlays@3.31.1
+    node_modules/@react-aria/overlays
+      @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-aria/interactions@3.27.0
+  node_modules/@react-aria/interactions
+    @react-aria/interactions@"^3.25.0" from @headlessui/react@2.2.9
+    node_modules/@headlessui/react
+      @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    @react-aria/interactions@"^3.27.0" from @react-aria/focus@3.21.4
+    node_modules/@react-aria/focus
+      @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+      node_modules/@headlessui/react
+        @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    @react-aria/interactions@"^3.27.0" from @react-aria/overlays@3.31.1
+    node_modules/@react-aria/overlays
+      @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    @react-aria/interactions@"^3.27.0" from @react-aria/visually-hidden@3.8.30
+    node_modules/@react-aria/visually-hidden
+      @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-aria/overlays@3.31.1
+  node_modules/@react-aria/overlays
+    @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-aria/ssr@3.9.10
+  node_modules/@react-aria/ssr
+    @react-aria/ssr@"^3.9.10" from @react-aria/i18n@3.12.15
+    node_modules/@react-aria/i18n
+      @react-aria/i18n@"^3.12.15" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+    @react-aria/ssr@"^3.9.10" from @react-aria/interactions@3.27.0
+    node_modules/@react-aria/interactions
+      @react-aria/interactions@"^3.25.0" from @headlessui/react@2.2.9
+      node_modules/@headlessui/react
+        @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/interactions@"^3.27.0" from @react-aria/focus@3.21.4
+      node_modules/@react-aria/focus
+        @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+        node_modules/@headlessui/react
+          @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/interactions@"^3.27.0" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/interactions@"^3.27.0" from @react-aria/visually-hidden@3.8.30
+      node_modules/@react-aria/visually-hidden
+        @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+    @react-aria/ssr@"^3.9.10" from @react-aria/overlays@3.31.1
+    node_modules/@react-aria/overlays
+      @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    @react-aria/ssr@"^3.9.10" from @react-aria/utils@3.33.0
+    node_modules/@react-aria/utils
+      @react-aria/utils@"^3.33.0" from @react-aria/focus@3.21.4
+      node_modules/@react-aria/focus
+        @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+        node_modules/@headlessui/react
+          @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/i18n@3.12.15
+      node_modules/@react-aria/i18n
+        @react-aria/i18n@"^3.12.15" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/interactions@3.27.0
+      node_modules/@react-aria/interactions
+        @react-aria/interactions@"^3.25.0" from @headlessui/react@2.2.9
+        node_modules/@headlessui/react
+          @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/interactions@"^3.27.0" from @react-aria/focus@3.21.4
+        node_modules/@react-aria/focus
+          @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+          node_modules/@headlessui/react
+            @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+          @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+          node_modules/@react-aria/overlays
+            @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+          @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/interactions@"^3.27.0" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/interactions@"^3.27.0" from @react-aria/visually-hidden@3.8.30
+        node_modules/@react-aria/visually-hidden
+          @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+          node_modules/@react-aria/overlays
+            @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/visually-hidden@3.8.30
+      node_modules/@react-aria/visually-hidden
+        @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-aria/utils@3.33.0
+  node_modules/@react-aria/utils
+    @react-aria/utils@"^3.33.0" from @react-aria/focus@3.21.4
+    node_modules/@react-aria/focus
+      @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+      node_modules/@headlessui/react
+        @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    @react-aria/utils@"^3.33.0" from @react-aria/i18n@3.12.15
+    node_modules/@react-aria/i18n
+      @react-aria/i18n@"^3.12.15" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+    @react-aria/utils@"^3.33.0" from @react-aria/interactions@3.27.0
+    node_modules/@react-aria/interactions
+      @react-aria/interactions@"^3.25.0" from @headlessui/react@2.2.9
+      node_modules/@headlessui/react
+        @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/interactions@"^3.27.0" from @react-aria/focus@3.21.4
+      node_modules/@react-aria/focus
+        @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+        node_modules/@headlessui/react
+          @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/interactions@"^3.27.0" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/interactions@"^3.27.0" from @react-aria/visually-hidden@3.8.30
+      node_modules/@react-aria/visually-hidden
+        @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+    @react-aria/utils@"^3.33.0" from @react-aria/overlays@3.31.1
+    node_modules/@react-aria/overlays
+      @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    @react-aria/utils@"^3.33.0" from @react-aria/visually-hidden@3.8.30
+    node_modules/@react-aria/visually-hidden
+      @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-aria/visually-hidden@3.8.30
+  node_modules/@react-aria/visually-hidden
+    @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+    node_modules/@react-aria/overlays
+      @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-stately/overlays@3.6.22
+  node_modules/@react-stately/overlays
+    @react-stately/overlays@"^3.6.22" from @react-aria/overlays@3.31.1
+    node_modules/@react-aria/overlays
+      @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-stately/utils@3.11.0
+  node_modules/@react-stately/utils
+    @react-stately/utils@"^3.11.0" from @react-aria/utils@3.33.0
+    node_modules/@react-aria/utils
+      @react-aria/utils@"^3.33.0" from @react-aria/focus@3.21.4
+      node_modules/@react-aria/focus
+        @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+        node_modules/@headlessui/react
+          @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/i18n@3.12.15
+      node_modules/@react-aria/i18n
+        @react-aria/i18n@"^3.12.15" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/interactions@3.27.0
+      node_modules/@react-aria/interactions
+        @react-aria/interactions@"^3.25.0" from @headlessui/react@2.2.9
+        node_modules/@headlessui/react
+          @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/interactions@"^3.27.0" from @react-aria/focus@3.21.4
+        node_modules/@react-aria/focus
+          @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+          node_modules/@headlessui/react
+            @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+          @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+          node_modules/@react-aria/overlays
+            @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+          @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/interactions@"^3.27.0" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/interactions@"^3.27.0" from @react-aria/visually-hidden@3.8.30
+        node_modules/@react-aria/visually-hidden
+          @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+          node_modules/@react-aria/overlays
+            @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/visually-hidden@3.8.30
+      node_modules/@react-aria/visually-hidden
+        @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+    @react-stately/utils@"^3.11.0" from @react-stately/overlays@3.6.22
+    node_modules/@react-stately/overlays
+      @react-stately/overlays@"^3.6.22" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-types/button@3.15.0
+  node_modules/@react-types/button
+    @react-types/button@"^3.15.0" from @react-aria/overlays@3.31.1
+    node_modules/@react-aria/overlays
+      @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-types/overlays@3.9.3
+  node_modules/@react-types/overlays
+    @react-types/overlays@"^3.9.3" from @react-aria/overlays@3.31.1
+    node_modules/@react-aria/overlays
+      @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    @react-types/overlays@"^3.9.3" from @react-stately/overlays@3.6.22
+    node_modules/@react-stately/overlays
+      @react-stately/overlays@"^3.6.22" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-types/shared@3.33.0
+  node_modules/@react-types/shared
+    @react-types/shared@"^3.33.0" from @react-aria/focus@3.21.4
+    node_modules/@react-aria/focus
+      @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+      node_modules/@headlessui/react
+        @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    @react-types/shared@"^3.33.0" from @react-aria/i18n@3.12.15
+    node_modules/@react-aria/i18n
+      @react-aria/i18n@"^3.12.15" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+    @react-types/shared@"^3.33.0" from @react-aria/interactions@3.27.0
+    node_modules/@react-aria/interactions
+      @react-aria/interactions@"^3.25.0" from @headlessui/react@2.2.9
+      node_modules/@headlessui/react
+        @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/interactions@"^3.27.0" from @react-aria/focus@3.21.4
+      node_modules/@react-aria/focus
+        @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+        node_modules/@headlessui/react
+          @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/interactions@"^3.27.0" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/interactions@"^3.27.0" from @react-aria/visually-hidden@3.8.30
+      node_modules/@react-aria/visually-hidden
+        @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+    @react-types/shared@"^3.33.0" from @react-aria/overlays@3.31.1
+    node_modules/@react-aria/overlays
+      @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    @react-types/shared@"^3.33.0" from @react-aria/utils@3.33.0
+    node_modules/@react-aria/utils
+      @react-aria/utils@"^3.33.0" from @react-aria/focus@3.21.4
+      node_modules/@react-aria/focus
+        @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+        node_modules/@headlessui/react
+          @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/i18n@3.12.15
+      node_modules/@react-aria/i18n
+        @react-aria/i18n@"^3.12.15" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/interactions@3.27.0
+      node_modules/@react-aria/interactions
+        @react-aria/interactions@"^3.25.0" from @headlessui/react@2.2.9
+        node_modules/@headlessui/react
+          @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/interactions@"^3.27.0" from @react-aria/focus@3.21.4
+        node_modules/@react-aria/focus
+          @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+          node_modules/@headlessui/react
+            @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+          @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+          node_modules/@react-aria/overlays
+            @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+          @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/interactions@"^3.27.0" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/interactions@"^3.27.0" from @react-aria/visually-hidden@3.8.30
+        node_modules/@react-aria/visually-hidden
+          @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+          node_modules/@react-aria/overlays
+            @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/visually-hidden@3.8.30
+      node_modules/@react-aria/visually-hidden
+        @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+    @react-types/shared@"^3.33.0" from @react-aria/visually-hidden@3.8.30
+    node_modules/@react-aria/visually-hidden
+      @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+    @react-types/shared@"^3.33.0" from @react-types/button@3.15.0
+    node_modules/@react-types/button
+      @react-types/button@"^3.15.0" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+    @react-types/shared@"^3.33.0" from @react-types/overlays@3.9.3
+    node_modules/@react-types/overlays
+      @react-types/overlays@"^3.9.3" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-types/overlays@"^3.9.3" from @react-stately/overlays@3.6.22
+      node_modules/@react-stately/overlays
+        @react-stately/overlays@"^3.6.22" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0" from @rive-app/react-webgl2@4.27.2
+  node_modules/@rive-app/react-webgl2
+    @rive-app/react-webgl2@"^4.27.0" from @wise/art@2.29.0
+    node_modules/@wise/art
+      peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+      @wise/art@"^2.29.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" from @tanstack/react-virtual@3.13.18
+  node_modules/@tanstack/react-virtual
+    @tanstack/react-virtual@"^3.13.9" from @headlessui/react@2.2.9
+    node_modules/@headlessui/react
+      @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+  peer react@">=18" from @transferwise/components@46.132.1
+  node_modules/@transferwise/components
+    @transferwise/components@"^46.125.0" from the root project
+  peer react@"*" from @transferwise/icons@4.3.0
+  node_modules/@transferwise/icons
+    peer @transferwise/icons@"^3 || ^4" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+    @transferwise/icons@"^4.1.0" from the root project
+  peer react@">= 16.8.0" from @use-gesture/react@10.3.1
+  node_modules/@use-gesture/react
+    @use-gesture/react@"^10.3.1" from @react-three/drei@10.7.7
+    node_modules/@react-three/drei
+      @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+      node_modules/@wise/art
+        peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+        @wise/art@"^2.29.0" from the root project
+      @react-three/drei@"^10.7.7" from the root project
+  peer react@">=18" from @wise/art@2.29.0
+  node_modules/@wise/art
+    peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+    @wise/art@"^2.29.0" from the root project
+  peer react@">=18" from @wise/components-theming@1.10.1
+  node_modules/@wise/components-theming
+    peer @wise/components-theming@"^1.9.1" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+    @wise/components-theming@"^1.10.1" from the root project
+  peerOptional react@">=18.0.0" from agentation@2.3.3
+  node_modules/agentation
+    dev agentation@"^2.2.1" from the root project
+  peerOptional react@"^18.0.0 || ^19.0.0" from framer-motion@12.38.0
+  node_modules/framer-motion
+    framer-motion@"^12.33.0" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+    framer-motion@"^12.38.0" from the root project
+  peer react@"^18.3.1" from react-dom@18.3.1
+  node_modules/react-dom
+    peer react-dom@">=17.0.0" from @floating-ui/react@0.27.19
+    node_modules/@floating-ui/react
+      @floating-ui/react@"^0.27.18" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    peer react-dom@">=16.8.0" from @floating-ui/react-dom@2.1.8
+    node_modules/@floating-ui/react-dom
+      @floating-ui/react-dom@"^2.1.8" from @floating-ui/react@0.27.19
+      node_modules/@floating-ui/react
+        @floating-ui/react@"^0.27.18" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @floating-ui/react-dom@"^2.1.2" from @floating-ui/react@0.26.28
+      node_modules/@headlessui/react/node_modules/@floating-ui/react
+        @floating-ui/react@"^0.26.16" from @headlessui/react@2.2.9
+        node_modules/@headlessui/react
+          @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+    peer react-dom@"^18 || ^19 || ^19.0.0-rc" from @headlessui/react@2.2.9
+    node_modules/@headlessui/react
+      @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    peer react-dom@">=16.8.0" from @floating-ui/react@0.26.28
+    node_modules/@headlessui/react/node_modules/@floating-ui/react
+      @floating-ui/react@"^0.26.16" from @headlessui/react@2.2.9
+      node_modules/@headlessui/react
+        @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+    peer react-dom@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-aria/focus@3.21.4
+    node_modules/@react-aria/focus
+      @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+      node_modules/@headlessui/react
+        @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    peer react-dom@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-aria/i18n@3.12.15
+    node_modules/@react-aria/i18n
+      @react-aria/i18n@"^3.12.15" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+    peer react-dom@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-aria/interactions@3.27.0
+    node_modules/@react-aria/interactions
+      @react-aria/interactions@"^3.25.0" from @headlessui/react@2.2.9
+      node_modules/@headlessui/react
+        @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/interactions@"^3.27.0" from @react-aria/focus@3.21.4
+      node_modules/@react-aria/focus
+        @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+        node_modules/@headlessui/react
+          @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/interactions@"^3.27.0" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/interactions@"^3.27.0" from @react-aria/visually-hidden@3.8.30
+      node_modules/@react-aria/visually-hidden
+        @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+    peer react-dom@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-aria/overlays@3.31.1
+    node_modules/@react-aria/overlays
+      @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    peer react-dom@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-aria/utils@3.33.0
+    node_modules/@react-aria/utils
+      @react-aria/utils@"^3.33.0" from @react-aria/focus@3.21.4
+      node_modules/@react-aria/focus
+        @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+        node_modules/@headlessui/react
+          @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/i18n@3.12.15
+      node_modules/@react-aria/i18n
+        @react-aria/i18n@"^3.12.15" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/interactions@3.27.0
+      node_modules/@react-aria/interactions
+        @react-aria/interactions@"^3.25.0" from @headlessui/react@2.2.9
+        node_modules/@headlessui/react
+          @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/interactions@"^3.27.0" from @react-aria/focus@3.21.4
+        node_modules/@react-aria/focus
+          @react-aria/focus@"^3.20.2" from @headlessui/react@2.2.9
+          node_modules/@headlessui/react
+            @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+          @react-aria/focus@"^3.21.4" from @react-aria/overlays@3.31.1
+          node_modules/@react-aria/overlays
+            @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+          @react-aria/focus@"^3.21.4" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/interactions@"^3.27.0" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+        @react-aria/interactions@"^3.27.0" from @react-aria/visually-hidden@3.8.30
+        node_modules/@react-aria/visually-hidden
+          @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+          node_modules/@react-aria/overlays
+            @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+      @react-aria/utils@"^3.33.0" from @react-aria/visually-hidden@3.8.30
+      node_modules/@react-aria/visually-hidden
+        @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+        node_modules/@react-aria/overlays
+          @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+    peer react-dom@"^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" from @react-aria/visually-hidden@3.8.30
+    node_modules/@react-aria/visually-hidden
+      @react-aria/visually-hidden@"^3.8.30" from @react-aria/overlays@3.31.1
+      node_modules/@react-aria/overlays
+        @react-aria/overlays@"^3.31.1" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+    peer react-dom@"^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" from @tanstack/react-virtual@3.13.18
+    node_modules/@tanstack/react-virtual
+      @tanstack/react-virtual@"^3.13.9" from @headlessui/react@2.2.9
+      node_modules/@headlessui/react
+        @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+    peer react-dom@">=18" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+    peer react-dom@">=18" from @wise/components-theming@1.10.1
+    node_modules/@wise/components-theming
+      peer @wise/components-theming@"^1.9.1" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+      @wise/components-theming@"^1.10.1" from the root project
+    peerOptional react-dom@">=18.0.0" from agentation@2.3.3
+    node_modules/agentation
+      dev agentation@"^2.2.1" from the root project
+    peerOptional react-dom@"^18.0.0 || ^19.0.0" from framer-motion@12.38.0
+    node_modules/framer-motion
+      framer-motion@"^12.33.0" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+      framer-motion@"^12.38.0" from the root project
+    peer react-dom@"^16.8.0 || ^17 || ^18" from react-popper@2.3.0
+    node_modules/react-popper
+      react-popper@"^2.3.0" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    peer react-dom@"^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" from react-smooth@4.0.4
+    node_modules/react-smooth
+      react-smooth@"^4.0.4" from recharts@2.15.4
+      node_modules/recharts
+        recharts@"^2.15.1" from the root project
+    peer react-dom@">=16.6.0" from react-transition-group@4.4.5
+    node_modules/react-transition-group
+      react-transition-group@"^4.4.5" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+      react-transition-group@"^4.4.5" from react-smooth@4.0.4
+      node_modules/react-smooth
+        react-smooth@"^4.0.4" from recharts@2.15.4
+        node_modules/recharts
+          recharts@"^2.15.1" from the root project
+    peerOptional react-dom@">=16.13" from react-use-measure@2.1.7
+    node_modules/react-use-measure
+      react-use-measure@"^2.1.7" from @react-three/fiber@9.5.0
+      node_modules/@react-three/fiber
+        peer @react-three/fiber@"^9.0.0" from @react-three/drei@10.7.7
+        node_modules/@react-three/drei
+          @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+          node_modules/@wise/art
+            peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+            @wise/art@"^2.29.0" from the root project
+          @react-three/drei@"^10.7.7" from the root project
+        @react-three/fiber@"8.18.0 || ^9.5.0" from @wise/art@2.29.0
+        node_modules/@wise/art
+          peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+          @wise/art@"^2.29.0" from the root project
+        @react-three/fiber@"^9.5.0" from the root project
+    peer react-dom@"^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" from recharts@2.15.4
+    node_modules/recharts
+      recharts@"^2.15.1" from the root project
+    peerOptional react-dom@">=16.14.0" from virtua@0.48.5
+    node_modules/virtua
+      virtua@"^0.48.5" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    peerOptional react-dom@">=18" from web-haptics@0.0.6
+    node_modules/web-haptics
+      web-haptics@"^0.0.6" from the root project
+    react-dom@"^18.3.1" from the root project
+  peer react@"16 || 17 || 18 || 19" from react-intl@7.1.14
+  node_modules/react-intl
+    peer react-intl@"^5.10.0 || ^6 || ^7" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+    react-intl@"^7.1.14" from the root project
+  peer react@"^16.8.0 || ^17 || ^18" from react-popper@2.3.0
+  node_modules/react-popper
+    react-popper@"^2.3.0" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+  peer react@"^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" from react-smooth@4.0.4
+  node_modules/react-smooth
+    react-smooth@"^4.0.4" from recharts@2.15.4
+    node_modules/recharts
+      recharts@"^2.15.1" from the root project
+  peer react@">=16.6.0" from react-transition-group@4.4.5
+  node_modules/react-transition-group
+    react-transition-group@"^4.4.5" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+    react-transition-group@"^4.4.5" from react-smooth@4.0.4
+    node_modules/react-smooth
+      react-smooth@"^4.0.4" from recharts@2.15.4
+      node_modules/recharts
+        recharts@"^2.15.1" from the root project
+  peer react@">=16.13" from react-use-measure@2.1.7
+  node_modules/react-use-measure
+    react-use-measure@"^2.1.7" from @react-three/fiber@9.5.0
+    node_modules/@react-three/fiber
+      peer @react-three/fiber@"^9.0.0" from @react-three/drei@10.7.7
+      node_modules/@react-three/drei
+        @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+        node_modules/@wise/art
+          peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+          @wise/art@"^2.29.0" from the root project
+        @react-three/drei@"^10.7.7" from the root project
+      @react-three/fiber@"8.18.0 || ^9.5.0" from @wise/art@2.29.0
+      node_modules/@wise/art
+        peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+        @wise/art@"^2.29.0" from the root project
+      @react-three/fiber@"^9.5.0" from the root project
+  peer react@"^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" from recharts@2.15.4
+  node_modules/recharts
+    recharts@"^2.15.1" from the root project
+  peer react@">=17.0" from suspend-react@0.1.3
+  node_modules/suspend-react
+    suspend-react@"^0.1.3" from @react-three/drei@10.7.7
+    node_modules/@react-three/drei
+      @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+      node_modules/@wise/art
+        peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+        @wise/art@"^2.29.0" from the root project
+      @react-three/drei@"^10.7.7" from the root project
+    suspend-react@"^0.1.3" from @react-three/fiber@9.5.0
+    node_modules/@react-three/fiber
+      peer @react-three/fiber@"^9.0.0" from @react-three/drei@10.7.7
+      node_modules/@react-three/drei
+        @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+        node_modules/@wise/art
+          peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+          @wise/art@"^2.29.0" from the root project
+        @react-three/drei@"^10.7.7" from the root project
+      @react-three/fiber@"8.18.0 || ^9.5.0" from @wise/art@2.29.0
+      node_modules/@wise/art
+        peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+        @wise/art@"^2.29.0" from the root project
+      @react-three/fiber@"^9.5.0" from the root project
+  peerOptional react@">=16.8" from zustand@4.5.7
+  node_modules/tunnel-rat/node_modules/zustand
+    zustand@"^4.3.2" from tunnel-rat@0.1.2
+    node_modules/tunnel-rat
+      tunnel-rat@"^0.1.2" from @react-three/drei@10.7.7
+      node_modules/@react-three/drei
+        @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+        node_modules/@wise/art
+          peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+          @wise/art@"^2.29.0" from the root project
+        @react-three/drei@"^10.7.7" from the root project
+  peer react@"^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" from use-sync-external-store@1.6.0
+  node_modules/use-sync-external-store
+    use-sync-external-store@"^1.5.0" from @headlessui/react@2.2.9
+    node_modules/@headlessui/react
+      @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+    use-sync-external-store@"^1.4.0" from @react-three/drei@10.7.7
+    node_modules/@react-three/drei
+      @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+      node_modules/@wise/art
+        peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+        @wise/art@"^2.29.0" from the root project
+      @react-three/drei@"^10.7.7" from the root project
+    use-sync-external-store@"^1.4.0" from @react-three/fiber@9.5.0
+    node_modules/@react-three/fiber
+      peer @react-three/fiber@"^9.0.0" from @react-three/drei@10.7.7
+      node_modules/@react-three/drei
+        @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+        node_modules/@wise/art
+          peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+          @wise/art@"^2.29.0" from the root project
+        @react-three/drei@"^10.7.7" from the root project
+      @react-three/fiber@"8.18.0 || ^9.5.0" from @wise/art@2.29.0
+      node_modules/@wise/art
+        peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+        @wise/art@"^2.29.0" from the root project
+      @react-three/fiber@"^9.5.0" from the root project
+    use-sync-external-store@"^1.2.2" from zustand@4.5.7
+    node_modules/tunnel-rat/node_modules/zustand
+      zustand@"^4.3.2" from tunnel-rat@0.1.2
+      node_modules/tunnel-rat
+        tunnel-rat@"^0.1.2" from @react-three/drei@10.7.7
+        node_modules/@react-three/drei
+          @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+          node_modules/@wise/art
+            peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+            @wise/art@"^2.29.0" from the root project
+          @react-three/drei@"^10.7.7" from the root project
+    peerOptional use-sync-external-store@">=1.2.0" from zustand@5.0.11
+    node_modules/zustand
+      zustand@"^5.0.1" from @react-three/drei@10.7.7
+      node_modules/@react-three/drei
+        @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+        node_modules/@wise/art
+          peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+          @wise/art@"^2.29.0" from the root project
+        @react-three/drei@"^10.7.7" from the root project
+      zustand@"^5.0.3" from @react-three/fiber@9.5.0
+      node_modules/@react-three/fiber
+        peer @react-three/fiber@"^9.0.0" from @react-three/drei@10.7.7
+        node_modules/@react-three/drei
+          @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+          node_modules/@wise/art
+            peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+            node_modules/@transferwise/components
+              @transferwise/components@"^46.125.0" from the root project
+            @wise/art@"^2.29.0" from the root project
+          @react-three/drei@"^10.7.7" from the root project
+        @react-three/fiber@"8.18.0 || ^9.5.0" from @wise/art@2.29.0
+        node_modules/@wise/art
+          peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+          @wise/art@"^2.29.0" from the root project
+        @react-three/fiber@"^9.5.0" from the root project
+  peerOptional react@">=16.14.0" from virtua@0.48.5
+  node_modules/virtua
+    virtua@"^0.48.5" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+  peerOptional react@">=18" from web-haptics@0.0.6
+  node_modules/web-haptics
+    web-haptics@"^0.0.6" from the root project
+  peerOptional react@">=18.0.0" from zustand@5.0.11
+  node_modules/zustand
+    zustand@"^5.0.1" from @react-three/drei@10.7.7
+    node_modules/@react-three/drei
+      @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+      node_modules/@wise/art
+        peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+        @wise/art@"^2.29.0" from the root project
+      @react-three/drei@"^10.7.7" from the root project
+    zustand@"^5.0.3" from @react-three/fiber@9.5.0
+    node_modules/@react-three/fiber
+      peer @react-three/fiber@"^9.0.0" from @react-three/drei@10.7.7
+      node_modules/@react-three/drei
+        @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+        node_modules/@wise/art
+          peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+          node_modules/@transferwise/components
+            @transferwise/components@"^46.125.0" from the root project
+          @wise/art@"^2.29.0" from the root project
+        @react-three/drei@"^10.7.7" from the root project
+      @react-three/fiber@"8.18.0 || ^9.5.0" from @wise/art@2.29.0
+      node_modules/@wise/art
+        peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+        node_modules/@transferwise/components
+          @transferwise/components@"^46.125.0" from the root project
+        @wise/art@"^2.29.0" from the root project
+      @react-three/fiber@"^9.5.0" from the root project
+  react@"^18.3.1" from the root project
+  peer react@"^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0" from @rive-app/react-canvas@4.29.1
+  node_modules/@rive-app/react-canvas
+    @rive-app/react-canvas@"*" from the root project
+
+Could not resolve dependency:
+peer react@"^19" from @react-three/drei@10.7.7
+node_modules/@react-three/drei
+  @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+  node_modules/@wise/art
+    peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+    node_modules/@transferwise/components
+      @transferwise/components@"^46.125.0" from the root project
+    @wise/art@"^2.29.0" from the root project
+  @react-three/drei@"^10.7.7" from the root project
+
+Conflicting peer dependency: react@19.2.7
+node_modules/react
+  peer react@"^19" from @react-three/drei@10.7.7
+  node_modules/@react-three/drei
+    @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+    node_modules/@wise/art
+      peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+      node_modules/@transferwise/components
+        @transferwise/components@"^46.125.0" from the root project
+      @wise/art@"^2.29.0" from the root project
+    @react-three/drei@"^10.7.7" from the root project
+
+Fix the upstream dependency conflict, or retry this command with --force or --legacy-peer-deps to accept an incorrect (and potentially broken) dependency resolution.

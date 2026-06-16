@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { Button, Field, Input, ListItem, StatusIcon, DateLookup, InfoPrompt, IconButton, PromoCard } from '@transferwise/components';
-import { ArrowLeft, Cross, Bank, FastFlag, Convert } from '@transferwise/icons';
+import { Button, Field, Input, ListItem, StatusIcon, DateLookup, InfoPrompt, InlinePrompt, IconButton } from '@transferwise/components';
+import { ArrowLeft, Cross, Bank, FastFlag, Convert, Card, CardStrikethrough } from '@transferwise/icons';
 import { Illustration } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import { useCass } from '../context/Cass';
 import { CassSwitchGuaranteeOrbit } from '../components/CassSwitchGuaranteeOrbit';
+import { CassFlagPromoCard } from '../components/CassFlagPromoCard';
 import { BottomSheet } from '../components/BottomSheet';
 import {
   oldBank,
@@ -14,8 +15,6 @@ import {
   formatSwitchDate,
 } from '../data/cass-switch-data';
 import './CassSwitchFlow.css';
-
-const promoTapestry = new URL('../assets/card-tapestry-turquoise.jpg', import.meta.url).href;
 
 type Screen =
   | 'intro'
@@ -33,22 +32,25 @@ const ORDER: Screen[] = ['intro', 'bank', 'match', 'address', 'card', 'date', 'r
 type Props = {
   onClose: () => void;
   avatarUrl: string;
+  startScreen?: Screen;
 };
 
-export function CassSwitchFlow({ onClose }: Props) {
+export function CassSwitchFlow({ onClose, startScreen = 'intro' }: Props) {
   const { t } = useLanguage();
-  const { initiateSwitch } = useCass();
+  const { initiateSwitch, pauseSwitch } = useCass();
 
-  const [screen, setScreen] = useState<Screen>('intro');
+  const [screen, setScreen] = useState<Screen>(startScreen);
 
   // Step 2 — old bank details + simulated CoP result.
   const [fullName, setFullName] = useState(oldBank.accountHolder);
   const [sortCode, setSortCode] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
   const [checking, setChecking] = useState(false);
+  const [showMismatchSheet, setShowMismatchSheet] = useState(false);
 
   // Step 5 — last 5 digits of the old debit card.
   const [cardDigits, setCardDigits] = useState('');
+  const [showCardSheet, setShowCardSheet] = useState(false);
 
   // Step 4 — editable held address.
   const [addressLine, setAddressLine] = useState(heldAddress.line1);
@@ -89,14 +91,27 @@ export function CassSwitchFlow({ onClose }: Props) {
     else onClose();
   }, [screen, goTo, onClose]);
 
-  // Bank screen — simulate the Confirmation of Payee check, then reveal the match screen.
+  // "Save and continue later" — pause the switch at the current screen so the Home
+  // task card can resume from exactly here, then close the flow. 'success' is never
+  // reachable from a save action, so the current screen is always a valid resume point.
+  const saveAndExit = useCallback(() => {
+    if (screen !== 'success') pauseSwitch(screen);
+    onClose();
+  }, [screen, pauseSwitch, onClose]);
+
+  // Bank screen — simulate the Confirmation of Payee check. Account number 12345679
+  // triggers the name-mismatch branch; anything else (incl. 12345678) "succeeds".
   const runCoP = useCallback(() => {
     setChecking(true);
     setTimeout(() => {
       setChecking(false);
-      goTo('match');
+      if (accountNumber === '12345679') {
+        setShowMismatchSheet(true);
+      } else {
+        goTo('match');
+      }
     }, 1100);
-  }, [goTo]);
+  }, [goTo, accountNumber]);
 
   const handleDateChange = useCallback((value: Date | null) => {
     setSwitchDate(value);
@@ -161,11 +176,9 @@ export function CassSwitchFlow({ onClose }: Props) {
             </ul>
 
             <div className="cass-flow__promo">
-              <PromoCard
+              <CassFlagPromoCard
                 title={t('cass.intro.promoTitle')}
                 description={t('cass.intro.promoDescription')}
-                imageSource={promoTapestry}
-                imageAlt=""
               />
             </div>
           </div>
@@ -173,7 +186,8 @@ export function CassSwitchFlow({ onClose }: Props) {
 
         {screen === 'bank' && (
           <div className="cass-flow__screen">
-            <h1 className="np-text-title-screen cass-flow__title cass-flow__title--form">{t('cass.bank.title')}</h1>
+            <h1 className="np-text-title-screen cass-flow__title">{t('cass.bank.title')}</h1>
+            <p className="np-text-body-large cass-flow__lede">{t('cass.bank.subtitle')}</p>
 
             <Field label={t('cass.bank.fullName')}>
               <Input
@@ -183,6 +197,9 @@ export function CassSwitchFlow({ onClose }: Props) {
                 onChange={(e) => setFullName(e.target.value)}
               />
             </Field>
+            <div className="cass-flow__name-prompt">
+              <InlinePrompt sentiment="neutral" width="full">{t('cass.bank.namePrompt')}</InlinePrompt>
+            </div>
             <Field label={t('cass.bank.sortCode')}>
               <Input
                 type="text"
@@ -250,6 +267,14 @@ export function CassSwitchFlow({ onClose }: Props) {
             <Field label={t('cass.address.postcode')}>
               <Input type="text" value={postcode} onChange={(e) => setPostcode(e.target.value)} />
             </Field>
+
+            <div className="cass-flow__prompt">
+              <InfoPrompt
+                sentiment="warning"
+                title={t('cass.address.matchTitle')}
+                description={t('cass.address.matchBody')}
+              />
+            </div>
           </div>
         )}
 
@@ -268,7 +293,7 @@ export function CassSwitchFlow({ onClose }: Props) {
 
             <div className="cass-flow__prompt">
               <InfoPrompt
-                sentiment="neutral"
+                sentiment="warning"
                 title={t('cass.card.warningTitle')}
                 description={t('cass.card.warningBody')}
               />
@@ -375,7 +400,10 @@ export function CassSwitchFlow({ onClose }: Props) {
         )}
 
         {screen === 'card' && (
-          <Button v2 size="lg" priority="primary" block disabled={!cardValid} onClick={goNext}>{t('common.continue')}</Button>
+          <div className="cass-flow__footer-stack">
+            <Button v2 size="lg" priority="primary" block disabled={!cardValid} onClick={goNext}>{t('common.continue')}</Button>
+            <Button v2 size="lg" priority="tertiary" block onClick={() => setShowCardSheet(true)}>{t('cass.card.noCard')}</Button>
+          </div>
         )}
 
         {screen === 'date' && (
@@ -405,6 +433,56 @@ export function CassSwitchFlow({ onClose }: Props) {
           <Button v2 size="lg" priority="primary" block onClick={() => setShowAddressSheet(false)}>
             {t('cass.address.sheetCta')}
           </Button>
+        </div>
+      </BottomSheet>
+
+      <BottomSheet
+        open={showCardSheet}
+        onClose={() => setShowCardSheet(false)}
+        title={t('cass.card.sheetTitle')}
+      >
+        <div className="cass-flow__card-sheet">
+          <ul className="wds-list list-unstyled m-y-0">
+            <ListItem
+              media={<ListItem.AvatarView size={48}><Card size={24} /></ListItem.AvatarView>}
+              title={t('cass.card.sheetLostTitle')}
+              subtitle={t('cass.card.sheetLostBody')}
+            />
+            <ListItem
+              media={<ListItem.AvatarView size={48}><CardStrikethrough size={24} /></ListItem.AvatarView>}
+              title={t('cass.card.sheetSkipTitle')}
+              subtitle={t('cass.card.sheetSkipBody')}
+            />
+          </ul>
+          <div className="cass-flow__card-sheet-actions">
+            <Button v2 size="lg" priority="primary" block onClick={() => { setShowCardSheet(false); saveAndExit(); }}>
+              {t('cass.card.sheetSaveCta')}
+            </Button>
+            <Button v2 size="lg" priority="secondary" block onClick={() => { setShowCardSheet(false); goNext(); }}>
+              {t('cass.card.sheetSkipCta')}
+            </Button>
+          </div>
+        </div>
+      </BottomSheet>
+
+      <BottomSheet
+        open={showMismatchSheet}
+        onClose={() => setShowMismatchSheet(false)}
+      >
+        <div className="cass-flow__mismatch-sheet">
+          <div className="cass-flow__hero">
+            <Illustration name="exclamation-mark" size="large" />
+          </div>
+          <h2 className="np-text-title-subsection cass-flow__mismatch-title">{t('cass.mismatch.title')}</h2>
+          <p className="np-text-body-large cass-flow__mismatch-body">{t('cass.mismatch.body')}</p>
+          <div className="cass-flow__mismatch-sheet-actions">
+            <Button v2 size="lg" priority="primary" block onClick={() => { setShowMismatchSheet(false); goTo('address'); }}>
+              {t('cass.mismatch.proceed')}
+            </Button>
+            <Button v2 size="lg" priority="tertiary" block onClick={() => { setShowMismatchSheet(false); saveAndExit(); }}>
+              {t('cass.mismatch.saveLater')}
+            </Button>
+          </div>
         </div>
       </BottomSheet>
     </div>

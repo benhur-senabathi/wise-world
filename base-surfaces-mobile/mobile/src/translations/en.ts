@@ -73,13 +73,6 @@ const en = {
 
   // Tasks
   'tasks.title': 'Tasks',
-  'tasks.pausedBusiness': '500 GBP to your account',
-  'tasks.pausedPersonal': '12 GBP to your account',
-  'tasks.pausedDescription': 'Waiting for you to pay',
-  'tasks.requestsBusiness': '3 payments need approval',
-  'tasks.requestsPersonal': '3 payment requests',
-  'tasks.requestsDescBusiness': 'Approve or reject each payment',
-  'tasks.requestsDescPersonal': 'Pay or decline each request',
 
   // Home
   'home.currentAccount': 'Current account',
@@ -563,6 +556,11 @@ const en = {
 
   // ===== CASS — Current Account Switch =====
   'common.continue': 'Continue',
+  'common.cancel': 'Cancel',
+
+  // Switch task card (Home — paused switch)
+  'cass.task.title': 'Switch to Wise',
+  'cass.task.description': 'Finish switching from {bank} to Wise to get your 2% cashback on direct debits',
 
   // Entry prompt (Home)
   'cass.entry.title': 'Switch your bank to Wise',
@@ -601,12 +599,20 @@ const en = {
   'cass.intro.cta': 'Continue',
 
   // Old bank details
-  'cass.bank.title': 'Enter the account details of the bank you\'re switching from',
+  'cass.bank.title': 'Account details from old bank account',
+  'cass.bank.subtitle': 'Enter the details of the account you\'re trying to switch from. This has to be a UK bank account.',
   'cass.bank.fullName': 'Full name of the account holder',
   'cass.bank.fullNamePlaceholder': '<Full name as per Wise account>',
+  'cass.bank.namePrompt': 'Wise holds this name for you. Make sure your old bank account has the same name registered.',
   'cass.bank.sortCode': 'UK sort code',
   'cass.bank.accountNumber': 'Account number',
   'cass.bank.cta': 'Check details',
+
+  // Name-mismatch error sheet (CoP fails)
+  'cass.mismatch.title': 'Your name on Wise and old bank account varies',
+  'cass.mismatch.body': 'This can be due to a missing middle name. Update your old bank details to match your name on Wise.',
+  'cass.mismatch.proceed': 'Proceed anyway',
+  'cass.mismatch.saveLater': 'Save and continue later',
 
   // CoP match result
   'cass.match.title': 'Account name and account details match',
@@ -622,6 +628,8 @@ const en = {
   'cass.address.city': 'City',
   'cass.address.postcode': 'Postcode',
   'cass.address.notMyAddress': 'This is not my current address',
+  'cass.address.matchTitle': 'Addresses must match',
+  'cass.address.matchBody': 'Your address details of the bank account you\'re switching from must match the above.',
   'cass.address.sheetTitle': 'Update your address first',
   'cass.address.sheetBody': 'If this isn\'t your current address, update it with Wise and your old bank before you start the switch. Both need to match for your old bank to verify you.',
   'cass.address.sheetCta': 'Got it',
@@ -629,8 +637,16 @@ const en = {
   // Card identity
   'cass.card.title': 'Enter the last 5 digits of your old bank card',
   'cass.card.label': 'Last 5 digits',
-  'cass.card.warningTitle': 'Why we ask for this',
-  'cass.card.warningBody': 'It\'s how your old bank checks it\'s really you. Double-check it\'s the card for the account you\'re switching from. Your switch will not go through if this is wrong',
+  'cass.card.warningTitle': 'Use the card from the account you\'re switching from',
+  'cass.card.warningBody': 'It\'s how your old bank checks if it\'s really you. Your switch will not go through if this is wrong or if you use a different bank card.',
+  'cass.card.noCard': 'I don\'t have my old bank card',
+  'cass.card.sheetTitle': 'Old bank card',
+  'cass.card.sheetLostTitle': 'Lost, stolen or expired?',
+  'cass.card.sheetLostBody': 'We will still need the 5 digits from the bank account you\'re switching from to proceed with the switch.',
+  'cass.card.sheetSkipTitle': 'Skip if you never got a bank card',
+  'cass.card.sheetSkipBody': 'If you never registered for a bank card with your old bank, you can skip this step.',
+  'cass.card.sheetSaveCta': 'Save and continue later',
+  'cass.card.sheetSkipCta': 'Skip step',
 
   // Switch date
   'cass.date.title': 'Pick your switch date',

@@ -4,9 +4,11 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  assetsInclude: ['**/*.riv'],
   resolve: {
     alias: {
       '@shared': path.resolve(__dirname, '../../shared-resources'),
+      '@animations': path.resolve(__dirname, '../../animations'),
     },
   },
   optimizeDeps: {
@@ -14,6 +16,9 @@ export default defineConfig({
   },
   server: {
     port: 3017,
+    fs: {
+      allow: [path.resolve(__dirname, '../..')],
+    },
     proxy: {
       '/api/wise-rates': {
         target: 'https://wise.com',

@@ -1,0 +1,117 @@
+0 verbose cli /opt/homebrew/Cellar/node/26.0.0/bin/node /opt/homebrew/bin/npm
+1 info using npm@11.12.1
+2 info using node@v26.0.0
+3 silly config load:file:/opt/homebrew/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/benhur.senabathi/Documents/Projects/CASS/wise-world/base-surfaces-mobile/mobile/.npmrc
+5 silly config load:file:/Users/benhur.senabathi/.npmrc
+6 silly config load:file:/opt/homebrew/etc/npmrc
+7 verbose title npm install @rive-app/react-canvas
+8 verbose argv "install" "@rive-app/react-canvas" "--cache" "/Users/benhur.senabathi/Documents/Projects/CASS/wise-world/base-surfaces-mobile/mobile/.npm-cache"
+9 verbose logfile logs-max:10 dir:/Users/benhur.senabathi/Documents/Projects/CASS/wise-world/base-surfaces-mobile/mobile/.npm-cache/_logs/2026-06-16T11_09_11_353Z-
+10 verbose logfile /Users/benhur.senabathi/Documents/Projects/CASS/wise-world/base-surfaces-mobile/mobile/.npm-cache/_logs/2026-06-16T11_09_11_353Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4395630592 maxSize:1098907648 maxEntrySize:549453824
+13 verbose shrinkwrap failed to load node_modules/.package-lock.json out of date, updated: node_modules
+14 silly idealTree buildDeps
+15 silly fetch manifest @rive-app/react-canvas@*
+16 silly packumentCache full:https://registry.npmjs.org/@rive-app%2freact-canvas cache-miss
+17 http fetch GET 200 https://registry.npmjs.org/@rive-app%2freact-canvas 114ms (cache miss)
+18 silly packumentCache full:https://registry.npmjs.org/@rive-app%2freact-canvas set size:undefined disposed:false
+19 silly fetch manifest react@^18.3.1
+20 silly packumentCache full:https://registry.npmjs.org/react cache-miss
+21 http fetch GET 200 https://registry.npmjs.org/npm 197ms
+22 http fetch GET 200 https://registry.npmjs.org/react 238ms (cache miss)
+23 silly packumentCache full:https://registry.npmjs.org/react set size:undefined disposed:false
+24 silly placeDep ROOT @rive-app/react-canvas@4.29.1 OK for: base-surfaces-mobile@0.0.0 want: *
+25 silly fetch manifest @rive-app/canvas@2.38.1
+26 silly packumentCache full:https://registry.npmjs.org/@rive-app%2fcanvas cache-miss
+27 http fetch GET 200 https://registry.npmjs.org/@rive-app%2fcanvas 442ms (cache miss)
+28 silly packumentCache full:https://registry.npmjs.org/@rive-app%2fcanvas set size:undefined disposed:false
+29 silly fetch manifest react@^19
+30 silly packumentCache full:https://registry.npmjs.org/react cache-miss
+31 http cache https://registry.npmjs.org/react 15ms (cache hit)
+32 silly packumentCache full:https://registry.npmjs.org/react set size:6706558 disposed:false
+33 silly fetch manifest react-dom@^19
+34 silly packumentCache full:https://registry.npmjs.org/react-dom cache-miss
+35 http fetch GET 200 https://registry.npmjs.org/react-dom 244ms (cache miss)
+36 silly packumentCache full:https://registry.npmjs.org/react-dom set size:undefined disposed:false
+37 verbose stack Error: could not resolve
+37 verbose stack     at PlaceDep.failPeerConflict (/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/place-dep.js:503:25)
+37 verbose stack     at new PlaceDep (/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/place-dep.js:157:21)
+37 verbose stack     at #buildDepStep (/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:933:18)
+37 verbose stack     at async Arborist.buildIdealTree (/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:170:7)
+37 verbose stack     at async Promise.all (index 1)
+37 verbose stack     at async Arborist.reify (/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/reify.js:111:5)
+37 verbose stack     at async Install.exec (/opt/homebrew/lib/node_modules/npm/lib/commands/install.js:146:5)
+37 verbose stack     at async Npm.exec (/opt/homebrew/lib/node_modules/npm/lib/npm.js:193:9)
+37 verbose stack     at async module.exports (/opt/homebrew/lib/node_modules/npm/lib/cli/entry.js:67:5)
+38 error code ERESOLVE
+39 error ERESOLVE could not resolve
+40 error
+41 error While resolving: @react-three/drei@10.7.7
+41 error Found: react@18.3.1
+41 error node_modules/react
+41 error   peer react@">=17.0.0" from @floating-ui/react@0.27.19
+41 error   node_modules/@floating-ui/react
+41 error     @floating-ui/react@"^0.27.18" from @transferwise/components@46.132.1
+41 error     node_modules/@transferwise/components
+41 error       @transferwise/components@"^46.125.0" from the root project
+41 error   peer react@">=16.8.0" from @floating-ui/react-dom@2.1.8
+41 error   node_modules/@floating-ui/react-dom
+41 error     @floating-ui/react-dom@"^2.1.8" from @floating-ui/react@0.27.19
+41 error     node_modules/@floating-ui/react
+41 error       @floating-ui/react@"^0.27.18" from @transferwise/components@46.132.1
+41 error       node_modules/@transferwise/components
+41 error         @transferwise/components@"^46.125.0" from the root project
+41 error     @floating-ui/react-dom@"^2.1.2" from @floating-ui/react@0.26.28
+41 error     node_modules/@headlessui/react/node_modules/@floating-ui/react
+41 error       @floating-ui/react@"^0.26.16" from @headlessui/react@2.2.9
+41 error       node_modules/@headlessui/react
+41 error         @headlessui/react@"^2.2.9" from @transferwise/components@46.132.1
+41 error         node_modules/@transferwise/components
+41 error   38 more (@headlessui/react, @floating-ui/react, ...)
+41 error
+41 error Could not resolve dependency:
+41 error peer react@"^19" from @react-three/drei@10.7.7
+41 error node_modules/@react-three/drei
+41 error   @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+41 error   node_modules/@wise/art
+41 error     peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+41 error     node_modules/@transferwise/components
+41 error       @transferwise/components@"^46.125.0" from the root project
+41 error     1 more (the root project)
+41 error   @react-three/drei@"^10.7.7" from the root project
+41 error
+41 error Conflicting peer dependency: react@19.2.7
+41 error node_modules/react
+41 error   peer react@"^19" from @react-three/drei@10.7.7
+41 error   node_modules/@react-three/drei
+41 error     @react-three/drei@"9.122.0 || ^10.7.7" from @wise/art@2.29.0
+41 error     node_modules/@wise/art
+41 error       peer @wise/art@"^2.26" from @transferwise/components@46.132.1
+41 error       node_modules/@transferwise/components
+41 error         @transferwise/components@"^46.125.0" from the root project
+41 error       1 more (the root project)
+41 error     @react-three/drei@"^10.7.7" from the root project
+41 error
+41 error Fix the upstream dependency conflict, or retry this command with --force or --legacy-peer-deps to accept an incorrect (and potentially broken) dependency resolution.
+42 error
+42 error
+42 error For a full report see:
+42 error /Users/benhur.senabathi/Documents/Projects/CASS/wise-world/base-surfaces-mobile/mobile/.npm-cache/_logs/2026-06-16T11_09_11_353Z-eresolve-report.txt
+43 silly unfinished npm timer reify 1781608151581
+44 silly unfinished npm timer reify:loadTrees 1781608151581
+45 silly unfinished npm timer idealTree:buildDeps 1781608151612
+46 silly unfinished npm timer idealTree:node_modules/@react-three/drei 1781608152433
+47 verbose cwd /Users/benhur.senabathi/Documents/Projects/CASS/wise-world/base-surfaces-mobile/mobile
+48 verbose os Darwin 25.5.0
+49 verbose node v26.0.0
+50 verbose npm  v11.12.1
+51 notice
+51 notice New minor version of npm available! 11.12.1 -> 11.17.0
+51 notice Changelog: https://github.com/npm/cli/releases/tag/v11.17.0
+51 notice To update run: npm install -g npm@11.17.0
+51 notice  { force: true, Symbol(proc-log.meta): true }
+52 verbose exit 1
+53 verbose code 1
+54 error A complete log of this run can be found in: /Users/benhur.senabathi/Documents/Projects/CASS/wise-world/base-surfaces-mobile/mobile/.npm-cache/_logs/2026-06-16T11_09_11_353Z-debug-0.log

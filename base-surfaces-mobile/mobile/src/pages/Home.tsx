@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, RequestReceive, Send, Savings, Suitcase } from '@transferwise/icons';
+import { Savings, Suitcase } from '@transferwise/icons';
 import { Button } from '@transferwise/components';
 import { Illustration } from '@wise/art';
 import type { AccountType } from '@shared/data/account-registry';
@@ -19,8 +19,6 @@ import { EmptyAccountCard } from '../components/EmptyAccountCard';
 import { JarCard } from '../components/JarCard';
 import { computeTotalBalance } from '@shared/data/balances';
 import { useDataset } from '../context/Dataset';
-import { TaskCard } from '../components/TaskCard';
-import { TasksStack } from '../components/TasksStack';
 import { ActivitySummary } from '../components/ActivitySummary';
 import { SendAgainCard } from '../components/SendAgainCard';
 import { PromotionBanner } from '../components/PromotionBanner';
@@ -28,6 +26,8 @@ import { TransferCalculator } from '../components/TransferCalculator';
 import { PageFooter } from '../components/PageFooter';
 import { CassEntryPrompt } from '../components/CassEntryPrompt';
 import { CassNextSteps } from '../components/CassNextSteps';
+import { CassSwitchTask } from '../components/CassSwitchTask';
+import type { CassResumeScreen } from '../data/cass-switch-data';
 import './Home.css';
 
 const assetMap: Record<string, string> = {
@@ -95,11 +95,11 @@ const businessPromotionVariants = allPromotionVariants.filter((p) => p.sectionTi
 
 type SendAgainRecipient = { name: string; subtitle: string; avatarUrl?: string; hasFastFlag: boolean; badgeFlagCode?: string };
 
-export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavigateSubAccount, onNavigateSubAccountCurrency, onNavigateJarAccount, onNavigateJarCurrency, accountType = 'personal', balanceHidden, onToggleBalance, onAddMoney, onSend, onSendWithCurrency, onSendAgain, onRequest, onPaymentLink, onScan, onAccountDetails, onCassStart, onCassProgress }: { onNavigate?: (page: string, push?: boolean) => void; onNavigateAccount?: () => void; onNavigateCurrency?: (code: string) => void; onNavigateSubAccount?: (subPageType: string) => void; onNavigateSubAccountCurrency?: (subPageType: string, code: string) => void; onNavigateJarAccount?: (jarId: string) => void; onNavigateJarCurrency?: (jarId: string, code: string) => void; accountType?: AccountType; balanceHidden?: boolean; onToggleBalance?: () => void; onAddMoney?: () => void; onSend?: () => void; onSendWithCurrency?: (sourceCurrency: string, targetCurrency: string, sourceAmount?: string, targetAmount?: string) => void; onSendAgain?: (recipient: SendAgainRecipient, amount?: string) => void; onRequest?: () => void; onPaymentLink?: () => void; onScan?: () => void; onAccountDetails?: (subPageType?: string) => void; onCassStart?: () => void; onCassProgress?: () => void }) {
+export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavigateSubAccount, onNavigateSubAccountCurrency, onNavigateJarAccount, onNavigateJarCurrency, accountType = 'personal', balanceHidden, onToggleBalance, onAddMoney, onSend, onSendWithCurrency, onSendAgain, onRequest, onPaymentLink, onScan, onAccountDetails, onCassStart, onCassProgress, onCassResume }: { onNavigate?: (page: string, push?: boolean) => void; onNavigateAccount?: () => void; onNavigateCurrency?: (code: string) => void; onNavigateSubAccount?: (subPageType: string) => void; onNavigateSubAccountCurrency?: (subPageType: string, code: string) => void; onNavigateJarAccount?: (jarId: string) => void; onNavigateJarCurrency?: (jarId: string, code: string) => void; accountType?: AccountType; balanceHidden?: boolean; onToggleBalance?: () => void; onAddMoney?: () => void; onSend?: () => void; onSendWithCurrency?: (sourceCurrency: string, targetCurrency: string, sourceAmount?: string, targetAmount?: string) => void; onSendAgain?: (recipient: SendAgainRecipient, amount?: string) => void; onRequest?: () => void; onPaymentLink?: () => void; onScan?: () => void; onAccountDetails?: (subPageType?: string) => void; onCassStart?: () => void; onCassProgress?: () => void; onCassResume?: (screen: CassResumeScreen) => void }) {
   const { consumerName, businessName, consumerHomeCurrency, businessHomeCurrency } = usePrototypeNames();
   const { t } = useLanguage();
   const txLabels = useTxLabels();
-  const { cass } = useCass();
+  const { cass, resetSwitch } = useCass();
   const { dataset } = useDataset();
   const rates = usdBaseRates;
   const isBusiness = accountType === 'business';
@@ -238,29 +238,16 @@ export function Home({ onNavigate, onNavigateAccount, onNavigateCurrency, onNavi
         </Carousel>
       </section>
 
-      {/* Tasks */}
-      <section className="section">
-        <TasksStack>
-          {[
-            <TaskCard
-              key="paused"
-              icon={<Plus size={24} />}
-              sentiment="warning"
-              title={isBusiness ? t('tasks.pausedBusiness') : t('tasks.pausedPersonal')}
-              description={t('tasks.pausedDescription')}
-              actionLabel={t('common.review')}
-            />,
-            <TaskCard
-              key="requests"
-              icon={isBusiness ? <Send size={24} /> : <RequestReceive size={24} />}
-              sentiment="warning"
-              title={isBusiness ? t('tasks.requestsBusiness') : t('tasks.requestsPersonal')}
-              description={isBusiness ? t('tasks.requestsDescBusiness') : t('tasks.requestsDescPersonal')}
-              actionLabel={t('common.review')}
-            />,
-          ]}
-        </TasksStack>
-      </section>
+      {/* CASS — resumable switch task (paused), leads the launchpad */}
+      {cass.status === 'paused' && (
+        <section className="section">
+          <h3 className="np-text-title-subsection" style={{ margin: '0 0 16px' }}>{t('tasks.title')}</h3>
+          <CassSwitchTask
+            onContinue={() => onCassResume?.(cass.pausedScreen ?? 'bank')}
+            onCancel={resetSwitch}
+          />
+        </section>
+      )}
 
       {/* CASS — switch your bank to Wise */}
       <section className="section">
