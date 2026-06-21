@@ -11,9 +11,14 @@
   justify-content: center;
 }
 
+/* Canvas bleeds past the stage (matches BLEED in the component) so dots shoved
+   off a ballooning bank aren't cropped by the canvas edge. The element is
+   centred on the stage; width/height are set in px by the resize() handler. */
 .cass-orbit__canvas {
   position: absolute;
-  inset: 0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Brand lock-up (disc + badge), revealed when the Wise logo lands */

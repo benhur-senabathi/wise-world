@@ -588,15 +588,23 @@ const en = {
   // Intro screen
   'cass.intro.title': 'Switch to Wise in 7 days',
   'cass.intro.whatHappens': 'What happens',
-  'cass.intro.balanceTitle': 'Your balance',
+  'cass.intro.learnMore': 'Learn more',
+  'cass.intro.balanceTitle': 'Balance amount',
   'cass.intro.balanceBody': 'Your balance from your old bank account will move to Wise GBP balance.',
   'cass.intro.debitsTitle': 'Direct debits',
   'cass.intro.debitsBody': 'We\'ll move all your direct debits, standing orders to your Wise account.',
   'cass.intro.redirectTitle': 'Redirect payments',
   'cass.intro.redirectBody': 'We close your old account and redirect all future payments to your Wise current account. Including salary.',
-  'cass.intro.promoTitle': 'One account for your whole life',
-  'cass.intro.promoDescription': 'Get your salary, pay your bills, and spend in 40+ currencies around the world — all from one account, with low fees.',
-  'cass.intro.cta': 'Continue',
+  'cass.intro.promoTitle': 'One account. 40+ currencies.',
+  'cass.intro.promoDescription': 'Get paid, pay your bills, and spend in 40+ currencies, all from one account.',
+  'cass.intro.cta': 'Switch to Wise',
+
+  // Intro — cashback
+  'cass.intro.cashbackPromoTitle': 'Get 2% cashback on direct debits',
+  'cass.intro.cashbackInfo': 'Cashback information',
+  'cass.intro.cashbackEligibleTitle': 'Switch 3 direct debits to be eligible',
+  'cass.intro.cashbackValidTitle': 'Valid for 12 months from switch date',
+  'cass.intro.cashbackMaxTitle': 'Maximum of £50',
 
   // Old bank details
   'cass.bank.title': 'Account details from old bank account',

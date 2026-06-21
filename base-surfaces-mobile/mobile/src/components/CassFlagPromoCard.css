@@ -8,10 +8,14 @@
 }
 
 /* Rive waving-flag background — fills the card, sits behind everything, never
-   intercepts taps. Fit.Cover + Alignment.Center are set on the Rive layout. */
+   intercepts taps. Fit.Cover + Alignment.Center are set on the Rive layout.
+   Overscanned ~6% past every edge: the wind mesh pulls flag vertices inward at
+   the peak of the wave, which would briefly expose a gap at the card boundary.
+   The larger canvas keeps coverage through the whole loop; the card's
+   overflow:hidden clips the excess. */
 .cass-flag-promo__bg {
   position: absolute;
-  inset: 0;
+  inset: -6%;
   z-index: 0;
   pointer-events: none;
 }
@@ -30,21 +34,51 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
+  /* backdrop-filter ignores an ancestor's overflow:hidden + radius and samples
+     into the square corners. Rounding the blur layers themselves (they inherit
+     this radius) clips the blur to the card's rounded shape. */
+  border-radius: var(--size-32, 32px);
+  overflow: hidden;
 }
 
+/* Dark scrim for text contrast. Layers, top to bottom:
+   1. A top-weighted gradient adding extra depth behind the title/description.
+   2. A flat, even 40% tint across the whole flag so text reads against any
+      part of the high-contrast Union Jack. */
 .cass-flag-promo__blur::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.45) 0%,
-    rgba(0, 0, 0, 0.28) 45%,
-    rgba(0, 0, 0, 0.12) 100%
-  );
+  z-index: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.22) 0%,
+      rgba(0, 0, 0, 0.08) 45%,
+      rgba(0, 0, 0, 0) 80%
+    ),
+    rgba(0, 0, 0, 0.40);
 }
 
-/* PromoCard text sits on top, transparent so the flag shows through. */
+/* Film-grain noise over the flag, matching the Figma texture. An inline SVG
+   fractal-noise tile is cheap (no asset) and blends so it reads as grain on the
+   darkened flag rather than a flat grey wash. */
+.cass-flag-promo__blur::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* PromoCard text sits on top, transparent so the flag shows through. Text
+   anchored top-left, matching the standard PromoCard layout. */
 .cass-flag-promo__card.np-Card--promoCard {
   position: relative;
   z-index: 2;
@@ -53,13 +87,17 @@
   --Card-background-color: transparent;
   background-color: transparent;
   border-radius: 0;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
-.cass-flag-promo__card .np-Card-title {
-  color: #fff;
+/* The heading carries `.text-primary`, whose colour is set by a theme-scoped
+   rule that out-specifies a plain class selector. Force white + Wise Sans, and
+   dial the Display size down a step so it fits the card. */
+.cass-flag-promo__card .np-Card-title,
+.cass-flag-promo__card .np-Card-title.text-primary {
+  color: #fff !important;
+  font-family: 'Wise Sans', 'Inter', sans-serif;
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
-  text-transform: uppercase;
 }
 
 .cass-flag-promo__card .np-Card-description {

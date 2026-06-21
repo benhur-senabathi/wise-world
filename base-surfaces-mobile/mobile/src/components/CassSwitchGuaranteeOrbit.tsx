@@ -92,6 +92,11 @@ const T_END = T_BADGE + 520;
 
 const ROT_PERIOD = 16000; // one shared rotation for the whole field
 
+// The canvas bleeds past the visible stage by this much on every side, so dots
+// shoved outward off a ballooning bank have room to part instead of being
+// cropped by the canvas rectangle (which would read as an invisible border).
+const BLEED = 48;
+
 const TAU = Math.PI * 2;
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -184,11 +189,15 @@ export function CassSwitchGuaranteeOrbit() {
 
     const resize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2.5);
-      cw = wrap.clientWidth;
-      ch = wrap.clientHeight;
+      const vw = wrap.clientWidth;
+      const vh = wrap.clientHeight;
+      // Canvas bleeds BLEED px past the visible stage on every side so shoved
+      // dots aren't cropped; orbit size/center stay tied to the visible stage.
+      cw = vw + BLEED * 2;
+      ch = vh + BLEED * 2;
       cx = cw / 2;
       cy = ch / 2;
-      outerR = Math.min(cw, ch) / 2 - 16;
+      outerR = Math.min(vw, vh) / 2 - 16;
       containerR = 71;
       canvas.width = Math.round(cw * dpr);
       canvas.height = Math.round(ch * dpr);

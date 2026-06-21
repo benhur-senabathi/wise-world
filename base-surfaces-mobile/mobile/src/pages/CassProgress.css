@@ -30,6 +30,23 @@
   flex-shrink: 0;
 }
 
+/* Gently pulse the in-progress milestone's status icon (the rail's first child,
+   not the connector) so the eye lands on "where we are now". */
+.cass-progress__milestone.is-current .cass-progress__rail > :first-child {
+  animation: cass-progress-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes cass-progress-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cass-progress__milestone.is-current .cass-progress__rail > :first-child {
+    animation: none;
+  }
+}
+
 .cass-progress__connector {
   flex: 1;
   width: 2px;
@@ -90,6 +107,12 @@
 
 .cass-result__section-title {
   margin: 0 0 4px;
+}
+
+/* Money values (balance moved, SO amounts) keep a stable digit width */
+.cass-result .wds-list-item-value,
+.cass-result .wds-list-item-title-value {
+  font-variant-numeric: tabular-nums;
 }
 
 .cass-result__cashback,

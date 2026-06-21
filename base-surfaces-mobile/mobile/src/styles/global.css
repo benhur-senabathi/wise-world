@@ -26,6 +26,8 @@
 html, body {
   background: var(--color-background-screen);
   -webkit-touch-callout: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Suppress browser default tap highlight and double-tap zoom */

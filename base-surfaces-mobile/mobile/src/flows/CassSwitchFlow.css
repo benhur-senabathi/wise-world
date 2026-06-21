@@ -58,21 +58,18 @@
   color: var(--color-content-secondary);
 }
 
-/* "What happens" section label + rule on the intro screen */
-.cass-flow__section-label {
-  margin: 0 0 8px;
-  color: var(--color-content-secondary);
-}
-
-.cass-flow__rule {
-  display: block;
-  height: 1px;
-  background: var(--color-border-neutral);
-  margin-bottom: 8px;
-}
-
 /* Promo card sits below the "What happens" list with a section gap */
 .cass-flow__promo {
+  margin-top: var(--space-medium);
+}
+
+/* Subsequent section (e.g. "Cashback information") below the promo card */
+.cass-flow__section {
+  margin-top: var(--space-medium);
+}
+
+/* "Your money, protected" reassurance block, below the flag card */
+.cass-flow__footer-reassurance {
   margin-top: var(--space-medium);
 }
 
@@ -171,12 +168,14 @@
   flex: 0 0 28%;
 }
 
-/* Date screen — "first possible switch date" hint pill */
+/* Date screen — "first possible switch date" hint pill. Sits tight under the
+   date field (4px), matching the name-prompt pattern — pull up past the Field's
+   own 24px bottom margin. */
 .cass-flow__date-hint {
   display: flex;
   gap: 8px;
   align-items: center;
-  margin-top: 0;
+  margin-top: -20px;
   padding: 8px 12px;
   border-radius: var(--radius-large, 20px);
   background: var(--color-background-neutral);

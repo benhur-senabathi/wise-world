@@ -26,6 +26,7 @@
   align-items: center;
   justify-content: center;
   color: var(--color-content-primary);
+  font-variant-numeric: tabular-nums;
 }
 
 .cass-next-steps__heading {
@@ -47,6 +48,10 @@
   flex-shrink: 0;
   background: none;
   border: none;
+  /* Glyph is 16px; pad the tap target out to 40x40 (skill: min hit area) */
+  width: 40px;
+  height: 40px;
+  margin: -8px -8px 0 0;
   padding: 0;
   cursor: pointer;
   color: var(--color-content-primary);
@@ -71,7 +76,8 @@
   text-align: left;
   padding: 16px;
   border: none;
-  border-radius: var(--radius-large, 16px);
+  /* Concentric: outer card 24px radius - 16px padding -> small radius inner */
+  border-radius: var(--radius-small, 10px);
 }
 
 .cass-next-steps__action--done {
@@ -82,10 +88,12 @@
   background: var(--color-background-screen);
   align-items: flex-start;
   cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), background 0.15s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .cass-next-steps__action--switch:active {
   background: var(--color-background-neutral);
+  transform: scale(0.96);
 }
 
 .cass-next-steps__action-text {

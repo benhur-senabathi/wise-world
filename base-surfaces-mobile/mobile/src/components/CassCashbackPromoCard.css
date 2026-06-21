@@ -1,0 +1,46 @@
+.cass-cashback-promo {
+  position: relative;
+}
+
+/* Orange promo card with dark-purple display title (Figma: Bright Orange bg,
+   Dark Purple text). Tall enough to seat the coins illustration. */
+.cass-cashback-promo__card.np-Card--promoCard {
+  width: 100%;
+  max-width: 100%;
+  min-height: 220px;
+  --Card-background-color: #ffc091;
+  background-color: #ffc091;
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.cass-cashback-promo__card.np-Card--promoCard:active {
+  transform: scale(0.96);
+}
+
+.cass-cashback-promo__card .np-Card-title,
+.cass-cashback-promo__card .np-Card-title.text-primary {
+  color: #260a2f !important;
+  font-family: 'Wise Sans', 'Inter', sans-serif;
+}
+
+/* No description in this card — collapse the empty Body so it doesn't add gap. */
+.cass-cashback-promo__card .np-Card-description {
+  display: none;
+}
+
+/* Coins illustration anchored bottom-left, behind the indicator button. */
+.cass-cashback-promo__art {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  width: 132px;
+  max-width: 50%;
+  pointer-events: none;
+}
+
+.cass-cashback-promo__art img,
+.cass-cashback-promo__art svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}

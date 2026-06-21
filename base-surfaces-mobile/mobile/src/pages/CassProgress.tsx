@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Button, ListItem, StatusIcon, InfoPrompt, Section } from '@transferwise/components';
 import { Illustration } from '@wise/art';
 import { useLanguage } from '../context/Language';
@@ -19,9 +20,19 @@ type Props = {
   onClose: () => void;
 };
 
+const railContainerVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.06 } },
+};
+const railItemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { type: 'spring', duration: 0.3, bounce: 0 } as const },
+};
+
 export function CassProgress({ onClose }: Props) {
   const { t } = useLanguage();
   const { cass } = useCass();
+  const reduced = useReducedMotion() ?? false;
   const [view, setView] = useState<'progress' | 'result'>('progress');
 
   const isComplete = cass.status === 'complete';
@@ -35,14 +46,23 @@ export function CassProgress({ onClose }: Props) {
       <h1 className="np-text-title-screen cass-progress__title">{t('cass.progress.title', { bank: oldBank.name })}</h1>
       <p className="np-text-body-large cass-progress__lede">{t('cass.progress.estimate', { date: formatSwitchDate(cass.switchDate) })}</p>
 
-      <ol className="cass-progress__milestones">
+      <motion.ol
+        className="cass-progress__milestones"
+        variants={reduced ? undefined : railContainerVariants}
+        initial={reduced ? undefined : 'hidden'}
+        animate={reduced ? undefined : 'show'}
+      >
         {milestones.map((m, i) => {
           const done = cass.milestone > m.step;
           const current = cass.milestone === m.step;
           const isLast = i === milestones.length - 1;
           const sentiment = done ? 'positive' : current ? 'pending' : 'neutral';
           return (
-            <li key={m.step} className={`cass-progress__milestone${done ? ' is-done' : ''}${current ? ' is-current' : ''}`}>
+            <motion.li
+              key={m.step}
+              className={`cass-progress__milestone${done ? ' is-done' : ''}${current ? ' is-current' : ''}`}
+              variants={reduced ? undefined : railItemVariants}
+            >
               <div className="cass-progress__rail">
                 <StatusIcon sentiment={sentiment} size={32} />
                 {!isLast && <span className="cass-progress__connector" />}
@@ -51,10 +71,10 @@ export function CassProgress({ onClose }: Props) {
                 <p className="np-text-body-large-bold cass-progress__milestone-label">{t(m.labelKey)}</p>
                 <p className="np-text-body-default cass-progress__milestone-sub">{t(m.subCopyKey, { bank: oldBank.name })}</p>
               </div>
-            </li>
+            </motion.li>
           );
         })}
-      </ol>
+      </motion.ol>
 
       {isComplete && (
         <div className="cass-progress__cta">

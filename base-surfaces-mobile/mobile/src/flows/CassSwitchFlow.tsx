@@ -1,11 +1,14 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { Button, Field, Input, ListItem, StatusIcon, DateLookup, InfoPrompt, InlinePrompt, IconButton } from '@transferwise/components';
-import { ArrowLeft, Cross, Bank, FastFlag, Convert, Card, CardStrikethrough } from '@transferwise/icons';
+import { useState, useEffect, useRef, useCallback, useMemo, type ReactNode } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Button, Field, Input, ListItem, StatusIcon, DateLookup, InfoPrompt, InlinePrompt, IconButton, Header } from '@transferwise/components';
+import { ArrowLeft, Cross, FastFlag, Convert, Card, CardStrikethrough, DirectDebits, CalendarCheck, Coins, Money } from '@transferwise/icons';
 import { Illustration } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import { useCass } from '../context/Cass';
 import { CassSwitchGuaranteeOrbit } from '../components/CassSwitchGuaranteeOrbit';
 import { CassFlagPromoCard } from '../components/CassFlagPromoCard';
+import { CassCashbackPromoCard } from '../components/CassCashbackPromoCard';
+import { PageFooter } from '../components/PageFooter';
 import { BottomSheet } from '../components/BottomSheet';
 import {
   oldBank,
@@ -29,6 +32,70 @@ type Screen =
 
 const ORDER: Screen[] = ['intro', 'bank', 'match', 'address', 'card', 'date', 'review', 'finalise'];
 
+// Staggered screen entrance. The container fades/slides each semantic chunk in
+// ~90ms apart; exits are a softer, smaller translate (skill: subtle exits).
+const SPRING = { type: 'spring', duration: 0.3, bounce: 0 } as const;
+
+const containerVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.09, delayChildren: 0.04 } },
+  exit: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: SPRING },
+  exit: { opacity: 0, y: 8, transition: { duration: 0.16 } },
+};
+
+// Pop for the CoP match ticks — exact icon values from the polish skill.
+const tickVariants = {
+  hidden: { opacity: 0, scale: 0.25, filter: 'blur(4px)' },
+  show: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: SPRING },
+};
+
+// Per-screen content wrapper. When reduced motion is on, render a plain div so
+// nothing animates and content appears instantly.
+function ScreenMotion({ reduced, className, children }: { reduced: boolean; className?: string; children: ReactNode }) {
+  if (reduced) return <div className={className}>{children}</div>;
+  return (
+    <motion.div className={className} variants={containerVariants} initial="hidden" animate="show" exit="exit">
+      {children}
+    </motion.div>
+  );
+}
+
+// One staggered chunk inside a ScreenMotion. Plain passthrough under reduced motion.
+function Chunk({ reduced, children, className }: { reduced: boolean; children: ReactNode; className?: string }) {
+  if (reduced) return <div className={className}>{children}</div>;
+  return <motion.div className={className} variants={itemVariants}>{children}</motion.div>;
+}
+
+// Match list — a nested stagger container so each verified row reveals in turn.
+const matchListVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.12 } },
+  exit: {},
+};
+
+// One verified CoP row. The row slides in (itemVariants); its green tick then
+// pops (scale/blur, slight delay) so each "✓" lands with a beat as the list reveals.
+function MatchRow({ reduced, title, subtitle }: { reduced: boolean; title: string; subtitle: string }) {
+  if (reduced) {
+    return <ListItem title={title} subtitle={subtitle} valueTitle={<StatusIcon sentiment="positive" size={24} />} />;
+  }
+  const tick = (
+    <motion.span style={{ display: 'inline-flex' }} variants={tickVariants}>
+      <StatusIcon sentiment="positive" size={24} />
+    </motion.span>
+  );
+  return (
+    <motion.li variants={itemVariants} className="list-unstyled">
+      <ListItem as="div" title={title} subtitle={subtitle} valueTitle={tick} />
+    </motion.li>
+  );
+}
+
 type Props = {
   onClose: () => void;
   avatarUrl: string;
@@ -38,6 +105,7 @@ type Props = {
 export function CassSwitchFlow({ onClose, startScreen = 'intro' }: Props) {
   const { t } = useLanguage();
   const { initiateSwitch, pauseSwitch } = useCass();
+  const reduced = useReducedMotion() ?? false;
 
   const [screen, setScreen] = useState<Screen>(startScreen);
 
@@ -150,231 +218,313 @@ export function CassSwitchFlow({ onClose, startScreen = 'intro' }: Props) {
       </div>
 
       <div className="cass-flow__body" ref={bodyRef}>
-        {screen === 'intro' && (
-          <div className="cass-flow__screen">
-            <CassSwitchGuaranteeOrbit />
-            <h1 className="np-text-display-small cass-flow__display-title">{t('cass.intro.title')}</h1>
+        <AnimatePresence mode="wait" initial={false}>
+          {screen === 'intro' && (
+            <ScreenMotion key="intro" reduced={reduced} className="cass-flow__screen">
+              <Chunk reduced={reduced}><CassSwitchGuaranteeOrbit /></Chunk>
+              <Chunk reduced={reduced}>
+                <h1 className="np-text-display-small cass-flow__display-title">{t('cass.intro.title')}</h1>
+              </Chunk>
 
-            <p className="np-text-title-group cass-flow__section-label">{t('cass.intro.whatHappens')}</p>
-            <span className="cass-flow__rule" />
-            <ul className="wds-list list-unstyled m-y-0">
-              <ListItem
-                media={<ListItem.AvatarView size={48}><Bank size={24} /></ListItem.AvatarView>}
-                title={t('cass.intro.balanceTitle')}
-                subtitle={t('cass.intro.balanceBody')}
-              />
-              <ListItem
-                media={<ListItem.AvatarView size={48}><FastFlag size={24} /></ListItem.AvatarView>}
-                title={t('cass.intro.debitsTitle')}
-                subtitle={t('cass.intro.debitsBody')}
-              />
-              <ListItem
-                media={<ListItem.AvatarView size={48}><Convert size={24} /></ListItem.AvatarView>}
-                title={t('cass.intro.redirectTitle')}
-                subtitle={t('cass.intro.redirectBody')}
-              />
-            </ul>
+              <Chunk reduced={reduced}>
+                <Header
+                  title={t('cass.intro.whatHappens')}
+                  level="group"
+                  as="h2"
+                  action={{ text: t('cass.intro.learnMore'), 'aria-label': t('cass.intro.learnMore'), onClick: () => {} }}
+                />
+                <ul className="wds-list list-unstyled m-y-0">
+                  <ListItem
+                    media={<ListItem.AvatarView size={48}><Money size={24} /></ListItem.AvatarView>}
+                    title={t('cass.intro.balanceTitle')}
+                    subtitle={t('cass.intro.balanceBody')}
+                  />
+                  <ListItem
+                    media={<ListItem.AvatarView size={48}><Convert size={24} /></ListItem.AvatarView>}
+                    title={t('cass.intro.debitsTitle')}
+                    subtitle={t('cass.intro.debitsBody')}
+                  />
+                  <ListItem
+                    media={<ListItem.AvatarView size={48}><FastFlag size={24} /></ListItem.AvatarView>}
+                    title={t('cass.intro.redirectTitle')}
+                    subtitle={t('cass.intro.redirectBody')}
+                  />
+                </ul>
+              </Chunk>
 
-            <div className="cass-flow__promo">
-              <CassFlagPromoCard
-                title={t('cass.intro.promoTitle')}
-                description={t('cass.intro.promoDescription')}
-              />
-            </div>
-          </div>
-        )}
+              <Chunk reduced={reduced} className="cass-flow__promo">
+                <CassCashbackPromoCard title={t('cass.intro.cashbackPromoTitle')} onClick={() => {}} />
+              </Chunk>
 
-        {screen === 'bank' && (
-          <div className="cass-flow__screen">
-            <h1 className="np-text-title-screen cass-flow__title">{t('cass.bank.title')}</h1>
-            <p className="np-text-body-large cass-flow__lede">{t('cass.bank.subtitle')}</p>
+              <Chunk reduced={reduced} className="cass-flow__section">
+                <Header
+                  title={t('cass.intro.cashbackInfo')}
+                  level="group"
+                  as="h2"
+                  action={{ text: t('cass.intro.learnMore'), 'aria-label': t('cass.intro.learnMore'), onClick: () => {} }}
+                />
+                <ul className="wds-list list-unstyled m-y-0">
+                  <ListItem
+                    media={<ListItem.AvatarView size={48}><DirectDebits size={24} /></ListItem.AvatarView>}
+                    title={t('cass.intro.cashbackEligibleTitle')}
+                  />
+                  <ListItem
+                    media={<ListItem.AvatarView size={48}><CalendarCheck size={24} /></ListItem.AvatarView>}
+                    title={t('cass.intro.cashbackValidTitle')}
+                  />
+                  <ListItem
+                    media={<ListItem.AvatarView size={48}><Coins size={24} /></ListItem.AvatarView>}
+                    title={t('cass.intro.cashbackMaxTitle')}
+                  />
+                </ul>
+              </Chunk>
 
-            <Field label={t('cass.bank.fullName')}>
-              <Input
-                type="text"
-                placeholder={t('cass.bank.fullNamePlaceholder')}
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-              />
-            </Field>
-            <div className="cass-flow__name-prompt">
-              <InlinePrompt sentiment="neutral" width="full">{t('cass.bank.namePrompt')}</InlinePrompt>
-            </div>
-            <Field label={t('cass.bank.sortCode')}>
-              <Input
-                type="text"
-                inputMode="numeric"
-                placeholder="00-00-00"
-                value={sortCode}
-                onChange={(e) => handleSortCode(e.target.value)}
-              />
-            </Field>
-            <Field label={t('cass.bank.accountNumber')}>
-              <Input
-                type="text"
-                inputMode="numeric"
-                placeholder="12345678"
-                value={accountNumber}
-                onChange={(e) => handleAccountNumber(e.target.value)}
-              />
-            </Field>
-          </div>
-        )}
+              <Chunk reduced={reduced} className="cass-flow__promo">
+                <CassFlagPromoCard
+                  title={t('cass.intro.promoTitle')}
+                  description={t('cass.intro.promoDescription')}
+                />
+              </Chunk>
 
-        {screen === 'match' && (
-          <div className="cass-flow__screen">
-            <div className="cass-flow__hero">
-              <Illustration name="check-mark" size="large" />
-            </div>
-            <h1 className="np-text-title-screen cass-flow__title cass-flow__title--center">{t('cass.match.title')}</h1>
+              <Chunk reduced={reduced} className="cass-flow__footer-reassurance">
+                <PageFooter />
+              </Chunk>
+            </ScreenMotion>
+          )}
 
-            <ul className="wds-list list-unstyled m-y-0 cass-flow__match-list">
-              <ListItem
-                title={t('cass.match.holderName')}
-                subtitle={oldBank.accountHolder}
-                valueTitle={<StatusIcon sentiment="positive" size={24} />}
-              />
-              <ListItem
-                title={t('cass.match.sortCode')}
-                subtitle={oldBank.sortCode}
-                valueTitle={<StatusIcon sentiment="positive" size={24} />}
-              />
-              <ListItem
-                title={t('cass.match.accountNumber')}
-                subtitle={oldBank.accountNumberMasked}
-                valueTitle={<StatusIcon sentiment="positive" size={24} />}
-              />
-              <ListItem
-                title={t('cass.match.accountType')}
-                subtitle={oldBank.accountType}
-                valueTitle={<StatusIcon sentiment="positive" size={24} />}
-              />
-            </ul>
-          </div>
-        )}
+          {screen === 'bank' && (
+            <ScreenMotion key="bank" reduced={reduced} className="cass-flow__screen">
+              <Chunk reduced={reduced}>
+                <h1 className="np-text-title-screen cass-flow__title">{t('cass.bank.title')}</h1>
+              </Chunk>
+              <Chunk reduced={reduced}>
+                <p className="np-text-body-large cass-flow__lede">{t('cass.bank.subtitle')}</p>
+              </Chunk>
 
-        {screen === 'address' && (
-          <div className="cass-flow__screen">
-            <h1 className="np-text-title-screen cass-flow__title">{t('cass.address.title')}</h1>
-            <p className="np-text-body-large cass-flow__lede">{t('cass.address.subtitle')}</p>
+              <Chunk reduced={reduced}>
+                <Field label={t('cass.bank.fullName')}>
+                  <Input
+                    type="text"
+                    placeholder={t('cass.bank.fullNamePlaceholder')}
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                  />
+                </Field>
+                <div className="cass-flow__name-prompt">
+                  <InlinePrompt sentiment="neutral" width="full">{t('cass.bank.namePrompt')}</InlinePrompt>
+                </div>
+              </Chunk>
+              <Chunk reduced={reduced}>
+                <Field label={t('cass.bank.sortCode')}>
+                  <Input
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="00-00-00"
+                    value={sortCode}
+                    onChange={(e) => handleSortCode(e.target.value)}
+                  />
+                </Field>
+              </Chunk>
+              <Chunk reduced={reduced}>
+                <Field label={t('cass.bank.accountNumber')}>
+                  <Input
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="12345678"
+                    value={accountNumber}
+                    onChange={(e) => handleAccountNumber(e.target.value)}
+                  />
+                </Field>
+              </Chunk>
+            </ScreenMotion>
+          )}
 
-            <Field label={t('cass.address.homeAddress')}>
-              <Input type="text" value={addressLine} onChange={(e) => setAddressLine(e.target.value)} />
-            </Field>
-            <Field label={t('cass.address.city')}>
-              <Input type="text" value={city} onChange={(e) => setCity(e.target.value)} />
-            </Field>
-            <Field label={t('cass.address.postcode')}>
-              <Input type="text" value={postcode} onChange={(e) => setPostcode(e.target.value)} />
-            </Field>
+          {screen === 'match' && (
+            <ScreenMotion key="match" reduced={reduced} className="cass-flow__screen">
+              <Chunk reduced={reduced} className="cass-flow__hero">
+                <Illustration name="check-mark" size="large" />
+              </Chunk>
+              <Chunk reduced={reduced}>
+                <h1 className="np-text-title-screen cass-flow__title cass-flow__title--center">{t('cass.match.title')}</h1>
+              </Chunk>
 
-            <div className="cass-flow__prompt">
-              <InfoPrompt
-                sentiment="warning"
-                title={t('cass.address.matchTitle')}
-                description={t('cass.address.matchBody')}
-              />
-            </div>
-          </div>
-        )}
+              {reduced ? (
+                <ul className="wds-list list-unstyled m-y-0 cass-flow__match-list">
+                  <MatchRow reduced={reduced} title={t('cass.match.holderName')} subtitle={oldBank.accountHolder} />
+                  <MatchRow reduced={reduced} title={t('cass.match.sortCode')} subtitle={oldBank.sortCode} />
+                  <MatchRow reduced={reduced} title={t('cass.match.accountNumber')} subtitle={oldBank.accountNumberMasked} />
+                  <MatchRow reduced={reduced} title={t('cass.match.accountType')} subtitle={oldBank.accountType} />
+                </ul>
+              ) : (
+                <motion.ul className="wds-list list-unstyled m-y-0 cass-flow__match-list" variants={matchListVariants}>
+                  <MatchRow reduced={reduced} title={t('cass.match.holderName')} subtitle={oldBank.accountHolder} />
+                  <MatchRow reduced={reduced} title={t('cass.match.sortCode')} subtitle={oldBank.sortCode} />
+                  <MatchRow reduced={reduced} title={t('cass.match.accountNumber')} subtitle={oldBank.accountNumberMasked} />
+                  <MatchRow reduced={reduced} title={t('cass.match.accountType')} subtitle={oldBank.accountType} />
+                </motion.ul>
+              )}
+            </ScreenMotion>
+          )}
 
-        {screen === 'card' && (
-          <div className="cass-flow__screen">
-            <h1 className="np-text-title-screen cass-flow__title cass-flow__title--form">{t('cass.card.title')}</h1>
+          {screen === 'address' && (
+            <ScreenMotion key="address" reduced={reduced} className="cass-flow__screen">
+              <Chunk reduced={reduced}>
+                <h1 className="np-text-title-screen cass-flow__title">{t('cass.address.title')}</h1>
+              </Chunk>
+              <Chunk reduced={reduced}>
+                <p className="np-text-body-large cass-flow__lede">{t('cass.address.subtitle')}</p>
+              </Chunk>
 
-            <Field label={t('cass.card.label')}>
-              <Input
-                type="text"
-                inputMode="numeric"
-                value={cardDigits}
-                onChange={(e) => setCardDigits(e.target.value.replace(/\D/g, '').slice(0, 5))}
-              />
-            </Field>
+              <Chunk reduced={reduced}>
+                <Field label={t('cass.address.homeAddress')}>
+                  <Input type="text" value={addressLine} onChange={(e) => setAddressLine(e.target.value)} />
+                </Field>
+              </Chunk>
+              <Chunk reduced={reduced}>
+                <Field label={t('cass.address.city')}>
+                  <Input type="text" value={city} onChange={(e) => setCity(e.target.value)} />
+                </Field>
+              </Chunk>
+              <Chunk reduced={reduced}>
+                <Field label={t('cass.address.postcode')}>
+                  <Input type="text" value={postcode} onChange={(e) => setPostcode(e.target.value)} />
+                </Field>
+              </Chunk>
 
-            <div className="cass-flow__prompt">
-              <InfoPrompt
-                sentiment="warning"
-                title={t('cass.card.warningTitle')}
-                description={t('cass.card.warningBody')}
-              />
-            </div>
-          </div>
-        )}
+              <Chunk reduced={reduced} className="cass-flow__prompt">
+                <InfoPrompt
+                  sentiment="warning"
+                  title={t('cass.address.matchTitle')}
+                  description={t('cass.address.matchBody')}
+                />
+              </Chunk>
+            </ScreenMotion>
+          )}
 
-        {screen === 'date' && (
-          <div className="cass-flow__screen">
-            <h1 className="np-text-title-screen cass-flow__title">{t('cass.date.title')}</h1>
-            <p className="np-text-body-large cass-flow__lede">{t('cass.date.hint')}</p>
+          {screen === 'card' && (
+            <ScreenMotion key="card" reduced={reduced} className="cass-flow__screen">
+              <Chunk reduced={reduced}>
+                <h1 className="np-text-title-screen cass-flow__title cass-flow__title--form">{t('cass.card.title')}</h1>
+              </Chunk>
 
-            <Field label={t('cass.date.fieldLabel')}>
-              <DateLookup
-                value={switchDate}
-                min={minDate}
-                max={maxDate}
-                monthFormat="long"
-                onChange={handleDateChange}
-              />
-            </Field>
-            <div className="cass-flow__date-hint">
-              <StatusIcon sentiment="neutral" size={16} />
-              <span className="np-text-body-default">{t('cass.date.firstPossible')}</span>
-            </div>
-          </div>
-        )}
+              <Chunk reduced={reduced}>
+                <Field label={t('cass.card.label')}>
+                  <Input
+                    type="text"
+                    inputMode="numeric"
+                    value={cardDigits}
+                    onChange={(e) => setCardDigits(e.target.value.replace(/\D/g, '').slice(0, 5))}
+                  />
+                </Field>
+              </Chunk>
 
-        {screen === 'review' && (
-          <div className="cass-flow__screen">
-            <h1 className="np-text-title-screen cass-flow__title">{t('cass.review.title')}</h1>
-            <p className="np-text-body-large cass-flow__lede">{t('cass.review.subtitle')}</p>
+              <Chunk reduced={reduced} className="cass-flow__prompt">
+                <InfoPrompt
+                  sentiment="warning"
+                  title={t('cass.card.warningTitle')}
+                  description={t('cass.card.warningBody')}
+                />
+              </Chunk>
+            </ScreenMotion>
+          )}
 
-            <ul className="wds-list list-unstyled m-y-0">
-              <ListItem title={t('cass.review.guarantee')} control={<ListItem.Navigation onClick={() => {}} />} />
-              <ListItem title={t('cass.review.agreement')} control={<ListItem.Navigation onClick={() => {}} />} />
-              <ListItem
-                title={t('cass.review.closure')}
-                subtitle={t('cass.review.closureSub', { bank: oldBank.name, date: formatSwitchDate(switchDate) })}
-                control={<ListItem.Navigation onClick={() => {}} />}
-              />
-            </ul>
-          </div>
-        )}
+          {screen === 'date' && (
+            <ScreenMotion key="date" reduced={reduced} className="cass-flow__screen">
+              <Chunk reduced={reduced}>
+                <h1 className="np-text-title-screen cass-flow__title">{t('cass.date.title')}</h1>
+              </Chunk>
+              <Chunk reduced={reduced}>
+                <p className="np-text-body-large cass-flow__lede">{t('cass.date.hint')}</p>
+              </Chunk>
 
-        {screen === 'finalise' && (
-          <div className="cass-flow__screen">
-            <h1 className="np-text-title-screen cass-flow__title">{t('cass.finalise.title')}</h1>
+              <Chunk reduced={reduced}>
+                <Field label={t('cass.date.fieldLabel')}>
+                  <DateLookup
+                    value={switchDate}
+                    min={minDate}
+                    max={maxDate}
+                    monthFormat="long"
+                    onChange={handleDateChange}
+                  />
+                </Field>
+                <div className="cass-flow__date-hint">
+                  <StatusIcon sentiment="neutral" size={16} />
+                  <span className="np-text-body-default">{t('cass.date.firstPossible')}</span>
+                </div>
+              </Chunk>
+            </ScreenMotion>
+          )}
 
-            <ul className="wds-list list-unstyled m-y-0 cass-flow__finalise-list">
-              <ListItem
-                title={t('cass.finalise.switchingFrom')}
-                valueTitle={oldBank.displayName}
-                valueColumnWidth={60}
-                control={<ListItem.Navigation onClick={() => {}} />}
-              />
-              <ListItem
-                title={t('cass.finalise.switchDate')}
-                valueTitle={formatSwitchDate(switchDate)}
-                valueColumnWidth={60}
-                control={<ListItem.Navigation onClick={() => {}} />}
-              />
-              <ListItem
-                title={t('cass.finalise.whatMoves')}
-                valueTitle={t('cass.finalise.whatMovesValue')}
-                valueColumnWidth={60}
-                control={<ListItem.Navigation onClick={() => {}} />}
-              />
-            </ul>
-          </div>
-        )}
+          {screen === 'review' && (
+            <ScreenMotion key="review" reduced={reduced} className="cass-flow__screen">
+              <Chunk reduced={reduced}>
+                <h1 className="np-text-title-screen cass-flow__title">{t('cass.review.title')}</h1>
+              </Chunk>
+              <Chunk reduced={reduced}>
+                <p className="np-text-body-large cass-flow__lede">{t('cass.review.subtitle')}</p>
+              </Chunk>
 
-        {screen === 'success' && (
-          <div className="cass-flow__screen cass-flow__screen--success">
-            <Illustration name="check-mark" size="large" />
-            <h1 className="np-text-display-medium cass-flow__success-title">{t('cass.sent.title')}</h1>
-            <p className="np-text-body-large cass-flow__success-body">
-              {t('cass.sent.body', { bank: oldBank.name, date: formatSwitchDate(switchDate) })}
-            </p>
-          </div>
-        )}
+              <Chunk reduced={reduced}>
+                <ul className="wds-list list-unstyled m-y-0">
+                  <ListItem title={t('cass.review.guarantee')} control={<ListItem.Navigation onClick={() => {}} />} />
+                  <ListItem title={t('cass.review.agreement')} control={<ListItem.Navigation onClick={() => {}} />} />
+                  <ListItem
+                    title={t('cass.review.closure')}
+                    subtitle={t('cass.review.closureSub', { bank: oldBank.name, date: formatSwitchDate(switchDate) })}
+                    control={<ListItem.Navigation onClick={() => {}} />}
+                  />
+                </ul>
+              </Chunk>
+            </ScreenMotion>
+          )}
+
+          {screen === 'finalise' && (
+            <ScreenMotion key="finalise" reduced={reduced} className="cass-flow__screen">
+              <Chunk reduced={reduced}>
+                <h1 className="np-text-title-screen cass-flow__title">{t('cass.finalise.title')}</h1>
+              </Chunk>
+
+              <Chunk reduced={reduced}>
+                <ul className="wds-list list-unstyled m-y-0 cass-flow__finalise-list">
+                  <ListItem
+                    title={t('cass.finalise.switchingFrom')}
+                    valueTitle={oldBank.displayName}
+                    valueColumnWidth={60}
+                    control={<ListItem.Navigation onClick={() => {}} />}
+                  />
+                  <ListItem
+                    title={t('cass.finalise.switchDate')}
+                    valueTitle={formatSwitchDate(switchDate)}
+                    valueColumnWidth={60}
+                    control={<ListItem.Navigation onClick={() => {}} />}
+                  />
+                  <ListItem
+                    title={t('cass.finalise.whatMoves')}
+                    valueTitle={t('cass.finalise.whatMovesValue')}
+                    valueColumnWidth={60}
+                    control={<ListItem.Navigation onClick={() => {}} />}
+                  />
+                </ul>
+              </Chunk>
+            </ScreenMotion>
+          )}
+
+          {screen === 'success' && (
+            <ScreenMotion key="success" reduced={reduced} className="cass-flow__screen cass-flow__screen--success">
+              <Chunk reduced={reduced}>
+                <Illustration name="check-mark" size="large" />
+              </Chunk>
+              <Chunk reduced={reduced}>
+                <h1 className="np-text-display-medium cass-flow__success-title">{t('cass.sent.title')}</h1>
+              </Chunk>
+              <Chunk reduced={reduced}>
+                <p className="np-text-body-large cass-flow__success-body">
+                  {t('cass.sent.body', { bank: oldBank.name, date: formatSwitchDate(switchDate) })}
+                </p>
+              </Chunk>
+            </ScreenMotion>
+          )}
+        </AnimatePresence>
       </div>
 
       <div className="cass-flow__footer">
