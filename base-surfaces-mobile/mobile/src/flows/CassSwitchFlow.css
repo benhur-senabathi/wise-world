@@ -19,6 +19,12 @@
   flex-shrink: 0;
 }
 
+/* Reserve the back button's layout box during the intro genesis (so revealing it
+   later doesn't push the body + orbit slot down), but keep it invisible. */
+.cass-flow__nav-hidden {
+  visibility: hidden;
+}
+
 .cass-flow__body {
   flex: 1;
   min-height: 0;
@@ -95,19 +101,6 @@
 .cass-flow__name-prompt {
   margin-top: -20px;
   margin-bottom: 24px;
-}
-
-/* "Not my address" bottom sheet body */
-.cass-flow__sheet-body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-medium);
-  padding: 0 16px 16px;
-}
-
-.cass-flow__sheet-body p {
-  margin: 0;
-  color: var(--color-content-secondary);
 }
 
 /* "I don't have my old bank card" bottom sheet */

@@ -595,8 +595,8 @@ const en = {
   'cass.intro.debitsBody': 'We\'ll move all your direct debits, standing orders to your Wise account.',
   'cass.intro.redirectTitle': 'Redirect payments',
   'cass.intro.redirectBody': 'We close your old account and redirect all future payments to your Wise current account. Including salary.',
-  'cass.intro.promoTitle': 'One account. 40+ currencies.',
-  'cass.intro.promoDescription': 'Get paid, pay your bills, and spend in 40+ currencies, all from one account.',
+  'cass.intro.promoTitle': 'One GBP account.',
+  'cass.intro.promoDescription': 'Get paid, pay your bills, and spend in 40+ currencies, all from one account with low FX fees.',
   'cass.intro.cta': 'Switch to Wise',
 
   // Intro — cashback
@@ -605,6 +605,13 @@ const en = {
   'cass.intro.cashbackEligibleTitle': 'Switch 3 direct debits to be eligible',
   'cass.intro.cashbackValidTitle': 'Valid for 12 months from switch date',
   'cass.intro.cashbackMaxTitle': 'Maximum of £50',
+
+  // Intro — what you get
+  'cass.intro.whatYouGet': 'What you get',
+  'cass.intro.getJarsTitle': 'Organise your savings into Jars',
+  'cass.intro.getJarsBody': 'If you like to save for occasions, use Jars to with X currencies',
+  'cass.intro.getInterestTitle': 'Earn interest on your everyday money',
+  'cass.intro.getInterestBody': 'Turn on Wise interests to get access to x.xx% interest rates on your GBP balance',
 
   // Old bank details
   'cass.bank.title': 'Account details from old bank account',

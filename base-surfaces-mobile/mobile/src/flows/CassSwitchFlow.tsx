@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo, type ReactNode } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Button, Field, Input, ListItem, StatusIcon, DateLookup, InfoPrompt, InlinePrompt, IconButton, Header } from '@transferwise/components';
-import { ArrowLeft, Cross, FastFlag, Convert, Card, CardStrikethrough, DirectDebits, CalendarCheck, Coins, Money } from '@transferwise/icons';
+import { ArrowLeft, Cross, FastFlag, Convert, Card, CardStrikethrough, DirectDebits, CalendarCheck, Coins, Money, Jar, PercentageCircle } from '@transferwise/icons';
 import { Illustration } from '@wise/art';
 import { useLanguage } from '../context/Language';
 import { useCass } from '../context/Cass';
@@ -109,6 +109,11 @@ export function CassSwitchFlow({ onClose, startScreen = 'intro' }: Props) {
 
   const [screen, setScreen] = useState<Screen>(startScreen);
 
+  // Intro: the orbit owns a full-screen genesis then docks; the rest of the page
+  // content holds hidden until the orbit signals the dock is underway. If we don't
+  // open on the intro screen (resume), reveal immediately.
+  const [introRevealed, setIntroRevealed] = useState(startScreen !== 'intro');
+
   // Step 2 — old bank details + simulated CoP result.
   const [fullName, setFullName] = useState(oldBank.accountHolder);
   const [sortCode, setSortCode] = useState('');
@@ -206,90 +211,129 @@ export function CassSwitchFlow({ onClose, startScreen = 'intro' }: Props) {
   return (
     <div className={`cass-flow${isSuccess ? ' cass-flow--success np-theme-personal--forest-green' : ''}`}>
       <div className="cass-flow__nav">
+        {/* The button is always rendered so the nav reserves a constant height —
+            hiding it (vs removing it) during the intro genesis keeps the orbit
+            alone on screen WITHOUT shifting the body/orbit-slot down when the
+            back button later appears. */}
         {isSuccess ? (
           <IconButton size={40} priority="secondary" aria-label={t('cass.sent.cta')} onClick={onClose}>
             <Cross />
           </IconButton>
         ) : (
-          <IconButton size={40} priority="secondary" aria-label={t('topBar.goBack')} onClick={goBack}>
-            <ArrowLeft />
-          </IconButton>
+          <div className={screen === 'intro' && !introRevealed ? 'cass-flow__nav-hidden' : undefined}>
+            <IconButton size={40} priority="secondary" aria-label={t('topBar.goBack')} onClick={goBack}>
+              <ArrowLeft />
+            </IconButton>
+          </div>
         )}
       </div>
 
       <div className="cass-flow__body" ref={bodyRef}>
         <AnimatePresence mode="wait" initial={false}>
           {screen === 'intro' && (
-            <ScreenMotion key="intro" reduced={reduced} className="cass-flow__screen">
-              <Chunk reduced={reduced}><CassSwitchGuaranteeOrbit /></Chunk>
-              <Chunk reduced={reduced}>
-                <h1 className="np-text-display-small cass-flow__display-title">{t('cass.intro.title')}</h1>
-              </Chunk>
+            <div key="intro" className="cass-flow__screen">
+              {/* The orbit owns its own genesis + dock; it must render immediately
+                  (not as a staggered Chunk) and signals when to reveal the rest. */}
+              <CassSwitchGuaranteeOrbit onDockReady={() => setIntroRevealed(true)} />
 
-              <Chunk reduced={reduced}>
-                <Header
-                  title={t('cass.intro.whatHappens')}
-                  level="group"
-                  as="h2"
-                  action={{ text: t('cass.intro.learnMore'), 'aria-label': t('cass.intro.learnMore'), onClick: () => {} }}
-                />
-                <ul className="wds-list list-unstyled m-y-0">
-                  <ListItem
-                    media={<ListItem.AvatarView size={48}><Money size={24} /></ListItem.AvatarView>}
-                    title={t('cass.intro.balanceTitle')}
-                    subtitle={t('cass.intro.balanceBody')}
-                  />
-                  <ListItem
-                    media={<ListItem.AvatarView size={48}><Convert size={24} /></ListItem.AvatarView>}
-                    title={t('cass.intro.debitsTitle')}
-                    subtitle={t('cass.intro.debitsBody')}
-                  />
-                  <ListItem
-                    media={<ListItem.AvatarView size={48}><FastFlag size={24} /></ListItem.AvatarView>}
-                    title={t('cass.intro.redirectTitle')}
-                    subtitle={t('cass.intro.redirectBody')}
-                  />
-                </ul>
-              </Chunk>
+              {/* Own AnimatePresence so this late mount gets a fresh PresenceContext —
+                  the outer AnimatePresence's `initial={false}` would otherwise leak down
+                  and suppress the entrance, making the content flash in all at once. */}
+              <AnimatePresence>
+              {introRevealed && (
+                <ScreenMotion reduced={reduced}>
+                  <Chunk reduced={reduced}>
+                    <h1 className="np-text-display-small cass-flow__display-title">{t('cass.intro.title')}</h1>
+                  </Chunk>
 
-              <Chunk reduced={reduced} className="cass-flow__promo">
-                <CassCashbackPromoCard title={t('cass.intro.cashbackPromoTitle')} onClick={() => {}} />
-              </Chunk>
+                  <Chunk reduced={reduced}>
+                    <Header
+                      title={t('cass.intro.whatHappens')}
+                      level="group"
+                      as="h2"
+                      action={{ text: t('cass.intro.learnMore'), 'aria-label': t('cass.intro.learnMore'), onClick: () => {} }}
+                    />
+                    <ul className="wds-list list-unstyled m-y-0">
+                      <ListItem
+                        media={<ListItem.AvatarView size={48}><Money size={24} /></ListItem.AvatarView>}
+                        title={t('cass.intro.balanceTitle')}
+                        subtitle={t('cass.intro.balanceBody')}
+                      />
+                      <ListItem
+                        media={<ListItem.AvatarView size={48}><Convert size={24} /></ListItem.AvatarView>}
+                        title={t('cass.intro.debitsTitle')}
+                        subtitle={t('cass.intro.debitsBody')}
+                      />
+                      <ListItem
+                        media={<ListItem.AvatarView size={48}><FastFlag size={24} /></ListItem.AvatarView>}
+                        title={t('cass.intro.redirectTitle')}
+                        subtitle={t('cass.intro.redirectBody')}
+                      />
+                    </ul>
+                  </Chunk>
 
-              <Chunk reduced={reduced} className="cass-flow__section">
-                <Header
-                  title={t('cass.intro.cashbackInfo')}
-                  level="group"
-                  as="h2"
-                  action={{ text: t('cass.intro.learnMore'), 'aria-label': t('cass.intro.learnMore'), onClick: () => {} }}
-                />
-                <ul className="wds-list list-unstyled m-y-0">
-                  <ListItem
-                    media={<ListItem.AvatarView size={48}><DirectDebits size={24} /></ListItem.AvatarView>}
-                    title={t('cass.intro.cashbackEligibleTitle')}
-                  />
-                  <ListItem
-                    media={<ListItem.AvatarView size={48}><CalendarCheck size={24} /></ListItem.AvatarView>}
-                    title={t('cass.intro.cashbackValidTitle')}
-                  />
-                  <ListItem
-                    media={<ListItem.AvatarView size={48}><Coins size={24} /></ListItem.AvatarView>}
-                    title={t('cass.intro.cashbackMaxTitle')}
-                  />
-                </ul>
-              </Chunk>
+                  <Chunk reduced={reduced} className="cass-flow__promo">
+                    <CassCashbackPromoCard title={t('cass.intro.cashbackPromoTitle')} ctaLabel={t('cass.intro.learnMore')} onClick={() => {}} />
+                  </Chunk>
 
-              <Chunk reduced={reduced} className="cass-flow__promo">
-                <CassFlagPromoCard
-                  title={t('cass.intro.promoTitle')}
-                  description={t('cass.intro.promoDescription')}
-                />
-              </Chunk>
+                  <Chunk reduced={reduced} className="cass-flow__section">
+                    <Header
+                      title={t('cass.intro.cashbackInfo')}
+                      level="group"
+                      as="h2"
+                      action={{ text: t('cass.intro.learnMore'), 'aria-label': t('cass.intro.learnMore'), onClick: () => {} }}
+                    />
+                    <ul className="wds-list list-unstyled m-y-0">
+                      <ListItem
+                        media={<ListItem.AvatarView size={48}><DirectDebits size={24} /></ListItem.AvatarView>}
+                        title={t('cass.intro.cashbackEligibleTitle')}
+                      />
+                      <ListItem
+                        media={<ListItem.AvatarView size={48}><CalendarCheck size={24} /></ListItem.AvatarView>}
+                        title={t('cass.intro.cashbackValidTitle')}
+                      />
+                      <ListItem
+                        media={<ListItem.AvatarView size={48}><Coins size={24} /></ListItem.AvatarView>}
+                        title={t('cass.intro.cashbackMaxTitle')}
+                      />
+                    </ul>
+                  </Chunk>
 
-              <Chunk reduced={reduced} className="cass-flow__footer-reassurance">
-                <PageFooter />
-              </Chunk>
-            </ScreenMotion>
+                  <Chunk reduced={reduced} className="cass-flow__promo">
+                    <CassFlagPromoCard
+                      title={t('cass.intro.promoTitle')}
+                      description={t('cass.intro.promoDescription')}
+                    />
+                  </Chunk>
+
+                  <Chunk reduced={reduced} className="cass-flow__section">
+                    <Header
+                      title={t('cass.intro.whatYouGet')}
+                      level="group"
+                      as="h2"
+                      action={{ text: t('cass.intro.learnMore'), 'aria-label': t('cass.intro.learnMore'), onClick: () => {} }}
+                    />
+                    <ul className="wds-list list-unstyled m-y-0">
+                      <ListItem
+                        media={<ListItem.AvatarView size={48}><Jar size={24} /></ListItem.AvatarView>}
+                        title={t('cass.intro.getJarsTitle')}
+                        subtitle={t('cass.intro.getJarsBody')}
+                      />
+                      <ListItem
+                        media={<ListItem.AvatarView size={48}><PercentageCircle size={24} /></ListItem.AvatarView>}
+                        title={t('cass.intro.getInterestTitle')}
+                        subtitle={t('cass.intro.getInterestBody')}
+                      />
+                    </ul>
+                  </Chunk>
+
+                  <Chunk reduced={reduced} className="cass-flow__footer-reassurance">
+                    <PageFooter />
+                  </Chunk>
+                </ScreenMotion>
+              )}
+              </AnimatePresence>
+            </div>
           )}
 
           {screen === 'bank' && (
@@ -528,7 +572,7 @@ export function CassSwitchFlow({ onClose, startScreen = 'intro' }: Props) {
       </div>
 
       <div className="cass-flow__footer">
-        {screen === 'intro' && (
+        {screen === 'intro' && introRevealed && (
           <Button v2 size="lg" priority="primary" block onClick={goNext}>{t('cass.intro.cta')}</Button>
         )}
 
@@ -576,13 +620,18 @@ export function CassSwitchFlow({ onClose, startScreen = 'intro' }: Props) {
       <BottomSheet
         open={showAddressSheet}
         onClose={() => setShowAddressSheet(false)}
-        title={t('cass.address.sheetTitle')}
       >
-        <div className="cass-flow__sheet-body">
-          <p className="np-text-body-large">{t('cass.address.sheetBody')}</p>
-          <Button v2 size="lg" priority="primary" block onClick={() => setShowAddressSheet(false)}>
-            {t('cass.address.sheetCta')}
-          </Button>
+        <div className="cass-flow__mismatch-sheet">
+          <div className="cass-flow__hero">
+            <Illustration name="house" size="large" />
+          </div>
+          <h2 className="np-text-title-subsection cass-flow__mismatch-title">{t('cass.address.sheetTitle')}</h2>
+          <p className="np-text-body-large cass-flow__mismatch-body">{t('cass.address.sheetBody')}</p>
+          <div className="cass-flow__mismatch-sheet-actions">
+            <Button v2 size="lg" priority="primary" block onClick={() => setShowAddressSheet(false)}>
+              {t('cass.address.sheetCta')}
+            </Button>
+          </div>
         </div>
       </BottomSheet>
 
