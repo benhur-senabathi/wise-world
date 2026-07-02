@@ -25,8 +25,8 @@ export function buildConnorPersonalTransactions(_consumerName: string, _business
     { name: 'Deliveroo', amount: '12.50 GBP', isPositive: false, imgSrc: logoUrl('deliveroo.co.uk'), date: '10 May', currency: 'GBP' },
 
     // 9 May — EUR: +10.94, GBP: +27.87
-    { name: 'Berry Design', amount: '+ 10.94 EUR', isPositive: true, icon: <Receive size={24} />, date: '9 May', currency: 'EUR' },
-    { name: 'Berry Design', amount: '+ 27.87 GBP', isPositive: true, icon: <Receive size={24} />, date: '9 May', currency: 'GBP' },
+    { name: 'Benhur Design', amount: '+ 10.94 EUR', isPositive: true, icon: <Receive size={24} />, date: '9 May', currency: 'EUR' },
+    { name: 'Benhur Design', amount: '+ 27.87 GBP', isPositive: true, icon: <Receive size={24} />, date: '9 May', currency: 'GBP' },
 
     // 8 May — EUR: -10.00, GBP: -1.00
     { name: 'Spotify', amount: '10.00 EUR', isPositive: false, imgSrc: logoUrl('spotify.com'), date: '8 May', currency: 'EUR' },

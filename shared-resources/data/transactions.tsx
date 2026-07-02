@@ -354,7 +354,7 @@ export function buildTransactions(consumerName: string, businessName: string, la
   ];
 }
 
-export const transactions: Transaction[] = buildTransactions('Connor Berry', 'Berry Design');
+export const transactions: Transaction[] = buildTransactions('Benhur Senabathi', 'Benhur Design');
 
 /**
  * Compute a currency's balance by summing all transaction credits and debits.

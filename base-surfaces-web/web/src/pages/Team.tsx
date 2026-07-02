@@ -12,14 +12,14 @@ export function Team({ personalAvatarUrl }: { personalAvatarUrl?: string } = {})
   const teamMembers = useMemo(() => [
     {
       name: consumerName,
-      email: 'connor@berrydesign.co',
+      email: 'benhur@benhurdesign.co',
       imgSrc: personalAvatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp',
       isYou: true,
       role: t('team.accountOwner'),
     },
     {
       name: 'Jamie Reynolds',
-      email: 'jamie@berrydesign.co',
+      email: 'jamie@benhurdesign.co',
       imgSrc: 'https://www.tapback.co/api/avatar/jamie-reynolds.webp',
     },
   ], [consumerName, t, personalAvatarUrl]);

@@ -50,7 +50,7 @@ The prototype supports multiple datasets — swap the entire account (currencies
 |---------|-------------|
 | **Power** | Feature-rich demo — multiple currencies, 2 cards, jars, group accounts |
 | **Common** | Minimal — single GBP currency, 1 card, no jars |
-| **Connor** | Real customer data — Connor Berry's personal + business accounts |
+| **Benhur** | Real customer data — Benhur Senabathi's personal + business accounts |
 
 Switch datasets from prototype settings (Ctrl+H on web, Settings button on mobile).
 

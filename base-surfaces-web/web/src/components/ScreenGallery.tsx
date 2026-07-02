@@ -112,7 +112,7 @@ const PRESET_DATASETS: { id: DatasetType; label: string }[] = [
   { id: 'common', label: 'Common' },
 ];
 const REAL_DATASETS: { id: DatasetType; label: string }[] = [
-  { id: 'connor', label: 'Connor Berry' },
+  { id: 'connor', label: 'Benhur Senabathi' },
 ];
 
 export function ScreenGallery({ accountType, activeFlowType, activeFlowStep }: { accountType: AccountType; activeFlowType?: string; activeFlowStep?: string }) {

@@ -278,7 +278,7 @@ const fr: Translations = {
   'payments.paymentGateway': 'Passerelle de paiement',
   'payments.paymentGatewaySub': 'Vous êtes sur la liste d\'attente — nous vous recontacterons.',
   'payments.lookingForQuickPay': 'Vous cherchez Quick Pay ?',
-  'payments.wisetagSubPersonal': '@connorberry',
+  'payments.wisetagSubPersonal': '@benhursenabathi',
   'payments.forwardInvoices': 'Transférer les factures par email',
   'payments.forwardInvoicesSub': 'Gagnez du temps en envoyant vos factures par email pour créer des brouillons de paiement.',
 

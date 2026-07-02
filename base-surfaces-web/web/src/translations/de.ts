@@ -278,7 +278,7 @@ const de: Translations = {
   'payments.paymentGateway': 'Payment-Gateway',
   'payments.paymentGatewaySub': 'Du bist auf der Warteliste — wir melden uns.',
   'payments.lookingForQuickPay': 'Quick Pay gesucht?',
-  'payments.wisetagSubPersonal': '@connorberry',
+  'payments.wisetagSubPersonal': '@benhursenabathi',
   'payments.forwardInvoices': 'Rechnungen per E-Mail weiterleiten',
   'payments.forwardInvoicesSub': 'Spare Zeit, indem du Rechnungen per E-Mail sendest, um Zahlungsentwürfe zu erstellen.',
 

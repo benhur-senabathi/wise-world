@@ -2,7 +2,7 @@ import type { CurrencyData } from './currencies';
 import { buildConnorBusinessTransactions } from './connor-business-transactions';
 import { computeCurrencyBalance } from './transactions';
 
-const transactions = buildConnorBusinessTransactions('Connor');
+const transactions = buildConnorBusinessTransactions('Benhur');
 
 export const connorBusinessCurrencies: CurrencyData[] = [
   {

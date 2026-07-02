@@ -583,7 +583,7 @@ const en = {
   'payments.paymentGateway': 'Payment gateway',
   'payments.paymentGatewaySub': 'You’re on the waitlist — we’ll be in touch.',
   'payments.lookingForQuickPay': 'Looking for Quick Pay?',
-  'payments.wisetagSubPersonal': '@connorberry',
+  'payments.wisetagSubPersonal': '@benhursenabathi',
   'payments.forwardInvoices': 'Forward invoices to email',
   'payments.forwardInvoicesSub': 'Save time by emailing bills and invoices to create draft payments.',
 

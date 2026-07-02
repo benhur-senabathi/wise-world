@@ -2,7 +2,7 @@ import type { CurrencyData } from './currencies';
 import { buildConnorPersonalTransactions } from './connor-personal-transactions';
 import { computeCurrencyBalance } from './transactions';
 
-const transactions = buildConnorPersonalTransactions('Connor', 'Berry Design');
+const transactions = buildConnorPersonalTransactions('Benhur', 'Benhur Design');
 
 export const connorPersonalCurrencies: CurrencyData[] = [
   {
