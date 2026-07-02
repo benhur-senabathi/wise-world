@@ -13,7 +13,7 @@ export function Team({ personalAvatarUrl }: { personalAvatarUrl?: string } = {})
     {
       name: consumerName,
       email: 'benhur@benhurdesign.co',
-      imgSrc: personalAvatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp',
+      imgSrc: personalAvatarUrl || '/avatar-benhur.png',
       isYou: true,
       role: t('team.accountOwner'),
     },

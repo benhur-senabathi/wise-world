@@ -241,7 +241,7 @@ function TeamAvatarMedia({ personalAvatarUrl, accountDef }: { personalAvatarUrl?
       size={48}
       orientation="diagonal"
       avatars={[
-        { imgSrc: personalAvatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp' },
+        { imgSrc: personalAvatarUrl || '/avatar-benhur.png' },
         { imgSrc: participant?.imgSrc || 'https://www.tapback.co/api/avatar/alex-kumar.webp' },
       ]}
     />

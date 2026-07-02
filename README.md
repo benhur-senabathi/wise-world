@@ -224,6 +224,8 @@ Or ask Claude:
 Pull the latest updates from main and merge them into my current branch
 ```
 
+> **Note on personalisation:** This fork carries a commit on `main` that sets the default identity to Benhur Senabathi / Benhur Design (names, recipients, avatar, wisetag). Pulling upstream *adds* new commits alongside it — it never reverts your name. The only time it's touched is if upstream edits the exact same lines, which surfaces as a merge conflict you resolve in your favour (keep your version). Only ever pull-and-push on `main`; branch off `main` for prototypes.
+
 ### 6. Configure your prototype
 
 Access prototype settings to switch accounts, change appearance, language, and copy useful prompts:

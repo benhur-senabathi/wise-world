@@ -342,7 +342,7 @@ function AppInner() {
 
   const activeName = accountType === 'business' ? businessName : consumerName;
   const activeInitials = getInitials(activeName);
-  const personalAvatarUrl = dataset === 'connor' ? '/avatar-connor.png' : 'https://www.tapback.co/api/avatar/connor-berry.webp';
+  const personalAvatarUrl = '/avatar-benhur.png';
   const avatarUrl = accountType === 'business' ? '/berry-design-logo.png' : personalAvatarUrl;
 
   // Account avatar styles — derived from registry (inverted for avatar: bg=textColor, fg=color)

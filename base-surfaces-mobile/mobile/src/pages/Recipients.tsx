@@ -12,7 +12,7 @@ import './Recipients.css';
 const BUSINESS_AVATAR = '/berry-design-logo.png';
 
 export function Recipients({ accountType = 'personal', personalAvatarUrl, onSelectRecipient }: { accountType?: AccountType; personalAvatarUrl?: string; onSelectRecipient?: (r: Recipient) => void } = {}) {
-  const PROFILE_AVATAR = personalAvatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp';
+  const PROFILE_AVATAR = personalAvatarUrl || '/avatar-benhur.png';
   const { consumerName } = usePrototypeNames();
   const { t } = useLanguage();
 

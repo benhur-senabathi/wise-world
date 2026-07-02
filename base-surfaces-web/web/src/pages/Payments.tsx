@@ -298,7 +298,7 @@ export function Payments({ accountType = 'personal', personalAvatarUrl, onSend, 
             media={
               <ListItem.AvatarView
                 size={48}
-                imgSrc={isBusiness ? '/berry-design-logo.png' : (personalAvatarUrl || 'https://www.tapback.co/api/avatar/connor-berry.webp')}
+                imgSrc={isBusiness ? '/berry-design-logo.png' : (personalAvatarUrl || '/avatar-benhur.png')}
                 badge={{ icon: <FastFlag size={16} />, type: 'action' as const }}
               />
             }
